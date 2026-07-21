@@ -12,6 +12,10 @@
 /music-for-18-pianos/ /music-for-18-pianos/ 200
 /marriage-counseling-with-capitalism/ /marriage-counseling-with-capitalism/ 200
 
+# --- Resume: rewrite extension-less URL to the static PDF asset ---
+/resume /resume.pdf 200
+/resume/ /resume.pdf 200
+
 # --- Known non-post single-segment paths that would otherwise be swallowed by
 # the wildcard below (there is no /p/all-posts on Substack) ---
 /all-posts/ / 302
