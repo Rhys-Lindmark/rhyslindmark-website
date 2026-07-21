@@ -12,7 +12,7 @@ Now exploring VC & AI ecosystem roles.
 🦬 I cofounded [ETHDenver](https://www.ethdenver.com/)
 🎙️ I interviewed guests on [The Rhys Show](https://www.youtube.com/@RhysLindmark/videos)
 📚 I like [these books](https://www.goodreads.com/review/list/64812667-rhys-lindmark?shelf=read&sort=rating&view=table) and have turned them into [20,000 notecards](https://www.rhyslindmark.com/how-to-anki/)
-🌍 I'm a musical infovore ([8,000 songs 🎵](https://open.spotify.com/playlist/3QNxR8qUDQd8e5KyNsOZgx?si=97c592c5995e47ae)) and an avid backpacker (1,000+ miles across [🇺🇸](https://coloradotrail.org/) [🇰🇪](https://www.rhyslindmark.com/kenya-walk-fundraising/) [🇳🇵](https://monkeystale.ca/treks/upper-mustang-trek-from-jomsom-to-lo-manthang/) [🇨🇳](https://www.google.com/maps/dir/Guangzhou,+Guangdong+Province,+China/Dongguan,+Guangdong+Province,+China/Shenzhen,+Guangdong+Province,+China))
+🌍 I'm a [musical infovore](https://open.spotify.com/playlist/3QNxR8qUDQd8e5KyNsOZgx?si=97c592c5995e47ae) and [an](https://coloradotrail.org/) [avid](https://www.rhyslindmark.com/kenya-walk-fundraising/) [backpacker](https://monkeystale.ca/treks/upper-mustang-trek-from-jomsom-to-lo-manthang/)
 🤖 I studied Computer Science at [Carleton College](https://www.carleton.edu/)
 ✍️ I write at [Rhys' Pieces](https://rhyslindmark.substack.com/). ([Some](https://rhyslindmark.substack.com/p/incentives) [articles](https://www.rhyslindmark.com/marriage-counseling-with-capitalism/) [to](https://www.roote.co/wisdom-age) [start](https://rhyslindmark.substack.com/p/the-high-return-activity-of-giving).)
 
