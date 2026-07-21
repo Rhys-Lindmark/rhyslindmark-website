@@ -5,6 +5,7 @@
 
 # --- Pages being rebuilt natively on this site: opt out of the wildcard below ---
 # (200 = serve the local page as-is, don't redirect)
+/ /index.html 200
 /about-me/ /about-me/ 200
 /date-me/ /date-me/ 200
 /us/ /us/ 200
