@@ -5,20 +5,42 @@
 
 # --- Pages being rebuilt natively on this site: opt out of the wildcard below ---
 # (200 = serve the local page as-is, don't redirect)
+# Both the trailing-slash and bare forms are listed: the wildcards below match
+# a bare slug too, and redirects take precedence over static files, so the
+# bare form needs its own opt-out rather than relying on Pages' normal
+# directory -> trailing-slash redirect.
 /about-me/ /about-me/ 200
+/about-me /about-me 200
 /date-me/ /date-me/ 200
+/date-me /date-me 200
 /us/ /us/ 200
+/us /us 200
 /book/ /book/ 200
+/book /book 200
 /music-for-18-pianos/ /music-for-18-pianos/ 200
+/music-for-18-pianos /music-for-18-pianos 200
 /marriage-counseling-with-capitalism/ /marriage-counseling-with-capitalism/ 200
+/marriage-counseling-with-capitalism /marriage-counseling-with-capitalism 200
+
+# --- Static top-level files that would otherwise be swallowed by the bare
+# wildcard below (:slug also matches segments containing dots). Any new
+# top-level file added to public/ needs a line here too. ---
+/favicon.ico /favicon.ico 200
+/favicon.svg /favicon.svg 200
+/robots.txt /robots.txt 200
+/sitemap-index.xml /sitemap-index.xml 200
+/sitemap-0.xml /sitemap-0.xml 200
 
 # --- Resume: rewrite extension-less URL to the static PDF asset ---
 /resume /resume.pdf 200
 /resume/ /resume.pdf 200
+/resume.pdf /resume.pdf 200
 
 # --- Known non-post single-segment paths that would otherwise be swallowed by
-# the wildcard below (there is no /p/all-posts on Substack) ---
+# the wildcards below (there is no /p/all-posts on Substack) ---
 /all-posts/ / 302
+/all-posts / 302
 
 # --- Old Ghost post slugs -> imported Substack posts (Substack preserves slug) ---
 /:slug/ https://rhyslindmark.substack.com/p/:slug 301
+/:slug https://rhyslindmark.substack.com/p/:slug 301
