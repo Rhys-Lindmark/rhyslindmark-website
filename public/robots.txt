@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.rhyslindmark.com/sitemap-index.xml
