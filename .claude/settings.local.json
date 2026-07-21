@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:4321/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4321/about-me/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4321/date-me/)",
+      "Bash(mkdir -p /Users/rhyslindmark/Documents/Code/rhyslindmark-website/src/assets/images)",
+      "Bash(mv /Users/rhyslindmark/Documents/Code/rhyslindmark-website/public/images/* /Users/rhyslindmark/Documents/Code/rhyslindmark-website/src/assets/images/)",
+      "Bash(rmdir /Users/rhyslindmark/Documents/Code/rhyslindmark-website/public/images)"
+    ]
+  }
+}

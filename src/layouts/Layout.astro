@@ -1,0 +1,28 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+	wide?: boolean;
+	fit?: boolean;
+}
+
+const { title, description = 'Rhys Lindmark', wide = false, fit = false } = Astro.props;
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{title === 'Rhys Lindmark' ? title : `${title} — Rhys Lindmark`}</title>
+	</head>
+	<body class={fit ? 'fit' : undefined}>
+		<main class={[wide && 'wide', fit && 'fit'].filter(Boolean).join(' ') || undefined}>
+			<slot />
+		</main>
+	</body>
+</html>

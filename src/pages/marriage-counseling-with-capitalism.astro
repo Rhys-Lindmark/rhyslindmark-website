@@ -1,0 +1,825 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+
+import mc01 from '../assets/images/mc-01-intro.png';
+import mc02 from '../assets/images/mc-02-bentoism-close.png';
+import mc03 from '../assets/images/mc-03-generosity-walk.png';
+import mc04 from '../assets/images/mc-04-navi-positive-sum.png';
+import mc05 from '../assets/images/mc-05-navi-zero-sum.png';
+import mc06 from '../assets/images/mc-06-coherent-pluralism-glasses.png';
+import mc07 from '../assets/images/mc-07-info-consumption.png';
+import mc08 from '../assets/images/mc-08-networkism-battle.png';
+import mc09 from '../assets/images/mc-09-conclusion.png';
+import mc10 from '../assets/images/mc-10-alone-reflection.png';
+import mc11 from '../assets/images/mc-11-closing-collage.png';
+
+import chartInsideOut from '../assets/images/mc-chart-inside-out.png';
+import chartBento2x2 from '../assets/images/mc-chart-bento-2x2.png';
+import chartBentoAwareness from '../assets/images/mc-chart-bento-awareness.png';
+import chartSmoking from '../assets/images/mc-chart-smoking.png';
+import chartRenewable from '../assets/images/mc-chart-renewable-energy.png';
+
+const avatar = await getImage({ src: mc09, format: 'webp', width: 800 });
+---
+
+<Layout
+	title="Marriage Counseling with Capitalism"
+	description="A relationship therapy session between Humanity, Capitalism, and Post-Capitalism."
+>
+	<div class="mc" style={`--avatar-img: url(${avatar.src})`}>
+		<h1>Marriage Counseling with Capitalism</h1>
+
+		<p class="byline">
+			Writing by <a href="/">Rhys Lindmark</a>. Illustrations by <a href="https://audraillustration.wixsite.com/portfolio/illustration-1">Audra Jacobi</a>.
+		</p>
+		<hr />
+
+		<p>
+			<em
+				>We are viewing a relationship therapy session between{' '}
+				<span style="background-color: #cfc">HUMANITY</span>,{' '}
+				<span style="background-color: #ffcf85">CAPITALISM</span>,{' '}
+				<span style="background-color: #fec7ff">POST-CAPITALISM</span>, and a{' '}
+				<span style="background-color: #dddddd">THERAPIST</span>.</em
+			>
+		</p>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc01} alt="Illustration of the therapy session: Humanity, Capitalism, Post-Capitalism, and the Therapist" width={2000} />
+		</figure>
+
+		<div class="bubble t">THERAPIST: Hello everyone. Welcome to today's relationship therapy session. Humanity, how are you doing on this beautiful Monday?</div>
+		<br />
+		<div class="bubble h">HUMANITY: I'm stressed. And tired.</div>
+		<br />
+		<div class="bubble t">Yeah, it's a tough time. Maybe some green tea might help?</div>
+		<br />
+		<div class="bubble h">Thank you.</div>
+		<br />
+		<div class="bubble t">And Capitalism, how are you feeling today?</div>
+		<br />
+		<div class="bubble c">CAPITALISM: Me? I'm fine. Are these new chairs by the way? They're nice. Not too cushy, not too firm.</div>
+		<br />
+		<div class="bubble t">Indeed, they are. Thank you for noticing, now—</div>
+		<br />
+		<div class="bubble c">—How much were they?</div>
+		<br />
+		<div class="bubble t">I'm not sure. They just, sort of, appeared.</div>
+		<br />
+		<div class="bubble c">Just "appeared?" I'm skeptical. There's no such thing as a free lunch.</div>
+		<br />
+		<div class="bubble t">Not in your worldview, no. Where is Post-Capitalism?</div>
+		<br />
+		<div class="bubble h">I think they said they were going to be a bit late.</div>
+		<br />
+		<div class="bubble c">Classic.</div>
+		<br />
+		<p><i>Post-capitalism rushes in.</i></p>
+		<div class="bubble pc">POST-CAPITALISM: Hey y'all! Thanks for your patience. I got a bit lost on the way here.</div>
+		<br />
+		<div class="bubble c">It's in the same place every time.</div>
+		<br />
+		<div class="bubble pc">Yes, but <i>we</i> have changed.</div>
+		<br />
+		<div class="bubble c">That means nothing to me.</div>
+		<br />
+		<div class="bubble t">
+			Ok, well we're all here now. Humanity, Capitalism, and Post-Capitalism, can you please silence your phones? Now let's all take one deep breath together. Inhale...and...exhale.
+			<br /><br />
+			Humanity, could you tell us why you wanted to have this session?
+		</div>
+		<br />
+		<div class="bubble h">
+			This is a bit scary for me to say. But I'm not sure about my relationship with either of you, Cap or Post-Cap.
+			<br /><br />
+			Cap—I'm not sure I love you anymore.
+			<br />
+			And Post-Cap—I barely even know you. I've been burned on non-capitalist relationships before, so I'm a bit scared.
+		</div>
+		<br />
+		<div class="bubble pc">I'm different, I swear!</div>
+		<br />
+		<div class="bubble h">Yeah, maybe, I don't know. Polyamorous open relationships are complicated.</div>
+		<br />
+		<div class="bubble t">
+			It is confusing. By the end of this session, I hope you will have a clearer idea on the post-capitalist mindset. It consists of four key ideas:
+			<br /><br />
+			<ul>
+				<li><b>Bentoism</b>: Zooming out to care about each other and the planet</li>
+				<li><b>Generosity</b>: Recognizing that many of us have enough and can give back</li>
+				<li><b>Coherent Pluralism</b>: Striving to look at issues from every angle</li>
+				<li><b>Networkism</b>: The rise of internet-enabled decentralized networks</li>
+			</ul>
+			We'll explore each in turn. But first, let's look backwards and explore the history of Humanity's relationship with Capitalism.
+		</div>
+
+		<hr />
+		<h2>A Brief (Relationship) History of Capitalism</h2>
+		<h3>Part I: Feudalism, The Agricultural Revolution's Final Act</h3>
+
+		<div class="bubble h">Where should I begin? I guess it makes sense to talk about who I loved before Cap, Feudalism.</div>
+		<br />
+		<div class="bubble c">Back when you were immature.</div>
+		<br />
+		<div class="bubble h">Call it what you want. I was different then.</div>
+		<br />
+		<div class="bubble pc">We are all evolving.</div>
+		<br />
+		<div class="bubble t">Remind me when you dated Feudalism?</div>
+		<br />
+		<div class="bubble h">
+			It was something like 800-1400. Feudalism was the culmination of a journey that began with the Agricultural Revolution around 10,000 BCE.
+			<br /><br />
+			Before that, I mostly organized myself in hunter-gatherer communities. I was nomadic and food was scarce. But then the Agricultural Revolution came along and fed everyone. I ate a lot of wheat then. Now too, I guess.
+			<br /><br />
+			I got into a weird cycle. More food meant I could have more kids. But then I'd have too many kids, so they'd get hungry and I'd have to farm more food. Rinse and repeat.
+		</div>
+		<br />
+		<div class="bubble c">You were horny, got it.</div>
+		<br />
+		<div class="bubble pc">Sex-positivity, Cap, please.</div>
+		<br />
+		<div class="bubble h">I started to live in increasingly dense cities and run out of space. Farming requires land, so I organized myself around land scarcity. In Feudalism, the powerful lords controlled the land and the serfs would work on it in exchange for protection. It worked.</div>
+		<br />
+
+		<h3>Part II: Industrial Revolution and the Birth of Capitalism</h3>
+
+		<div class="bubble t">What made you break off that relationship and begin to date Cap?</div>
+		<br />
+		<div class="bubble c">Probably my eyes.</div>
+		<br />
+		<div class="bubble h">Honestly, you do have nice eyes. But of course, it wasn't just that. As with any big relationship change, it was a lot of things.</div>
+		<br />
+		<div class="bubble pc">It's a system.</div>
+		<br />
+		<div class="bubble h">
+			You know how they say "it's not you, it's me?" That was true here. I was changing. Maturing. Evolving. Feudalism didn't fit the person I was becoming.
+			<br /><br />
+			There was a gradual transition as I started to invent the printing press in 1440, double entry bookkeeping in 1450, and the joint-stock company around 1600. But I really felt myself begin to fall in love with Capitalism around the Industrial Revolution.
+		</div>
+		<br />
+		<div class="bubble c">Ah, those were good times. You used steam power to make so much cloth and iron.</div>
+		<br />
+		<div class="bubble h">Yeah, that was fun.</div>
+		<br />
+		<div class="bubble c">Electricity was sweet too. Or connecting folks with the telegraph.</div>
+		<br />
+		<div class="bubble h">Yeah, we were a good team. Of course, there was an immense amount of negativity that enabled those systems: slavery, child labor, colonialism, and more. I'm sorry to all parts of myself that we hurt, and continue to be hurt. But I'm optimistic. As MLK popularized: "the arc of history is long, but it bends towards justice."</div>
+		<br />
+
+		<h3>Part III: Struggles with (Post-)Capitalism in the 2020s</h3>
+
+		<div class="bubble t">Let's fast forward to today—could you say more about your relationship struggles with Capitalism now?</div>
+		<br />
+		<div class="bubble h">
+			I think these are connected to the four ideas you outlined earlier.
+			<br /><br />
+			<ul>
+				<li>Cap is too focused on short-term needs. I have new long-term needs, like fixing the climate crisis.</li>
+				<li>Cap helped motivate me with financial incentives, but what happens when I have enough? Or when I feel abundance? I feel like Cap has made me too greedy.</li>
+				<li>Now that 20th century narratives have played out, Cap doesn't have a clear story for my future.</li>
+				<li>Finally, Cap grew up with centralized institutions predicated on scarcity. They don't understand new decentralized networks predicated on information abundance.</li>
+			</ul>
+			And to top it off, I have no clue how Post-Cap could help me with these things. I'm not sure what a clear positive vision of my future looks like.
+			<br /><br />
+			...Sorry, that was a lot. I know.
+		</div>
+		<br />
+		<div class="bubble t">
+			There's a lot to unpack there. Let's do it one-by-one.
+			<br /><br />
+			<ul>
+				<li>First, we'll look at <b>Bentoism</b>—a framework for meeting your long-term collective needs.</li>
+				<li>Then, we'll explore <b>Generosity</b>—where those who have enough give back.</li>
+				<li>After that, we'll look at <b>Coherent Pluralism</b>—a way to understand many perspectives, but not be overwhelmed by them.</li>
+				<li>And finally, we'll look at <b>Networkism</b>—the power of digital networks and how the ideas above are manifest in them.</li>
+			</ul>
+		</div>
+		<br />
+		<div class="bubble c">Wait, when are we going to talk about economics? Isn't post-capitalism a new kind of economics? Like, Bitcoin or something?</div>
+		<br />
+		<div class="bubble pc">Yeah, Bitcoin!</div>
+		<br />
+		<div class="bubble h">Is Bitcoin the only thing the two of you agree on?</div>
+		<br />
+		<div class="bubble t">As cool as Bitcoin is, post-capitalism is a <i>mindset</i>, not an economic system. Let's explore the first part of that mindset, Bentoism—a framework for meeting Humanity's needs.</div>
+
+		<hr />
+		<h2>MINDSET #1: BENTOISM</h2>
+
+		<div class="bubble t">So tell me Humanity, what do you need?</div>
+		<br />
+		<div class="bubble h">I'm not sure. I guess I want <b>basic needs</b> like food and shelter.</div>
+		<br />
+		<div class="bubble c">Gotta eat.</div>
+		<br />
+		<div class="bubble h">And sometimes I'm confused about why we're here. Like, what's the point of life? Even when I have a full belly, I sometimes feel depressed. I'll look out into space, at all those stars, and say "so what?"</div>
+		<br />
+		<div class="bubble pc">The beautiful paradox of life.</div>
+		<br />
+		<div class="bubble c">More like a buzz-kill.</div>
+		<br />
+		<div class="bubble t">This sounds like you're looking for <b>meaning</b>. Ok, what else?</div>
+		<br />
+		<div class="bubble h">Well, I've mostly been focused on myself. My own basic needs. My own need for meaning. But there's also other people. I need <b>love and connection</b>.</div>
+		<br />
+		<div class="bubble c">A market for love! Nothing more romantic than a market for love.</div>
+		<br />
+		<div class="bubble h">And I guess there's a fourth need. Not really a day-to-day thing, but I do want to exist in the future. I care about kids and future generations.</div>
+		<br />
+		<div class="bubble t">A collective need for <b>sustainability</b>.</div>
+		<br />
+		<div class="bubble h">Yeah, that sounds about right.</div>
+		<br />
+
+		<h3>Humanity's Needs Find a Voice</h3>
+
+		<div class="bubble t">Thank you for sharing, Humanity. You may not have realized this, but you're actually just speaking from the perspective of these internal needs. It's similar to the Pixar movie <i>Inside Out</i>. Have you seen that?</div>
+		<br />
+		<div class="bubble h">I haven't.</div>
+		<br />
+		<div class="bubble c">What do you mean you haven't? <i>You</i> made that movie. Humans made it.</div>
+		<br />
+		<div class="bubble t">The movie's protagonist is a human named Riley. As Riley goes through her journey in the movie, the audience gets to understand how Riley makes decisions based on her anthropomorphized emotions of Joy, Disgust, Sadness, Anger, and Fear.</div>
+
+		<figure>
+			<Image src={chartInsideOut} alt="Inside Out's five emotions: Joy, Sadness, Fear, Disgust, Anger" width={720} />
+		</figure>
+
+		<div class="bubble h">The voices in my head.</div>
+		<br />
+		<div class="bubble t">Exactly. In <i>Inside Out</i>, the voices are your emotions. But we can actually go one level deeper and listen to your needs. In fact, all emotions are the result of met or unmet needs. When your needs are met, you may feel Joy (among other things). But when your needs are unmet, you may feel Sadness, Anger, Fear, or Disgust.</div>
+		<br />
+		<div class="bubble h">Got it. So what are the names of my needs then? Hunger? Thirst? Sex?</div>
+		<br />
+		<div class="bubble t">Not exactly. There are four, and we call them: Now Me, Future Me, Now Us, and Future Us.</div>
+
+		<figure>
+			<Image src={chartBento2x2} alt="2x2 diagram: Now Me, Future Me, Now Us, Future Us" width={720} />
+			<figcaption><a href="http://bentoism.org/1-what-is-bentoism">bentoism.org/1-what-is-bentoism</a></figcaption>
+		</figure>
+
+		<div class="bubble t">
+			<b>Now Me</b> represents your immediate basic needs like hunger and safety.
+			<br /><br />
+			<b>Future Me</b> represents your long-term personal needs like meaning and purpose. Future Me is your ideal, wiser self helping your current self.
+			<br /><br />
+			<b>Now Us</b> represents your collective need for connection. It's also when people help others meet their Now Me basic needs. Like giving to charity.
+			<br /><br />
+			<b>Future Us</b> represents the long-term needs of humanity. It speaks for your kids, for future generations, and for the earth.
+		</div>
+		<br /><br />
+		<div class="bubble h">Nice to metaphorically meet all of you. Or, I guess, nice to meet the different parts of myself?</div>
+		<br />
+		<div class="bubble t">Indeed, this 2x2 is just a tool for reflection. We call it <a href="http://bentoism.org/">BENTOism</a>, for BEyond Near-Term Orientation. It was created by Yancey Strickler in his excellent book, <a href="https://thiscouldbeourfuture.com/">This Could Be Our Future</a>. Bentoism provides a way to think about your collective long-term future. Instead of just focusing on Now Me, you can zoom out and care about Future Me, Now Us, and Future Us.</div>
+
+		<figure>
+			<Image src={chartBentoAwareness} alt="The Bento Society: awareness diagram" width={720} />
+			<figcaption><a href="https://bentoism.substack.com/p/the-bento-society-3-awareness">bentoism.substack.com/p/the-bento-society-3-awareness</a></figcaption>
+		</figure>
+
+		<div class="bubble h">I think I get it, but how does saying "Future Us matters" actually affect something like climate change?</div>
+		<br />
+		<div class="bubble t">This goes back to what I was telling Cap earlier. Post-capitalism is a mindset, NOT the specific implementations of that mindset. You can think of it like the butterfly effect. A small change in mindset (zooming out to Future Us) can have large impacts (new carbon taxes, less flights taken, etc.).</div>
+		<br />
+		<div class="bubble pc">Kind of like MLK's "I have a dream" speech. The speech itself wasn't a new law in and of itself, just a speech. But it shaped hearts and minds, which shaped movements, which eventually shaped laws.</div>
+		<br />
+		<div class="bubble c">Or how Adam Smith's <i>Wealth of Nations</i> helped shape the Industrial Revolution, the formation of companies/markets, and, well, created me.</div>
+		<br />
+		<div class="bubble t">Exactly.</div>
+		<br />
+		<div class="bubble h">Ok, I think I get it. Bentoism gives my other needs (Future Me, Now Us, Future Us) a voice. This small mindset shift could trickle down into all aspects of society.</div>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc02} alt="Illustration closing the Bentoism section" width={2000} />
+		</figure>
+
+		<div class="bubble t">Indeed. But understanding your needs (through Bentoism) is only one aspect of a post-capitalism. Now let's look at your next change—the shift from scarcity to abundance, and the rise of generosity.</div>
+
+		<hr />
+		<h2>MINDSET #2: GENEROSITY</h2>
+
+		<div class="bubble t">Let's look at the second mindset of post-capitalism: Generosity. Because this concept is difficult to understand intuitively, I have an idea—let's experience this future world through VR.</div>
+		<br />
+		<div class="bubble pc">Ooooo, sounds fun!</div>
+		<br />
+		<div class="bubble t">Here everyone, put on these VR headsets.</div>
+		<br />
+		<div class="bubble c">I can't quite work this damn technology. Where do my eyes go? Where do my ears go?</div>
+		<br />
+		<div class="bubble t">Here, let me help. Ok, ready all? I'll load up two VR experiences to help us understand Generosity and Abundance. Let's check out the first one now.</div>
+
+		<h3>Future VR Experience: An Abundant Walk</h3>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc03} alt="Illustration for the Abundant Walk VR experience" width={2000} />
+		</figure>
+
+		<p><em>We're walking down the street on a sunny day.</em></p>
+		<p><em>When we take a deep breath and zoom out, we suddenly realize the world is gifting beautiful things to us. We take a moment to appreciate the sun's rays, and note in our journal—"I am grateful for the sun's warmth." The sun provides us with happiness if we dare to accept it.</em></p>
+		<p><em>We pass some fruit trees and decide to grab a lemon for tonight's dinner. There's a cherry tomato plant that says "eat me, neighbor!" We do. The flavor is brilliant.</em></p>
+		<p><em>We continue walking and happen upon a Little Free Library. The books inside are free, waiting to be read. A gift from us, to us. We take one and leave a nice note thanking the library steward.</em></p>
+		<p><em>Then we enter our local "real" library. In addition to books, this library lends out tools (hammers, etc.) and free museum passes. We'll rent a shovel next week for some yard work.</em></p>
+		<p><em>There are thousands of free items offered on Craigslist every day in our city. We get a phone notification about free chairs at a house nearby. We take a look but pass for now.</em></p>
+		<p><em>We stop by a park to sit in the grass. On our phones, we look up some AirBnB listings for an upcoming trip. Each listing has a sliding scale where the owner notes how much they need the money. We book a cute home an hour away. Our credit card calculates the carbon emissions of our trip and offsets it by donating to Future Us to plant new trees.</em></p>
+		<p><em>We leave the park and head home. As we pass the largest intersection, there's a meter that recognizes our phones and transfers $5 to the meter. We could take up to $25 back if we want, but decide not to. At the end of each day, the money is donated to our local community Now Us foundation.</em></p>
+		<p><em>But not everything has more money flowing through it. In fact, we're diverting flows from existing systems—from consumerism and status games.</em></p>
+		<p><em>We take a left and head south. This intersection used to have three of the same jewelry store—like the mythical Starbucks on every corner. Now, they've been turned into places for our Now Me health: a yoga studio, a bathhouse, and a meditation room.</em></p>
+		<p><em>It reminds us of when we went to Times Square last week. Instead of being plastered by flashing screens advertising Coke and watches, half of the screens are off. The remaining ones are ads for therapy, community events, and gyms.</em></p>
+		<p><em>Part of this decline is demand-driven: customers spend less on Now Me but spend more on Now Us connection and Future Me long-term health. And part of the decline is supply-driven: many companies are public-benefit corporations and have legally binding charters that push them to positively impact society. It's not that "bad things" like cigarettes don't exist anymore. They're just pushed much much less.</em></p>
+		<p><em>We live in a new Generous world, where people recognize their Abundance and use it to help Now Us and Future Us.</em></p>
+		<hr />
+
+		<div class="bubble t">What did you all think of this VR walk?</div>
+		<br />
+		<div class="bubble c">Seems weird to me. Does this VR thing actually expect people to stop buying cigarettes, candy, and expensive jewelry? Or for companies to stop making them? It's against human nature.</div>
+		<br />
+		<div class="bubble t">Humanity can self-domesticate to work around human nature. People have purchased drastically different things throughout history. Before 1900, almost no one in the U.S. smoked cigarettes. In the 1960s and 1970s, it was around 10 cigarettes per adult per day. Now it's less than 4.</div>
+
+		<figure>
+			<Image src={chartSmoking} alt="Chart: cigarettes smoked per adult per day over time" width={720} />
+			<figcaption><a href="https://ourworldindata.org/smoking">ourworldindata.org/smoking</a></figcaption>
+		</figure>
+
+		<div class="bubble t">This has happened through taxing cigarettes, bans on advertising, and state-sponsored programs to help people quit.</div>
+		<br />
+		<div class="bubble c">Aka "regulation".</div>
+		<br />
+		<div class="bubble t">Yes, but also norms changing. As another more extreme example, society no longer has institutionalized slavery. This happened for a wide variety of reasons. But a crucial one is that the mindset of individuals changed to see it as unjust. That mindset was eventually codified in laws and norms. But the mindset itself mattered.</div>
+		<br />
+		<div class="bubble c">Moving away from laws and norms, let's get back to markets. How is a mindset manifest in market structures? Will we have markets in the future?</div>
+		<br />
+		<div class="bubble t">Of course! Markets are still great and will clearly exist in the future. But the markets will be more aligned with human values. Instead of a Race to the Bottom, we'll have a Race to the Top.</div>
+		<br />
+		<div class="bubble c">What's the difference?</div>
+		<br />
+		<div class="bubble t">In some ways, it's just a difference in semantics. Both are lovely free markets. But in a Race to the Top, we're using the free market mechanism to stimulate dynamic innovation around values that are more in-alignment with our needs.</div>
+		<br />
+		<div class="bubble h">Let me show you a diagram that gets closer to meeting my needs. On the left side, in 2014, coal and gas were still the cheapest ways to make electricity. But by 2019, wind and solar had become cheaper in many countries.</div>
+
+		<figure>
+			<Image src={chartRenewable} alt="Chart: cost of electricity by source, 2014 vs 2019" width={720} />
+			<figcaption><a href="https://www.bloomberg.com/graphics/2019-can-renewable-energy-power-the-world/">bloomberg.com/graphics/2019-can-renewable-energy-power-the-world</a></figcaption>
+		</figure>
+
+		<div class="bubble c">
+			Ah, beautiful. The free market at work. I get it, I think. We use market mechanisms to manifest humanity's mindset at any given time. For the last ~50 years, we've been too focused on the short-term financial maximization pushed by our old Now Me mindset.
+			<br /><br />
+			But now we have zoomed out to include Now Us and Future Us. Our new mindset allocates money towards those Us boxes, increasing the supply and demand for those goods.
+			<br /><br />
+			We could also use laws or norms to meet those needs too. But I recommend markets :).
+		</div>
+		<br />
+		<div class="bubble t">That's pretty good! That's the shift to Now Us and Future Us. I'd add another piece to it—the concepts of Generosity and Abundance.</div>
+		<br />
+		<div class="bubble c">Sorry, I don't really use those words. Could you say more?</div>
+		<br />
+		<div class="bubble t">Well, remember in the VR story when we walked near the Little Free Library?</div>
+		<br />
+		<div class="bubble c">Yeah. I love the one that is close to my house. I leave copies of Ayn Rand in it to indoctrinate the youths.</div>
+		<br />
+		<div class="bubble t">That's, uh, great I guess. I'm glad it's getting put to use. Well those little libraries are a sign of abundance. Do you charge people when they get a copy of Ayn Rand's <i>Atlas Shrugged</i>?</div>
+		<br />
+		<div class="bubble c">I guess not, no.</div>
+		<br />
+		<div class="bubble t">
+			And why? Well, it's because you have enough. You're pretty well off, eh? You have enough food, a nice house, a nice college fund for your kids. You can leave extra copies of <i>Atlas Shrugged</i> in the library.
+			<br /><br />
+			When you get a paycheck, where does it go? Does that money make you happier?
+		</div>
+		<br />
+		<div class="bubble c">Not really.</div>
+		<br />
+		<div class="bubble t">But does putting books in the library make you happier?</div>
+		<br />
+		<div class="bubble c">Yes! It's kind of irrational though. I should probably start charging for the books I put in the library, or somehow get happier when I make more money.</div>
+		<br />
+		<div class="bubble t">Actually, you're being completely rational. You have what we call <a href="https://www.rhyslindmark.com/seeing-like-a-networked-human-organism/">"Now Me Overflow"</a>. Your basic needs are met, so now you're allocating money to other needs. Putting books in the Little Free Library fills your Now Us needs of connection.</div>
+		<br />
+		<div class="bubble c">Yeah, it does help me build relationships with my neighbors and their kids.</div>
+		<br />
+		<div class="bubble t">
+			Exactly. So let's summarize this point and link it back to the first.
+			<br /><br />
+			The first point is our shift towards Mindset #1: Bentoism. We are zooming out to our Now Us and Future Us needs. Those needs are met through a variety of mechanisms like law or norms, but also markets. Renewable electricity is now cheaper in many countries. Go markets!
+			<br /><br />
+			The second point is that this Generosity is possible from Abundance / Now Me Overflow. It's difficult to put money towards solar research if we don't have enough food to eat. But because our basic needs are met, we can start allocating resources towards other needs. Does that make sense?
+		</div>
+		<br />
+		<div class="bubble c">
+			Got it. Markets have done such a good job at meeting Now Me needs that we can now use them for Future Us needs.
+			<br /><br />
+			...Does this make me a socialist?
+		</div>
+		<br />
+		<div class="bubble t">
+			Haha, I don't think so. This just takes what you do best (markets) and uses those markets to meet the needs of our collective future.
+			<br /><br />
+			Ok, let's put back on our VR headsets and explore the second experience. In this one, we'll look at why everything can't be Abundant.
+		</div>
+
+		<h3>Future VR Experience: Navi Explores Abundance For Positive-Sum Resources and Balance for Zero-Sum Resources</h3>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc04} alt="Illustration of Navi exploring positive-sum resources" width={2000} />
+		</figure>
+
+		<p><em>We're watching a student, Navi, explore whether core societal primitives are zero-sum or positive-sum. Navi explores each and plays with them in her hands. For positive-sum, she explores trust, money, and information. For zero-sum, she explores status, attention, and power.</em></p>
+		<p><strong><em>First, she explores trust.</em></strong></p>
+		<p><em>She knows trust is becoming abundant during this next big transition. When she looks at the decreasing trust in centralized institutions like governments, it sure doesn't seem like there's becoming "more trust" in the world. But she understands the main shift is in how trust is created—centralized and top-down vs. decentralized and bottom-up.</em></p>
+		<p><em>Bottom-up networks abstract and commoditize trust. Things that are commoditized become abundant. An acre-plot of land, and the tools to harvest food on it, was an abstraction that made food abundant. Factories abstracted the production of goods, and now goods like t-shirts are abundant.</em></p>
+		<p><em>Code abstracts trust. Bitcoin uses math to abstract the process of creating a trusted ledger. Sharing economy platforms use rating systems to abstract the process of creating a trusted transaction. Navi consumes information from a trust network of experts, science, and crowd-based citizen journalism.</em></p>
+		<p><em>She understands that trust is positive-sum. When she decides to trust AirBnB, other people can also trust it. In fact, when she trusts it, others are even more likely to trust it. There is not a finite amount of trust to go around. Trust begets trust. And trust is good. Navi tries to create trust.</em></p>
+		<p><strong><em>Second, Navi explores money.</em></strong></p>
+		<p><em>It seems to be zero-sum. Or at least rivalrous. If Navi has $1 in her pocket, it can't also be in someone else's pocket.</em></p>
+		<p><em>However, the properties of money change when Navi takes a moment to reflect and zoom out. She remembers that money is a means, not an end. Money helps Navi meet her Now Me needs. But once she has Now Me Overflow, she can give that money to help others meet their Now Me needs (and help meet her Future Me needs of self-actualization).</em></p>
+		<p><em>And from this lens, money seems to have positive-sum-like properties. Technically, the $1 isn't in Navi's pocket anymore. But that doesn't actually matter to her. It's actually better for her if it's in someone else's pocket.</em></p>
+		<p><em>When people say that "capital is abundant", this is what they mean. Money doesn't need to be hoarded anymore.</em></p>
+		<p><em>So money itself is still rivalrous. But it has strong "overflow" properties that make it positive-sum for meeting needs.</em></p>
+		<p><strong><em>Third, Navi explores information.</em></strong></p>
+		<p><em>This is the easiest to understand. It's the difference between atoms and bits. Atoms are rivalrous—they can only be in one place at once. But bits are non-rivalrous—she can duplicate and share information around the world at zero marginal cost.</em></p>
+		<p><em>Knowledge is information that has been nicely packaged for human use. This is positive-sum. Knowledge begets more knowledge. We've seen this flywheel accelerate since the Renaissance.</em></p>
+		<p><em>In Navi's world, knowledge is not hidden behind paywalls. Copyright isn't enforced through laws, but through norms. Information wants to be free and it is. People allocate money to the best knowledge and art, but </em>after<em> it is created. Walled gardens no longer exist, so creativity and knowledge blossom.</em></p>
+		<p><em>Now though, Navi must explore the trickier resources—those with zero-sum properties.</em></p>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc05} alt="Illustration of Navi exploring zero-sum resources" width={2000} />
+		</figure>
+
+		<p><em>For the positive-sum resources, Navi's life choices are easy: create as much trust as possible, give money back after Now Me Overflow, and share information. But with zero-sum resources, it's more difficult. We can't just create more of them (making them abundant). Instead we need to think about their distribution.</em></p>
+		<p><strong><em>First, Navi explores attention.</em></strong></p>
+		<p><em>This is zero-sum. There are only so many seconds in a day. If Facebook takes some of her seconds, YouTube cannot have them.</em></p>
+		<p><em>Attention cannot be created, only directed or harvested.</em></p>
+		<p><em>Because attention is finite, our mindset towards it should be one of balanced allocation. Time Well Spent, not time spent scrolling.</em></p>
+		<p><strong><em>Second, Navi explores status.</em></strong></p>
+		<p><em>Navi knows that status is hard-wired into humans. Apes have one kind of status signal—dominance. Homo sapiens added a different kind of status—prestige. Both types of status are relative: they determine our place in the social ladder.</em></p>
+		<p><em>Navi saw a strong ape in the zoo. But there was a stronger ape, which was dominant. Navi saw a famous celebrity with lots of Instagram followers. But there was another celebrity with more followers, and the first celebrity was forgotten. They barely even showed up in her feed.</em></p>
+		<p><em>Because status is a zero-sum ranking, it should be treated differently than positive-sum resources like information. It's also different than an "enoughness"-based resource like money. Unlike money, status doesn't appear to have diminishing returns. There's no point where Navi's status will be "enough". She cannot Now Me Overflow with status.</em></p>
+		<p><em>Instead, Navi participates in a society where the long-term goal is to minimize the difference in status. A balanced allocation. One could view this as striving for "equality". But that's not how Navi (or others) view it. It's more like a catch-up mechanism in games. Instead of the winner getting further ahead, there are mechanisms in place to help the other players. An infinite game, not a finite one.</em></p>
+		<p><em>Still, this "balance" mindset towards status is sometimes difficult for Navi. She wants the best friends, and status helps. Sometimes, Navi sees people who seem to climb the ladder without helping anyone else up.</em></p>
+		<p><em>Nevertheless, Navi self-domesticates herself like humans have done before.</em></p>
+		<p><em>It's good to have a "balance" mindset for zero-sum resources like status. But Navi knows there's another vector—what should we allocate status to? If status is zero-sum by nature, how can we make it high impact? Like Time Well Spent, Status Well Awarded.</em></p>
+		<p><em>The status signals in the 1900s and early 2000s were broken. People still signaled status with luxury items and conspicuous consumption. In Navi's time, status is more directly coupled with impact. When elites have Now Me Overflow, a choice to own three houses is low status, while a choice to give to others is high status.</em></p>
+		<p><em>Paradoxically, pushing for a balanced status ranking is high status.</em></p>
+		<p><em>If humans must compete over status, that status should be intertwined with impact.</em></p>
+		<p><strong><em>Third, Navi explores power.</em></strong></p>
+		<p><em>Again, power is a zero-sum relative game. Power is your ranking on the sum of the other resources (status, money, attention, trust). It is your ability to use other resources to get what you want.</em></p>
+		<p><em>In the 21st century, power was still hoarded. Although money didn't make people more happy after Now Me Overflow, it still gave them more power. Bill Gates was no happier than other happy people. But he had much more power.</em></p>
+		<p><em>Hoarding power makes sense when the future is uncertain and you can't trust that things will work out for you. But power became less important as trust became abundant. Instead of power, humans focused on meeting their needs, and those of society.</em></p>
+		<p><em>Like with status, Navi understands our goal with zero-sum power: a balanced allocation. To create a resilient system, we want power to be evenly distributed in the system.</em></p>
+		<p><em>Navi closes her lesson and goes outside to play an infinite game.</em></p>
+		<hr />
+
+		<div class="bubble c">Navi seems like a smart kid.</div>
+		<br />
+		<div class="bubble h">Agreed. I guess that Navi was showing us that we shouldn't play status games?</div>
+		<br />
+		<div class="bubble t">
+			Not exactly. I think Navi was trying to show us how different resources will change in this upcoming transition.
+			<br /><br />
+			First, the positive-sum resources: Trust is positive-sum and will become abundant. Money is rivalrous, but we can make it positive-sum by using it as a means for meeting our needs, which allows us to do Now Me Overflow. Information has zero marginal costs and knowledge is positive-sum, so we should encourage a feedback loop there by breaking down any barriers to knowledge sharing.
+		</div>
+		<br />
+		<div class="bubble h">Find ways to make more trust, give back money, and let information be free. Got it.</div>
+		<br />
+		<div class="bubble t">Exactly. This is different from attention, status, and power, which are all zero-sum. For these, Navi shows us that post-capitalists have a "balancing" mindset for them. And, importantly for status—it should be coupled to the impact of Now Me Overflow, instead of signaling with luxury goods.</div>
+		<br />
+		<div class="bubble h">Got it. So in the future, we show eliteness by giving back, and by striving for a balanced distribution of zero-sum resources. Our newfound Abundance of trust and money allows us to be Generous.</div>
+		<br />
+		<div class="bubble t">Perfect.</div>
+		<br />
+		<div class="bubble c">Teacher's pet.</div>
+		<br />
+		<div class="bubble t">
+			We've now understood Bentoism, Generosity, and the connection between them. We'll now explore the final two mindsets—Coherent Pluralism and Networkism.
+			<br /><br />
+			Networkism is the shift from centralized institutions to internet-enabled decentralized networks. Coherent Pluralism is a response to our decentralized information ecosystem—individuals need to sample lots of different perspectives to make a holistic decision.
+			<br /><br />
+			Let's explore Coherent Pluralism first.
+		</div>
+
+		<hr />
+		<h2>Mindset #3: Coherent Pluralism</h2>
+		<h3>Future VR Experience: Growing Up and Learning New Perspectives</h3>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc06} alt="Illustration of growing up and trying on different perspectives, represented as glasses" width={2000} />
+		</figure>
+
+		<p><em>We are born into the West Borough Baptist Church.</em></p>
+		<p><em>Like all children, our parents give us glasses to help us make sense of the world. In our unique case, we see soldier's funerals as retribution—God's will for letting gays in the military. But we're not yet aware that we're even wearing glasses! It's just the way the world is. Normal.</em></p>
+		<p><em>Our first glasses represent our childhood programming and socialization.</em></p>
+		<p><em>Eventually, we meet others whose glasses tell them that funerals are sad, not deserved. At first, we don't understand those people and are scared of their conclusions. But finally, we realize something crazy—we have glasses on! And even more crazy—we can take them off! We do so, and no longer see funerals as retribution. But neither do we see them as sad. We don't really understand much anymore. What is true?</em></p>
+		<p><em>After a bit of time, we try on a different pair of glasses. They help us see soldier's funerals as a sad thing. We build up a collection of glasses: gold glasses, heart-shaped glasses, and some glasses with just one lens—a monocle! We even find a pair without lenses—for hipsters! We meditate to get better at inspecting our glasses. We also realize that we'll never be able to fully remove our glasses from childhood. Finally, we truly grasp that everyone else around us has glasses too. When we talk with others, we actively ask them about their glasses and they ask about ours.</em></p>
+		<p><em>We've completed our developmental journey and now embody Coherent Pluralism.</em></p>
+		<p><em>At the beginning, as a kid, our worldview was Coherent, but not Plural. We knew right from wrong, but only had one pair of glasses. As we grew up, we replaced our Coherence with Pluralism—we knew of many glasses but couldn't make sense of the world. And now, we have both. We wear lots of glasses (Pluralism), but still have a clear picture of reality (Coherence).</em></p>
+		<p><em>We take off our current glasses and go to sleep.</em></p>
+		<hr />
+
+		<div class="bubble t">So what's the moral of this story?</div>
+		<br />
+		<div class="bubble h">That lenses are powerful?</div>
+		<br />
+		<div class="bubble c">Yeah, and that everyone is on a journey from non-awareness to awareness.</div>
+		<br />
+		<div class="bubble pc">But that the journey never ends. There's a relentless searching for new lenses, and recognition of each other's lenses.</div>
+		<br />
+		<div class="bubble h">Also, this story makes me wonder—what lenses am I wearing?</div>
+		<br />
+		<div class="bubble c">I think I may be one of your main lenses. All of your current self was socialized within me. Which is cool, but I guess it's the reason we're having this therapy session.</div>
+		<br />
+		<div class="bubble pc">Every parent traumatizes their children. The best you can do is give them the tools to work through it.</div>
+		<br />
+		<div class="bubble h">But how does this connect to Coherent Pluralism and the mindsets of post-capitalism?</div>
+		<br />
+		<div class="bubble t">
+			Well, I think there's a couple of key learnings:
+			<br /><br />
+			<ul>
+				<li>First, the shift towards post-capitalism is part of our evolution as a species and as individual humans. We're becoming more Coherent and more Plural.</li>
+				<li>Second, you should have a Coherently Plural mindset about these mindsets. You shouldn't just take these mindsets as gospel. But you also shouldn't reject them outright.</li>
+				<li>And third, Coherent Pluralism is the best way to consume information on the internet.</li>
+			</ul>
+		</div>
+		<br />
+		<div class="bubble h">I get the first two, but I'm not sure about the third. What does it mean to wear many glasses when we're browsing the internet?</div>
+		<br />
+		<div class="bubble t">You shouldn't just consume from one source (Coherence without Pluralism). But you also shouldn't reject all sources and claim "fake news" (Pluralism without Coherence). Instead, search for high-quality information and synthesize it (Coherent Pluralism).</div>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc07} alt="Illustration contrasting information consumption frameworks" width={2000} />
+		</figure>
+
+		<div class="bubble t">Now let's experience the VR for our final mindset—Networkism.</div>
+
+		<hr />
+		<h2>Mindset #4: Networkism</h2>
+		<h3>Future VR Experience: New Digital Networks vs. Old Centralized Institutions</h3>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc08} alt="Illustration of decentralized networks facing off against old centralized institutions" width={2000} />
+			<figcaption>bit.ly/2Z355Qi</figcaption>
+		</figure>
+
+		<p><em>We are fighting a battle for the future, and we might just win.</em></p>
+		<p><em>We are the new—a network of bottom-up decentralized networks. And they are the old—top-down centralized institutions.</em></p>
+		<p><em>At the beginning, they're more powerful.</em></p>
+		<p><em>They control capital with banks printing money, control information with the media, and control education with universities. And of course, nation-states have a monopoly on violence.</em></p>
+		<p><em>All of these have existed for hundreds of years. There are only a few new nation-states, banks, media companies, or universities. It's hard to express our voice, to fight back, to change the system from within.</em></p>
+		<p><em>But we do have some power. The power to exit.</em></p>
+		<p><em>First, we issue <a href="https://www.eff.org/cyberspace-independence">A Declaration of the Independence of Cyberspace</a>, and claim that "You have no sovereignty where we gather." You no longer control all information.</em></p>
+		<p><em>We then create <a href="https://bitcoin.org/bitcoin.pdf">peer-to-peer electronic cash</a> that isn't controlled by a financial institution. You try to find us, but we hide behind cryptography and pseudonymous mailing lists. You no longer control the supply of money.</em></p>
+		<p><em>We create <a href="https://www.khanacademy.org/">platforms</a> for learning and sharing ideas, and <a href="https://twitter.com/">alternative networks</a> of accreditation. You no longer control all education.</em></p>
+		<p><em>You still have a monopoly on violence. We don't challenge that, and hope for a peaceful transition.</em></p>
+		<p><em>As we fight and build, new mindsets show up in each of us.</em></p>
+		<p><em>In the past, new mindsets were only embodied in centralized institutions. (Anti-)slavery movements were implemented as the laws of nation-states. Financial maximization was manifest in companies.</em></p>
+		<p><em>But it's a new millenium. The post-capitalist mindsets of Bentoism, Generosity, Coherent Pluralism, and Networkism are more quickly expressed in networks than in institutions.</em></p>
+		<p><em>First, networks manifest Bentoism. As governments around the world fail to coordinate around climate crisis, we push to fight it, and to address the other needs of Now Us and Future Us. We have no leaders, but Greta is a good steward. She sees the crisis clearly, speaks truth to your centralized power, and coordinates internet-based movements with #FridaysForFuture.</em></p>
+		<p><em>Second, networks manifest Generosity and Abundance. Generosity is expressed, not through governments increasing taxes, but rather through individuals self-taxing to their networks. People give money to hashtags on #GivingTuesday. Those hashtags redistribute it programmatically or through decentralized decision-making processes.</em></p>
+		<p><em>Third, networks manifest Coherent Pluralism. The internet has native support for both Coherence and Pluralism. Pluralism is represented as multiple feeds and as annotations from The Other Side. Coherence is repetition: the more the network shares and builds on a concept, the more it sticks.</em></p>
+		<p><em>And fourth, networks manifest Networkism itself. This is the mindset that bottom-up, digitally-enabled networks will outcompete old centralized institutions. The pro-network mindset propagates most easily on networks. It occasionally shows up in old forms: as siloed internet banking, Ivy League-led MOOCs, and digital newspapers. But those are just stepping stones.</em></p>
+		<p><em>We, internet-enabled networks, will become the dominant institution. It's just a matter of time.</em></p>
+		<p><em>We fight. We exit. Time passes, and passes again. And now, finally, we have won.</em></p>
+		<p><em>New networks are the dominant institution. This doesn't mean old institutions have gone away. The Church still co-exists with companies and nation-states. But it's less powerful. So too, with the old centralized institutions of the 20th century. They exist, but in the shadows.</em></p>
+		<p><em>The new is here.</em></p>
+		<p><em>News is co-created and consumed by armies of citizen journalists.</em></p>
+		<p><em>Academic institutions hundreds of years old have been eclipsed by networks of teachers, learners, and researchers. Open-access pre-prints are the default, and peer review is conducted by the online crowd.</em></p>
+		<p><em>Blockchain-enabled networks eclipse central banks. The banks tried to fight back, first with regulations, and then with their own digital currencies. But it wasn't enough.</em></p>
+		<p><em>As governments lost their monopoly on printing money, they were also outcompeted on providing public goods to local communities. Civil society blossomed again.</em></p>
+		<p><em>Institutions that we co-created with capitalism have been diminished. Networks that were co-created with post-capitalism are here to stay.</em></p>
+		<p><em>&hellip;</em></p>
+		<p><em>And finally, after many years, the fight becomes a dance. New networks collaborate with old institutions. There's no winning. Instead, there's simply the continued emergence of new societal myths as time unravels.</em></p>
+		<hr />
+
+		<div class="bubble pc">Yeah, we get it. The internet has been super powerful.</div>
+		<br />
+		<div class="bubble c">I'm not so sure how much I like that. I, as a mindset, co-evolved with centralized institutions. I like churches and nation-states and banks and universities and companies. I'm not sure about these new networks. What if they don't like me?</div>
+		<br />
+		<div class="bubble t">That's a reasonable fear.</div>
+		<br />
+		<div class="bubble h">Also, I'm a bit confused. Earlier, you said that post-capitalism wasn't an economic system, but a mindset that is manifest in institutions, economic systems, etc. In the VR though, they seemed to say that post-capitalism is just the network (an institution) in and of itself. Is that true?</div>
+		<br />
+		<div class="bubble t">Yeah, this is a bit confusing. I think the VR world was saying two things. First, that post-capitalist mindsets will be manifest more in decentralized networks (as opposed to "old" centralized institutions). And second, that one aspect of the post-capitalist mindset is that networks will be a powerful institution.</div>
+		<br />
+		<div class="bubble h">Got it. The network mindset will be embedded in networks.</div>
+		<br />
+		<div class="bubble t">Exactly.</div>
+		<br />
+		<div class="bubble c">And what was with the dance at the end? Why did they stop fighting?</div>
+		<br />
+		<div class="bubble pc">Also, what kind of dance? Looked like salsa perhaps?</div>
+		<br />
+		<div class="bubble t">The "dancing" shows that it's not really about winning. In the end, it's human happiness that matters. Networks and institutions shouldn't put their own success over the success of humanity.</div>
+		<br />
+		<div class="bubble c">Sounds hippie to me, but ok.</div>
+		<br />
+		<div class="bubble t">Indeed. Well, I think that's enough for today. Thank you all again for your time and energy today. Let's conclude with a bit of reflection.</div>
+
+		<hr />
+		<h2>Conclusion</h2>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc09} alt="Illustration of the four characters closing the session" width={2000} />
+		</figure>
+
+		<div class="bubble t">Humanity, how do you feel? What would you like to do in your relationships with Cap and Post-cap?</div>
+		<br />
+		<div class="bubble h">
+			Hmmm. Well, it's definitely been a long day. I'm a bit tired.
+			<br /><br />
+			<b>First, to Cap:</b>
+			<br />
+			I want to stay with you, at least for now.
+			<br /><br />
+			Not all markets are bad. Money is a means.
+			<br /><br />
+			Markets and money can be used for good. Previously, they were just missing some variables. But now they can be "put to work" for my newly realized Bentoism needs of Future Me, Now Us, and Future Me.
+			<br /><br />
+			Now I can recognize when I have enough money—when I have Abundance and can be Generous. Greed made more sense in the past. But now I can use Now Me Overflow to give back.
+			<br /><br />
+			Also, I'm learning about my new networks for sensemaking—for propagating, curating, and synthesizing information and knowledge. I want to take personal responsibility for Coherent Pluralism, and build information networks that recognize this in their users.
+			<br /><br />
+			Finally, there are institutions that co-evolved with you, but aren't you. These centralized entities were good then, but aren't in alignment with a networked future. I'm excited to explore bottom-up decentralized networks for money, learning, and providing public goods.
+			<br /><br />
+			So, yeah. I thank you for the journey we've gone through until this point. I don't reject you as a person. However, I do see your behavior (and the behavior of your friends) as negative for me. But I think there's a path forward.
+			<br /><br />
+			<b>And to Post-Cap:</b>
+			<br />
+			I'd love to keep exploring our relationship. I'm beginning to understand you better.
+			<br /><br />
+			I could see us co-creating a beautiful future together. It has all of the same underlying primitives that I said to Cap: zooming out to recognize needs (Bentoism), my own enoughness (Abundance), the push for empathy, perspective, and clarity (Coherent Pluralism), and the power of digitally-enabled institutions (Networkism).
+			<br /><br />
+			We could build that together. With you, I don't have any baggage but I also don't have a solid foundation. Cap and I have a history. Inertia. But you're new. A blank slate.
+			<br /><br />
+			This transition won't happen quickly. A generation or two, maybe. An evolution, not a revolution. We are all constrained by the Law of the Adjacent Possible.
+			<br /><br />
+			But it seems like both of you could help me manifest those underlying primitives. We can co-parent Future Me together.
+		</div>
+		<br />
+		<div class="bubble t">Thank you for sharing that, Humanity.</div>
+		<br />
+		<div class="bubble c">And thanks for being willing to give me a second chance. To see that my friends aren't me. And to see the parts of me that are, uh, beautiful.</div>
+		<br />
+		<div class="bubble pc">Aw, Cap, are you tearing up? But yes, Humanity, thank you. Not for giving me a second chance, but for giving me a chance, even though it's uncertain. Our future is both scary and exciting.</div>
+		<br />
+		<div class="bubble c">Yeah, I guess we could all co-parent Future You together. Only if Post-Cap gets a haircut.</div>
+		<br />
+		<div class="bubble pc">And only if Cap doesn't.</div>
+
+		<hr />
+
+		<div class="bubble t">Is there one final thing you'd like to share, Humanity?</div>
+		<br />
+		<div class="bubble h">
+			This has got me thinking...so much of reality is determined by the mindset that we view it through.
+			<br /><br />
+			And, well *closes eyes* that you two (Cap and Post-Cap) are just mindsets.
+			<br /><br />
+			In the end, capitalism is just a shared story. A shared myth. It's shared language we use to describe a shared web of connected concepts. This is true about post-capitalism as well.
+			<br /><br />
+			In the end, I can make you two go away. That's closer to reality.
+			<br /><br />
+			Even the idea of me, of Humanity. That's just a metaphor. I am not actually a "thing" that spans the entire earth.
+			<br /><br />
+			There's just you, the reader, sitting at home and reading this on a screen. Alone.
+		</div>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc10} alt="Illustration accompanying the reflection on being alone" width={2000} />
+		</figure>
+
+		<div class="bubble h">
+			You're alone and completely insignificant. That's scary. And that's ok.
+			<br /><br />
+			But the four underlying primitives matter.
+			<br /><br />
+			Recognize we're all interconnected. Think about needs. Help yourself, and help others. (Bentoism)
+			<br /><br />
+			Recognize that you may have enough. Give to others. You don't need to win. (Generosity)
+			<br /><br />
+			Be curious. Explore your own mind. Try to understand others. (Coherent Pluralism)
+			<br /><br />
+			Appreciate our new sociotechnical moment. Look to update our existing institutions while building new ones. (Networkism)
+			<br /><br />
+			Even though you're alone, you can co-create shared stories for a positive future. I don't care whether we call it capitalism, or post-capitalism, or The Thing That Happens After We Grow The Fuck Up or whatever.
+			<br /><br />
+			But I hope you strive for immense progress, while celebrating the small wins.
+			<br /><br />
+			Thanks for reading, and good luck.
+		</div>
+
+		<figure class="mc-fullscreen">
+			<Image src={mc11} alt="Closing collage illustration" width={2000} />
+		</figure>
+
+		<hr />
+
+		<p>If you have feedback, are interested in learning more, or want to help catalyze this paradigm shift, please:</p>
+		<ul>
+			<li>Check out the <a href="http://roote.co/">Roote Fellowship</a></li>
+			<li>Reach <a href="/">out over email</a> or <a href="https://twitter.com/RhysLindmark">Twitter</a></li>
+			<li>Join <a href="https://rhyslindmark.substack.com/">my newsletter</a></li>
+		</ul>
+		<p>We'd love to hear from you!</p>
+		<p>If you would like to buy these images as a t-shirt, check out our Roote store <a href="https://my-store-92259e.creator-spring.com/">here</a>.</p>
+		<p>
+			<br />Thank you to everyone who helped with this essay. First and foremost, thanks to <a href="https://audraillustration.wixsite.com/portfolio/illustration-1">Audra Jacobi</a> for creating these amazing illustrations (and my brother <a href="https://pro-con.design/">John Lindmark</a> for the page design). Thanks to my peers in the Write of Passage cohort for their feedback on rough versions of this essay: <a href="https://twitter.com/OshanJarow">Oshan Jarow</a>, <a href="https://twitter.com/packyM">Packy McCormick</a>, <a href="https://josephcwells.com/start-here">Joseph Wells</a>, <a href="https://twitter.com/adriennetran?lang=en">Adrienne Tran</a>, <a href="https://twitter.com/realjessylin?lang=en">Jessy Lin</a>, and especially to <a href="https://twitter.com/_suthen?lang=en">Suthen Siva</a> and <a href="https://twitter.com/david_perell">David Perell</a> for organizing the cohort. (Check out
+			everyone's essays <a href="https://www.perell.com/fellowship/overview-write-of-passage-fellowship">here</a>!) Finally, thanks to various
+			other friends for giving feedback throughout: <a href="https://electricsheep.substack.com/">Anirudh Pai</a>, <a href="https://adamsegal.substack.com/">Adam Segal</a>, <a href="https://twitter.com/ntnsndr/">Nathan Schneider</a>, <a href="https://twitter.com/neha">Neha Narula</a>, <a href="https://twitter.com/ystrickler">Yancey Strickler</a>, <a href="https://www.linkedin.com/in/yaya-zhang-0aa67a85">Yaya Zhang</a>, <a href="https://twitter.com/utotranslucence/">Jessica Watson-Miller</a>,
+			and <a href="https://twitter.com/jim_rutt">Jim Rutt</a>.
+		</p>
+		<p>Thanks to <a href="https://www.flightfromperfection.com/pages/about.html">Milan Griffes</a> for finding typos.</p>
+	</div>
+</Layout>
+
+<style>
+	:global(figure.mc-fullscreen) {
+		position: relative;
+		left: 50%;
+		width: 100vw;
+		max-width: none;
+		margin-left: -50vw;
+		margin-right: -50vw;
+	}
+
+	.mc :global(h2) {
+		font-size: 1.5rem;
+		font-weight: 700;
+	}
+
+	.mc :global(h3) {
+		font-size: 1.1rem;
+		font-weight: 700;
+	}
+
+	.mc :global(.bubble) {
+		padding: 20px 30px 18px 27px;
+		border-radius: 0 0 15px 15px;
+		border: 0;
+		border-top: 4px solid;
+		position: relative;
+		margin: 0 0 0 80px;
+		width: calc(100% - 80px);
+		font-family: var(--font-sans);
+		font-size: 0.95rem;
+		line-height: 1.6;
+	}
+
+	.mc :global(.bubble::before) {
+		content: '';
+		width: 60px;
+		height: 60px;
+		position: absolute;
+		top: 0;
+		left: -80px;
+		background-image: var(--avatar-img);
+		background-size: 1000%;
+		border-radius: 30px;
+	}
+
+	.mc :global(.t) {
+		background-color: #eaeaea;
+		border-color: #b7b7b7;
+	}
+	.mc :global(.t::before) {
+		transform: scaleX(-1);
+		background-size: 580%;
+		background-position: 85% 40%;
+	}
+
+	.mc :global(.h) {
+		background-color: #d6ffd6;
+		border-color: #70ff70;
+	}
+	.mc :global(.h::before) {
+		background-size: 890%;
+		background-position: -63.5% 15%;
+	}
+
+	.mc :global(.c) {
+		background-color: #ffe7c2;
+		border-color: #ffbf5c;
+	}
+	.mc :global(.c::before) {
+		background-size: 680%;
+		background-position: -90% 31%;
+	}
+
+	.mc :global(.pc) {
+		background-color: #fee5ff;
+		border-color: #fa7fff;
+	}
+	.mc :global(.pc::before) {
+		transform: scaleX(-1);
+		background-size: 740%;
+		background-position: -43% 31%;
+	}
+
+	@media only screen and (max-width: 768px) {
+		.mc :global(.bubble) {
+			padding: 16px 20px 15px;
+			font-size: 0.85rem;
+		}
+	}
+</style>

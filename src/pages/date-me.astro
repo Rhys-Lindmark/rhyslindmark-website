@@ -1,0 +1,107 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import plant from '../assets/images/date-me-1-plant.png';
+import diego from '../assets/images/date-me-2-diego.jpeg';
+import blueSteel from '../assets/images/date-me-3-bluesteel.jpeg';
+import bakerBeach from '../assets/images/date-me-4-bakerbeach.jpeg';
+import backpacking from '../assets/images/date-me-5-backpacking.jpeg';
+import dancing from '../assets/images/date-me-6-dancing.png';
+---
+
+<Layout title="Date Me">
+	<h1>Date Me</h1>
+
+	<figure>
+		<Image src={plant} alt="Repotting a plant, smiling" width={800} />
+		<figcaption><em>My proudest moment: Repotting my plant.</em></figcaption>
+	</figure>
+
+	<h2>Choose our first date:</h2>
+	<ul>
+		<li>Sample weird cocktails at a local bar</li>
+		<li>Spend our allowance at the weekend farmer's market</li>
+		<li>Go on a weekday hike and complain about work</li>
+	</ul>
+
+	<figure>
+		<Image src={diego} alt="Diego resting as the little spoon" width={800} />
+		<figcaption><em>This could be us: When Diego asks nicely, I let him be the little spoon.</em></figcaption>
+	</figure>
+
+	<h2>I'm looking for&hellip;</h2>
+	<p>
+		A sharp, emotionally attuned woman who wants to build a life together with a playful,
+		reliable, ambitious man.
+	</p>
+
+	<figure>
+		<Image src={blueSteel} alt="Blue steel pose" width={800} />
+		<figcaption><em>My best blue steel</em></figcaption>
+	</figure>
+
+	<h2>Together we could&hellip;</h2>
+	<ul>
+		<li>Cook a feast for friends 🥗</li>
+		<li>Try all the partner dances 💃</li>
+		<li>Philosophize under the stars 🏕️</li>
+	</ul>
+
+	<figure>
+		<Image src={bakerBeach} alt="Selfie at Baker Beach" width={800} />
+		<figcaption><em>Dating me will look like: Selfies. Lots of selfies.</em></figcaption>
+	</figure>
+
+	<h2>This year, I really want to&hellip;</h2>
+	<p>Finish the manuscript for my book.</p>
+
+	<figure>
+		<Image src={backpacking} alt="Backpacking in the wild" width={800} />
+		<figcaption>
+			<em
+				>Me in the wild: I've done a lot of backpacking in my life. 500 miles in CO, 150 in Kenya,
+				100 in Nepal, 100 in China. A bit much tbh 😂</em
+			>
+		</figcaption>
+	</figure>
+
+	<figure>
+		<Image src={dancing} alt="Dancing at a wedding" width={800} />
+		<figcaption><em>That one dance trend I nailed: They call this one the "white boy clap."</em></figcaption>
+	</figure>
+
+	<h2>Deets</h2>
+	<p><em>Male, Straight, Monogamous, Wants Kids, SF but flexible, born 1991, 6 ft</em></p>
+
+	<h2>Reach Out!</h2>
+	<p>If you think we might be a fit, please reach out.</p>
+	<p>
+		You can DM me <a href="https://twitter.com/RhysLindmark">on Twitter</a> or send me an email at <a href="mailto:rhyslindmark@gmail.com">rhyslindmark@gmail.com</a>. Feel free to just tell me
+		about some part of this document that resonated with you.
+	</p>
+	<p>You're also very welcome to introduce me to someone you think I'd be compatible with.</p>
+	<p>Thank you for reading!</p>
+	<p>Warmth,<br />Rhys ❤️</p>
+
+	<h2>More</h2>
+	<p>If you want to get a more holistic picture of me, you can see me "in the wild" with:</p>
+	<ul>
+		<li>My most recent job, <a href="https://www.roote.co/">Roote</a></li>
+		<li>
+			My <a href="https://www.youtube.com/@HowEverythingEvolved">YouTube channel</a>, <a href="https://www.youtube.com/user/RhysLindmark">podcast</a>, <a href="https://www.goodreads.com/review/list/64812667-rhys-lindmark?ref=nav_mybooks&shelf=read"
+				>Goodreads</a
+			>, or <a href="https://twitter.com/RhysLindmark/">Twitter</a>
+		</li>
+		<li>
+			My <a href="https://open.spotify.com/playlist/3QNxR8qUDQd8e5KyNsOZgx?si=45657197a6184cf2"
+				>Spotify</a
+			>, or a dance I like to host &mdash; <a href="https://twitter.com/RhysLindmark/status/1563300210234630145">Erratic Dance</a>
+		</li>
+		<li>
+			Photo books from backpacking in <a href="https://cargocollective.com/lindmarkphotography/Passage"
+				>Colorado</a
+			> or <a href="https://www.blurb.com/b/6740943-tibetans-in-exile">Nepal</a>
+		</li>
+	</ul>
+	<p>(But mostly I'm excited to learn about you!)</p>
+</Layout>

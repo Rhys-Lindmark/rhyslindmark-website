@@ -1,0 +1,22 @@
+
+Hi! Rhys here. 👋 
+
+I like believing in ambitious frontier people. 
+Trying to help them build the [Digicene](https://www.youtube.com/watch?v=g2BAKx2Rr-E), and make it good.
+
+Now exploring VC & AI ecosystem roles.
+
+🌱 I coached young people in the [Roote Fellowship](https://www.roote.co/)
+▶️ I recorded the YouTube series [How Everything Evolved](https://www.youtube.com/@HowEverythingEvolved)
+🎓 I taught [tech ethics](https://www.technologyreview.com/2019/10/10/132652/why-its-time-to-start-talking-about-blockchain-ethics/) at the [MIT Media Lab](https://dci.mit.edu)
+🦬 I cofounded [ETHDenver](https://www.ethdenver.com/)
+🎙️ I interviewed guests on [The Rhys Show](https://www.youtube.com/@RhysLindmark/videos)
+📚 I like [these books](https://www.goodreads.com/review/list/64812667-rhys-lindmark?shelf=read&sort=rating&view=table) and have turned them into [20,000 notecards](https://www.rhyslindmark.com/how-to-anki/)
+🌍 I'm a musical infovore ([8,000 songs 🎵](https://open.spotify.com/playlist/3QNxR8qUDQd8e5KyNsOZgx?si=97c592c5995e47ae)) and an avid backpacker (1,000+ miles across [🇺🇸](https://coloradotrail.org/) [🇰🇪](https://www.rhyslindmark.com/kenya-walk-fundraising/) [🇳🇵](https://monkeystale.ca/treks/upper-mustang-trek-from-jomsom-to-lo-manthang/) [🇨🇳](https://www.google.com/maps/dir/Guangzhou,+Guangdong+Province,+China/Dongguan,+Guangdong+Province,+China/Shenzhen,+Guangdong+Province,+China))
+🤖 I studied Computer Science at [Carleton College](https://www.carleton.edu/)
+✍️ I write at [Rhys' Pieces](https://rhyslindmark.substack.com/). ([Some](https://rhyslindmark.substack.com/p/incentives) [articles](https://www.rhyslindmark.com/marriage-counseling-with-capitalism/) [to](https://www.roote.co/wisdom-age) [start](https://rhyslindmark.substack.com/p/the-high-return-activity-of-giving).)
+
+I'm @RhysLindmark on [X](https://twitter.com/RhysLindmark), [LinkedIn](https://www.linkedin.com/in/rhyslindmark), or [YouTube](https://www.youtube.com/@RhysLindmark/). [Say hi](mailto:rhyslindmark@gmail.com). ❤️
+
+_“The frontier is closer than you think.”
+“Human capital is upstream of everything.”_

@@ -1,0 +1,94 @@
+---
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { marked } from 'marked';
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import hero from '../assets/images/home-hero.jpg';
+
+// Renders the bio straight from about-me-source.md at the project root —
+// edit that file and refresh, no manual transcription needed.
+const mdPath = resolve(process.cwd(), 'about-me-source.md');
+let raw = readFileSync(mdPath, 'utf-8').trim();
+
+// Links to pages we host locally point at the old live domain in the source
+// doc; rewrite them to relative paths so they don't bounce off-site.
+const localPages = ['marriage-counseling-with-capitalism', 'date-me', 'us', 'music-for-18-pianos'];
+for (const slug of localPages) {
+	raw = raw.replaceAll(`https://www.rhyslindmark.com/${slug}/`, `/${slug}/`);
+}
+
+// Parsed line by line rather than by blank-line-separated blocks, since
+// bullets should each get their own <li> whether or not a blank line
+// separates them in the source — only plain text lines (no emoji, no
+// heading) get joined into a single <br>-separated paragraph.
+const lines = raw.split('\n').map((line) => line.trim());
+
+const isBulletLine = (line: string) => /^\p{Extended_Pictographic}/u.test(line);
+const isHeadingLine = (line: string) => line.length > 0 && !line.includes('[') && line.endsWith(':');
+
+const htmlParts: string[] = [];
+let paragraphBuffer: string[] = [];
+let listBuffer: string[] = [];
+let sawFirstLine = false;
+
+const flushParagraph = () => {
+	if (paragraphBuffer.length) {
+		const inline = marked.parseInline(paragraphBuffer.join(' <br /> ')) as string;
+		htmlParts.push(`<p>${inline}</p>`);
+		paragraphBuffer = [];
+	}
+};
+
+const flushList = () => {
+	if (listBuffer.length) {
+		htmlParts.push(`<ul>${listBuffer.map((item) => `<li>${item}</li>`).join('')}</ul>`);
+		listBuffer = [];
+	}
+};
+
+for (const line of lines) {
+	if (!line) {
+		flushParagraph();
+		flushList();
+		continue;
+	}
+
+	const inline = marked.parseInline(line) as string;
+
+	if (!sawFirstLine) {
+		sawFirstLine = true;
+		htmlParts.push(`<h1>${inline}</h1>`);
+		continue;
+	}
+
+	if (isHeadingLine(line)) {
+		flushParagraph();
+		flushList();
+		htmlParts.push(`<h2>${inline}</h2>`);
+		continue;
+	}
+
+	if (isBulletLine(line)) {
+		flushParagraph();
+		listBuffer.push(inline);
+		continue;
+	}
+
+	flushList();
+	paragraphBuffer.push(inline);
+}
+flushParagraph();
+flushList();
+
+const html = htmlParts.join('\n');
+---
+
+<Layout title="Rhys Lindmark" wide fit>
+	<div class="bio">
+		<div class="bio-photo">
+			<Image src={hero} alt="Rhys Lindmark" width={700} />
+		</div>
+		<div class="bio-text" set:html={html} />
+	</div>
+</Layout>
