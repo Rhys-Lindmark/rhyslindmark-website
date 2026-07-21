@@ -5,7 +5,6 @@
 
 # --- Pages being rebuilt natively on this site: opt out of the wildcard below ---
 # (200 = serve the local page as-is, don't redirect)
-/ /index.html 200
 /about-me/ /about-me/ 200
 /date-me/ /date-me/ 200
 /us/ /us/ 200
@@ -19,6 +18,3 @@
 
 # --- Old Ghost post slugs -> imported Substack posts (Substack preserves slug) ---
 /:slug/ https://rhyslindmark.substack.com/p/:slug 301
-
-# --- Catch-all: anything else unmatched (old tag pages, typos, etc.) -> homepage ---
-/* / 302
