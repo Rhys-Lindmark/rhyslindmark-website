@@ -4,7 +4,7 @@ Hi! Rhys here. 👋
 I like believing in ambitious frontier people. 
 Trying to help them build the [Digicene](https://www.youtube.com/watch?v=g2BAKx2Rr-E), and make it good.
 
-Now exploring VC & AI ecosystem roles.
+Now [exploring](http://rhyslindmark.com/reversejd) VC & AI ecosystem roles.
 
 🌱 I coached young people in the [Roote Fellowship](https://www.roote.co/)
 ▶️ I recorded the YouTube series [How Everything Evolved](https://www.youtube.com/@HowEverythingEvolved)
