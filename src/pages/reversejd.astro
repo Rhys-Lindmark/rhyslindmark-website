@@ -1,0 +1,16 @@
+---
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { marked } from 'marked';
+import Layout from '../layouts/Layout.astro';
+
+// Renders straight from reverse-jd.md at the project root —
+// edit that file and refresh, no manual transcription needed.
+const mdPath = resolve(process.cwd(), 'reverse-jd.md');
+const raw = readFileSync(mdPath, 'utf-8').trim();
+const html = marked.parse(raw) as string;
+---
+
+<Layout title="Reverse JD">
+	<div set:html={html} />
+</Layout>
