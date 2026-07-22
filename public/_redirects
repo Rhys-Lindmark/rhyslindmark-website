@@ -21,6 +21,8 @@
 /music-for-18-pianos /music-for-18-pianos 200
 /marriage-counseling-with-capitalism/ /marriage-counseling-with-capitalism/ 200
 /marriage-counseling-with-capitalism /marriage-counseling-with-capitalism 200
+/reversejd/ /reversejd/ 200
+/reversejd /reversejd 200
 
 # --- Static top-level files that would otherwise be swallowed by the bare
 # wildcard below (:slug also matches segments containing dots). Any new
