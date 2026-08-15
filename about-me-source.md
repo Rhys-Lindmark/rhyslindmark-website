@@ -1,7 +1,7 @@
 
 Hi! Rhys here. 👋 
 
-I like believing in people, growing technical communities & helping people spend money on good things.
+I like believing in people, growing technical communities, and helping people spend money on good things.
 
 - Curious about the [Digicene](https://digicene.org/) & the people building it.
 - Multiplexing agents to do my bidding.
