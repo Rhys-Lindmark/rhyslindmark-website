@@ -8,5 +8,6 @@ export default defineConfig({
 	integrations: [sitemap()],
 	redirects: {
 		'/about-me': '/',
+		'/reversejd': '/work-with-me',
 	},
 });
