@@ -9,7 +9,7 @@ I like believing in people, growing technical communities, and helping people sp
 - Meliorist.
 
 Currently helping AI communities as I find my next role. 
-([Work with me](https://www.rhyslindmark.com/reversejd/).)
+([Work with me](https://www.rhyslindmark.com/work-with-me/).)
 
 ***
 
