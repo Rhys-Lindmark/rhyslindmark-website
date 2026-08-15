@@ -10,7 +10,7 @@ I’m a generalist who likes growing technical communities & helping people spen
 
 Currently helping AI communities as I find my next role. ([Work with me](https://www.rhyslindmark.com/reversejd/).)
 
----
+***
 
 🌱 I coached young people in the [Roote Fellowship](https://www.roote.co/)
 ▶️ I recorded the YouTube series [How Everything Evolved](https://www.youtube.com/@HowEverythingEvolved)
