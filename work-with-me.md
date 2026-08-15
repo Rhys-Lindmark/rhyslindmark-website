@@ -4,7 +4,7 @@
 
 **I like believing in people, growing technical communities, and helping people spend money on good things.**
 
-## How I can help
+## **How I can help**
 
 - Give founders loans of conviction<br>
   <small>_Created a [250-person fellowship](https://www.roote.co/), co-founded [ETHDenver](https://ethdenver.com/), 10+ years coaching_</small>
@@ -25,17 +25,21 @@
   <small>_3x frisbee captain & champion, run offsites & OKRs, “energizer bunny”, “infectious enthusiasm”_</small>
 
 What a friend wrote in a recent introduction:
-
 <p><em>Rhys is:<br>
 &bull; Entrepreneurial &amp; creative<br>
 &bull; P99 general intelligence<br>
 &bull; P99 people person-ness<br>
 &bull; P99 low ego<br>
-<br>
 His potential is off the charts for a place that values what he has to offer.</em></p>
 
+More context:
+- Curious about the [Digicene](https://digicene.org/) & the people building it.
+- Multiplexing agents to do my bidding.
+- Part Nerd Herder, part Glue Guy.
+- Meliorist.
 
-## What I'm looking for
+
+## **What I'm looking for**
 
 * Ecosystem GTM, DevRel, Chief of Staff, or Societal Impacts roles at an AI org. Platform roles at a venture firm. Program Officer roles at a foundation.
 
