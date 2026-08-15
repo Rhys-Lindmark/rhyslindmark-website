@@ -41,15 +41,13 @@ More context:
 
 ## **What I'm looking for**
 
-* Ecosystem GTM, DevRel, Chief of Staff, or Societal Impacts roles at an AI org. Platform roles at a venture firm. Program Officer roles at a foundation.
+* Ecosystem GTM, DevRel, Chief of Staff, or Societal Impacts roles at an AI org. 
 
-* A generalist role where I help great people tackle important problems across many fields
+* Platform roles at a venture firm. 
 
-* An org that is playing long-term games, on a team with high talent density, with a [boss who believes in me](https://grahamduncan.blog/whats-going-on-here/) and who [I admire](https://www.businessinsider.com/charlie-munger-three-rules-for-career-happiness-2023-11) & can apprentice under.
-
-
+* Program Officer roles at a foundation.
 
 
 ---
 
-[Resume](https://www.rhyslindmark.com/resume) · [LinkedIn](https://www.linkedin.com/in/rhyslindmark/) · rhyslindmark@gmail.com
+[Resume](https://www.rhyslindmark.com/resume) · [LinkedIn](https://www.linkedin.com/in/rhyslindmark/) · [Website](https://www.rhyslindmark.com/) · rhyslindmark@gmail.com
