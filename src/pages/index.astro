@@ -26,6 +26,7 @@ const lines = raw.split('\n').map((line) => line.trim());
 
 const isBulletLine = (line: string) => /^\p{Extended_Pictographic}/u.test(line);
 const isHeadingLine = (line: string) => line.length > 0 && !line.includes('[') && line.endsWith(':');
+const isRuleLine = (line: string) => /^(\*\*\*+|---+|___+)$/.test(line);
 
 const htmlParts: string[] = [];
 let paragraphBuffer: string[] = [];
@@ -66,6 +67,13 @@ for (const line of lines) {
 		flushParagraph();
 		flushList();
 		htmlParts.push(`<h2>${inline}</h2>`);
+		continue;
+	}
+
+	if (isRuleLine(line)) {
+		flushParagraph();
+		flushList();
+		htmlParts.push('<hr />');
 		continue;
 	}
 
