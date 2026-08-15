@@ -4,13 +4,13 @@ import { resolve } from 'node:path';
 import { marked } from 'marked';
 import Layout from '../layouts/Layout.astro';
 
-// Renders straight from reverse-jd.md at the project root —
+// Renders straight from work-with-me.md at the project root —
 // edit that file and refresh, no manual transcription needed.
-const mdPath = resolve(process.cwd(), 'reverse-jd.md');
+const mdPath = resolve(process.cwd(), 'work-with-me.md');
 const raw = readFileSync(mdPath, 'utf-8').trim();
 const html = marked.parse(raw) as string;
 ---
 
-<Layout title="Reverse JD">
+<Layout title="Work With Me">
 	<div set:html={html} />
 </Layout>
