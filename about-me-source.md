@@ -27,5 +27,6 @@ Previously:
 
 I'm @RhysLindmark on [X](https://twitter.com/RhysLindmark), [LinkedIn](https://www.linkedin.com/in/rhyslindmark), or [YouTube](https://www.youtube.com/@RhysLindmark/). [Say hi](mailto:rhyslindmark@gmail.com). ❤️
 
-_“The frontier is closer than you think.”
-“Human capital is upstream of everything.”_
+_“The frontier is closer than you think.”_
+_“Human capital is upstream of everything.”_
+_"Seek first to understand, then to be understood."_
