@@ -8,7 +8,8 @@ I’m a generalist who likes growing technical communities & helping people spen
 - Part Nerd Herder, part Glue Guy. 
 - Meliorist.
 
-Currently helping AI communities as I find my next role. ([Work with me](https://www.rhyslindmark.com/reversejd/).)
+Currently helping AI communities as I find my next role. 
+([Work with me](https://www.rhyslindmark.com/reversejd/).)
 
 ***
 
