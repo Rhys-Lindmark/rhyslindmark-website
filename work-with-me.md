@@ -25,13 +25,14 @@
   <small>_3x frisbee captain & champion, run offsites & OKRs, “energizer bunny”, “infectious enthusiasm”_</small>
 
 What a friend wrote in a recent introduction:
-_Rhys is:_
-_- Entrepreneurial & creative_
-_- P99 general intelligence_
-_- P99 people person-ness_
-_- P99 low ego_
 
-_His potential is off the charts for a place that values what he has to offer._
+<p><em>Rhys is:<br>
+&bull; Entrepreneurial &amp; creative<br>
+&bull; P99 general intelligence<br>
+&bull; P99 people person-ness<br>
+&bull; P99 low ego<br>
+<br>
+His potential is off the charts for a place that values what he has to offer.</em></p>
 
 
 ## What I'm looking for
