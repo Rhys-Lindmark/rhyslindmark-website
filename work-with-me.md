@@ -13,25 +13,25 @@
   <small>_Helped expand Ethereum from [1k to 5k devs](https://www.developerreport.com/ecosystems/ethereum), [started academic journal at MIT](https://cryptoeconomicsystems.pubpub.org/), ran 9 [fellowship cohorts](https://www.roote.co/)_</small>
 
 - Sell things I believe in<br>
-  <small>_Funders: $5M+ raised across Roote ($1M), MIT ($2M), ETHDenver ($600K), Edify ($900K NSF, $550K VC). 
-  Talent: 5k+ event attendees, 100+ speakers, 250+ fellows, 10+ hires._</small>
+  <small>_$5M+ raised across Roote, MIT, ETHDenver, and Edify. Selling people too: 5k+ event attendees, 250+ fellows, 25+ hires._</small>
 
 - Synthesize fields & develop conviction on the highest order bit<br>
   <small>_20k notecards from books, [100-video YouTube channel](https://www.youtube.com/@HowEverythingEvolved), [100+ podcast interviews](https://www.youtube.com/@RhysLindmark), 10+ years teaching_</small>
 
 - Run things end to end <br>
-  <small>_5x founder in startups, events, media, academia, and nonprofits—raised $5M, hired dozens of people, shipped 20+ large projects_</small>
+  <small>_5x founder. Raised $5M, hired dozens of people, shipped 20+ large projects_</small>
 
 - Inject energy & clarity to help the org win <br>
   <small>_3x frisbee captain & champion, run offsites & OKRs, “energizer bunny”, “infectious enthusiasm”_</small>
 
 What a friend wrote in a recent introduction:
-Rhys is:
-- Entrepreneurial & creative
-- P99 general intelligence
-- P99 people person-ness
-- P99 low ego
-His potential is off the charts for a place that values what he has to offer.
+_Rhys is:_
+_- Entrepreneurial & creative_
+_- P99 general intelligence_
+_- P99 people person-ness_
+_- P99 low ego_
+
+_His potential is off the charts for a place that values what he has to offer._
 
 
 ## What I'm looking for
