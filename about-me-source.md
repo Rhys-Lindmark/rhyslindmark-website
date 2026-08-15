@@ -13,6 +13,7 @@ Currently helping AI communities as I find my next role.
 
 ***
 
+Previously:
 🌱 I coached young people in the [Roote Fellowship](https://www.roote.co/)
 ▶️ I recorded the YouTube series [How Everything Evolved](https://www.youtube.com/@HowEverythingEvolved)
 🎓 I taught [tech ethics](https://www.technologyreview.com/2019/10/10/132652/why-its-time-to-start-talking-about-blockchain-ethics/) at the [MIT Media Lab](https://dci.mit.edu)
