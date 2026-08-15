@@ -1,7 +1,7 @@
 
 Hi! Rhys here. 👋 
 
-I’m a generalist who likes growing technical communities & helping people spend money on good things.
+I like growing technical communities & helping people spend money on good things.
 
 - Curious about the [Digicene](https://digicene.org/) & the people building it.
 - Multiplexing agents to do my bidding.
