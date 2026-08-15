@@ -8,7 +8,7 @@ I like growing technical communities & helping people spend money on good things
 - Part Nerd Herder, part Glue Guy. 
 - Meliorist.
 
-Currently helping AI communities as part of finding my next role. 
+Currently helping AI communities as I find my next role. 
 ([Work with me](https://www.rhyslindmark.com/reversejd/).)
 
 ***
