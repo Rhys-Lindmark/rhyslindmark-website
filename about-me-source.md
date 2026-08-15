@@ -1,10 +1,14 @@
 
 Hi! Rhys here. 👋 
 
-I like believing in ambitious frontier people. 
-Trying to help them build the [Digicene](https://www.youtube.com/watch?v=g2BAKx2Rr-E), and make it good.
+I’m a generalist who likes growing technical communities & helping people spend money on good things.
+Part Nerd Herder, part Glue Guy. 
 
-Now [exploring](http://rhyslindmark.com/reversejd) VC & AI ecosystem roles.
+Curious about the [Digicene](https://digicene.org/) & the people building it.
+Multiplexing agents to do my bidding.
+Meliorist.
+
+Currently helping AI communities as I find my next role. ([Work with me](https://www.rhyslindmark.com/reversejd/).)
 
 🌱 I coached young people in the [Roote Fellowship](https://www.roote.co/)
 ▶️ I recorded the YouTube series [How Everything Evolved](https://www.youtube.com/@HowEverythingEvolved)
