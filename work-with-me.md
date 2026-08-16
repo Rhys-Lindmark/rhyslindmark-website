@@ -48,6 +48,7 @@ His potential is off the charts for a place that values what he has to offer.</e
 
 * Program Officer roles at a foundation.
 
+Open to part-time to start. Curious to work together to see if I can be helpful.
 
 ---
 
