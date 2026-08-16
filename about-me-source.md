@@ -3,11 +3,6 @@ Hi! Rhys here. 👋
 
 I like believing in people, growing technical communities, and helping people spend money on good things.
 
-- Curious about the [Digicene](https://digicene.org/) & the people building it.
-- Multiplexing agents to do my bidding.
-- Part Nerd Herder, part Glue Guy. 
-- Meliorist.
-
 Currently helping AI communities as I find my next role. 
 ([Work with me](https://www.rhyslindmark.com/work-with-me/).)
 
