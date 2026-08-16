@@ -32,12 +32,13 @@ Part Nerd Herder, part Glue Guy. Sales bro without the bro.
   <small>_3x frisbee captain & champion, run offsites & OKRs, “energizer bunny”, “infectious enthusiasm”_</small>
 
 What a friend wrote in a recent introduction:
-<p><em>Rhys is:<br>
+
+<blockquote><em>Rhys is:<br>
 &bull; Entrepreneurial &amp; creative<br>
 &bull; P99 general intelligence<br>
 &bull; P99 people person-ness<br>
 &bull; P99 low ego<br>
-His potential is off the charts for a place that values what he has to offer.</em></p>
+His potential is off the charts for a place that values what he has to offer.</em></blockquote>
 
 
 ## **What I'm looking for**
