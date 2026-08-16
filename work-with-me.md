@@ -2,9 +2,12 @@
 
 📍 San Francisco, CA
 
-**I like believing in people, growing technical communities, and helping people spend money on good things.**
+**I like believing in people, growing technical communities, and helping people spend money on good things. Meliorist.**
 
-Currently helping AI communities as I find my next full-time role.
+Currently:
+- Exploring the [Digicene](https://digicene.org/) & the people building it.
+- Multiplexing agents to do my bidding.
+- Helping AI communities as I find my next full-time role.
 
 ## **How I can help**
 
@@ -23,7 +26,7 @@ Part Nerd Herder, part Glue Guy. Sales bro without the bro.
   <small>_20k notecards from books, [100-video YouTube channel](https://www.youtube.com/@HowEverythingEvolved), [100+ podcast interviews](https://www.youtube.com/@RhysLindmark), 10+ years teaching_</small>
 
 - Run things end to end <br>
-  <small>_5x founder. Raised $5M, hired dozens of people, shipped 20+ large projects_</small>
+  <small>_5x founder. Raised capital, hired dozens of people, shipped 20+ large projects_</small>
 
 - Inject energy & clarity to help the org win <br>
   <small>_3x frisbee captain & champion, run offsites & OKRs, “energizer bunny”, “infectious enthusiasm”_</small>
@@ -35,11 +38,6 @@ What a friend wrote in a recent introduction:
 &bull; P99 people person-ness<br>
 &bull; P99 low ego<br>
 His potential is off the charts for a place that values what he has to offer.</em></p>
-
-More context:
-- Curious about the [Digicene](https://digicene.org/) & the people building it.
-- Multiplexing agents to do my bidding.
-- Meliorist.
 
 
 ## **What I'm looking for**
