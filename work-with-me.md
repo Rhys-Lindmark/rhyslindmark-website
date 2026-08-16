@@ -2,7 +2,7 @@
 
 📍 San Francisco, CA
 
-**I like believing in people, growing technical communities, and helping people spend money on good things. Meliorist.**
+**I like believing in people, growing technical communities, and helping people spend money on good things.**
 
 Currently:
 - Exploring the [Digicene](https://digicene.org/) & the people building it.
@@ -43,13 +43,13 @@ His potential is off the charts for a place that values what he has to offer.</e
 
 ## **What I'm looking for**
 
-* Ecosystem GTM, DevRel, Chief of Staff, or Societal Impacts roles at an AI org. 
+* Ecosystem GTM, DevRel, Chief of Staff, or Societal Impacts roles at an AI org
 
-* Platform roles at a venture firm. 
+* Platform roles at a venture firm
 
-* Program Officer roles at a foundation.
+* Program Officer roles at a foundation
 
-Open to part-time to start. Curious to work together to see if I can be helpful.
+Open to part-time & full-time roles. Curious to work together to see if I can be helpful.
 
 ---
 
