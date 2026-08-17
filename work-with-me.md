@@ -38,7 +38,7 @@ What a friend wrote in a recent introduction:
 &bull; P99 low ego<br>
 His potential is off the charts for a place that values what he has to offer.</em></blockquote>
 
-Essentially I'm part Nerd Herder, part Glue Guy. Sales bro without the bro.
+Essentially I'm part Nerd Herder, part Glue Guy.
 
 ## **What I'm looking for**
 
