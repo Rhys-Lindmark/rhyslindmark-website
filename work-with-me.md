@@ -22,8 +22,8 @@ Currently:
 - Understand people & sell them things<br>
   <small>_Capital moved: $5M+ raised across for-profits & nonprofits. People moved: 5k+ event attendees, 250+ fellows, 25+ hires, 1k+ customer convos._</small>
 
-- Synthesize fields & find the highest order bit<br>
-  <small>_20k notecards from books, [100-video YouTube channel](https://www.youtube.com/@HowEverythingEvolved), [100+ podcast interviews](https://www.youtube.com/@RhysLindmark), 10+ years teaching_</small>
+- Map startup ecosystems & research societal impacts<br>
+  <small>_20k notecards on science & technology, [100-video YouTube channel](https://www.youtube.com/@HowEverythingEvolved), [100+ podcast interviews](https://www.youtube.com/@RhysLindmark), [taught tech ethics at MIT](https://www.media.mit.edu/articles/why-it-s-time-to-start-talking-about-blockchain-ethics/)_</small>
 
 - Run things end to end <br>
   <small>_5x founder. Raised capital, hired dozens of people, shipped 20+ large projects_</small>
