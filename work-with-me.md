@@ -7,7 +7,7 @@
 Currently:
 - Exploring the [Digicene](https://digicene.org/) & the people building it.
 - Multiplexing agents to do my bidding.
-- Helping AI communities as I find my next full-time role.
+- Helping AI communities as I find my next role.
 
 ## **How I can help**
 
