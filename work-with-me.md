@@ -17,16 +17,16 @@ Currently:
 - Grow technical ecosystems<br>
   <small>_Helped expand Ethereum from [1k to 5k devs](https://www.developerreport.com/ecosystems/ethereum), [started academic journal at MIT](https://cryptoeconomicsystems.pubpub.org/), ran 9 [fellowship cohorts](https://www.roote.co/)_</small>
 
-- Understand people & sell them things I believe in<br>
+- Understand people & sell them things<br>
   <small>_Capital moved: $5M+ raised across for-profits & nonprofits. People moved: 5k+ event attendees, 250+ fellows, 25+ hires, 1k+ customer convos._</small>
 
-- Synthesize fields & develop conviction on the highest order bit<br>
+- Synthesize fields & find the highest order bit<br>
   <small>_20k notecards from books, [100-video YouTube channel](https://www.youtube.com/@HowEverythingEvolved), [100+ podcast interviews](https://www.youtube.com/@RhysLindmark), 10+ years teaching_</small>
 
 - Run things end to end <br>
   <small>_5x founder. Raised capital, hired dozens of people, shipped 20+ large projects_</small>
 
-- Inject energy & clarity to help the org win <br>
+- Inject energy to help the org win <br>
   <small>_3x frisbee captain & champion, run offsites & OKRs, “energizer bunny”, “infectious enthusiasm”_</small>
 
 What a friend wrote in a recent introduction:
@@ -38,7 +38,7 @@ What a friend wrote in a recent introduction:
 &bull; P99 low ego<br>
 His potential is off the charts for a place that values what he has to offer.</em></blockquote>
 
-Part Nerd Herder, part Glue Guy. Sales bro without the bro.
+Essentially I'm part Nerd Herder, part Glue Guy. Sales bro without the bro.
 
 ## **What I'm looking for**
 
