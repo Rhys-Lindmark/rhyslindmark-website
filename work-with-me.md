@@ -2,7 +2,9 @@
 
 📍 San Francisco, CA
 
-**I like believing in people, growing technical communities, and helping people spend money on good things.**
+**I like believing in folks, growing technical communities, and helping people spend money on good things.**
+
+Part Nerd Herder, part Glue Guy.
 
 Currently:
 - Exploring the [Digicene](https://digicene.org/) & the people building it.
@@ -37,8 +39,6 @@ What a friend wrote in a recent introduction:
 &bull; P99 people person-ness<br>
 &bull; P99 low ego<br>
 His potential is off the charts for a place that values what he has to offer.</em></blockquote>
-
-Essentially I'm part Nerd Herder, part Glue Guy.
 
 ## **What I'm looking for**
 

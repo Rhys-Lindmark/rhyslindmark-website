@@ -1,7 +1,7 @@
 
 Hi! Rhys here. 👋 
 
-I like believing in people, growing technical communities, and helping people spend money on good things.
+I like believing in folks, growing technical communities, and helping people spend money on good things.
 
 Currently helping AI communities as I find my next role. 
 ([Work with me](https://www.rhyslindmark.com/work-with-me/).)
