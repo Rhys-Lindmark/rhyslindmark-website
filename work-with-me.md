@@ -4,7 +4,7 @@
 
 **I like believing in folks, growing technical communities, and helping people spend money on good things.**
 
-Part Nerd Herder, part Glue Guy.
+Part Nerd Herder, part Glue Guy, part Info Sponge.
 
 Currently:
 - Exploring the [Digicene](https://digicene.org/) & the people building it.
