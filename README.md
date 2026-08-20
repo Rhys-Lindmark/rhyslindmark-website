@@ -1,43 +1,37 @@
-# Astro Starter Kit: Minimal
+# rhyslindmark.com
+
+Source for [rhyslindmark.com](https://rhyslindmark.com), built with [Astro](https://astro.build) and deployed on Cloudflare Pages.
+
+## Structure
+
+```
+src/
+├── pages/            # routes (index, date-me, us, work-with-me, music-for-18-pianos, marriage-counseling-with-capitalism)
+├── layouts/           # shared page layout
+├── assets/images/     # page imagery
+└── styles/            # global styles
+functions/
+└── _middleware.js     # Cloudflare Pages function: 404s fall back to Substack
+public/                # static assets served as-is (e.g. resume.pdf)
+*.md                   # long-form source content pulled into pages (about-me, date-me, us, work-with-me, etc.)
+```
+
+Several top-level `*.md` files (`about-me-source.md`, `date-me-source.md`, `us-book-source.md`, `work-with-me.md`, `music-for-18-pianos-source.md`) hold the long-form writing rendered on their respective pages via `marked`.
+
+## Development
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev       # localhost:4321
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Command           | Action                                      |
+| ----------------- | -------------------------------------------- |
+| `npm run dev`     | Start local dev server                       |
+| `npm run build`   | Build production site to `./dist/`           |
+| `npm run preview` | Preview the production build locally         |
+| `npm run astro`   | Run any Astro CLI command                    |
 
-## 🚀 Project Structure
+## Deployment
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Deployed via Cloudflare Pages (`wrangler.toml`). The `functions/_middleware.js` function redirects any unmatched route to the corresponding post on [rhyslindmark.substack.com](https://rhyslindmark.substack.com), as a fallback for content migrated from Ghost.
