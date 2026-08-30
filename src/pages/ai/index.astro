@@ -15,6 +15,17 @@ const projects = [
 		github: 'https://github.com/Rhys-Lindmark',
 	},
 ];
+
+const acceleratorProjects = [
+	{
+		url: 'https://ai.rhyslindmark.com/games',
+		github: 'https://github.com/Rhys-Lindmark/ai-reeslemark-com/tree/main/app/games',
+	},
+	{
+		url: 'https://ai.rhyslindmark.com/claims',
+		github: 'https://github.com/Rhys-Lindmark/ai-reeslemark-com/tree/main/app/claims',
+	},
+];
 ---
 
 <Layout title="ai.rhyslindmark.com" canonical="https://ai.rhyslindmark.com/">
@@ -25,6 +36,14 @@ const projects = [
 			</li>
 		))}
 	</ul>
+	<h2>Website Accelerator:</h2>
+	<ul class="accelerator">
+		{acceleratorProjects.map((project) => (
+			<li>
+				<a href={project.url}>{project.url}</a> (<a href={project.github}>GitHub</a>)
+			</li>
+		))}
+	</ul>
 </Layout>
 
 <style>
@@ -32,6 +51,16 @@ const projects = [
 		margin: 0;
 		padding: 2rem 0;
 		padding-left: 1.25rem;
+	}
+
+	h2 {
+		margin: 0;
+		font-family: var(--font-sans);
+		font-size: 1rem;
+	}
+
+	ul.accelerator {
+		padding-top: 0.75rem;
 	}
 
 	li {

@@ -41,3 +41,13 @@ test('proxy request construction rejects state-changing methods', () => {
 
 	assert.equal(buildUpstreamRequest(incomingRequest, incomingURL, prefix, origin), null);
 });
+
+test('accelerator routes preserve their upstream base path', () => {
+	const acceleratorOrigin = 'https://ai-rl-accelerator.rhyslindmark.chatgpt.site/games';
+	const incoming = new URL('https://ai.rhyslindmark.com/games/_next/static/example.js?v=1');
+	const upstream = buildUpstreamURL(incoming, '/games', acceleratorOrigin);
+
+	assert.equal(upstream.origin, 'https://ai-rl-accelerator.rhyslindmark.chatgpt.site');
+	assert.equal(upstream.pathname, '/games/_next/static/example.js');
+	assert.equal(upstream.search, '?v=1');
+});

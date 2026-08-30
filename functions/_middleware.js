@@ -9,6 +9,8 @@ const AI_SITES = {
 	'/domestication': 'https://visualizing-reality.rhyslindmark.chatgpt.site',
 	'/donate': 'https://market-for-impact.rhyslindmark.chatgpt.site',
 	'/music': 'https://songs-for-self.rhyslindmark.chatgpt.site',
+	'/games': 'https://ai-rl-accelerator.rhyslindmark.chatgpt.site/games',
+	'/claims': 'https://ai-rl-accelerator.rhyslindmark.chatgpt.site/claims',
 };
 
 const SENSITIVE_UPSTREAM_HEADERS = [
@@ -23,9 +25,11 @@ const SENSITIVE_UPSTREAM_HEADERS = [
 export function buildUpstreamURL(url, prefix, origin) {
 	const upstreamPath = url.pathname.slice(prefix.length) || '/';
 	const upstreamURL = new URL(origin);
-	upstreamURL.pathname = upstreamPath;
+	const upstreamOrigin = upstreamURL.origin;
+	const upstreamBasePath = upstreamURL.pathname.replace(/\/$/, '');
+	upstreamURL.pathname = `${upstreamBasePath}${upstreamPath}` || '/';
 	upstreamURL.search = url.search;
-	if (upstreamURL.origin !== origin) throw new Error('invalid upstream origin');
+	if (upstreamURL.origin !== upstreamOrigin) throw new Error('invalid upstream origin');
 	return upstreamURL;
 }
 
