@@ -9,8 +9,8 @@ const AI_SITES = {
 	'/domestication': 'https://visualizing-reality.rhyslindmark.chatgpt.site',
 	'/donate': 'https://market-for-impact.rhyslindmark.chatgpt.site',
 	'/music': 'https://songs-for-self.rhyslindmark.chatgpt.site',
-	'/games': 'https://ai-rl-accelerator.rhyslindmark.chatgpt.site/games',
-	'/claims': 'https://ai-rl-accelerator.rhyslindmark.chatgpt.site/claims',
+	'/games': 'https://ai-games-accelerator.rhyslindmark.chatgpt.site',
+	'/claims': 'https://ai-claims-accelerator.rhyslindmark.chatgpt.site',
 };
 
 const SENSITIVE_UPSTREAM_HEADERS = [
