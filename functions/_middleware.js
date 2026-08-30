@@ -11,10 +11,43 @@ const AI_SITES = {
 	'/music': 'https://songs-for-self.rhyslindmark.chatgpt.site',
 };
 
-async function proxyAISite(request, url, prefix, origin) {
+const SENSITIVE_UPSTREAM_HEADERS = [
+	'authorization',
+	'cookie',
+	'proxy-authorization',
+	'cf-connecting-ip',
+	'x-forwarded-for',
+	'x-real-ip',
+];
+
+export function buildUpstreamURL(url, prefix, origin) {
 	const upstreamPath = url.pathname.slice(prefix.length) || '/';
-	const upstreamURL = new URL(upstreamPath + url.search, origin);
-	const upstreamRequest = new Request(upstreamURL, request);
+	const upstreamURL = new URL(origin);
+	upstreamURL.pathname = upstreamPath;
+	upstreamURL.search = url.search;
+	if (upstreamURL.origin !== origin) throw new Error('invalid upstream origin');
+	return upstreamURL;
+}
+
+export function buildUpstreamRequest(request, url, prefix, origin) {
+	if (request.method !== 'GET' && request.method !== 'HEAD') return null;
+	const headers = new Headers(request.headers);
+	for (const name of SENSITIVE_UPSTREAM_HEADERS) headers.delete(name);
+	return new Request(buildUpstreamURL(url, prefix, origin), {
+		method: request.method,
+		headers,
+		redirect: 'manual',
+	});
+}
+
+async function proxyAISite(request, url, prefix, origin) {
+	const upstreamRequest = buildUpstreamRequest(request, url, prefix, origin);
+	if (!upstreamRequest) {
+		return new Response('Method not allowed', {
+			status: 405,
+			headers: { allow: 'GET, HEAD' },
+		});
+	}
 	const response = await fetch(upstreamRequest);
 	const headers = new Headers(response.headers);
 
