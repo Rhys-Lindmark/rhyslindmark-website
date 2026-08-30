@@ -5,6 +5,25 @@
 // serve the request normally first, and only fall back to Substack if the
 // path genuinely doesn't exist here.
 export async function onRequest(context) {
+	const url = new URL(context.request.url);
+
+	if (url.hostname === 'ai.rhyslindmark.com') {
+		const path = url.pathname.replace(/\/$/, '') || '/';
+
+		if (path === '/domestication') {
+			return Response.redirect('https://visualizing-reality.rhyslindmark.chatgpt.site', 302);
+		}
+
+		if (path === '/donate') {
+			return Response.redirect('https://market-for-impact.rhyslindmark.chatgpt.site', 302);
+		}
+
+		if (path === '/') {
+			url.pathname = '/ai/';
+			return context.env.ASSETS.fetch(url);
+		}
+	}
+
 	const response = await context.next();
 
 	if (response.status === 404) {

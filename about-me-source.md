@@ -27,3 +27,5 @@ _“Human capital is upstream of everything.”_
 _"Seek first to understand, then to be understood."_
 
 Meliorist.
+
+[Current AI projects](https://ai.rhyslindmark.com/)
