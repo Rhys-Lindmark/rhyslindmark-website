@@ -10,6 +10,9 @@ const projects = [
 		url: 'https://ai.rhyslindmark.com/donate',
 		github: 'https://github.com/Rhys-Lindmark/market-for-impact',
 	},
+	{
+		url: 'https://ai.rhyslindmark.com/songs-for-self',
+	},
 ];
 ---
 
@@ -17,7 +20,7 @@ const projects = [
 	<ul>
 		{projects.map((project) => (
 			<li>
-				<a href={project.url}>{project.url}</a>{' '}(<a href={project.github}>GitHub</a>)
+				<a href={project.url}>{project.url}</a>{project.github && <>{' '}(<a href={project.github}>GitHub</a>)</>}
 			</li>
 		))}
 	</ul>

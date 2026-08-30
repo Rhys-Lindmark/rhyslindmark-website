@@ -8,6 +8,7 @@
 const AI_SITES = {
 	'/domestication': 'https://visualizing-reality.rhyslindmark.chatgpt.site',
 	'/donate': 'https://market-for-impact.rhyslindmark.chatgpt.site',
+	'/songs-for-self': 'https://songs-for-self.rhyslindmark.chatgpt.site',
 };
 
 async function proxyAISite(request, url, prefix, origin) {
