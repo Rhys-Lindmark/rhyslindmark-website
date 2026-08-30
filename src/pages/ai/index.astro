@@ -14,32 +14,29 @@ const projects = [
 ---
 
 <Layout title="ai.rhyslindmark.com" canonical="https://ai.rhyslindmark.com/">
-	<div class="projects">
+	<ul>
 		{projects.map((project) => (
-			<div class="project">
-				<a href={project.url}>{project.url}</a>
-				<a href={project.github}>GitHub</a>
-			</div>
+			<li>
+				<a href={project.url}>{project.url}</a>{' '}(<a href={project.github}>GitHub</a>)
+			</li>
 		))}
-	</div>
+	</ul>
 </Layout>
 
 <style>
-	.projects {
-		display: grid;
-		gap: 2.5rem;
+	ul {
+		margin: 0;
 		padding: 2rem 0;
+		padding-left: 1.25rem;
 	}
 
-	.project {
-		display: grid;
-		gap: 0.5rem;
+	li {
+		margin-bottom: 0.5rem;
+		font-family: var(--font-sans);
 	}
 
 	a {
-		width: fit-content;
 		color: var(--text);
-		font-family: var(--font-sans);
 		text-decoration: underline;
 		text-underline-offset: 3px;
 	}
