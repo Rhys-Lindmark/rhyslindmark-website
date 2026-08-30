@@ -5,12 +5,14 @@
 // serve the request normally first, and only fall back to Substack if the
 // path genuinely doesn't exist here.
 
-const VISUALIZING_REALITY_ORIGIN = 'https://visualizing-reality.rhyslindmark.chatgpt.site';
-const DOMESTICATION_PREFIX = '/domestication';
+const AI_SITES = {
+	'/domestication': 'https://visualizing-reality.rhyslindmark.chatgpt.site',
+	'/donate': 'https://market-for-impact.rhyslindmark.chatgpt.site',
+};
 
-async function proxyDomestication(request, url) {
-	const upstreamPath = url.pathname.slice(DOMESTICATION_PREFIX.length) || '/';
-	const upstreamURL = new URL(upstreamPath + url.search, VISUALIZING_REALITY_ORIGIN);
+async function proxyAISite(request, url, prefix, origin) {
+	const upstreamPath = url.pathname.slice(prefix.length) || '/';
+	const upstreamURL = new URL(upstreamPath + url.search, origin);
 	const upstreamRequest = new Request(upstreamURL, request);
 	const response = await fetch(upstreamRequest);
 	const headers = new Headers(response.headers);
@@ -19,11 +21,11 @@ async function proxyDomestication(request, url) {
 
 	const location = headers.get('location');
 	if (location) {
-		const resolved = new URL(location, VISUALIZING_REALITY_ORIGIN);
-		if (resolved.origin === VISUALIZING_REALITY_ORIGIN) {
+		const resolved = new URL(location, origin);
+		if (resolved.origin === origin) {
 			headers.set(
 				'location',
-				`https://ai.rhyslindmark.com${DOMESTICATION_PREFIX}${resolved.pathname}${resolved.search}${resolved.hash}`,
+				`https://ai.rhyslindmark.com${prefix}${resolved.pathname}${resolved.search}${resolved.hash}`,
 			);
 		}
 	}
@@ -44,11 +46,11 @@ async function proxyDomestication(request, url) {
 
 	let body = await response.text();
 	body = body
-		.replaceAll(VISUALIZING_REALITY_ORIGIN, 'https://ai.rhyslindmark.com/domestication')
-		.replaceAll('href="/', 'href="/domestication/')
-		.replaceAll('src="/_next/', 'src="/domestication/_next/')
-		.replaceAll('"/_next/', '"/domestication/_next/')
-		.replaceAll('"/data/', '"/domestication/data/');
+		.replaceAll(origin, `https://ai.rhyslindmark.com${prefix}`)
+		.replaceAll('href="/', `href="${prefix}/`)
+		.replaceAll('src="/_next/', `src="${prefix}/_next/`)
+		.replaceAll('"/_next/', `"${prefix}/_next/`)
+		.replaceAll('"/data/', `"${prefix}/data/`);
 
 	headers.delete('content-length');
 	headers.delete('content-encoding');
@@ -66,12 +68,10 @@ export async function onRequest(context) {
 	if (url.hostname === 'ai.rhyslindmark.com') {
 		const path = url.pathname.replace(/\/$/, '') || '/';
 
-		if (path === DOMESTICATION_PREFIX || path.startsWith(`${DOMESTICATION_PREFIX}/`)) {
-			return proxyDomestication(context.request, url);
-		}
-
-		if (path === '/donate') {
-			return Response.redirect('https://market-for-impact.rhyslindmark.chatgpt.site', 302);
+		for (const [prefix, origin] of Object.entries(AI_SITES)) {
+			if (path === prefix || path.startsWith(`${prefix}/`)) {
+				return proxyAISite(context.request, url, prefix, origin);
+			}
 		}
 
 		if (path === '/') {
