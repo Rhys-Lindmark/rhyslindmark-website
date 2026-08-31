@@ -42,6 +42,38 @@ test('proxy request construction rejects state-changing methods', () => {
 	assert.equal(buildUpstreamRequest(incomingRequest, incomingURL, prefix, origin), null);
 });
 
+test('proxy forwards only the Claims request API write and strips credentials', async () => {
+	const claimsOrigin = 'https://ai-claims-accelerator.rhyslindmark.chatgpt.site';
+	const incomingURL = new URL('https://ai.rhyslindmark.com/claims/api/v1/analysis-requests');
+	const incomingRequest = new Request(incomingURL, {
+		method: 'POST',
+		headers: { authorization: 'Bearer secret', cookie: 'session=secret', 'content-type': 'application/json' },
+		body: '{"entity_key":"web:example.invalid"}',
+	});
+	const upstream = buildUpstreamRequest(incomingRequest, incomingURL, '/claims', claimsOrigin);
+
+	assert.ok(upstream);
+	assert.equal(upstream.url, `${claimsOrigin}/api/v1/analysis-requests`);
+	assert.equal(upstream.method, 'POST');
+	assert.equal(upstream.headers.has('authorization'), false);
+	assert.equal(upstream.headers.has('cookie'), false);
+	assert.equal(upstream.headers.get('content-type'), 'application/json');
+	assert.equal(await upstream.text(), '{"entity_key":"web:example.invalid"}');
+});
+
+test('proxy permits Claims request preflight and rejects every broader write', () => {
+	const claimsOrigin = 'https://ai-claims-accelerator.rhyslindmark.chatgpt.site';
+	const collectionURL = new URL('https://ai.rhyslindmark.com/claims/api/v1/analysis-requests');
+	const statusURL = new URL(`https://ai.rhyslindmark.com/claims/api/v1/analysis-requests/req_${'a'.repeat(64)}`);
+	const otherURL = new URL('https://ai.rhyslindmark.com/claims/api/v1/extension-releases');
+
+	assert.ok(buildUpstreamRequest(new Request(collectionURL, { method: 'OPTIONS' }), collectionURL, '/claims', claimsOrigin));
+	assert.ok(buildUpstreamRequest(new Request(statusURL, { method: 'OPTIONS' }), statusURL, '/claims', claimsOrigin));
+	assert.equal(buildUpstreamRequest(new Request(statusURL, { method: 'POST' }), statusURL, '/claims', claimsOrigin), null);
+	assert.equal(buildUpstreamRequest(new Request(otherURL, { method: 'POST' }), otherURL, '/claims', claimsOrigin), null);
+	assert.equal(buildUpstreamRequest(new Request(collectionURL, { method: 'PUT' }), collectionURL, '/claims', claimsOrigin), null);
+});
+
 test('accelerator routes preserve an upstream base path when one is configured', () => {
 	const acceleratorOrigin = 'https://example.com/base';
 	const incoming = new URL('https://ai.rhyslindmark.com/games/_next/static/example.js?v=1');

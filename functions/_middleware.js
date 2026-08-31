@@ -22,6 +22,19 @@ const SENSITIVE_UPSTREAM_HEADERS = [
 	'x-real-ip',
 ];
 
+function isClaimsRequestAPI(url, prefix) {
+	if (prefix !== '/claims') return false;
+	const upstreamPath = url.pathname.slice(prefix.length) || '/';
+	return upstreamPath === '/api/v1/analysis-requests' || /^\/api\/v1\/analysis-requests\/req_[0-9a-f]{64}$/.test(upstreamPath);
+}
+
+function proxyMethodAllowed(request, url, prefix) {
+	if (request.method === 'GET' || request.method === 'HEAD') return true;
+	if (!isClaimsRequestAPI(url, prefix)) return false;
+	if (request.method === 'OPTIONS') return true;
+	return request.method === 'POST' && url.pathname === `${prefix}/api/v1/analysis-requests`;
+}
+
 export function buildUpstreamURL(url, prefix, origin) {
 	const upstreamPath = url.pathname.slice(prefix.length) || '/';
 	const upstreamURL = new URL(origin);
@@ -34,14 +47,19 @@ export function buildUpstreamURL(url, prefix, origin) {
 }
 
 export function buildUpstreamRequest(request, url, prefix, origin) {
-	if (request.method !== 'GET' && request.method !== 'HEAD') return null;
+	if (!proxyMethodAllowed(request, url, prefix)) return null;
 	const headers = new Headers(request.headers);
 	for (const name of SENSITIVE_UPSTREAM_HEADERS) headers.delete(name);
-	return new Request(buildUpstreamURL(url, prefix, origin), {
+	const init = {
 		method: request.method,
 		headers,
 		redirect: 'manual',
-	});
+	};
+	if (!['GET', 'HEAD'].includes(request.method)) {
+		init.body = request.body;
+		init.duplex = 'half';
+	}
+	return new Request(buildUpstreamURL(url, prefix, origin), init);
 }
 
 async function proxyAISite(request, url, prefix, origin) {
@@ -49,7 +67,7 @@ async function proxyAISite(request, url, prefix, origin) {
 	if (!upstreamRequest) {
 		return new Response('Method not allowed', {
 			status: 405,
-			headers: { allow: 'GET, HEAD' },
+			headers: { allow: isClaimsRequestAPI(url, prefix) ? 'GET, HEAD, POST, OPTIONS' : 'GET, HEAD' },
 		});
 	}
 	const response = await fetch(upstreamRequest);
