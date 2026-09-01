@@ -74,6 +74,26 @@ test('proxy permits Claims request preflight and rejects every broader write', (
 	assert.equal(buildUpstreamRequest(new Request(collectionURL, { method: 'PUT' }), collectionURL, '/claims', claimsOrigin), null);
 });
 
+test('proxy forwards only the BYOW builder POST beneath the BYOW route', async () => {
+	const byowOrigin = 'https://byow.rhyslindmark.chatgpt.site';
+	const buildURL = new URL('https://ai.rhyslindmark.com/byow/api/build');
+	const pageURL = new URL('https://ai.rhyslindmark.com/byow/anything');
+	const request = new Request(buildURL, {
+		method: 'POST',
+		headers: { authorization: 'Bearer secret', cookie: 'session=secret', 'content-type': 'application/json' },
+		body: '{"prompt":"make it blue"}',
+	});
+	const upstream = buildUpstreamRequest(request, buildURL, '/byow', byowOrigin);
+
+	assert.ok(upstream);
+	assert.equal(upstream.url, `${byowOrigin}/api/build`);
+	assert.equal(upstream.headers.has('authorization'), false);
+	assert.equal(upstream.headers.has('cookie'), false);
+	assert.equal(await upstream.text(), '{"prompt":"make it blue"}');
+	assert.equal(buildUpstreamRequest(new Request(buildURL, { method: 'PUT' }), buildURL, '/byow', byowOrigin), null);
+	assert.equal(buildUpstreamRequest(new Request(pageURL, { method: 'POST' }), pageURL, '/byow', byowOrigin), null);
+});
+
 test('accelerator routes preserve an upstream base path when one is configured', () => {
 	const acceleratorOrigin = 'https://example.com/base';
 	const incoming = new URL('https://ai.rhyslindmark.com/games/_next/static/example.js?v=1');

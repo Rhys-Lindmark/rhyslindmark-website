@@ -6,6 +6,7 @@
 // path genuinely doesn't exist here.
 
 const AI_SITES = {
+	'/byow': 'https://byow.rhyslindmark.chatgpt.site',
 	'/domestication': 'https://visualizing-reality.rhyslindmark.chatgpt.site',
 	'/donate': 'https://market-for-impact.rhyslindmark.chatgpt.site',
 	'/music': 'https://songs-for-self.rhyslindmark.chatgpt.site',
@@ -28,8 +29,13 @@ function isClaimsRequestAPI(url, prefix) {
 	return upstreamPath === '/api/v1/analysis-requests' || /^\/api\/v1\/analysis-requests\/req_[0-9a-f]{64}$/.test(upstreamPath);
 }
 
+function isBYOWBuildAPI(url, prefix) {
+	return prefix === '/byow' && url.pathname === '/byow/api/build';
+}
+
 function proxyMethodAllowed(request, url, prefix) {
 	if (request.method === 'GET' || request.method === 'HEAD') return true;
+	if (isBYOWBuildAPI(url, prefix)) return request.method === 'POST';
 	if (!isClaimsRequestAPI(url, prefix)) return false;
 	if (request.method === 'OPTIONS') return true;
 	return request.method === 'POST' && url.pathname === `${prefix}/api/v1/analysis-requests`;
@@ -67,7 +73,7 @@ async function proxyAISite(request, url, prefix, origin) {
 	if (!upstreamRequest) {
 		return new Response('Method not allowed', {
 			status: 405,
-			headers: { allow: isClaimsRequestAPI(url, prefix) ? 'GET, HEAD, POST, OPTIONS' : 'GET, HEAD' },
+			headers: { allow: isClaimsRequestAPI(url, prefix) ? 'GET, HEAD, POST, OPTIONS' : isBYOWBuildAPI(url, prefix) ? 'GET, HEAD, POST' : 'GET, HEAD' },
 		});
 	}
 	const response = await fetch(upstreamRequest);
