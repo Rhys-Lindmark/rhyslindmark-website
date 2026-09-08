@@ -8,7 +8,7 @@
 const AI_SITES = {
 	'/byow': 'https://byow.rhyslindmark.chatgpt.site',
 	'/domestication': 'https://visualizing-reality.rhyslindmark.chatgpt.site',
-	'/donate': 'https://market-for-impact.rhyslindmark.chatgpt.site',
+	'/givebetter': 'https://market-for-impact.rhyslindmark.chatgpt.site',
 	'/music': 'https://songs-for-self.rhyslindmark.chatgpt.site',
 	'/games': 'https://ai-games-accelerator.rhyslindmark.chatgpt.site',
 	'/claims': 'https://ai-claims-accelerator.rhyslindmark.chatgpt.site',
@@ -129,6 +129,11 @@ export async function onRequest(context) {
 
 	if (url.hostname === 'ai.rhyslindmark.com') {
 		const path = url.pathname.replace(/\/$/, '') || '/';
+
+		if (path === '/donate' || path.startsWith('/donate/')) {
+			url.pathname = `/givebetter${url.pathname.slice('/donate'.length)}`;
+			return Response.redirect(url.toString(), 308);
+		}
 
 		for (const [prefix, origin] of Object.entries(AI_SITES)) {
 			if (path === prefix || path.startsWith(`${prefix}/`)) {

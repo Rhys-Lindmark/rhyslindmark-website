@@ -3,20 +3,20 @@ import Layout from '../../layouts/Layout.astro';
 
 const projects = [
 	{
+		url: 'https://ai.rhyslindmark.com/givebetter',
+		github: 'https://github.com/Rhys-Lindmark/market-for-impact',
+	},
+];
+
+const roughDrafts = [
+	{
 		url: 'https://ai.rhyslindmark.com/domestication',
 		github: 'https://github.com/Rhys-Lindmark/visualizing-reality',
-	},
-	{
-		url: 'https://ai.rhyslindmark.com/donate',
-		github: 'https://github.com/Rhys-Lindmark/market-for-impact',
 	},
 	{
 		url: 'https://ai.rhyslindmark.com/music',
 		github: 'https://github.com/Rhys-Lindmark',
 	},
-];
-
-const acceleratorProjects = [
 	{
 		url: 'https://ai.rhyslindmark.com/byow',
 		github: 'https://github.com/Rhys-Lindmark/byow',
@@ -40,9 +40,9 @@ const acceleratorProjects = [
 			</li>
 		))}
 	</ul>
-	<h2>Rough drafts / Website Accelerator:</h2>
+	<h2>Rough drafts:</h2>
 	<ul class="accelerator">
-		{acceleratorProjects.map((project) => (
+		{roughDrafts.map((project) => (
 			<li>
 				<a href={project.url}>{project.url}</a> (<a href={project.github}>GitHub</a>)
 			</li>
