@@ -53,3 +53,16 @@
 .all-mode .capacity .passage,.all-mode .panorama .passage{max-width:620px}
 .all-mode .scene.chapter .sticky,.all-mode .scene.statement .sticky{min-height:400px;height:auto;padding-top:90px;padding-bottom:90px}
 @media(max-width:760px){.photo-frame{min-height:320px}.all-mode .photo-frame{height:390px}.scene.chapter .passage h2{font-size:48px}.scene.statement .passage h2{font-size:30px}}
+
+/* Text interludes occupy the main page, with room for long passages. */
+.scene.share,.scene.units{height:400svh}
+.scene.fulltext{height:auto;min-height:100svh;background:#070b10}
+.scene.fulltext .sticky{position:relative;height:auto;min-height:100svh;display:flex;justify-content:center;padding:12svh clamp(24px,7vw,110px);background:#070b10}
+.scene.fulltext .passage{position:relative;left:auto;top:auto;transform:none;opacity:1;width:100%;max-width:1050px;max-height:none;min-height:0;margin:auto;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible;color:#fff}
+.scene.fulltext .passage p{font-size:clamp(23px,2.5vw,36px);line-height:1.45;letter-spacing:-.02em;margin:0 0 1em;color:#fff}
+.scene.fulltext .passage p:last-child{margin-bottom:0}
+.scene.fulltext .passage a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.15em}
+.scene.fulltext .track{display:none}
+.all-mode .scene.share,.all-mode .scene.units{height:auto}
+
+.scene.fulltext .sticky{top:0;overflow:visible}

@@ -3,30 +3,42 @@
     "1": "The data center buildout is now 2% of GDP, reaching the size of the railroads, cars, highways, and telecoms.",
     "2": "We build more data centers than offices.",
     "3": "These complexes are massive.",
-    "4": "Nvidia is at the center of the data center buildout. Chip production has 10x’ed from 2M H100e to over 20M H100e.",
+    "4": "Nvidia is at the center of the data center buildout. Chip production has 10x\u2019ed from 2M H100e to over 20M H100e.",
     "5": "Which has increased their revenue from $100B to $300B a year.",
-    "6": "Nvidia is making over 50% of all company’s revenues from GenAI.",
-    "7": "Plus, they’re doing so with never-before-seen operating margins. They have 66% operating margins compared to 33% for GAFA.",
+    "6": "Nvidia is making over 50% of all company\u2019s revenues from GenAI.",
+    "7": "Plus, they\u2019re doing so with never-before-seen operating margins. They have 66% operating margins compared to 33% for GAFA.",
     "8": "An annualized profit of $250B compared to $125B for GAFA.",
     "9": "This is even more impressive when you compare it to previous eras. IBM, Wintel, and GAFA had around 25% margin. Nvidia has averaged 56%.",
-    "10": "Nvidia is a really good business. Which is why its market cap has 15x’ed from $300B to $5T, and they’ve become the most valuable company in the world.",
-    "11": "Now everyone else wants part of the GPU pie. Nvidia’s margin is the rest of the industry’s opportunity.",
+    "10": "Nvidia is a really good business. Which is why its market cap has 15x\u2019ed from $300B to $5T, and they\u2019ve become the most valuable company in the world.",
+    "11": "Now everyone else wants part of the GPU pie. Nvidia\u2019s margin is the rest of the industry\u2019s opportunity.",
     "12": "The 100 GW Opportunity",
-    "13": "…So what’s the actual opportunity here? Has Nvidia already eaten all the profits? Likely not.",
+    "13": "\u2026So what\u2019s the actual opportunity here? Has Nvidia already eaten all the profits? Likely not.",
     "14": "From 2020 to 2025, we built 10 GW+ of data center capacity. Nvidia GPUs filled 70% of them.",
-    "15": "But we’re likely to 10x to 100 GW by 2040.",
-    "16": "It’s easy to add a bar to a chart.",
-    "17": "It’s hard to actually build a gigawatt.",
+    "15": "But we\u2019re likely to 10x to 100 GW by 2040.",
+    "16": "It\u2019s easy to add a bar to a chart.",
+    "17": "It\u2019s hard to actually build a gigawatt.",
     "18": "A gigawatt is massive.",
     "19": "It has giga in the name.",
-    "20": "It’s 1,000,000 US homes. The electricity for a whole city.",
-    "21": "It’s tough to know how many data centers will actually get built and wired up.",
+    "20": "It\u2019s 1,000,000 US homes. The electricity for a whole city.",
+    "21": "It\u2019s tough to know how many data centers will actually get built and wired up.",
     "22": "Epoch estimates 100 GW by 2030 (not 2040)",
     "23": "But their data center permit database only shows 32 GW by 2028.",
     "24": "Here are the biggest datacenters this decade.",
     "25": "Part of this is a permitting issue. By 2028, a16z net new estimates are: 44 GW planned, 25 GW permitted, 19 GW shortfall.",
     "26": "Part of this is an electricity issue: the US is at 0.52 TW of average electricity output, trying but failing (but trying!) to get to 2 TW. While China is at 1.21 TW, planning to get to 8 TW by 2040.",
-    "27": "In any scenario, expect 100 GW of data centers soon, mostly in the US and China."
+    "27": "In any scenario, expect 100 GW of data centers soon, mostly in the US and China.",
+    "28": "All of these data centers will need GPUs.",
+    "29": "Thus far, Nvidia has kept its market share as the main provider\u2014around 70% of a growing pie.",
+    "30": "But going forward, this pie is up for grabs.",
+    "31": "Each GW powers ~$40B of chips. As we get more efficient, each GW will power ~$4B.",
+    "32": "So roughly the opportunity here is: 100 GW * $20B/GW = $2T opportunity to build chips.",
+    "33": "Many companies are trying to soak up Nvidia\u2019s margin here.",
+    "34": "1. Hyperscalers like Amazon Trainium and Google TPUs.",
+    "35": "The Trainium 3 might become the Amazon Basics of GPUs. Anthropic committed to 5 GW of compute through AWS. Lots will be Nvidia chips (see new 2M GPU Amazon-Nvidia commitment), but lots will be Trainium chips.\n\nGoogle might be getting out of the foundation model game to focus entirely on GCP (Gemini is Cooked but GCP is Cooking). They\u2019re expanding their TPU lineup into training (8t) vs. inference (8i).\n\nRoughly speaking, I see Trainium and TPUs as fighting for the training, not inference, market.",
+    "36": "2. Startups like Cerebras (~$44B market cap), Etched ($21B valuation), and Samba Nova ($11B valuation).",
+    "37": "Most of these (decacorn-sized) startups are focused on inference.\n\nCerebras is going to add 750MW of ultra-low latency chips to power ChatGPT\u2019s new Ultrafast mode. On Ultrafast, Sol 5.6 answered 2,500 HLE questions in 11 hours vs. Claude Fable 5 in 78 hours. In other words, \u201cUltrafast worked through the frontier of human knowledge in a single working day.\u201d (!!!)\n\nEtched is building frontier inference clusters that break up then optimize pre-fill and decode. Pre-fill is compute-constrained, so they\u2019re compute maxxing by voltage minimizing (LVI). Decode is memory-constrained, so they\u2019re building Cluster Scale Memory with a better NVLink, so larger clusters can decode at once. As their founders said recently on Invest Like The Best, it\u2019s crazy that training clusters like Colossus are 100,000 chips networked together, while inference clusters are still just eight chips.",
+    "38": "3. Model providers like OpenAI.",
+    "39": "OAI released Jalape\u00f1o\u2019s first results at the end of August. It\u2019s also focused on inference.\n\nAnd damn, it\u2019s impressive. It\u2019s Pareto-dominant against GB200s and VR200s at tokens/s and tok/s/MW:\n\nOpenAI bought 40% of all DRAM. Then used their own models for chip design. There are a few great articles analyzing their design (1, 2). Fundamentally, I understand it as a chip that is not optimized for training, nor even optimized for inference generally. It\u2019s a decode-first, watt-minimizing chip, optimized for efficiently streaming 1 TB of model weights out of HBM."
   },
   "investment": [
     {
@@ -489,7 +501,7 @@
       "forecast": false
     },
     {
-      "name": "AI · base",
+      "name": "AI \u00b7 base",
       "color": "#39ffc1",
       "points": [
         [
@@ -536,7 +548,7 @@
       "forecast": true
     },
     {
-      "name": "AI · bull",
+      "name": "AI \u00b7 bull",
       "color": "#f9ff80",
       "points": [
         [
@@ -2441,8 +2453,8 @@
     }
   ],
   "provenance": {
-    "1": "Approximate coordinate readings from Redpoint chart. AI curves are scenarios. Axis calibrated piecewise to the source’s early and modern date spacing, then redrawn on a linear year axis.",
-    "2": "Approximate color-traced lines from Joseph Politano image. Observed image ends mid-2025. User-requested dashed extrapolation through Aug 2026 uses a least-squares slope over each series’ final 12 months, anchored at its final observed point. Extrapolation is not reported data.",
+    "1": "Approximate coordinate readings from Redpoint chart. AI curves are scenarios. Axis calibrated piecewise to the source\u2019s early and modern date spacing, then redrawn on a linear year axis.",
+    "2": "Approximate color-traced lines from Joseph Politano image. Observed image ends mid-2025. User-requested dashed extrapolation through Aug 2026 uses a least-squares slope over each series\u2019 final 12 months, anchored at its final observed point. Extrapolation is not reported data.",
     "4": "Epoch AI CSV, updated Aug 27 2026. Cumulative H100-equivalent compute medians, all records up to each quarter; incomplete data retained and marked in final quarter.",
     "5-6": "Approximate pixel measurements from Exponential View source. Units converted from $million to $billion. Subpixel bars are null, not zeros. Revenues are not deduplicated.",
     "7-8": "Exact values from original editable Nvidia profitability chart. IBM uses pretax proxy. OpenAI private-company figures; Anthropic positive adjusted operating income, amount not disclosed. GAFA means in prose are not totals.",
@@ -2452,12 +2464,14 @@
       "aggregation": "Wintel = Microsoft + Intel; GAFA = Alphabet/Google + Apple + Meta + Amazon",
       "marginNote": "Rounded period-weighted operating-margin estimates copied from the original chart; not derived from the net-income series.",
       "provenance": "Original chart from Find current Nvidia margins, August 28, 2026. Prototype reuses its data without a fresh financial audit."
-    }
+    },
+    "29-30": "Epoch AI chip-sales CSV: cumulative total chip TDP shares through Q1 2026. Future allocation is intentionally unspecified.",
+    "31-32": "Author estimates: $40B/GW today, $4B/GW efficiency endpoint; separate midpoint scenario $20B/GW \u00d7 100 GW = $2T. Squares represent 1 GW each."
   },
   "marketcap": {
     "source": "https://companiesmarketcap.com/nvidia/marketcap/",
     "retrieved": "2026-09-10",
-    "note": "Source historical chart samples, January 1999–August 2026. First sample January 29, 1999, following the January 22 IPO. Straight segments connect observations. Source m values multiplied by 100,000, as in its chart renderer.",
+    "note": "Source historical chart samples, January 1999\u2013August 2026. First sample January 29, 1999, following the January 22 IPO. Straight segments connect observations. Source m values multiplied by 100,000, as in its chart renderer.",
     "points": [
       {
         "date": "1999-01-29",
@@ -5398,7 +5412,7 @@
   "centers": {
     "source": "https://epoch.ai/data/ai-data-centers",
     "retrieved": "2026-09-10",
-    "notes": "Top 10 centers by IT power at each point in Epoch AI timelines, 2023–2030. Linear interpolation between dated milestones; future values are project estimates, not completed capacity. Sites absent before their first milestone are not ranked. Each site holds its last recorded value thereafter.",
+    "notes": "Top 10 centers by IT power at each point in Epoch AI timelines, 2023\u20132030. Linear interpolation between dated milestones; future values are project estimates, not completed capacity. Sites absent before their first milestone are not ranked. Each site holds its last recorded value thereafter.",
     "series": [
       {
         "name": "Colossus 2",
@@ -7923,7 +7937,7 @@
     "targetYear": 2040,
     "source": "https://ourworldindata.org/grapher/electricity-mix?country=USA~CHN&source=total&metric=generation&frequency=annual",
     "retrieved": "2026-09-10",
-    "notes": "Historical annual total electricity generation from OWID, Ember and Energy Institute, 1999–2025. TWh divided by annual hours (8,760; 8,784 in leap years) gives average TW output, not installed nameplate capacity. Future dashed extensions are author estimates of 2 TW US and 8 TW China by 2040, linearly joined to the latest observations.",
+    "notes": "Historical annual total electricity generation from OWID, Ember and Energy Institute, 1999\u20132025. TWh divided by annual hours (8,760; 8,784 in leap years) gives average TW output, not installed nameplate capacity. Future dashed extensions are author estimates of 2 TW US and 8 TW China by 2040, linearly joined to the latest observations.",
     "series": [
       {
         "name": "US",
@@ -8376,5 +8390,265 @@
         ]
       }
     ]
+  },
+  "powerShare": {
+    "groups": [
+      {
+        "name": "Other Nvidia",
+        "color": "#008fab"
+      },
+      {
+        "name": "H100/H200",
+        "color": "#21c5df"
+      },
+      {
+        "name": "B200",
+        "color": "#35e7ff"
+      },
+      {
+        "name": "B300",
+        "color": "#a1f7ff"
+      },
+      {
+        "name": "Other TPUs",
+        "color": "#793dce"
+      },
+      {
+        "name": "TPU v5e",
+        "color": "#a96aff"
+      },
+      {
+        "name": "TPU v6e",
+        "color": "#cd94ff"
+      },
+      {
+        "name": "TPU v7",
+        "color": "#ff70de"
+      },
+      {
+        "name": "Other AMD",
+        "color": "#ff8748"
+      },
+      {
+        "name": "MI300X",
+        "color": "#ffc267"
+      },
+      {
+        "name": "Trainium1",
+        "color": "#5577ff"
+      },
+      {
+        "name": "Trainium2",
+        "color": "#9caeff"
+      },
+      {
+        "name": "Ascend 910B",
+        "color": "#c95bbb"
+      },
+      {
+        "name": "Ascend 910C",
+        "color": "#ff9fe5"
+      },
+      {
+        "name": "Siyuan 590",
+        "color": "#ffe84a"
+      }
+    ],
+    "quarters": [
+      {
+        "label": "2024 Q1",
+        "values": [
+          26.314772165569412,
+          47.94410071808882,
+          0.0,
+          0.0,
+          6.803345493290481,
+          12.785938288728563,
+          0.0,
+          0.0,
+          0.8268208146194855,
+          1.1966333656669779,
+          1.5245944140537724,
+          0.34649873046676644,
+          1.8479932291560877,
+          0.40424851887789415,
+          0.0050542614817419
+        ],
+        "totalWatts": 2164510095.0
+      },
+      {
+        "label": "2024 Q2",
+        "values": [
+          21.66756354605918,
+          49.11513819934639,
+          0.0,
+          0.0,
+          7.409396599146481,
+          11.873499157683238,
+          0.0,
+          0.0,
+          0.9653191506016064,
+          2.8426834078891052,
+          2.1706651964027737,
+          0.7399994987736729,
+          2.631109328973059,
+          0.5755551657128567,
+          0.00907074941163462
+        ],
+        "totalWatts": 3040542600.0
+      },
+      {
+        "label": "2024 Q3",
+        "values": [
+          18.649745450301744,
+          49.786276590258154,
+          0.0,
+          0.0,
+          7.576815963929054,
+          10.724115663017978,
+          0.3694334554453793,
+          0.0,
+          1.5631323310316743,
+          3.8352442810583147,
+          2.4049759389445113,
+          1.5182928907477977,
+          2.9151223502357713,
+          0.637683014114075,
+          0.019162070915549806
+        ],
+        "totalWatts": 4116465300.0
+      },
+      {
+        "label": "2024 Q4",
+        "values": [
+          16.37895149998041,
+          46.10404606917523,
+          4.396211300131361,
+          0.0,
+          7.01614440783703,
+          9.289629067796334,
+          1.4846826480701711,
+          0.0,
+          1.9329624479234226,
+          4.463853280069629,
+          2.409038906701055,
+          2.8744214227683043,
+          2.9200471596376425,
+          0.6387603161707343,
+          0.09125147373867633
+        ],
+        "totalWatts": 5479363560.0
+      },
+      {
+        "label": "2025 Q1",
+        "values": [
+          14.803004058698969,
+          39.1550657690352,
+          12.278998025216838,
+          0.0,
+          6.203378743203808,
+          7.534992234504216,
+          3.349883731465612,
+          0.0,
+          2.0162889222115488,
+          4.384776588637969,
+          1.8749970956188455,
+          3.728687406060204,
+          2.5568142212984255,
+          1.9886332832321088,
+          0.12447992081625903
+        ],
+        "totalWatts": 7040010905.0
+      },
+      {
+        "label": "2025 Q2",
+        "values": [
+          12.717839867307502,
+          33.62284248796078,
+          15.97579219178501,
+          3.4730365956794715,
+          5.235179174175367,
+          6.115209539705336,
+          5.627504412880505,
+          0.0,
+          1.9876398911284516,
+          3.956083647947517,
+          1.5217003241945075,
+          4.467112694131603,
+          2.3056065518098596,
+          2.824368025967078,
+          0.17008459532701337
+        ],
+        "totalWatts": 8674506925.0
+      },
+      {
+        "label": "2025 Q3",
+        "values": [
+          10.41683006158876,
+          28.205933906619567,
+          16.901867981133904,
+          9.94478502019124,
+          4.261541919626678,
+          4.977904467779787,
+          7.201946854139899,
+          0.4626683087187821,
+          2.3049705936342018,
+          3.543617536739091,
+          1.2386948956118333,
+          4.997007817525009,
+          2.064491492686389,
+          3.2844182838192553,
+          0.19332086018560135
+        ],
+        "totalWatts": 10656377165.0
+      },
+      {
+        "label": "2025 Q4",
+        "values": [
+          8.547517202617703,
+          23.270385615682837,
+          17.727661591615153,
+          16.17760155282067,
+          3.496803024751459,
+          4.0846134399590825,
+          7.0722672193654565,
+          1.8411354119598007,
+          2.8437277565235006,
+          2.9723743328041556,
+          1.0164095858756914,
+          5.390050834189273,
+          1.8480174288648936,
+          3.5035330422230273,
+          0.20790196074730052
+        ],
+        "totalWatts": 12986890505.0
+      },
+      {
+        "label": "2026 Q1",
+        "values": [
+          7.272754156123212,
+          19.799877518727538,
+          17.814192739507934,
+          22.871912132271017,
+          2.9752954136924057,
+          3.475440723596494,
+          6.3748642533200774,
+          3.4915173082538957,
+          3.138107879095253,
+          2.6047021304763787,
+          0.8648238856702221,
+          4.586187272493602,
+          1.572407064854949,
+          2.981021727120841,
+          0.17689579479618178
+        ],
+        "totalWatts": 15263223205.0
+      }
+    ]
+  },
+  "chipOpportunity": {
+    "efficientBillionsPerGW": 4,
+    "scenarioBillionsPerGW": 20,
+    "targetGW": 100
   }
 }
