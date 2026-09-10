@@ -79,3 +79,7 @@
 
 /* Each floating passage enters at the bottom and exits above the viewport. */
 body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{top:0;transform:translateY(var(--card-shift,100svh))}
+
+/* Breathing room between consecutive slides, outside the pinned scroll area. */
+.scene + .scene{margin-top:clamp(64px,12svh,140px)}
+@media print{.scene + .scene{margin-top:32px}}
