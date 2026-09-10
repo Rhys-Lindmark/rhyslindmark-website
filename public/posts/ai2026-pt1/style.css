@@ -105,3 +105,6 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 .all-mode .panorama-strip{position:relative;width:100%;height:100%}
 .all-mode .panorama .photo-frame .panorama-strip img{object-fit:contain}
 .scene.panorama{height:650svh}.all-mode .scene.panorama{height:auto}
+
+/* Narrative text leads; keep chart titles only as accessible SVG descriptions. */
+.scene .figure-heading{display:none}
