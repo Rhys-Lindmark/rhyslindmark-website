@@ -5,3 +5,15 @@
 @media print{header,button,.track{display:none}.scene{height:auto!important;break-inside:avoid}.sticky{position:relative;top:0;height:700px}.passage{min-height:0;margin-bottom:25px}}
 
 .meme-frame{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden}.meme-frame img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border:1px solid var(--line)}
+
+/* Narrative cards float independently over the pinned chart. */
+.sticky{padding-left:max(24px,calc((100vw - 1440px)/2));padding-right:max(24px,calc((100vw - 1440px)/2));overflow:clip}
+.passage{position:absolute;z-index:3;left:max(24px,calc((100vw - 1440px)/2));top:50%;width:clamp(280px,28vw,360px);min-height:0;max-height:70%;overflow:auto;margin:0;padding:24px;background:#101820f7;border:1px solid #526777;border-radius:4px;box-shadow:0 12px 40px #0006;transform:translateY(calc(-50% + var(--card-shift,12svh)));opacity:var(--card-opacity,1);justify-content:flex-start}
+.passage h2{font-size:clamp(20px,1.65vw,24px);line-height:1.4;letter-spacing:-.015em}
+.sticky>figure{width:100%;min-width:0}
+.all-mode .passage{position:relative;left:auto;top:auto;transform:none;opacity:1;width:min(100%,420px);max-width:none;max-height:none;min-height:0;margin:0 0 22px;flex-shrink:0}
+.all-mode .sticky{overflow:visible;height:auto;min-height:780px}
+.all-mode .plot-wrap{height:520px;flex:auto}
+.all-mode .video-frame,.all-mode .meme-frame{min-height:300px;max-height:560px}
+@media(max-width:760px){.sticky{padding-left:16px;padding-right:16px}.passage{left:16px;width:min(78vw,300px);padding:18px;max-height:65%}.passage h2{font-size:18px;line-height:1.4}.all-mode .passage,.all-mode .revenue .passage{min-height:0}.all-mode .sticky,.all-mode .revenue .sticky{height:auto;min-height:820px}}
+@media print{.passage{position:relative;left:auto;top:auto;transform:none;opacity:1;max-height:none;margin-bottom:20px}.sticky{overflow:visible}}
