@@ -66,3 +66,9 @@
 .all-mode .scene.share,.all-mode .scene.units{height:auto}
 
 .scene.fulltext .sticky{top:0;overflow:visible}
+
+/* Center white chart titles independently of the progress readout. */
+.scene .figure-heading{position:relative;display:block;text-align:center;min-height:38px}
+.scene .figure-heading h3{color:#fff;text-align:center;max-width:65%;margin:0 auto}
+.scene .figure-heading .readout{position:absolute;right:0;top:8px}
+@media(max-width:760px){.scene .figure-heading{display:flex;flex-direction:column;align-items:center;gap:5px}.scene .figure-heading h3{max-width:100%}.scene .figure-heading .readout{position:static;align-self:center}}
