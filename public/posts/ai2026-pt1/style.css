@@ -24,3 +24,11 @@
 .legend i{filter:drop-shadow(0 0 3px var(--color))}
 .track span{background:#35e7ff}
 @media(prefers-reduced-motion:reduce){.legend span{transition:none}}
+
+/* Section headings echo the chart palette. */
+.scene{--heading-color:#35e7ff}
+.scene.investment,.scene.revenue{--heading-color:#ffe84a}
+.scene.construction,.scene.margin,.scene.marketcap{--heading-color:#63ff91}
+.scene.video,.scene.profit{--heading-color:#b985ff}
+.scene.eras,.scene.meme{--heading-color:#ff70de}
+.scene .passage h2,.scene .figure-heading h3{color:var(--heading-color)}
