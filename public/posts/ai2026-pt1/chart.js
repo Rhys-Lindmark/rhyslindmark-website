@@ -94,7 +94,15 @@ function passageStage(scene,p){
  scene.dataset.currentStep=String(steps[index]);scene.dataset.cardProgress=String(all?1:local);
  return {step:steps[index],index,local};
 }
-function setupPhoto(scene){const img=scene.querySelector('img');return p=>{passageStage(scene,p);if(scene.dataset.kind==='panorama')img.style.transform=`translateX(${-clamp(p)*45}%)`;};}
+function setupPhoto(scene){
+ const img=scene.querySelector('img'),frame=scene.querySelector('.photo-frame');
+ img.addEventListener('load',request);new ResizeObserver(request).observe(frame);
+ return p=>{passageStage(scene,p);if(scene.dataset.kind!=='panorama')return;
+  const width=frame.clientWidth,height=frame.clientHeight,ratio=(img.naturalWidth||2172)/(img.naturalHeight||724),imageWidth=all?width:Math.max(width*2,height*ratio);
+  img.style.width=`${imageWidth}px`;img.style.height=all?'100%':`${imageWidth/ratio}px`;
+  img.style.transform=all?'none':`translate(${-clamp(p)*Math.max(0,imageWidth-width)}px,-50%)`;
+ };
+}
 function drawCapacity(scene){
  const {svg,W,H,small}=svgBase(scene),d=data.opportunity,a=axes(svg,W,H,{xd:[0,3],yd:[0,110],xt:[],yt:[0,20,40,60,80,100],yfmt:v=>`${v}`,yTitle:'CAPACITY ADDED SINCE 2020 · GW',xTitle:'YEAR'}),bw=Math.min(120,a.iw*.17),x0=a.x(.5),x1=a.x(1.5),x2=a.x(2.5),baseY=a.y(0);
  label(svg,x0,baseY+22,'2020','middle');label(svg,x1,baseY+22,'2025','middle');const futureYear=label(svg,x2,baseY+22,'','middle');

@@ -96,3 +96,6 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 /* Align legend entries with the plot’s left axis. */
 .scene.share{--axis-inset:58px}
 .scene .legend{padding-left:calc(var(--axis-inset,96px) - 16px)}
+
+.panorama .photo-frame img{position:absolute;left:0;top:50%;object-fit:cover;max-width:none;max-height:none}
+.all-mode .panorama .photo-frame img{position:static;object-fit:contain}

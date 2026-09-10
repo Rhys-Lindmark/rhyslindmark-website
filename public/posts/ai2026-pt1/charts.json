@@ -2451,7 +2451,8 @@
       "provenance": "Original chart from Find current Nvidia margins, August 28, 2026. Prototype reuses its data without a fresh financial audit."
     },
     "29-30": "Epoch AI chip-sales CSV: cumulative total chip TDP shares through Q1 2026. Future allocation is intentionally unspecified.",
-    "31-32": "Author estimates: $40B/GW today, $4B/GW efficiency endpoint; separate midpoint scenario $20B/GW \u00d7 100 GW = $2T. Squares represent 1 GW each."
+    "31-32": "Author estimates: $40B/GW today, $4B/GW efficiency endpoint; separate midpoint scenario $20B/GW \u00d7 100 GW = $2T. Squares represent 1 GW each.",
+    "17-19": "AI-generated illustrative data-center campus panorama; not a photograph of a specific site. Scroll traverses the image from its left edge to its right edge."
   },
   "marketcap": {
     "source": "https://companiesmarketcap.com/nvidia/marketcap/",
