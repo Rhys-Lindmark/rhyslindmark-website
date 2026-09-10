@@ -110,15 +110,17 @@ function setupPhoto(scene){
  };
 }
 function drawCapacity(scene){
- const {svg,W,H,small}=svgBase(scene),d=data.opportunity,a=axes(svg,W,H,{xd:[0,3],yd:[0,110],xt:[],yt:[0,20,40,60,80,100],yfmt:v=>`${v}`,yTitle:'CAPACITY ADDED SINCE 2020 · GW',xTitle:'YEAR'}),bw=Math.min(120,a.iw*.17),x0=a.x(.5),x1=a.x(1.5),x2=a.x(2.5),baseY=a.y(0);
+ const {svg,W,H,small}=svgBase(scene),d=data.opportunity,comparison=Number(scene.dataset.step)===21,a=axes(svg,W,H,{xd:[0,3],yd:[0,110],xt:[],yt:[0,20,40,60,80,100],yfmt:v=>`${v}`,yTitle:'CAPACITY ADDED SINCE 2020 · GW',xTitle:'YEAR'}),bw=Math.min(120,a.iw*(comparison?.13:.17)),x0=a.x(comparison?.35:.5),x1=a.x(comparison?1:1.5),x2=a.x(2.5),baseY=a.y(0);
  label(svg,x0,baseY+22,'2020','middle');label(svg,x1,baseY+22,'2025','middle');const futureYear=label(svg,x2,baseY+22,'','middle');
  node('line',{x1:x0-bw/2,x2:x0+bw/2,y1:baseY,y2:baseY,stroke:'#7b95a7','stroke-width':3},svg);label(svg,x0,baseY-12,'Baseline','middle','value');
  const nvidia=node('rect',{x:x1-bw/2,y:baseY,width:bw,height:0,fill:'#63ff91'},svg),other=node('rect',{x:x1-bw/2,y:baseY,width:bw,height:0,fill:'#7293a9'},svg),builtLabel=label(svg,x1,a.y(12)-12,'12 GW','middle','value'),future=node('rect',{x:x2-bw/2,y:baseY,width:bw,height:0,fill:'#b985ff','fill-opacity':.35,stroke:'#b985ff','stroke-width':2,'stroke-dasharray':'7 5'},svg),futureLabel=label(svg,x2,a.y(100)-12,'','middle','value');
+ const epochX=a.x(1.75),epoch=node('rect',{x:epochX-bw/2,y:baseY,width:bw,height:0,fill:'#b985ff','fill-opacity':.65,stroke:'#b985ff','stroke-width':2},svg),epochLabel=label(svg,epochX,0,'','middle','value'),epochYear=label(svg,epochX,baseY+22,'','middle');epochLabel.style.fill='#b985ff';
  legend(scene,[{name:'NVIDIA · 70%',color:'#63ff91'},{name:'Other · 30%',color:'#7293a9'}]);
  return p=>{const {step,local}=passageStage(scene,p),first=Number(scene.dataset.step)===14,t=first&&step===14&&!all?clamp(.08+local/.75):1,built=d.builtGW*t,n=built*d.nvidiaShare;
   nvidia.setAttribute('y',a.y(n));nvidia.setAttribute('height',baseY-a.y(n));other.setAttribute('y',a.y(built));other.setAttribute('height',a.y(n)-a.y(built));builtLabel.style.opacity=t>.1?1:0;
-  const show=step!==14||all,unknown=false,target=step===23?d.permittedGW:d.targetGW,year=step===23?d.permittedYear:step===22?d.epochYear:d.longTermYear,progress=all||step===16||step===21?1:clamp(local/.7),v=unknown?0:target*progress;
+  const show=step!==14||all,unknown=false,target=d.targetGW,year=d.longTermYear,progress=all||comparison||step===16?1:clamp(local/.7),v=unknown?0:target*progress;
   future.style.visibility=show&&!unknown?'visible':'hidden';future.setAttribute('y',a.y(v));future.setAttribute('height',baseY-a.y(v));futureYear.textContent=show?String(year):'';futureLabel.textContent=!show?'':unknown?'?':`${target} GW`;futureLabel.setAttribute('y',unknown?a.y(55):a.y(target)-12);futureLabel.style.fill='#b985ff';
+  const epochShow=comparison&&(step>=22||all),epochTarget=step===23?d.permittedGW:d.targetGW,epochProgress=all?1:clamp(local/.7);epoch.style.visibility=epochShow?'visible':'hidden';epoch.setAttribute('y',a.y(epochTarget*epochProgress));epoch.setAttribute('height',baseY-a.y(epochTarget*epochProgress));epochLabel.textContent=epochShow?`${epochTarget} GW`:'';epochLabel.setAttribute('y',a.y(epochTarget)-12);epochYear.textContent=epochShow?String(step===23?d.permittedYear:d.epochYear):'';
   scene.querySelector('.readout').textContent=show?(unknown?'2040?':`${year} · ${target} GW`):'2025 · 12 GW';
  };
 }
