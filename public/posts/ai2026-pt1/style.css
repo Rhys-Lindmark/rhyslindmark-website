@@ -76,3 +76,6 @@
 /* Omit per-slide progress readouts. */
 .scene .figure-heading .readout{display:none}
 .scene .figure-heading h3{max-width:100%}
+
+/* Each floating passage enters at the bottom and exits above the viewport. */
+body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{top:0;transform:translateY(var(--card-shift,100svh))}
