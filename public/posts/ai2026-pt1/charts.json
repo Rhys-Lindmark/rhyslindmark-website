@@ -25,7 +25,7 @@
     "23": "But their data center permit database only shows 32 GW by 2028.",
     "24": "Here are the biggest datacenters this decade.",
     "25": "Part of this is a permitting issue. By 2028, a16z net new estimates are: 44 GW planned, 25 GW permitted, 19 GW shortfall.",
-    "26": "Part of this is an electricity issue: the US is at 0.52 TW of average electricity output, trying but failing (but trying!) to get to 2 TW. While China is at 1.21 TW, planning to get to 8 TW by 2040.",
+    "26": "Part of this is an electricity issue: the US is at 1.28 TW of generating capacity, trying but failing (but trying!) to get to 2 TW. While China is at 3.89 TW, planning to get to 8 TW by 2040.",
     "27": "In any scenario, expect 100 GW of data centers soon, mostly in the US and China.",
     "28": "All of these data centers will need GPUs.",
     "29": "Thus far, Nvidia has kept its market share as the main provider\u2014around 70% of a growing pie.",
@@ -2453,7 +2453,8 @@
     "29-30": "Epoch AI chip-sales CSV: cumulative total chip TDP shares through Q1 2026. Future allocation is intentionally unspecified.",
     "31-32": "Author estimates: $40B/GW today, $4B/GW efficiency endpoint; separate midpoint scenario $20B/GW \u00d7 100 GW = $2T. Squares represent 1 GW each.",
     "17-19": "User-supplied close-up server-rack image repeated ten times in a horizontal strip. Scroll traverses the complete strip; this is a repeated illustration, not a continuous physical campus.",
-    "20": "New AI-generated city-at-night illustration inspired by the supplied StockCake reference, with a teal skyline and foreground electricity pylons."
+    "20": "New AI-generated city-at-night illustration inspired by the supplied StockCake reference, with a teal skyline and foreground electricity pylons.",
+    "26": "Historical generating capacity, not electricity output. US: EIA utility-scale net summer capacity, excluding small-scale solar; China: NBS total installed capacity. Definitions and coverage differ. US annual observations 2014\u20132025; China selected reported observations connected by straight lines. Dashed 2040 extensions are author scenarios: US 2 TW and China 8 TW."
   },
   "marketcap": {
     "source": "https://companiesmarketcap.com/nvidia/marketcap/",
@@ -7920,11 +7921,19 @@
     "notes": "a16z net-new figures as quoted by the author. Shortfall = 44 minus 25 GW."
   },
   "electricity": {
-    "unit": "TW average output",
+    "unit": "TW generating capacity",
     "targetYear": 2040,
-    "source": "https://ourworldindata.org/grapher/electricity-mix?country=USA~CHN&source=total&metric=generation&frequency=annual",
-    "retrieved": "2026-09-10",
-    "notes": "Historical annual total electricity generation from OWID, Ember and Energy Institute, 1999\u20132025. TWh divided by annual hours (8,760; 8,784 in leap years) gives average TW output, not installed nameplate capacity. Future dashed extensions are author estimates of 2 TW US and 8 TW China by 2040, linearly joined to the latest observations.",
+    "source": "https://www.eia.gov/energyexplained/electricity/electricity-in-the-us-generation-capacity-and-sales.php",
+    "sources": [
+      "https://www.eia.gov/energyexplained/electricity/electricity-in-the-us-generation-capacity-and-sales.php",
+      "https://www.eia.gov/electricity/annual/table.php?t=epa_04_02_a.html",
+      "https://www.stats.gov.cn/english/PressRelease/202602/t20260228_1962661.html",
+      "https://www.stats.gov.cn/english/PressRelease/201502/t20150228_687439.html",
+      "https://www.stats.gov.cn/english/PressRelease/201602/t20160229_1324019.html",
+      "https://www.stats.gov.cn/english/PressRelease/202102/t20210228_1814177.html",
+      "https://www.stats.gov.cn/english/PressRelease/202502/t20250228_1958822.html"
+    ],
+    "notes": "Historical generating capacity, not electricity output. US: EIA utility-scale net summer capacity, excluding small-scale solar; China: NBS total installed capacity. Definitions and coverage differ. US annual observations 2014\u20132025; China selected reported observations connected by straight lines. Dashed 2040 extensions are author scenarios: US 2 TW and China 8 TW.",
     "series": [
       {
         "name": "US",
@@ -7932,222 +7941,52 @@
         "color": "#35e7ff",
         "points": [
           [
-            1999,
-            0.44932622146118717
-          ],
-          [
-            2000,
-            0.4328438069216758
-          ],
-          [
-            2001,
-            0.4255216894977169
-          ],
-          [
-            2002,
-            0.4388390410958904
-          ],
-          [
-            2003,
-            0.4416598173515982
-          ],
-          [
-            2004,
-            0.44990323315118397
-          ],
-          [
-            2005,
-            0.46061529680365293
-          ],
-          [
-            2006,
-            0.4619794520547945
-          ],
-          [
-            2007,
-            0.47289611872146115
-          ],
-          [
-            2008,
-            0.4676149817850637
-          ],
-          [
-            2009,
-            0.44975114155251145
-          ],
-          [
-            2010,
-            0.4696278538812785
-          ],
-          [
-            2011,
-            0.4667659817351598
-          ],
-          [
-            2012,
-            0.46000341530054645
-          ],
-          [
-            2013,
-            0.4629691780821918
-          ],
-          [
             2014,
-            0.46758105022831054
+            1.0684221999999999
           ],
           [
             2015,
-            0.46620890410958904
+            1.0640545
           ],
           [
             2016,
-            0.4653415300546448
+            1.0743328
           ],
           [
             2017,
-            0.46259246575342466
+            1.0843696
           ],
           [
             2018,
-            0.47962899543378995
+            1.0947398000000002
           ],
           [
             2019,
-            0.47470091324200914
+            1.0991093
           ],
           [
             2020,
-            0.4602891621129326
+            1.1156808
           ],
           [
             2021,
-            0.4741575342465753
+            1.1458561
           ],
           [
             2022,
-            0.4893710045662101
+            1.1614318000000001
           ],
           [
             2023,
-            0.48560616438356163
+            1.1875453999999999
           ],
           [
             2024,
-            0.49988843351548273
+            1.2304152
           ],
           [
             2025,
-            0.5159577625570776
-          ]
-        ],
-        "originalTWh": [
-          [
-            1999,
-            3936.0977
-          ],
-          [
-            2000,
-            3802.1
-          ],
-          [
-            2001,
-            3727.57
-          ],
-          [
-            2002,
-            3844.23
-          ],
-          [
-            2003,
-            3868.94
-          ],
-          [
-            2004,
-            3951.95
-          ],
-          [
-            2005,
-            4034.99
-          ],
-          [
-            2006,
-            4046.94
-          ],
-          [
-            2007,
-            4142.57
-          ],
-          [
-            2008,
-            4107.53
-          ],
-          [
-            2009,
-            3939.82
-          ],
-          [
-            2010,
-            4113.94
-          ],
-          [
-            2011,
-            4088.87
-          ],
-          [
-            2012,
-            4040.67
-          ],
-          [
-            2013,
-            4055.61
-          ],
-          [
-            2014,
-            4096.01
-          ],
-          [
-            2015,
-            4083.99
-          ],
-          [
-            2016,
-            4087.56
-          ],
-          [
-            2017,
-            4052.31
-          ],
-          [
-            2018,
-            4201.55
-          ],
-          [
-            2019,
-            4158.38
-          ],
-          [
-            2020,
-            4043.18
-          ],
-          [
-            2021,
-            4153.62
-          ],
-          [
-            2022,
-            4286.89
-          ],
-          [
-            2023,
-            4253.91
-          ],
-          [
-            2024,
-            4391.02
-          ],
-          [
-            2025,
-            4519.79
+            1.280799
           ]
         ]
       },
@@ -8157,222 +7996,24 @@
         "color": "#b985ff",
         "points": [
           [
-            1999,
-            0.14147260273972603
-          ],
-          [
-            2000,
-            0.15432604735883423
-          ],
-          [
-            2001,
-            0.16903995433789953
-          ],
-          [
-            2002,
-            0.18881392694063928
-          ],
-          [
-            2003,
-            0.2181027397260274
-          ],
-          [
-            2004,
-            0.25083219489981784
-          ],
-          [
-            2005,
-            0.2854178082191781
-          ],
-          [
-            2006,
-            0.32713698630136984
-          ],
-          [
-            2007,
-            0.37460502283105024
-          ],
-          [
-            2008,
-            0.3979690346083789
-          ],
-          [
-            2009,
-            0.42404566210045663
-          ],
-          [
-            2010,
-            0.48026940639269405
-          ],
-          [
-            2011,
-            0.5380159817351599
-          ],
-          [
-            2012,
-            0.5677982695810565
-          ],
-          [
-            2013,
-            0.6200490867579909
-          ],
-          [
             2014,
-            0.6614668949771689
+            1.36019
           ],
           [
             2015,
-            0.6637648401826484
-          ],
-          [
-            2016,
-            0.6982194899817851
-          ],
-          [
-            2017,
-            0.753931506849315
-          ],
-          [
-            2018,
-            0.8180525114155252
-          ],
-          [
-            2019,
-            0.8565559360730594
+            1.50828
           ],
           [
             2020,
-            0.8855954007285974
-          ],
-          [
-            2021,
-            0.9742305936073059
-          ],
-          [
-            2022,
-            1.010126712328767
-          ],
-          [
-            2023,
-            1.0795034246575343
+            2.20058
           ],
           [
             2024,
-            1.1483242258652093
+            3.34862
           ],
           [
             2025,
-            1.2081461187214613
-          ]
-        ],
-        "originalTWh": [
-          [
-            1999,
-            1239.3
-          ],
-          [
-            2000,
-            1355.6
-          ],
-          [
-            2001,
-            1480.79
-          ],
-          [
-            2002,
-            1654.01
-          ],
-          [
-            2003,
-            1910.58
-          ],
-          [
-            2004,
-            2203.31
-          ],
-          [
-            2005,
-            2500.26
-          ],
-          [
-            2006,
-            2865.72
-          ],
-          [
-            2007,
-            3281.54
-          ],
-          [
-            2008,
-            3495.76
-          ],
-          [
-            2009,
-            3714.64
-          ],
-          [
-            2010,
-            4207.16
-          ],
-          [
-            2011,
-            4713.02
-          ],
-          [
-            2012,
-            4987.54
-          ],
-          [
-            2013,
-            5431.63
-          ],
-          [
-            2014,
-            5794.45
-          ],
-          [
-            2015,
-            5814.58
-          ],
-          [
-            2016,
-            6133.16
-          ],
-          [
-            2017,
-            6604.44
-          ],
-          [
-            2018,
-            7166.14
-          ],
-          [
-            2019,
-            7503.43
-          ],
-          [
-            2020,
-            7779.07
-          ],
-          [
-            2021,
-            8534.26
-          ],
-          [
-            2022,
-            8848.71
-          ],
-          [
-            2023,
-            9456.45
-          ],
-          [
-            2024,
-            10086.88
-          ],
-          [
-            2025,
-            10583.36
+            3.89134
           ]
         ]
       }

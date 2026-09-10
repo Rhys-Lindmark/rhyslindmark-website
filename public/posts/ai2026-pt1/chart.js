@@ -139,14 +139,14 @@ function drawPermits(scene){
  return p=>{const t=all?1:clamp(p/.75),v=d.permittedGW*t,gap=d.shortfallGW*t;permitted.setAttribute('y',a.y(v));permitted.setAttribute('height',base-a.y(v));shortfall.setAttribute('y',a.y(v+gap));shortfall.setAttribute('height',a.y(v)-a.y(v+gap));permittedLabel.style.opacity=t>.9?1:0;shortfallLabel.style.opacity=t>.9?1:0;scene.querySelector('.readout').textContent='44 − 25 = 19 GW';};
 }
 function drawElectricity(scene){
- const {svg,W,H,small}=svgBase(scene),a=axes(svg,W,H,{xd:[1999,2040],yd:[0,9],xt:small?[1999,2025,2040]:[1999,2010,2020,2030,2040],yt:[0,2,4,6,8],yTitle:'AVERAGE ELECTRICITY OUTPUT · TW',xTitle:'YEAR'}),c=clipping(svg,'clip-electricity',a.m,a.ih),labels=[];
+ const {svg,W,H,small}=svgBase(scene),a=axes(svg,W,H,{xd:[2014,2040],yd:[0,9],xt:small?[2014,2025,2040]:[2014,2020,2025,2030,2040],yt:[0,2,4,6,8],yTitle:'GENERATING CAPACITY · TW',xTitle:'YEAR'}),c=clipping(svg,'clip-electricity',a.m,a.ih),labels=[];
  for(const s of data.electricity.series){
   node('path',{d:linePath(s.points,a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2.3},c.g);
   node('path',{d:linePath([s.points.at(-1),[2040,s.target]],a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2.3,'stroke-dasharray':'7 5'},c.g);
   const txt=label(svg,0,0,'','start','series-label');txt.style.fill=s.color;labels.push({s,txt});
  }
  legend(scene,[{name:'US',color:'#35e7ff'},{name:'China',color:'#b985ff'}]);
- return p=>{const t=clamp(.025+p/.9),year=lerp(1999,2040,t);c.rect.setAttribute('width',a.iw*t);for(const {s,txt} of labels){const points=[...s.points,[2040,s.target]];let i=0;while(i<points.length-2&&points[i+1][0]<year)i++;const lo=points[i],hi=points[i+1],v=lerp(lo[1],hi[1],clamp((year-lo[0])/(hi[0]-lo[0])));txt.textContent=`${s.name} ${v.toFixed(year>=2040?0:2)} TW`;txt.setAttribute('x',a.x(year)+(t>.65?-7:7));txt.setAttribute('y',a.y(v)-12);txt.setAttribute('text-anchor',t>.65?'end':'start');}scene.querySelector('.readout').textContent=`${Math.floor(year)}${year>2025?' · estimates':''}`;};
+ return p=>{const t=clamp(.025+p/.9),year=lerp(2014,2040,t);c.rect.setAttribute('width',a.iw*t);for(const {s,txt} of labels){const points=[...s.points,[2040,s.target]];let i=0;while(i<points.length-2&&points[i+1][0]<year)i++;const lo=points[i],hi=points[i+1],v=lerp(lo[1],hi[1],clamp((year-lo[0])/(hi[0]-lo[0])));txt.textContent=`${s.name} ${v.toFixed(year>=2040?0:2)} TW`;txt.setAttribute('x',a.x(year)+(t>.65?-7:7));txt.setAttribute('y',a.y(v)-12);txt.setAttribute('text-anchor',t>.65?'end':'start');}scene.querySelector('.readout').textContent=`${Math.floor(year)}${year>2025?' · estimates':''}`;};
 }
 
 function drawCenters(scene){
