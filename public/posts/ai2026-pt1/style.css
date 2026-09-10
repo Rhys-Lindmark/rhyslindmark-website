@@ -83,3 +83,11 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 /* Breathing room between consecutive slides, outside the pinned scroll area. */
 .scene + .scene{margin-top:clamp(64px,12svh,140px)}
 @media print{.scene + .scene{margin-top:32px}}
+
+/* Keep floating narrative cards inside the plot, clear of y-axis labels. */
+.scene{--card-gutter:max(24px,calc((100vw - 1440px)/2));--axis-inset:96px}
+.scene.revenue{--axis-inset:126px}
+.scene.margin,.scene.profit{--axis-inset:146px}
+.scene.centers{--axis-inset:266px}
+body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{left:calc(var(--card-gutter) + var(--axis-inset));width:min(clamp(280px,28vw,360px),calc(100% - var(--card-gutter) - var(--card-gutter) - var(--axis-inset)))}
+@media(max-width:760px){.scene{--card-gutter:16px;--axis-inset:80px}.scene.revenue{--axis-inset:94px}.scene.margin,.scene.profit{--axis-inset:98px}.scene.centers{--axis-inset:152px}body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{width:min(300px,calc(100% - 32px - var(--axis-inset)))}}
