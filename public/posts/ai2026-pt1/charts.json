@@ -28,7 +28,7 @@
     "26": "Part of this is an electricity issue. The US is at 1 TW trying to get to 2 TW. While China is at 4 TW, planning to get to 8 TW.",
     "27": "In any scenario, expect 100 GW of data centers soon, mostly in the US and China.",
     "28": "All of these data centers will need GPUs.",
-    "29": "Thus far, Nvidia has kept its market share as the main provider\u2014around 70% of a growing pie.",
+    "29": "Thus far, Nvidia has kept its market share as the main provider of GPUs\u2014around 70% of a growing pie.",
     "30": "But going forward, this pie is up for grabs.",
     "31": "Each GW powers ~$40B of chips. As we get more efficient, each GW will power ~$4B.",
     "32": "So roughly the opportunity here is: 100 GW * $20B/GW = $2T opportunity to build chips.",
