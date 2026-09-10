@@ -97,10 +97,16 @@ function passageStage(scene,p){
 function setupPhoto(scene){
  const img=scene.querySelector('img'),frame=scene.querySelector('.photo-frame');
  img.addEventListener('load',request);new ResizeObserver(request).observe(frame);
- return p=>{passageStage(scene,p);if(scene.dataset.kind!=='panorama')return;
-  const width=frame.clientWidth,height=frame.clientHeight,ratio=(img.naturalWidth||2172)/(img.naturalHeight||724),imageWidth=all?width:Math.max(width*2,height*ratio);
-  img.style.width=`${imageWidth}px`;img.style.height=all?'100%':`${imageWidth/ratio}px`;
-  img.style.transform=all?'none':`translate(${-clamp(p)*Math.max(0,imageWidth-width)}px,-50%)`;
+ let strip;
+ if(scene.dataset.kind==='panorama'){
+  strip=document.createElement('div');strip.className='panorama-strip';frame.appendChild(strip);strip.appendChild(img);
+  for(let i=1;i<10;i++){const copy=img.cloneNode(true);copy.alt='';copy.setAttribute('aria-hidden','true');strip.appendChild(copy);}
+ }
+ return p=>{passageStage(scene,p);if(!strip)return;
+  const width=frame.clientWidth,height=frame.clientHeight,ratio=(img.naturalWidth||1920)/(img.naturalHeight||1080),tileWidth=Math.max(width,height*ratio)*1.25,total=tileWidth*10;
+  strip.style.width=all?'100%':`${total}px`;
+  strip.style.transform=all?'none':`translateX(${-clamp(p)*Math.max(0,total-width)}px)`;
+  [...strip.children].forEach((tile,i)=>{tile.style.display=all&&i>0?'none':'block';tile.style.width=all?'100%':`${tileWidth}px`;});
  };
 }
 function drawCapacity(scene){
