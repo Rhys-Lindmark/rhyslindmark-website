@@ -177,6 +177,14 @@ function drawUnits(scene){
  return p=>{const {index,local}=passageStage(scene,p),count=index||all?Math.max(1,Math.ceil(clamp(local/.8)*100)):1;units.forEach((u,i)=>{u.style.visibility=all||i<count?'visible':'hidden';u.setAttribute('x',index||all?x+(i%10)*size+2:W/2-size/2);u.setAttribute('y',index||all?y+Math.floor(i/10)*size+2:H/2-size/2);});total.textContent=index||all?'$2T':'$4B';detail.textContent=index||all?'100 GW × $20B/GW · EACH SQUARE = 1 GW':'1 GW';scene.querySelector('.readout').textContent=index||all?'$20B / GW':'$4B / GW';};
 }
 
+function followSlideLink(){
+ const match=window.location.hash.match(/^#(?:chart-)?(\d+)$/);if(!match)return;
+ const id=match[1],passage=document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');if(!scene)return;
+ if(window.location.hash!==`#${id}`)window.history.replaceState(null,'',`#${id}`);
+ const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=steps.indexOf(id),progress=scene.dataset.kind==='revenue'&&id==='6'?.66:index>0?index/steps.length:0;
+ const travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight),top=window.scrollY+scene.getBoundingClientRect().top-document.querySelector('header').offsetHeight+(all?0:progress*travel);
+ window.scrollTo({top,behavior:'instant'});request();
+}
 function sceneProgress(scene){if(all)return 1;const rect=scene.getBoundingClientRect(),sticky=scene.querySelector('.sticky'),headerH=document.querySelector('header').offsetHeight;return clamp((headerH-rect.top)/Math.max(1,scene.offsetHeight-sticky.offsetHeight));}
 function update(){raf=0;let current=scenes[0];for(const scene of scenes){const p=sceneProgress(scene);renderers.get(scene)?.(p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight-document.querySelector('header').offsetHeight);card.style.setProperty('--card-shift',`${all?0:lerp(viewportHeight,-card.offsetHeight,clamp(cp))}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);if(scene.getBoundingClientRect().top<innerHeight*.4)current=scene;}document.getElementById('counter').textContent=`${String(current.dataset.currentStep||current.dataset.step).padStart(2,'0')} / 39`;}
 function request(){if(!raf)raf=requestAnimationFrame(update);}
@@ -185,6 +193,6 @@ button.addEventListener('click',()=>{const active=scenes.find(s=>s.getBoundingCl
 try{const res=await fetch('/posts/ai2026-pt1/charts.json');if(!res.ok)throw new Error('Chart data unavailable');data=await res.json();
  const draw=scene=>{const kind=scene.dataset.kind;const fn=kind==='investment'||kind==='construction'?drawLines:kind==='chips'?drawChips:kind==='revenue'?drawRevenue:kind==='margin'||kind==='profit'?drawProfit:kind==='marketcap'?drawMarketcap:kind==='capacity'?drawCapacity:kind==='centers'?drawCenters:kind==='permits'?drawPermits:kind==='electricity'?drawElectricity:kind==='share'?drawShare:kind==='units'?drawUnits:drawEras;renderers.set(scene,fn(scene));request();};
  for(const scene of scenes){if(['chapter','statement','fulltext','scrolltext'].includes(scene.dataset.kind))renderers.set(scene,()=>{});else if(['panorama','city'].includes(scene.dataset.kind))renderers.set(scene,setupPhoto(scene));else if(scene.dataset.kind==='meme')renderers.set(scene,setupMeme(scene));else if(scene.dataset.kind==='video')renderers.set(scene,setupVideo(scene));else{draw(scene);new ResizeObserver(()=>draw(scene)).observe(scene.querySelector('.plot-wrap'));}}
- toggle();window.addEventListener('scroll',request,{passive:true});window.addEventListener('resize',request,{passive:true});update();
+ toggle();window.addEventListener('hashchange',followSlideLink);requestAnimationFrame(followSlideLink);window.addEventListener('scroll',request,{passive:true});window.addEventListener('resize',request,{passive:true});update();
 }catch(error){console.error(error);button.disabled=true;const p=document.createElement('p');p.textContent='Chart data could not load. Please reload the page.';root.prepend(p);}
 })();
