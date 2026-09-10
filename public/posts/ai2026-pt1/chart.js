@@ -37,10 +37,36 @@ function drawProfit(scene){const {svg,W,H,small}=svgBase(scene),margin=scene.dat
  const bar=node('rect',{x:x(0),y:y+rh*.15,width:0,height:rh*.68,fill:color,'fill-opacity':.9,stroke:color,'stroke-width':.7},svg);node('title',{},bar,`${d.name}: ${val}${margin?'%':' billion dollars'}`);const txt=label(svg,val<0?x(val)+4:x(val)+6,y+rh*.58,`${val<0?'−':''}${margin?'':'$'}${Math.abs(val).toFixed(1)}${margin?'%':'B'}`,'start','value');bars.push({bar,txt,val});});
  label(svg,left+iw/2,H-2,margin?'OPERATING MARGIN (%)':'ANNUALIZED OPERATING PROFIT ($B)','middle','axis-title');legend(scene,[]);
  return p=>{const t=clamp(.03+p/.84);bars.forEach(({bar,txt,val})=>{const v=val*t;bar.setAttribute('x',Math.min(x(0),x(v)));bar.setAttribute('width',Math.abs(x(v)-x(0)));txt.style.opacity=t>.94?1:0;});scene.querySelector('.readout').textContent=margin?'GAAP / LATEST QUARTER':'LATEST QUARTER × 4';};}
-function drawEras(scene){const {svg,W,H,small}=svgBase(scene),a=axes(svg,W,H,{xd:[1970,2026],yd:[2,450],xt:small?[1970,1990,2010,2026]:[1970,1980,1990,2000,2010,2020,2026],yt:[3,10,30,100,300],yfmt:v=>`$${v}B`,log:true,right:true,yTitle:small?'NET PROFIT · LOG':'NET PROFIT · 2026 $B (LOG)',xTitle:'FISCAL YEAR'}),ym=v=>a.m.t+a.ih*(1-v/60),c=clipping(svg,'clip-eras',a.m,a.ih),labels=[];
+function drawEras(scene){
+ const {svg,W,H,small}=svgBase(scene),a=axes(svg,W,H,{xd:[1970,2026],yd:[2,450],xt:small?[1970,1990,2010,2026]:[1970,1980,1990,2000,2010,2020,2026],yt:[3,10,30,100,300],yfmt:v=>`$${v}B`,log:true,right:true,yTitle:small?'NET PROFIT · LOG':'NET PROFIT · 2026 $B (LOG)',xTitle:'FISCAL YEAR'}),ym=v=>a.m.t+a.ih*(1-v/60);
  for(const t of [0,10,20,30,40,50,60])label(svg,a.m.l+a.iw+7,ym(t)+4,`${t}%`);label(svg,W-a.m.r,14,small?'AVG. OP. MARGIN':'AVG. OPERATING MARGIN','end','axis-title');
- data.eras.forEach(s=>{node('path',{d:linePath(s.data.map(p=>[p.year,p.profit]),a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2.3,'stroke-linejoin':'round'},c.g);node('line',{x1:a.x(s.start),x2:a.x(s.end),y1:ym(s.avgOperatingMargin),y2:ym(s.avgOperatingMargin),stroke:s.color,'stroke-width':1.5,'stroke-dasharray':'6 5'},c.g);const txt=label(svg,s.id==='NVIDIA'?a.x(s.end)-4:(a.x(s.start)+a.x(s.end))/2,ym(s.avgOperatingMargin)+(s.id==='NVIDIA'?17:-8),`${s.id} ${s.avgOperatingMargin}%`,s.id==='NVIDIA'?'end':'middle','series-label');labels.push({txt,start:s.start});});
- legend(scene,[{name:'Net profit',color:'#b6cbdc'},{name:'Average operating margin',color:'#b6cbdc',forecast:true}]);return p=>{const t=clamp(.025+p/.86),year=lerp(1970,2026,t);c.rect.setAttribute('width',a.iw*t);labels.forEach(({txt,start})=>txt.style.opacity=year>=start+1?1:0);scene.querySelector('.readout').textContent=`FY ${Math.floor(year)}`;};}
+ const series=data.eras.map((s,i)=>{
+  const profit=clipping(svg,`era-profit-${i}`,a.m,a.ih),margin=clipping(svg,`era-margin-${i}`,a.m,a.ih);
+  node('path',{d:linePath(s.data.map(p=>[p.year,p.profit]),a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2.3,'stroke-linejoin':'round'},profit.g);
+  node('line',{x1:a.x(s.start),x2:a.x(s.end),y1:ym(s.avgOperatingMargin),y2:ym(s.avgOperatingMargin),stroke:s.color,'stroke-width':1.7,'stroke-dasharray':'6 5'},margin.g);
+  const txt=label(svg,0,0,'','end','series-label');txt.style.fill=s.color;
+  return {s,profit,margin,txt};
+ });
+ // Keep direct labels above every series, including those drawn later.
+ series.forEach(({txt})=>svg.appendChild(txt));legend(scene,[]);
+ return p=>{
+  const phase=clamp(p/.96)*8,active=Math.min(7,Math.floor(phase)),current=series[Math.floor(active/2)].s;
+  scene.querySelector('.readout').textContent=all?'':`${current.id} ${active%2?current.avgOperatingMargin+'% margin':'profit'}`;
+  series.forEach(({s,profit,margin,txt},i)=>{
+   const pt=clamp((phase-i*2)/.8),mt=clamp((phase-i*2-1)/.8),year=lerp(s.data[0].year,s.data.at(-1).year,pt);
+   profit.rect.setAttribute('width',Math.max(0,a.x(year)-a.m.l+1));profit.g.style.opacity=pt>0?1:0;
+   margin.rect.setAttribute('width',Math.max(0,a.x(lerp(s.start,s.end,mt))-a.m.l+1));margin.g.style.opacity=mt>0?1:0;
+   txt.style.opacity=pt>0?1:0;
+   const showMargin=phase>=i*2+1,words=showMargin?`${s.avgOperatingMargin}% margin`:'profit';
+   txt.replaceChildren();if(small){node('tspan',{x:0},txt,s.id);node('tspan',{x:0,dy:14},txt,words);}else txt.textContent=`${s.id} ${words}`;
+   let x,y,anchor;
+   if(showMargin){x=s.id==='NVIDIA'?a.x(s.end)-4:(a.x(s.start)+a.x(s.end))/2;y=ym(s.avgOperatingMargin)+(s.id==='NVIDIA'?18:(small?-24:-9));anchor=s.id==='NVIDIA'?'end':'middle';}
+   else{let j=0;while(j<s.data.length-2&&s.data[j+1].year<year)j++;const lo=s.data[j],hi=s.data[j+1],fraction=clamp((year-lo.year)/(hi.year-lo.year)),profitY=lerp(a.y(lo.profit),a.y(hi.profit),fraction);x=a.x(year)-4;y=Math.max(a.m.t+16,profitY-(small?27:12));anchor='end';if(x<a.m.l+(small?90:145)){x=a.x(year)+6;anchor='start';}}
+   txt.setAttribute('x',x);txt.setAttribute('y',y);txt.setAttribute('text-anchor',anchor);txt.querySelectorAll('tspan').forEach(t=>t.setAttribute('x',x));
+  });
+ };
+}
+
 function drawMarketcap(scene){
  const {svg,W,H,small}=svgBase(scene),points=data.marketcap.points.map(p=>[Date.parse(p.date),p.usd/1e12]),xd=[points[0][0],points.at(-1)[0]],a=axes(svg,W,H,{xd,yd:[0,6],xt:[xd[0],Date.UTC(2024,0,1),Date.UTC(2025,0,1),xd[1]],yt:[0,1,2,3,4,5,6],yfmt:v=>`$${v}T`,xfmt:v=>v===xd[0]?'Oct 2022':v===xd[1]?'Aug 2026':new Date(v).getUTCFullYear(),yTitle:'MARKET CAPITALIZATION · USD',xTitle:'DATE'}),c=clipping(svg,'clip-marketcap',a.m,a.ih);
  node('path',{d:linePath(points,a.x,a.y),fill:'none',stroke:'#63ff91','stroke-width':2.3,'stroke-linejoin':'round'},c.g);

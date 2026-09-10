@@ -32,3 +32,5 @@
 .scene.video,.scene.profit{--heading-color:#b985ff}
 .scene.eras,.scene.meme{--heading-color:#ff70de}
 .scene .passage h2,.scene .figure-heading h3{color:var(--heading-color)}
+
+.scene.eras{height:650svh}.all-mode .scene.eras{height:auto}
