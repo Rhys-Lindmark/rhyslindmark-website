@@ -3,12 +3,14 @@
     "1": "The data center buildout is now 2% of GDP, reaching the size of the railroads, cars, highways, and telecoms:",
     "2": "We build more data centers than offices:",
     "3": "These complexes are massive:",
-    "4": "Nvidia is at the center of the data center buildout. Chip production has 10x\u2019ed from 2M H100e to over 20M H100e:",
+    "4": "Nvidia is at the center of the data center buildout. Chip production has 10x’ed from 2M H100e to over 20M H100e:",
     "5": "Which has increased their revenue from $100B to $300B a year:",
-    "6": "Nvidia is making over 50% of all company\u2019s revenues from GenAI.",
-    "7": "Plus, they\u2019re doing so with never-before-seen operating margins. They have 66% operating margins compared to 33% for GAFA.",
+    "6": "Nvidia is making over 50% of all company’s revenues from GenAI.",
+    "7": "Plus, they’re doing so with never-before-seen operating margins. They have 66% operating margins compared to 33% for GAFA.",
     "8": "An annualized profit of $250B compared to $125B for GAFA.",
-    "9": "This is even more impressive when you compare it to previous eras. IBM, Wintel, and GAFA had around 25% margin. Nvidia has averaged 56%."
+    "9": "This is even more impressive when you compare it to previous eras. IBM, Wintel, and GAFA had around 25% margin. Nvidia has averaged 56%.",
+    "10": "Nvidia is a really good business. Which is why its market cap has 15x’ed from $300B to $5T, and they’ve become the most valuable company in the world.",
+    "11": "Now everyone else wants part of the GPU pie. Nvidia’s margin is the rest of the industry’s opportunity."
   },
   "investment": [
     {
@@ -471,7 +473,7 @@
       "forecast": false
     },
     {
-      "name": "AI \u00b7 base",
+      "name": "AI · base",
       "color": "#57dfa4",
       "points": [
         [
@@ -518,7 +520,7 @@
       "forecast": true
     },
     {
-      "name": "AI \u00b7 bull",
+      "name": "AI · bull",
       "color": "#c6e5d6",
       "points": [
         [
@@ -2423,8 +2425,8 @@
     }
   ],
   "provenance": {
-    "1": "Approximate coordinate readings from Redpoint chart. AI curves are scenarios. Axis calibrated piecewise to the source\u2019s early and modern date spacing, then redrawn on a linear year axis.",
-    "2": "Approximate color-traced lines from Joseph Politano image. Observed image ends mid-2025. User-requested dashed extrapolation through Aug 2026 uses a least-squares slope over each series\u2019 final 12 months, anchored at its final observed point. Extrapolation is not reported data.",
+    "1": "Approximate coordinate readings from Redpoint chart. AI curves are scenarios. Axis calibrated piecewise to the source’s early and modern date spacing, then redrawn on a linear year axis.",
+    "2": "Approximate color-traced lines from Joseph Politano image. Observed image ends mid-2025. User-requested dashed extrapolation through Aug 2026 uses a least-squares slope over each series’ final 12 months, anchored at its final observed point. Extrapolation is not reported data.",
     "4": "Epoch AI CSV, updated Aug 27 2026. Cumulative H100-equivalent compute medians, all records up to each quarter; incomplete data retained and marked in final quarter.",
     "5-6": "Approximate pixel measurements from Exponential View source. Units converted from $million to $billion. Subpixel bars are null, not zeros. Revenues are not deduplicated.",
     "7-8": "Exact values from original editable Nvidia profitability chart. IBM uses pretax proxy. OpenAI private-company figures; Anthropic positive adjusted operating income, amount not disclosed. GAFA means in prose are not totals.",
@@ -2435,5 +2437,984 @@
       "marginNote": "Rounded period-weighted operating-margin estimates copied from the original chart; not derived from the net-income series.",
       "provenance": "Original chart from Find current Nvidia margins, August 28, 2026. Prototype reuses its data without a fresh financial audit."
     }
+  },
+  "marketcap": {
+    "source": "https://companiesmarketcap.com/nvidia/marketcap/",
+    "retrieved": "2026-09-10",
+    "note": "Source historical chart samples, October 2022–August 2026. Straight segments connect observations. Source m values multiplied by 100,000, as in its chart renderer.",
+    "points": [
+      {
+        "date": "2022-10-01",
+        "usd": 302503900000
+      },
+      {
+        "date": "2022-10-05",
+        "usd": 328121600000
+      },
+      {
+        "date": "2022-10-08",
+        "usd": 300933900000
+      },
+      {
+        "date": "2022-10-15",
+        "usd": 279776800000
+      },
+      {
+        "date": "2022-10-22",
+        "usd": 310652700000
+      },
+      {
+        "date": "2022-10-28",
+        "usd": 344466600000
+      },
+      {
+        "date": "2022-10-29",
+        "usd": 344743300000
+      },
+      {
+        "date": "2022-10-31",
+        "usd": 333106000000
+      },
+      {
+        "date": "2022-11-01",
+        "usd": 336345200000
+      },
+      {
+        "date": "2022-11-05",
+        "usd": 352767500000
+      },
+      {
+        "date": "2022-11-12",
+        "usd": 406868900000
+      },
+      {
+        "date": "2022-11-19",
+        "usd": 383992300000
+      },
+      {
+        "date": "2022-11-22",
+        "usd": 394534800000
+      },
+      {
+        "date": "2022-11-26",
+        "usd": 405448400000
+      },
+      {
+        "date": "2022-11-30",
+        "usd": 416305800000
+      },
+      {
+        "date": "2022-12-03",
+        "usd": 420549900000
+      },
+      {
+        "date": "2022-12-10",
+        "usd": 423664900000
+      },
+      {
+        "date": "2022-12-17",
+        "usd": 412949300000
+      },
+      {
+        "date": "2022-12-24",
+        "usd": 378933500000
+      },
+      {
+        "date": "2022-12-31",
+        "usd": 364180900000
+      },
+      {
+        "date": "2023-01-07",
+        "usd": 370286300000
+      },
+      {
+        "date": "2023-01-14",
+        "usd": 421123100000
+      },
+      {
+        "date": "2023-01-21",
+        "usd": 444547900000
+      },
+      {
+        "date": "2023-01-28",
+        "usd": 507495800000
+      },
+      {
+        "date": "2023-01-31",
+        "usd": 481782400000
+      },
+      {
+        "date": "2023-02-04",
+        "usd": 525812000000
+      },
+      {
+        "date": "2023-02-11",
+        "usd": 529923800000
+      },
+      {
+        "date": "2023-02-18",
+        "usd": 532989000000
+      },
+      {
+        "date": "2023-02-25",
+        "usd": 580287100000
+      },
+      {
+        "date": "2023-02-28",
+        "usd": 573435200000
+      },
+      {
+        "date": "2023-03-04",
+        "usd": 595338800000
+      },
+      {
+        "date": "2023-03-11",
+        "usd": 572287800000
+      },
+      {
+        "date": "2023-03-18",
+        "usd": 641067000000
+      },
+      {
+        "date": "2023-03-25",
+        "usd": 667332700000
+      },
+      {
+        "date": "2023-03-31",
+        "usd": 686091900000
+      },
+      {
+        "date": "2023-04-01",
+        "usd": 692202800000
+      },
+      {
+        "date": "2023-04-08",
+        "usd": 673762100000
+      },
+      {
+        "date": "2023-04-15",
+        "usd": 660922600000
+      },
+      {
+        "date": "2023-04-22",
+        "usd": 669839300000
+      },
+      {
+        "date": "2023-04-29",
+        "usd": 685400300000
+      },
+      {
+        "date": "2023-04-30",
+        "usd": 686268600000
+      },
+      {
+        "date": "2023-05-06",
+        "usd": 708396000000
+      },
+      {
+        "date": "2023-05-13",
+        "usd": 700885000000
+      },
+      {
+        "date": "2023-05-20",
+        "usd": 773199400000
+      },
+      {
+        "date": "2023-05-27",
+        "usd": 963185200000
+      },
+      {
+        "date": "2023-05-31",
+        "usd": 934499800000
+      },
+      {
+        "date": "2023-06-03",
+        "usd": 971377000000
+      },
+      {
+        "date": "2023-06-10",
+        "usd": 957619100000
+      },
+      {
+        "date": "2023-06-17",
+        "usd": 1054492500000
+      },
+      {
+        "date": "2023-06-24",
+        "usd": 1061041400000
+      },
+      {
+        "date": "2023-06-30",
+        "usd": 1044859400000
+      },
+      {
+        "date": "2023-07-01",
+        "usd": 1044859500000
+      },
+      {
+        "date": "2023-07-08",
+        "usd": 1049824100000
+      },
+      {
+        "date": "2023-07-15",
+        "usd": 1123084400000
+      },
+      {
+        "date": "2023-07-22",
+        "usd": 1094432300000
+      },
+      {
+        "date": "2023-07-29",
+        "usd": 1154725100000
+      },
+      {
+        "date": "2023-07-31",
+        "usd": 1153739000000
+      },
+      {
+        "date": "2023-08-05",
+        "usd": 1103596000000
+      },
+      {
+        "date": "2023-08-12",
+        "usd": 1009118500000
+      },
+      {
+        "date": "2023-08-19",
+        "usd": 1069485300000
+      },
+      {
+        "date": "2023-08-26",
+        "usd": 1136644600000
+      },
+      {
+        "date": "2023-08-31",
+        "usd": 1219068500000
+      },
+      {
+        "date": "2023-09-02",
+        "usd": 1198172400000
+      },
+      {
+        "date": "2023-09-09",
+        "usd": 1125628500000
+      },
+      {
+        "date": "2023-09-16",
+        "usd": 1084330100000
+      },
+      {
+        "date": "2023-09-23",
+        "usd": 1027767100000
+      },
+      {
+        "date": "2023-09-30",
+        "usd": 1074425300000
+      },
+      {
+        "date": "2023-10-07",
+        "usd": 1130321400000
+      },
+      {
+        "date": "2023-10-14",
+        "usd": 1122886700000
+      },
+      {
+        "date": "2023-10-21",
+        "usd": 1022259000000
+      },
+      {
+        "date": "2023-10-28",
+        "usd": 1000350000000
+      },
+      {
+        "date": "2023-10-31",
+        "usd": 1005634800000
+      },
+      {
+        "date": "2023-11-04",
+        "usd": 1111623500000
+      },
+      {
+        "date": "2023-11-11",
+        "usd": 1193874600000
+      },
+      {
+        "date": "2023-11-18",
+        "usd": 1217660700000
+      },
+      {
+        "date": "2023-11-25",
+        "usd": 1180067300000
+      },
+      {
+        "date": "2023-11-30",
+        "usd": 1155219000000
+      },
+      {
+        "date": "2023-12-02",
+        "usd": 1155095600000
+      },
+      {
+        "date": "2023-12-09",
+        "usd": 1173398200000
+      },
+      {
+        "date": "2023-12-16",
+        "usd": 1207583000000
+      },
+      {
+        "date": "2023-12-23",
+        "usd": 1206101100000
+      },
+      {
+        "date": "2023-12-30",
+        "usd": 1223193500000
+      },
+      {
+        "date": "2023-12-31",
+        "usd": 1223193400000
+      },
+      {
+        "date": "2024-01-06",
+        "usd": 1212696000000
+      },
+      {
+        "date": "2024-01-13",
+        "usd": 1351337000000
+      },
+      {
+        "date": "2024-01-20",
+        "usd": 1469427700000
+      },
+      {
+        "date": "2024-01-27",
+        "usd": 1507465800000
+      },
+      {
+        "date": "2024-01-31",
+        "usd": 1516025300000
+      },
+      {
+        "date": "2024-02-03",
+        "usd": 1634152100000
+      },
+      {
+        "date": "2024-02-10",
+        "usd": 1781685300000
+      },
+      {
+        "date": "2024-02-17",
+        "usd": 1793541100000
+      },
+      {
+        "date": "2024-02-24",
+        "usd": 1970424900000
+      },
+      {
+        "date": "2024-02-29",
+        "usd": 1977800000000
+      },
+      {
+        "date": "2024-03-02",
+        "usd": 2056974900000
+      },
+      {
+        "date": "2024-03-09",
+        "usd": 2188200100000
+      },
+      {
+        "date": "2024-03-16",
+        "usd": 2195912500000
+      },
+      {
+        "date": "2024-03-23",
+        "usd": 2357225100000
+      },
+      {
+        "date": "2024-03-30",
+        "usd": 2258900100000
+      },
+      {
+        "date": "2024-03-31",
+        "usd": 2226124800000
+      },
+      {
+        "date": "2024-04-06",
+        "usd": 2200200000000
+      },
+      {
+        "date": "2024-04-13",
+        "usd": 2265145700000
+      },
+      {
+        "date": "2024-04-20",
+        "usd": 1905000100000
+      },
+      {
+        "date": "2024-04-27",
+        "usd": 2193375000000
+      },
+      {
+        "date": "2024-04-30",
+        "usd": 2125345900000
+      },
+      {
+        "date": "2024-05-04",
+        "usd": 2219725000000
+      },
+      {
+        "date": "2024-05-11",
+        "usd": 2246950000000
+      },
+      {
+        "date": "2024-05-18",
+        "usd": 2274826100000
+      },
+      {
+        "date": "2024-05-25",
+        "usd": 2618956200000
+      },
+      {
+        "date": "2024-05-31",
+        "usd": 2696790000000
+      },
+      {
+        "date": "2024-06-01",
+        "usd": 2696785400000
+      },
+      {
+        "date": "2024-06-08",
+        "usd": 2973639400000
+      },
+      {
+        "date": "2024-06-15",
+        "usd": 3244024100000
+      },
+      {
+        "date": "2024-06-22",
+        "usd": 3113407000000
+      },
+      {
+        "date": "2024-06-29",
+        "usd": 3038874200000
+      },
+      {
+        "date": "2024-06-30",
+        "usd": 3038879200000
+      },
+      {
+        "date": "2024-07-06",
+        "usd": 3095204200000
+      },
+      {
+        "date": "2024-07-13",
+        "usd": 3179084500000
+      },
+      {
+        "date": "2024-07-20",
+        "usd": 2978617000000
+      },
+      {
+        "date": "2024-07-27",
+        "usd": 2781083900000
+      },
+      {
+        "date": "2024-07-31",
+        "usd": 2874245200000
+      },
+      {
+        "date": "2024-08-03",
+        "usd": 2638659700000
+      },
+      {
+        "date": "2024-08-10",
+        "usd": 2576672100000
+      },
+      {
+        "date": "2024-08-17",
+        "usd": 3064456300000
+      },
+      {
+        "date": "2024-08-24",
+        "usd": 3182282100000
+      },
+      {
+        "date": "2024-08-31",
+        "usd": 2928146100000
+      },
+      {
+        "date": "2024-09-07",
+        "usd": 2522419800000
+      },
+      {
+        "date": "2024-09-14",
+        "usd": 2921523100000
+      },
+      {
+        "date": "2024-09-21",
+        "usd": 2845480100000
+      },
+      {
+        "date": "2024-09-28",
+        "usd": 2977941900000
+      },
+      {
+        "date": "2024-09-30",
+        "usd": 2978923200000
+      },
+      {
+        "date": "2024-10-05",
+        "usd": 3064287500000
+      },
+      {
+        "date": "2024-10-12",
+        "usd": 3306644000000
+      },
+      {
+        "date": "2024-10-19",
+        "usd": 3385139900000
+      },
+      {
+        "date": "2024-10-26",
+        "usd": 3471975900000
+      },
+      {
+        "date": "2024-10-31",
+        "usd": 3253682100000
+      },
+      {
+        "date": "2024-11-02",
+        "usd": 3321361900000
+      },
+      {
+        "date": "2024-11-09",
+        "usd": 3621363900000
+      },
+      {
+        "date": "2024-11-16",
+        "usd": 3482769200000
+      },
+      {
+        "date": "2024-11-23",
+        "usd": 3476355500000
+      },
+      {
+        "date": "2024-11-30",
+        "usd": 3385742600000
+      },
+      {
+        "date": "2024-12-07",
+        "usd": 3488355700000
+      },
+      {
+        "date": "2024-12-14",
+        "usd": 3334944600000
+      },
+      {
+        "date": "2024-12-21",
+        "usd": 3298803100000
+      },
+      {
+        "date": "2024-12-28",
+        "usd": 3355374800000
+      },
+      {
+        "date": "2024-12-31",
+        "usd": 3288762100000
+      },
+      {
+        "date": "2025-01-04",
+        "usd": 3538070300000
+      },
+      {
+        "date": "2025-01-11",
+        "usd": 3328436100000
+      },
+      {
+        "date": "2025-01-18",
+        "usd": 3372518200000
+      },
+      {
+        "date": "2025-01-25",
+        "usd": 3492763700000
+      },
+      {
+        "date": "2025-01-31",
+        "usd": 2938953400000
+      },
+      {
+        "date": "2025-02-01",
+        "usd": 2940514300000
+      },
+      {
+        "date": "2025-02-08",
+        "usd": 3179781600000
+      },
+      {
+        "date": "2025-02-15",
+        "usd": 3400436800000
+      },
+      {
+        "date": "2025-02-22",
+        "usd": 3292190500000
+      },
+      {
+        "date": "2025-02-28",
+        "usd": 3048048000000
+      },
+      {
+        "date": "2025-03-01",
+        "usd": 3048047900000
+      },
+      {
+        "date": "2025-03-08",
+        "usd": 2749636000000
+      },
+      {
+        "date": "2025-03-15",
+        "usd": 2968747800000
+      },
+      {
+        "date": "2025-03-22",
+        "usd": 2871879800000
+      },
+      {
+        "date": "2025-03-29",
+        "usd": 2675947900000
+      },
+      {
+        "date": "2025-03-31",
+        "usd": 2650613700000
+      },
+      {
+        "date": "2025-04-05",
+        "usd": 2301163700000
+      },
+      {
+        "date": "2025-04-12",
+        "usd": 2706691900000
+      },
+      {
+        "date": "2025-04-19",
+        "usd": 2476355900000
+      },
+      {
+        "date": "2025-04-26",
+        "usd": 2708644000000
+      },
+      {
+        "date": "2025-04-30",
+        "usd": 2656292700000
+      },
+      {
+        "date": "2025-05-03",
+        "usd": 2793799900000
+      },
+      {
+        "date": "2025-05-10",
+        "usd": 2846259900000
+      },
+      {
+        "date": "2025-05-17",
+        "usd": 3302080900000
+      },
+      {
+        "date": "2025-05-24",
+        "usd": 3201847800000
+      },
+      {
+        "date": "2025-05-31",
+        "usd": 3295496600000
+      },
+      {
+        "date": "2025-06-07",
+        "usd": 3456210800000
+      },
+      {
+        "date": "2025-06-14",
+        "usd": 3462307800000
+      },
+      {
+        "date": "2025-06-21",
+        "usd": 3508156500000
+      },
+      {
+        "date": "2025-06-28",
+        "usd": 3847144100000
+      },
+      {
+        "date": "2025-06-30",
+        "usd": 3852990100000
+      },
+      {
+        "date": "2025-07-05",
+        "usd": 3885920200000
+      },
+      {
+        "date": "2025-07-12",
+        "usd": 4022003000000
+      },
+      {
+        "date": "2025-07-19",
+        "usd": 4204666300000
+      },
+      {
+        "date": "2025-07-26",
+        "usd": 4231248700000
+      },
+      {
+        "date": "2025-07-31",
+        "usd": 4330600900000
+      },
+      {
+        "date": "2025-08-02",
+        "usd": 4236614000000
+      },
+      {
+        "date": "2025-08-09",
+        "usd": 4455614400000
+      },
+      {
+        "date": "2025-08-16",
+        "usd": 4400742400000
+      },
+      {
+        "date": "2025-08-23",
+        "usd": 4340749200000
+      },
+      {
+        "date": "2025-08-30",
+        "usd": 4247832000000
+      },
+      {
+        "date": "2025-08-31",
+        "usd": 4240760500000
+      },
+      {
+        "date": "2025-09-06",
+        "usd": 4066436200000
+      },
+      {
+        "date": "2025-09-13",
+        "usd": 4329383900000
+      },
+      {
+        "date": "2025-09-20",
+        "usd": 4301384600000
+      },
+      {
+        "date": "2025-09-27",
+        "usd": 4338392200000
+      },
+      {
+        "date": "2025-09-30",
+        "usd": 4542663300000
+      },
+      {
+        "date": "2025-10-04",
+        "usd": 4567984000000
+      },
+      {
+        "date": "2025-10-11",
+        "usd": 4459396600000
+      },
+      {
+        "date": "2025-10-13",
+        "usd": 4609861000000
+      },
+      {
+        "date": "2025-10-18",
+        "usd": 4460857300000
+      },
+      {
+        "date": "2025-10-25",
+        "usd": 4534872000000
+      },
+      {
+        "date": "2025-10-31",
+        "usd": 4921519500000
+      },
+      {
+        "date": "2025-11-01",
+        "usd": 4930024200000
+      },
+      {
+        "date": "2025-11-08",
+        "usd": 4580888300000
+      },
+      {
+        "date": "2025-11-15",
+        "usd": 4630069100000
+      },
+      {
+        "date": "2025-11-22",
+        "usd": 4347678700000
+      },
+      {
+        "date": "2025-11-29",
+        "usd": 4301985200000
+      },
+      {
+        "date": "2025-11-30",
+        "usd": 4301985000000
+      },
+      {
+        "date": "2025-12-06",
+        "usd": 4441136700000
+      },
+      {
+        "date": "2025-12-13",
+        "usd": 4261212100000
+      },
+      {
+        "date": "2025-12-20",
+        "usd": 4406563600000
+      },
+      {
+        "date": "2025-12-27",
+        "usd": 4638834200000
+      },
+      {
+        "date": "2026-01-03",
+        "usd": 4597931300000
+      },
+      {
+        "date": "2026-01-10",
+        "usd": 4500786500000
+      },
+      {
+        "date": "2026-01-17",
+        "usd": 4534141700000
+      },
+      {
+        "date": "2026-01-24",
+        "usd": 4569201400000
+      },
+      {
+        "date": "2026-01-31",
+        "usd": 4653442400000
+      },
+      {
+        "date": "2026-02-07",
+        "usd": 4514177400000
+      },
+      {
+        "date": "2026-02-14",
+        "usd": 4450875300000
+      },
+      {
+        "date": "2026-02-21",
+        "usd": 4621547900000
+      },
+      {
+        "date": "2026-02-28",
+        "usd": 4314045100000
+      },
+      {
+        "date": "2026-03-07",
+        "usd": 4321915400000
+      },
+      {
+        "date": "2026-03-14",
+        "usd": 4380976200000
+      },
+      {
+        "date": "2026-03-21",
+        "usd": 4197473600000
+      },
+      {
+        "date": "2026-03-28",
+        "usd": 4071573700000
+      },
+      {
+        "date": "2026-04-04",
+        "usd": 4311464000000
+      },
+      {
+        "date": "2026-04-11",
+        "usd": 4584652100000
+      },
+      {
+        "date": "2026-04-18",
+        "usd": 4901832200000
+      },
+      {
+        "date": "2026-04-25",
+        "usd": 5062002700000
+      },
+      {
+        "date": "2026-05-02",
+        "usd": 4823327400000
+      },
+      {
+        "date": "2026-05-09",
+        "usd": 5230436000000
+      },
+      {
+        "date": "2026-05-16",
+        "usd": 5457368800000
+      },
+      {
+        "date": "2026-05-23",
+        "usd": 5215508000000
+      },
+      {
+        "date": "2026-05-30",
+        "usd": 5114022100000
+      },
+      {
+        "date": "2026-06-06",
+        "usd": 4967727400000
+      },
+      {
+        "date": "2026-06-13",
+        "usd": 4969906800000
+      },
+      {
+        "date": "2026-06-20",
+        "usd": 5103122600000
+      },
+      {
+        "date": "2026-06-27",
+        "usd": 4663269100000
+      },
+      {
+        "date": "2026-07-04",
+        "usd": 4718977400000
+      },
+      {
+        "date": "2026-07-11",
+        "usd": 5109662100000
+      },
+      {
+        "date": "2026-07-18",
+        "usd": 4912260800000
+      },
+      {
+        "date": "2026-07-25",
+        "usd": 5009871700000
+      },
+      {
+        "date": "2026-08-01",
+        "usd": 4862365900000
+      },
+      {
+        "date": "2026-08-08",
+        "usd": 5424535300000
+      },
+      {
+        "date": "2026-08-15",
+        "usd": 5453600300000
+      },
+      {
+        "date": "2026-08-22",
+        "usd": 5200733000000
+      },
+      {
+        "date": "2026-08-29",
+        "usd": 5253179600000
+      }
+    ]
   }
 }

@@ -3,3 +3,5 @@
 @media(max-height:700px){.sticky{min-height:550px;padding-top:12px;padding-bottom:10px}.passage{min-height:95px}h2{font-size:22px}.legend{padding:5px 0}.chips .legend{font-size:9px;gap:3px 10px}.plot-wrap{min-height:220px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 @media print{header,button,.track{display:none}.scene{height:auto!important;break-inside:avoid}.sticky{position:relative;top:0;height:700px}.passage{min-height:0;margin-bottom:25px}}
+
+.meme-frame{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden}.meme-frame img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border:1px solid var(--line)}
