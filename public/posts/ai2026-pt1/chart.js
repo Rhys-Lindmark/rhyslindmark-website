@@ -74,7 +74,7 @@ function drawMarketcap(scene){
  legend(scene,[{name:'NVIDIA',color:'#63ff91'}]);
  return p=>{const t=clamp(.02+p/.86),date=lerp(...xd,t);let i=0;while(i<points.length-1&&points[i+1][0]<=date)i++;const point=points[i],x=a.x(date);c.rect.setAttribute('width',a.iw*t);cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);dot.setAttribute('cx',a.x(point[0]));dot.setAttribute('cy',a.y(point[1]));value.setAttribute('x',a.x(point[0])+(t>.65?-8:8));value.setAttribute('y',a.y(point[1])-12);value.setAttribute('text-anchor',t>.65?'end':'start');value.textContent=point[1]<.001?`$${Math.round(point[1]*1e6)}M`:point[1]<1?`$${Math.round(point[1]*1000)}B`:`$${point[1].toFixed(2)}T`;scene.querySelector('.readout').textContent=new Date(point[0]).toLocaleDateString('en-US',{month:'short',year:'numeric',timeZone:'UTC'});};
 }
-function setupMeme(scene){const img=scene.querySelector('img');return p=>{const t=clamp(.08+p/.8);img.style.clipPath=`inset(0 ${(1-t)*100}% 0 0)`;};}
+function setupMeme(scene){const img=scene.querySelector('img');return p=>{const show=all||p>=.45;img.style.visibility=show?'visible':'hidden';img.setAttribute('aria-hidden',String(!show));};}
 
 function setupVideo(scene){
  const video=scene.querySelector('video');let loaded=false,inView=false;
@@ -88,7 +88,7 @@ function setupVideo(scene){
  scene.querySelector('.readout').textContent='6s';return ()=>{};
 }
 function sceneProgress(scene){if(all)return 1;const rect=scene.getBoundingClientRect(),sticky=scene.querySelector('.sticky'),headerH=document.querySelector('header').offsetHeight;return clamp((headerH-rect.top)/(scene.offsetHeight-sticky.offsetHeight));}
-function update(){raf=0;let current=scenes[0];for(const scene of scenes){const p=sceneProgress(scene);renderers.get(scene)?.(p);const card=scene.querySelector('.passage'),cp=scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;card.style.setProperty('--card-shift',`${all?0:lerp(12,-42,cp)}svh`);card.style.setProperty('--card-opacity',String(all?1:1-clamp((cp-.88)/.12)));scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);if(scene.getBoundingClientRect().top<innerHeight*.4)current=scene;}document.getElementById('counter').textContent=`${String(current.dataset.currentStep||current.dataset.step).padStart(2,'0')} / 11`;}
+function update(){raf=0;let current=scenes[0];for(const scene of scenes){const p=sceneProgress(scene);renderers.get(scene)?.(p);const card=scene.querySelector('.passage'),cp=scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;card.style.setProperty('--card-shift',`${all?0:lerp(12,-42,cp)}svh`);card.style.setProperty('--card-opacity',String(all?1:1-clamp((cp-.88)/.12)));scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);if(scene.getBoundingClientRect().top<innerHeight*.4)current=scene;}document.getElementById('counter').textContent=`${String(current.dataset.currentStep||current.dataset.step).padStart(2,'0')} / 11`;}
 function request(){if(!raf)raf=requestAnimationFrame(update);}
 function toggle(){document.body.classList.toggle('all-mode',all);button.setAttribute('aria-pressed',String(all));button.textContent=all?'Follow scroll':'Show all';request();}
 button.addEventListener('click',()=>{const active=scenes.find(s=>s.getBoundingClientRect().top<=100&&s.getBoundingClientRect().bottom>100)||scenes[0];all=!all;toggle();requestAnimationFrame(()=>{active.scrollIntoView();request();});});reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});
