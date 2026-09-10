@@ -2452,7 +2452,8 @@
     },
     "29-30": "Epoch AI chip-sales CSV: cumulative total chip TDP shares through Q1 2026. Future allocation is intentionally unspecified.",
     "31-32": "Author estimates: $40B/GW today, $4B/GW efficiency endpoint; separate midpoint scenario $20B/GW \u00d7 100 GW = $2T. Squares represent 1 GW each.",
-    "17-19": "User-supplied close-up server-rack image repeated ten times in a horizontal strip. Scroll traverses the complete strip; this is a repeated illustration, not a continuous physical campus."
+    "17-19": "User-supplied close-up server-rack image repeated ten times in a horizontal strip. Scroll traverses the complete strip; this is a repeated illustration, not a continuous physical campus.",
+    "20": "New AI-generated city-at-night illustration inspired by the supplied StockCake reference, with a teal skyline and foreground electricity pylons."
   },
   "marketcap": {
     "source": "https://companiesmarketcap.com/nvidia/marketcap/",
