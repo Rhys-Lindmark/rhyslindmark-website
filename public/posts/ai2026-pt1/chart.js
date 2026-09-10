@@ -75,7 +75,7 @@ function drawMarketcap(scene){
  legend(scene,[]);
  return p=>{const t=clamp(.02+p/.86),date=lerp(...xd,t);let i=0;while(i<points.length-1&&points[i+1][0]<=date)i++;const point=points[i],x=a.x(date);c.rect.setAttribute('width',a.iw*t);cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);dot.setAttribute('cx',a.x(point[0]));dot.setAttribute('cy',a.y(point[1]));value.setAttribute('x',a.x(point[0])+(t>.65?-8:8));value.setAttribute('y',a.y(point[1])-12);value.setAttribute('text-anchor',t>.65?'end':'start');value.textContent=point[1]<.001?`$${Math.round(point[1]*1e6)}M`:point[1]<1?`$${Math.round(point[1]*1000)}B`:`$${point[1].toFixed(2)}T`;scene.querySelector('.readout').textContent=new Date(point[0]).toLocaleDateString('en-US',{month:'short',year:'numeric',timeZone:'UTC'});};
 }
-function setupMeme(scene){const img=scene.querySelector('img');return p=>{const show=all||p>=.45;img.style.visibility=show?'visible':'hidden';img.setAttribute('aria-hidden',String(!show));};}
+function setupMeme(scene){const img=scene.querySelector('img');return p=>{const show=all||p>=.45,t=all?1:clamp((p-.45)/.5);img.style.visibility=show?'visible':'hidden';img.setAttribute('aria-hidden',String(!show));img.style.transform=`scale(${lerp(.12,1,t*t)})`;};}
 
 function setupVideo(scene){
  const video=scene.querySelector('video');let loaded=false,inView=false;
