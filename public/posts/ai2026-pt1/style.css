@@ -17,3 +17,10 @@
 .all-mode .video-frame,.all-mode .meme-frame{min-height:300px;max-height:560px}
 @media(max-width:760px){.sticky{padding-left:16px;padding-right:16px}.passage{left:16px;width:min(78vw,300px);padding:18px;max-height:65%}.passage h2{font-size:18px;line-height:1.4}.all-mode .passage,.all-mode .revenue .passage{min-height:0}.all-mode .sticky,.all-mode .revenue .sticky{height:auto;min-height:820px}}
 @media print{.passage{position:relative;left:auto;top:auto;transform:none;opacity:1;max-height:none;margin-bottom:20px}.sticky{overflow:visible}}
+
+/* Saturated series and scroll-synchronized legend entries. */
+.legend span{color:var(--color,var(--ink));transition:opacity .16s ease,transform .16s ease}
+.legend span.pending{visibility:hidden;opacity:0;transform:translateY(5px)}
+.legend i{filter:drop-shadow(0 0 3px var(--color))}
+.track span{background:#35e7ff}
+@media(prefers-reduced-motion:reduce){.legend span{transition:none}}

@@ -15,7 +15,7 @@
   "investment": [
     {
       "name": "Railroad",
-      "color": "#a9c4d6",
+      "color": "#35e7ff",
       "points": [
         [
           1852.0,
@@ -122,7 +122,7 @@
     },
     {
       "name": "Telephony",
-      "color": "#637e92",
+      "color": "#ff70de",
       "points": [
         [
           1890.26,
@@ -165,7 +165,7 @@
     },
     {
       "name": "Electrification",
-      "color": "#c6aa72",
+      "color": "#ffe84a",
       "points": [
         [
           1894.89,
@@ -216,7 +216,7 @@
     },
     {
       "name": "Cars & highways",
-      "color": "#8397aa",
+      "color": "#63ff91",
       "points": [
         [
           1912.01,
@@ -367,7 +367,7 @@
     },
     {
       "name": "Software, hardware & infrastructure",
-      "color": "#b2a3d8",
+      "color": "#b985ff",
       "points": [
         [
           1969.14,
@@ -474,7 +474,7 @@
     },
     {
       "name": "AI · base",
-      "color": "#57dfa4",
+      "color": "#39ffc1",
       "points": [
         [
           2019.98,
@@ -521,7 +521,7 @@
     },
     {
       "name": "AI · bull",
-      "color": "#c6e5d6",
+      "color": "#f9ff80",
       "points": [
         [
           2024.52,
@@ -554,7 +554,7 @@
   "construction": [
     {
       "name": "Data centers",
-      "color": "#57dfa4",
+      "color": "#63ff91",
       "points": [
         [
           2014.042,
@@ -1136,7 +1136,7 @@
     },
     {
       "name": "Offices",
-      "color": "#8ca8c0",
+      "color": "#b985ff",
       "points": [
         [
           2014.042,
@@ -1721,63 +1721,63 @@
     "groups": [
       {
         "name": "Other Nvidia",
-        "color": "#45667b"
+        "color": "#008fab"
       },
       {
         "name": "H100/H200",
-        "color": "#5f99ad"
+        "color": "#21c5df"
       },
       {
         "name": "B200",
-        "color": "#39a9ae"
+        "color": "#35e7ff"
       },
       {
         "name": "B300",
-        "color": "#68d0cc"
+        "color": "#a1f7ff"
       },
       {
         "name": "Other TPUs",
-        "color": "#6e5c8e"
+        "color": "#793dce"
       },
       {
         "name": "TPU v5e",
-        "color": "#9067ac"
+        "color": "#a96aff"
       },
       {
         "name": "TPU v6e",
-        "color": "#b080c5"
+        "color": "#cd94ff"
       },
       {
         "name": "TPU v7",
-        "color": "#cf9be0"
+        "color": "#ff70de"
       },
       {
         "name": "Other AMD",
-        "color": "#936b43"
+        "color": "#ff8748"
       },
       {
         "name": "MI300X",
-        "color": "#e4a86b"
+        "color": "#ffc267"
       },
       {
         "name": "Trainium1",
-        "color": "#4b61a4"
+        "color": "#5577ff"
       },
       {
         "name": "Trainium2",
-        "color": "#7f95dc"
+        "color": "#9caeff"
       },
       {
         "name": "Ascend 910B",
-        "color": "#878299"
+        "color": "#c95bbb"
       },
       {
         "name": "Ascend 910C",
-        "color": "#b4abc9"
+        "color": "#ff9fe5"
       },
       {
         "name": "Siyuan 590",
-        "color": "#d8c07c"
+        "color": "#ffe84a"
       }
     ],
     "quarters": [
@@ -2214,7 +2214,7 @@
         }
       ],
       "avgOperatingMargin": 18,
-      "color": "#aab3c2"
+      "color": "#35e7ff"
     },
     {
       "id": "Wintel",
@@ -2307,7 +2307,7 @@
         }
       ],
       "avgOperatingMargin": 32,
-      "color": "#38cad7"
+      "color": "#ff70de"
     },
     {
       "id": "GAFA",
@@ -2392,7 +2392,7 @@
         }
       ],
       "avgOperatingMargin": 21,
-      "color": "#b68cff"
+      "color": "#b985ff"
     },
     {
       "id": "NVIDIA",
@@ -2421,7 +2421,7 @@
         }
       ],
       "avgOperatingMargin": 56,
-      "color": "#50e68a"
+      "color": "#63ff91"
     }
   ],
   "provenance": {
