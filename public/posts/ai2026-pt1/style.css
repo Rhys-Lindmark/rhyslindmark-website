@@ -122,3 +122,6 @@ body:not(.all-mode) .scene.sidevideo .passage{left:var(--card-gutter);width:min(
 /* One continuous black canvas across slides and the gaps between them. */
 :root{--bg:#070b10}
 html,body,#article,.scene{background-color:var(--bg)}
+
+.share .legend{gap:4px 14px;font-size:11px}.share .legend span{min-width:116px}.share .legend i{width:12px;border-top-width:6px}
+@media(max-width:760px){.share .legend{font-size:9px;gap:4px 8px}.share .legend span{min-width:94px}.share .legend i{width:9px}}
