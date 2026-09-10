@@ -75,6 +75,16 @@ function drawMarketcap(scene){
  legend(scene,[]);
  return p=>{const t=clamp(.02+p/.86),date=lerp(...xd,t);let i=0;while(i<points.length-1&&points[i+1][0]<=date)i++;const point=points[i],x=a.x(date);c.rect.setAttribute('width',a.iw*t);cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);dot.setAttribute('cx',a.x(point[0]));dot.setAttribute('cy',a.y(point[1]));value.setAttribute('x',a.x(point[0])+(t>.65?-8:8));value.setAttribute('y',a.y(point[1])-12);value.setAttribute('text-anchor',t>.65?'end':'start');value.textContent=point[1]<.001?`$${Math.round(point[1]*1e6)}M`:point[1]<1?`$${Math.round(point[1]*1000)}B`:`$${point[1].toFixed(2)}T`;scene.querySelector('.readout').textContent=new Date(point[0]).toLocaleDateString('en-US',{month:'short',year:'numeric',timeZone:'UTC'});};
 }
+function setupSideVideo(scene){
+ const video=scene.querySelector('video'),control=scene.querySelector('.video-toggle');let inView=false,userPaused=false,userStarted=false;
+ video.muted=true;video.defaultMuted=true;
+ const sync=()=>{if(!inView||document.hidden||userPaused||(reduce.matches&&!userStarted)){video.pause();return;}video.play().catch(()=>{control.textContent='Play';});};
+ video.addEventListener('play',()=>{control.textContent='Pause';control.setAttribute('aria-label','Pause video');});video.addEventListener('pause',()=>{control.textContent='Play';control.setAttribute('aria-label','Play video');});
+ control.addEventListener('click',()=>{userPaused=!video.paused;if(!userPaused)userStarted=true;sync();});
+ new IntersectionObserver(entries=>{inView=entries.some(e=>e.isIntersecting);sync();},{threshold:.2}).observe(video);
+ document.addEventListener('visibilitychange',sync);reduce.addEventListener('change',()=>{userStarted=false;sync();});
+ return p=>passageStage(scene,p);
+}
 function setupMeme(scene){const img=scene.querySelector('img');return p=>{const show=all||p>=.45,t=all?1:clamp((p-.45)/.5);img.style.visibility=show?'visible':'hidden';img.setAttribute('aria-hidden',String(!show));img.style.transform=`scale(${lerp(.12,1,t*t)})`;};}
 
 function setupVideo(scene){
@@ -192,7 +202,7 @@ function toggle(){document.body.classList.toggle('all-mode',all);button.setAttri
 button.addEventListener('click',()=>{const active=scenes.find(s=>s.getBoundingClientRect().top<=100&&s.getBoundingClientRect().bottom>100)||scenes[0];all=!all;toggle();requestAnimationFrame(()=>{active.scrollIntoView();request();});});reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});
 try{const res=await fetch('/posts/ai2026-pt1/charts.json');if(!res.ok)throw new Error('Chart data unavailable');data=await res.json();
  const draw=scene=>{const kind=scene.dataset.kind;const fn=kind==='investment'||kind==='construction'?drawLines:kind==='chips'?drawChips:kind==='revenue'?drawRevenue:kind==='margin'||kind==='profit'?drawProfit:kind==='marketcap'?drawMarketcap:kind==='capacity'?drawCapacity:kind==='centers'?drawCenters:kind==='permits'?drawPermits:kind==='electricity'?drawElectricity:kind==='share'?drawShare:kind==='units'?drawUnits:drawEras;renderers.set(scene,fn(scene));request();};
- for(const scene of scenes){if(['chapter','statement','fulltext','scrolltext'].includes(scene.dataset.kind))renderers.set(scene,()=>{});else if(['panorama','city'].includes(scene.dataset.kind))renderers.set(scene,setupPhoto(scene));else if(scene.dataset.kind==='meme')renderers.set(scene,setupMeme(scene));else if(scene.dataset.kind==='video')renderers.set(scene,setupVideo(scene));else{draw(scene);new ResizeObserver(()=>draw(scene)).observe(scene.querySelector('.plot-wrap'));}}
+ for(const scene of scenes){if(['chapter','statement','fulltext','scrolltext'].includes(scene.dataset.kind))renderers.set(scene,()=>{});else if(['panorama','city'].includes(scene.dataset.kind))renderers.set(scene,setupPhoto(scene));else if(scene.dataset.kind==='meme')renderers.set(scene,setupMeme(scene));else if(scene.dataset.kind==='video')renderers.set(scene,setupVideo(scene));else if(scene.dataset.kind==='sidevideo')renderers.set(scene,setupSideVideo(scene));else{draw(scene);new ResizeObserver(()=>draw(scene)).observe(scene.querySelector('.plot-wrap'));}}
  toggle();window.addEventListener('hashchange',followSlideLink);requestAnimationFrame(followSlideLink);window.addEventListener('scroll',request,{passive:true});window.addEventListener('resize',request,{passive:true});update();
 }catch(error){console.error(error);button.disabled=true;const p=document.createElement('p');p.textContent='Chart data could not load. Please reload the page.';root.prepend(p);}
 })();

@@ -108,3 +108,13 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 
 /* Narrative text leads; keep chart titles only as accessible SVG descriptions. */
 .scene .figure-heading{display:none}
+
+.scene.sidevideo{height:550svh}
+.sidevideo .sticky>figure{width:50%;margin-left:auto;height:100%;flex:none;min-height:0}
+.side-video-frame{position:relative;flex:1;min-height:0;display:flex;justify-content:center;overflow:hidden}
+.side-video-frame video{width:100%;height:100%;object-fit:contain}
+.video-toggle{position:absolute;bottom:12px;right:12px;background:#0b1015dd;border-radius:4px}
+.sidevideo figcaption{text-align:center;margin-top:8px}
+body:not(.all-mode) .scene.sidevideo .passage{left:var(--card-gutter);width:min(360px,42%)}
+.all-mode .scene.sidevideo{height:auto}.all-mode .sidevideo .sticky>figure{height:650px}
+@media(max-width:760px){body:not(.all-mode) .scene.sidevideo .passage{width:44%;padding:14px}.sidevideo .passage h2{font-size:17px}.sidevideo .sticky>figure{width:52%}.all-mode .sidevideo .sticky>figure{width:100%;height:550px}}
