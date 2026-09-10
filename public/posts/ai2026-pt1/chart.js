@@ -1,57 +1,54 @@
 (async()=>{
 'use strict';
-const story=document.getElementById('story'),chart=document.getElementById('chart'),svg=document.getElementById('plot'),button=document.getElementById('overview');
-const ns='http://www.w3.org/2000/svg',reduce=matchMedia('(prefers-reduced-motion: reduce)');
-let data,full=reduce.matches,raf=0,geometry,clip,cursor,dynamic=[];
-const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
-function el(tag,attrs={},parent=svg,text){const node=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);if(text!==undefined)node.textContent=text;parent.appendChild(node);return node;}
-function state(){const top=story.getBoundingClientRect().top;const span=story.offsetHeight-document.querySelector('.stage').offsetHeight;const p=clamp(-top/span,0,1);const knots=[[0,1971],[.29,1990],[.59,2007],[.84,2022],[1,2026]];let year=2026;for(let i=1;i<knots.length;i++){if(p<=knots[i][0]){const [a,ay]=knots[i-1],[b,by]=knots[i];year=ay+(by-ay)*(p-a)/(b-a);break;}}return {p,year:full?2026:year};}
-function draw(){
- const W=chart.clientWidth,H=chart.clientHeight,small=W<540,m={l:small?44:62,r:small?37:52,t:32,b:small?43:48},iw=W-m.l-m.r,ih=H-m.t-m.b;
- if(iw<=0||ih<=0)return;
- svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.replaceChildren();
- el('title',{id:'chart-title'},svg,'Profit & Margins Across Tech Eras');el('desc',{id:'chart-desc'},svg,'Solid lines are net profits in billions of 2026 dollars, on the logarithmic left axis. Dashed lines are estimated average operating margins on the right axis.');
- const x=year=>m.l+(year-1970)/56*iw,yp=p=>m.t+ih*(1-Math.log(p/2)/Math.log(450/2)),ym=p=>m.t+ih*(1-p/60);geometry={x,yp,ym,m,iw,ih,W,H};
- const defs=el('defs');clip=el('rect',{x:m.l,y:m.t,width:0,height:ih},el('clipPath',{id:'timeline-clip'},defs));
- el('rect',{x:m.l,y:m.t,width:iw,height:ih,fill:'none',stroke:'#334351'});
- for(const y of [3,10,30,100,300]){el('line',{x1:m.l,x2:m.l+iw,y1:yp(y),y2:yp(y),stroke:'#22313d','stroke-width':.7});el('text',{x:m.l-8,y:yp(y)+4,'text-anchor':'end'},svg,`$${y}B`);}
- for(const y of [0,10,20,30,40,50,60])el('text',{x:m.l+iw+7,y:ym(y)+4},svg,`${y}%`);
- const years=small?[1970,1990,2010,2026]:[1970,1980,1990,2000,2010,2020,2026];
- for(const y of years){el('line',{x1:x(y),x2:x(y),y1:m.t,y2:m.t+ih,stroke:'#22313d','stroke-width':.6});el('text',{x:x(y),y:m.t+ih+19,'text-anchor':y===1970?'start':y===2026?'end':'middle'},svg,`${y}`);}
- el('text',{class:'axis-title',x:m.l,y:14},svg,small?'NET PROFIT · LOG':'NET PROFIT · 2026 $B (LOG)');el('text',{class:'axis-title',x:W-m.r,y:14,'text-anchor':'end'},svg,small?'AVG. OP. MARGIN':'AVG. OPERATING MARGIN');
- el('text',{class:'axis-title',x:m.l+iw/2,y:H-5,'text-anchor':'middle'},svg,'FISCAL YEAR');
- const marks=el('g',{'clip-path':'url(#timeline-clip)'});dynamic=[];
- for(const s of data.series){
-  const d=s.data.map((p,i)=>`${i?'L':'M'}${x(p.year)},${yp(p.profit)}`).join(' ');
-  el('path',{d,class:'profit',stroke:s.color,'data-series':s.id},marks);
-  el('line',{x1:x(s.start),x2:x(s.end),y1:ym(s.avgOperatingMargin),y2:ym(s.avgOperatingMargin),stroke:s.color,class:'avg'},marks);
-  const label=el('text',{class:'margin-label',x:s.id==='NVIDIA'?x(s.end)-3:(x(s.start)+x(s.end))/2,y:ym(s.avgOperatingMargin)+(s.id==='NVIDIA'?17:-8),'text-anchor':s.id==='NVIDIA'?'end':'middle'},svg,`${s.id} ${s.avgOperatingMargin}%`);
-  const dot=el('circle',{r:3.4,fill:s.color,stroke:'#0b1015','stroke-width':1.5},svg);
-  dynamic.push({s,label,dot});
- }
- cursor=el('line',{y1:m.t,y2:m.t+ih,stroke:'#8fb1c7','stroke-width':1,'stroke-dasharray':'2 5',opacity:.6},svg);
- update();
-}
-function update(){
- raf=0;if(!geometry)return;const {p,year}=state(),{x,yp,iw,m}=geometry;
- clip.setAttribute('width',clamp(x(year)-m.l+1,0,iw));cursor.setAttribute('x1',x(year));cursor.setAttribute('x2',x(year));cursor.style.display=full||p===1?'none':'';
- document.getElementById('year-readout').textContent=full?'FULL TIMELINE':`FY ${Math.floor(year)}`;
- document.getElementById('progress-fill').style.width=`${p*100}%`;svg.dataset.year=year.toFixed(3);
- for(const {s,label,dot} of dynamic){
-  label.style.opacity=year>=s.start+Math.min(2,(s.end-s.start)*.25)?'1':'0';
-  const exists=year>=s.start;dot.style.display=exists?'':'none';if(!exists)continue;
-  const yr=Math.min(year,s.end);let value=s.data.at(-1).profit;
-  for(let i=1;i<s.data.length;i++){const a=s.data[i-1],b=s.data[i];if(yr<=b.year){const f=clamp((yr-a.year)/(b.year-a.year),0,1);value=Math.exp(Math.log(a.profit)+(Math.log(b.profit)-Math.log(a.profit))*f);break;}}
-  dot.setAttribute('cx',x(yr));dot.setAttribute('cy',yp(value));
- }
-}
-function requestUpdate(){if(!raf)raf=requestAnimationFrame(update);}
-function syncButton(){button.setAttribute('aria-pressed',String(full));button.textContent=full?'Follow scrolling':'Show full chart';}
-button.addEventListener('click',()=>{full=!full;syncButton();update();});
-reduce.addEventListener('change',()=>{full=reduce.matches;syncButton();update();});
-try{const response=await fetch('/posts/ai2026-pt1/data.json');if(!response.ok)throw new Error('Data unavailable');data=await response.json();
- const table=document.createElement('table');table.innerHTML='<thead><tr><th scope="col">Era</th><th scope="col">Fiscal year</th><th scope="col">Net profit (2026 $B)</th></tr></thead>';const tbody=document.createElement('tbody');
- for(const s of data.series)for(const p of s.data){const row=document.createElement('tr');for(const v of [s.id,p.year,p.profit.toFixed(3)]){const cell=document.createElement('td');cell.textContent=String(v);row.appendChild(cell);}tbody.appendChild(row);}table.appendChild(tbody);document.getElementById('data-table').appendChild(table);
- syncButton();new ResizeObserver(draw).observe(chart);window.addEventListener('scroll',requestUpdate,{passive:true});window.addEventListener('resize',requestUpdate,{passive:true});draw();
-}catch(error){document.getElementById('load-error').hidden=false;button.disabled=true;console.error(error);}
+const NS='http://www.w3.org/2000/svg',root=document.getElementById('article'),button=document.getElementById('overview'),reduce=matchMedia('(prefers-reduced-motion: reduce)'),scenes=[...document.querySelectorAll('.scene')];
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
+let data,all=reduce.matches,raf=0;const renderers=new Map();
+const colors={'AI supply chain':'#81b9df','GAFA':'#d3b77e','Wintel':'#b897c7','IBM':'#73b6b0','Model labs':'#65c892','Apps':'#d3b77e','Foundation models':'#67c6ca','Hosting':'#b897c7','Chips':'#65c892'};
+function node(tag,attrs={},parent,text){const n=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;parent.appendChild(n);return n;}
+function label(parent,x,y,text,anchor='start',cls=''){return node('text',{x,y,'text-anchor':anchor,class:cls},parent,text);}
+function svgBase(scene){const svg=scene.querySelector('svg'),r=scene.querySelector('.plot-wrap').getBoundingClientRect(),W=Math.max(280,r.width),H=Math.max(250,r.height);svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);node('title',{},svg,scene.querySelector('h3').textContent);return {svg,W,H,small:W<600};}
+function legend(scene,series){const l=scene.querySelector('.legend');l.replaceChildren();for(const s of series){const span=document.createElement('span'),i=document.createElement('i');i.style.setProperty('--color',s.color);if(s.forecast)i.style.borderTopStyle='dashed';span.append(i,document.createTextNode(s.name));l.appendChild(span);}}
+function axes(svg,W,H,{xd,yd,xt,yt,yfmt=v=>v,xfmt=v=>v,log=false,right=false,yTitle='',xTitle='YEAR'}){const small=W<600,m={l:small?42:58,r:right?(small?36:52):16,t:32,b:42},iw=W-m.l-m.r,ih=H-m.t-m.b,x=v=>m.l+(v-xd[0])/(xd[1]-xd[0])*iw,y=v=>m.t+ih*(1-(log?Math.log(v/yd[0])/Math.log(yd[1]/yd[0]):(v-yd[0])/(yd[1]-yd[0])));
+ node('rect',{x:m.l,y:m.t,width:iw,height:ih,fill:'none',stroke:'#334351'},svg);
+ yt.forEach(v=>{node('line',{x1:m.l,x2:m.l+iw,y1:y(v),y2:y(v),stroke:'#263744','stroke-width':.7},svg);label(svg,m.l-7,y(v)+4,yfmt(v),'end');});
+ xt.forEach((v,i)=>{node('line',{x1:x(v),x2:x(v),y1:m.t,y2:m.t+ih,stroke:'#263744','stroke-width':.6},svg);label(svg,x(v),m.t+ih+18,xfmt(v),i===0?'start':i===xt.length-1?'end':'middle');});
+ label(svg,m.l,14,yTitle,'start','axis-title');label(svg,m.l+iw/2,H-3,xTitle,'middle','axis-title');return {m,iw,ih,x,y};}
+function clipping(svg,id,m,ih){const defs=node('defs',{},svg),cp=node('clipPath',{id},defs),rect=node('rect',{x:m.l,y:m.t,width:0,height:ih},cp),g=node('g',{'clip-path':`url(#${id})`},svg);return {rect,g,defs};}
+function linePath(points,x,y){return points.map((p,i)=>`${i?'L':'M'}${x(p[0])},${y(p[1])}`).join(' ');}
+function drawLines(scene){const {svg,W,H,small}=svgBase(scene),investment=scene.dataset.kind==='investment',series=investment?data.investment:data.construction,xd=investment?[1852,2030]:[2014,2026.5834],yd=investment?[0,6]:[0,80];
+ const a=axes(svg,W,H,{xd,yd,xt:investment?(small?[1852,1900,1950,2000,2030]:[1852,1880,1910,1940,1970,2000,2030]):(small?[2014,2018,2022,2026.5834]:[2014,2016,2018,2020,2022,2024,2026.5834]),yt:investment?[0,1,2,3,4,5,6]:[0,20,40,60,80],yfmt:v=>investment?`${v}%`:`$${v}B`,xfmt:v=>v===2026.5834?'Aug 2026':String(Math.floor(v)),yTitle:investment?'CAPITAL EXPENDITURE / US GDP':'CONSTRUCTION SPENDING · $B'}),c=clipping(svg,`clip-${scene.dataset.step}`,a.m,a.ih);
+ if(investment){node('rect',{x:a.x(1996),y:a.m.t,width:a.x(2002)-a.x(1996),height:a.ih,fill:'#b2a3d8',opacity:.07},c.g);label(c.g,a.x(1999),a.m.t+18,'Telecom','middle','series-label');}
+ for(const s of series){node('path',{d:linePath(s.points,a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2,'stroke-dasharray':s.forecast?(s.name.includes('bull')?'2 5':'7 4'):'none','stroke-linejoin':'round'},c.g);}
+ if(!investment){for(const s of series){node('path',{d:linePath(s.projection,a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2,'stroke-dasharray':'6 5'},c.g);}const start=series[0].projection[0][0];node('rect',{x:a.x(start),y:a.m.t,width:a.x(xd[1])-a.x(start),height:a.ih,fill:'#87aec2',opacity:.045},c.g);const x=a.x(2022+10/12);node('line',{x1:x,x2:x,y1:a.m.t,y2:a.m.t+a.ih,stroke:'#9db2c3','stroke-width':1,'stroke-dasharray':'3 5'},c.g);label(c.g,x-5,a.m.t+18,'ChatGPT','end','series-label');}
+ const cursor=node('line',{y1:a.m.t,y2:a.m.t+a.ih,stroke:'#90abc0','stroke-dasharray':'2 5',opacity:.6},svg);legend(scene,investment?series:[...series,{name:'Trend projection',color:'#9db2c3',forecast:true}]);
+ return p=>{const t=clamp(.035+p/.84),year=lerp(...xd,t),x=a.x(year);c.rect.setAttribute('width',Math.min(a.iw,x-a.m.l+1));cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);cursor.style.opacity=t===1?0:.6;scene.querySelector('.readout').textContent=String(Math.floor(year));};}
+function drawChips(scene){const {svg,W,H,small}=svgBase(scene),q=data.chips.quarters,groups=data.chips.groups,a=axes(svg,W,H,{xd:[0,q.length],yd:[0,26],xt:small?[.5,4.5,8.5]:q.map((_,i)=>i+.5),yt:[0,5,10,15,20,25],xfmt:v=>q[Math.floor(v)].label,yfmt:v=>`${v}M`,yTitle:'CUMULATIVE COMPUTE · MILLION H100e',xTitle:'QUARTER'}),c=clipping(svg,'clip-chips',a.m,a.ih),pat=node('pattern',{id:'incomplete',width:6,height:6,patternUnits:'userSpaceOnUse',patternTransform:'rotate(35)'},c.defs);node('line',{x1:0,x2:0,y1:0,y2:6,stroke:'#cbdce8','stroke-width':2,opacity:.55},pat);
+ q.forEach((quarter,j)=>{let bottom=0;quarter.values.forEach((v,i)=>{if(!v)return;const attrs={x:a.x(j)+2,y:a.y(bottom+v),width:a.iw/q.length-4,height:a.y(bottom)-a.y(bottom+v)},bar=node('rect',{...attrs,fill:groups[i].color,'fill-opacity':.75},c.g);node('title',{},bar,`${quarter.label} · ${groups[i].name}: ${v.toFixed(2)}M H100e`);if(quarter.incomplete.includes(groups[i].name)||(j===8&&['Trainium1','Trainium2','Ascend 910B','Ascend 910C','Siyuan 590'].includes(groups[i].name)))node('rect',{...attrs,fill:'url(#incomplete)'},c.g);bottom+=v;});});
+ legend(scene,groups);return p=>{const t=clamp(.07+p/.84);c.rect.setAttribute('width',a.iw*t);const qi=Math.min(q.length-1,Math.floor(t*q.length));scene.querySelector('.readout').textContent=q[qi].label;};}
+function drawRevenue(scene){const {svg,W,H,small}=svgBase(scene),left=small?78:110,right=small?8:25,gap=small?18:50,pw=(W-left-right-gap)/2,top=45,bottom=35,rh=(H-top-bottom)/data.revenue.length,max=320;
+ const bars=[];for(let panel=0;panel<2;panel++){const x0=left+panel*(pw+gap);label(svg,x0+pw/2,16,panel?'Q1 2026':'Q1 2024','middle','series-label');[0,100,200,300].filter(v=>!small||v===0||v===300).forEach(v=>{const x=x0+v/max*pw;node('line',{x1:x,x2:x,y1:top-8,y2:H-bottom,stroke:'#2c3d4a','stroke-width':.7},svg);label(svg,x,H-bottom+18,`$${v}B`,v===0?'start':v===300?'end':'middle');});
+ data.revenue.forEach((d,i)=>{const y=top+i*rh;if(panel===0)label(svg,left-9,y+rh*.58,d.name,'end');const value=d.values[panel];if(value===null){label(svg,x0+3,y+rh*.58,'·');return;}const bar=node('rect',{x:x0,y:y+rh*.15,width:0,height:rh*.66,fill:colors[d.category],'fill-opacity':.75,stroke:colors[d.category],'stroke-width':.5},svg);node('title',{},bar,`${d.name}, ${panel?'2026':'2024'}: approx. $${value}B`);const valueLabel=d.name==='NVIDIA'?label(svg,x0+value/max*pw-4,y+rh*.59,`~$${Math.round(value)}B`,'end','value'):null;bars.push({bar,panel,value,name:d.name,valueLabel});});}
+ label(svg,left+(W-left-right)/2,H-1,'ANNUALIZED GenAI REVENUE · $B','middle','axis-title');legend(scene,Object.entries(colors).filter(([n])=>['Apps','Foundation models','Hosting','Chips'].includes(n)).map(([name,color])=>({name,color})));
+ return p=>{const second=p>=.66;scene.querySelector('[data-passage="5"]').hidden=!all&&second;scene.querySelector('[data-passage="6"]').hidden=!all&&!second;scene.dataset.currentStep=second?'6':'5';for(const b of bars){const t=all?1:b.panel===0?clamp(.1+p/.27):clamp((p-.2)/.4);b.bar.setAttribute('width',b.value/max*pw*t);if(b.valueLabel)b.valueLabel.style.opacity=t>.95?1:0;b.bar.setAttribute('fill-opacity',second&&!all&&b.name!=='NVIDIA'?.22:.75);}scene.querySelector('.readout').textContent=second?'NVIDIA':p<.2?'Q1 2024':'Q1 2024 → Q1 2026';};}
+function drawProfit(scene){const {svg,W,H,small}=svgBase(scene),margin=scene.dataset.kind==='margin',metric=margin?'margin':'profit',rows=data.profit,left=small?82:130,right=small?55:100,top=32,bottom=36,iw=W-left-right,rh=(H-top-bottom)/rows.length,domain=margin?[-200,80]:[-60,290],x=v=>left+(v-domain[0])/(domain[1]-domain[0])*iw;
+ const ticks=margin?[-200,-100,0,60]:[-50,0,100,200];for(const t of ticks){node('line',{x1:x(t),x2:x(t),y1:top,y2:H-bottom,stroke:t===0?'#8097a9':'#2b3d4b','stroke-width':t===0?1:.7},svg);label(svg,x(t),top-12,margin?`${t}%`:`${t<0?'−':''}$${Math.abs(t)}B`,'middle');}
+ const bars=[];rows.forEach((d,i)=>{const y=top+i*rh,val=d[metric],color=colors[d.group];label(svg,left-9,y+rh*.58,d.name,'end');if(val===null){label(svg,x(0)+4,y+rh*.58,small?'Positive; n/a':'Positive; not public','start','value');return;}
+ const bar=node('rect',{x:x(0),y:y+rh*.15,width:0,height:rh*.68,fill:color,'fill-opacity':.65,stroke:color,'stroke-width':.7},svg);node('title',{},bar,`${d.name}: ${val}${margin?'%':' billion dollars'}`);const txt=label(svg,val<0?x(val)+4:x(val)+6,y+rh*.58,`${val<0?'−':''}${margin?'':'$'}${Math.abs(val).toFixed(1)}${margin?'%':'B'}`,'start','value');bars.push({bar,txt,val});});
+ label(svg,left+iw/2,H-2,margin?'OPERATING MARGIN (%)':'ANNUALIZED OPERATING PROFIT ($B)','middle','axis-title');legend(scene,['AI supply chain','GAFA','Wintel','IBM','Model labs'].map(name=>({name,color:colors[name]})));
+ return p=>{const t=clamp(.03+p/.84);bars.forEach(({bar,txt,val})=>{const v=val*t;bar.setAttribute('x',Math.min(x(0),x(v)));bar.setAttribute('width',Math.abs(x(v)-x(0)));txt.style.opacity=t>.94?1:0;});scene.querySelector('.readout').textContent=margin?'GAAP / LATEST QUARTER':'LATEST QUARTER × 4';};}
+function drawEras(scene){const {svg,W,H,small}=svgBase(scene),a=axes(svg,W,H,{xd:[1970,2026],yd:[2,450],xt:small?[1970,1990,2010,2026]:[1970,1980,1990,2000,2010,2020,2026],yt:[3,10,30,100,300],yfmt:v=>`$${v}B`,log:true,right:true,yTitle:small?'NET PROFIT · LOG':'NET PROFIT · 2026 $B (LOG)',xTitle:'FISCAL YEAR'}),ym=v=>a.m.t+a.ih*(1-v/60),c=clipping(svg,'clip-eras',a.m,a.ih),labels=[];
+ for(const t of [0,10,20,30,40,50,60])label(svg,a.m.l+a.iw+7,ym(t)+4,`${t}%`);label(svg,W-a.m.r,14,small?'AVG. OP. MARGIN':'AVG. OPERATING MARGIN','end','axis-title');
+ data.eras.forEach(s=>{node('path',{d:linePath(s.data.map(p=>[p.year,p.profit]),a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2.3,'stroke-linejoin':'round'},c.g);node('line',{x1:a.x(s.start),x2:a.x(s.end),y1:ym(s.avgOperatingMargin),y2:ym(s.avgOperatingMargin),stroke:s.color,'stroke-width':1.5,'stroke-dasharray':'6 5'},c.g);const txt=label(svg,s.id==='NVIDIA'?a.x(s.end)-4:(a.x(s.start)+a.x(s.end))/2,ym(s.avgOperatingMargin)+(s.id==='NVIDIA'?17:-8),`${s.id} ${s.avgOperatingMargin}%`,s.id==='NVIDIA'?'end':'middle','series-label');labels.push({txt,start:s.start});});
+ legend(scene,[{name:'Net profit',color:'#b6cbdc'},{name:'Average operating margin',color:'#b6cbdc',forecast:true}]);return p=>{const t=clamp(.025+p/.86),year=lerp(1970,2026,t);c.rect.setAttribute('width',a.iw*t);labels.forEach(({txt,start})=>txt.style.opacity=year>=start+1?1:0);scene.querySelector('.readout').textContent=`FY ${Math.floor(year)}`;};}
+function setupVideo(scene){const video=scene.querySelector('video');let target=0,loaded=false;const load=()=>{if(loaded)return;loaded=true;video.querySelector('source').src=video.querySelector('source').dataset.src;video.load();};const seek=()=>{if(!all&&video.paused&&Number.isFinite(video.duration)&&!video.seeking&&Math.abs(video.currentTime-target)>.1)video.currentTime=target;};video.addEventListener('seeked',seek);video.addEventListener('loadedmetadata',seek);const io=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))load();},{rootMargin:'500px'});io.observe(scene);return p=>{if(!loaded)return;if(Number.isFinite(video.duration)){target=clamp(p/.9)*(video.duration-.15);seek();}scene.querySelector('.readout').textContent=all?'VIDEO':`${Math.floor(target)}s`;};}
+function sceneProgress(scene){if(all)return 1;const rect=scene.getBoundingClientRect(),sticky=scene.querySelector('.sticky'),headerH=document.querySelector('header').offsetHeight;return clamp((headerH-rect.top)/(scene.offsetHeight-sticky.offsetHeight));}
+function update(){raf=0;let current=scenes[0];for(const scene of scenes){const p=sceneProgress(scene);renderers.get(scene)?.(p);scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);if(scene.getBoundingClientRect().top<innerHeight*.4)current=scene;}document.getElementById('counter').textContent=`${String(current.dataset.currentStep||current.dataset.step).padStart(2,'0')} / 09`;}
+function request(){if(!raf)raf=requestAnimationFrame(update);}
+function toggle(){document.body.classList.toggle('all-mode',all);button.setAttribute('aria-pressed',String(all));button.textContent=all?'Follow scroll':'Show all';request();}
+button.addEventListener('click',()=>{const active=scenes.find(s=>s.getBoundingClientRect().top<=100&&s.getBoundingClientRect().bottom>100)||scenes[0];all=!all;toggle();requestAnimationFrame(()=>{active.scrollIntoView();request();});});reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});
+try{const res=await fetch('/posts/ai2026-pt1/charts.json');if(!res.ok)throw new Error('Chart data unavailable');data=await res.json();
+ const draw=scene=>{const kind=scene.dataset.kind;const fn=kind==='investment'||kind==='construction'?drawLines:kind==='chips'?drawChips:kind==='revenue'?drawRevenue:kind==='margin'||kind==='profit'?drawProfit:drawEras;renderers.set(scene,fn(scene));request();};
+ for(const scene of scenes){if(scene.dataset.kind==='video')renderers.set(scene,setupVideo(scene));else{draw(scene);new ResizeObserver(()=>draw(scene)).observe(scene.querySelector('.plot-wrap'));}}
+ toggle();window.addEventListener('scroll',request,{passive:true});window.addEventListener('resize',request,{passive:true});update();
+}catch(error){console.error(error);button.disabled=true;const p=document.createElement('p');p.textContent='Chart data could not load. Please reload the page.';root.prepend(p);}
 })();
