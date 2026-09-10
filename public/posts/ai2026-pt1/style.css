@@ -21,7 +21,7 @@
 /* Saturated series and scroll-synchronized legend entries. */
 .legend span{color:var(--color,var(--ink));transition:opacity .16s ease,transform .16s ease}
 .legend span.pending{visibility:hidden;opacity:0;transform:translateY(5px)}
-.legend i{filter:drop-shadow(0 0 3px var(--color))}
+.legend i{filter:none}
 .track span{background:#35e7ff}
 @media(prefers-reduced-motion:reduce){.legend span{transition:none}}
 
