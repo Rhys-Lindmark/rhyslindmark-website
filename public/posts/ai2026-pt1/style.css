@@ -91,3 +91,4 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 .scene.centers{--axis-inset:266px}
 body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{left:calc(var(--card-gutter) + var(--axis-inset));width:min(clamp(280px,28vw,360px),calc(100% - var(--card-gutter) - var(--card-gutter) - var(--axis-inset)))}
 @media(max-width:760px){.scene{--card-gutter:16px;--axis-inset:80px}.scene.revenue{--axis-inset:94px}.scene.margin,.scene.profit{--axis-inset:98px}.scene.centers{--axis-inset:152px}body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{width:min(300px,calc(100% - 32px - var(--axis-inset)))}}
+@media(min-width:632px) and (max-width:760px){.scene{--axis-inset:96px}.scene.revenue{--axis-inset:126px}.scene.margin,.scene.profit{--axis-inset:146px}.scene.centers{--axis-inset:266px}}
