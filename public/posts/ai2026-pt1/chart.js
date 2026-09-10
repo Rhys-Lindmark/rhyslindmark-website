@@ -125,9 +125,18 @@ function drawCapacity(scene){
  };
 }
 function drawPermits(scene){
- const {svg,W,H,small}=svgBase(scene),d=data.permits,a=axes(svg,W,H,{xd:[0,3],yd:[0,50],xt:[.5,1.5,2.5],xfmt:v=>['Planned','Permitted','Shortfall'][Math.floor(v)],yt:[0,10,20,30,40,50],yTitle:'NET NEW CAPACITY · GW',xTitle:'2028'}),bw=Math.min(130,a.iw*.2),values=[d.plannedGW,d.permittedGW,d.shortfallGW],colors=['#7293a9','#63ff91','#ff70de'];
- const bars=values.map((v,i)=>{const bar=node('rect',{x:a.x(i+.5)-bw/2,y:a.y(0),width:bw,height:0,fill:colors[i],'fill-opacity':.9},svg),txt=label(svg,a.x(i+.5),a.y(v)-12,`${v} GW`,'middle','value');return {bar,txt,v};});
- legend(scene,[]);return p=>{bars.forEach(({bar,txt,v},i)=>{const t=all?1:clamp((p-i*.2)/.35+.04);bar.setAttribute('y',a.y(v*t));bar.setAttribute('height',a.y(0)-a.y(v*t));txt.style.opacity=t>.05?1:0;});scene.querySelector('.readout').textContent='44 − 25 = 19 GW';};
+ const {svg,W,H,small}=svgBase(scene),d=data.permits,o=data.opportunity,a=axes(svg,W,H,{xd:[0,3],yd:[0,110],xt:[],yt:[0,20,40,60,80,100],yTitle:'CAPACITY ADDED SINCE 2020 · GW',xTitle:'YEAR'}),bw=Math.min(120,a.iw*.13),base=a.y(0),x0=a.x(.35),x1=a.x(1),x2=a.x(1.75),x3=a.x(2.5);
+ [2020,2025,2028,2040].forEach((year,i)=>label(svg,[x0,x1,x2,x3][i],base+22,String(year),'middle'));
+ node('line',{x1:x0-bw/2,x2:x0+bw/2,y1:base,y2:base,stroke:'#7b95a7','stroke-width':3},svg);label(svg,x0,base-12,'Baseline','middle','value');
+ const n=o.builtGW*o.nvidiaShare;
+ node('rect',{x:x1-bw/2,y:a.y(n),width:bw,height:base-a.y(n),fill:'#63ff91'},svg);
+ node('rect',{x:x1-bw/2,y:a.y(o.builtGW),width:bw,height:a.y(n)-a.y(o.builtGW),fill:'#7293a9'},svg);label(svg,x1,a.y(o.builtGW)-12,`${o.builtGW} GW`,'middle','value');
+ node('rect',{x:x3-bw/2,y:a.y(o.targetGW),width:bw,height:base-a.y(o.targetGW),fill:'#b985ff','fill-opacity':.35,stroke:'#b985ff','stroke-width':2,'stroke-dasharray':'7 5'},svg);const futureLabel=label(svg,x3,a.y(o.targetGW)-12,`${o.targetGW} GW`,'middle','value');futureLabel.style.fill='#b985ff';
+ const planned=node('rect',{x:x2-bw/2,y:a.y(d.plannedGW),width:bw,height:base-a.y(d.plannedGW),fill:'none',stroke:'#b985ff','stroke-width':2},svg),permitted=node('rect',{x:x2-bw/2,width:bw,fill:'#63ff91'},svg),shortfall=node('rect',{x:x2-bw/2,width:bw,fill:'#ff70de','fill-opacity':.65},svg);
+ const annotation=(value,name,y)=>{const t=label(svg,x2,y,'','middle','value');if(small)t.style.fontSize='9px';node('tspan',{x:x2},t,`${value} GW`);node('tspan',{x:x2,dy:small?11:14},t,name);return t;};
+ annotation(d.plannedGW,'planned',a.y(d.plannedGW)-(small?25:30));const permittedLabel=annotation(d.permittedGW,'permitted',a.y(d.permittedGW/2)-4),shortfallLabel=annotation(d.shortfallGW,'shortfall',a.y(d.permittedGW+d.shortfallGW/2)-4);
+ legend(scene,[]);
+ return p=>{const t=all?1:clamp(p/.75),v=d.permittedGW*t,gap=d.shortfallGW*t;permitted.setAttribute('y',a.y(v));permitted.setAttribute('height',base-a.y(v));shortfall.setAttribute('y',a.y(v+gap));shortfall.setAttribute('height',a.y(v)-a.y(v+gap));permittedLabel.style.opacity=t>.9?1:0;shortfallLabel.style.opacity=t>.9?1:0;scene.querySelector('.readout').textContent='44 − 25 = 19 GW';};
 }
 function drawElectricity(scene){
  const {svg,W,H,small}=svgBase(scene),a=axes(svg,W,H,{xd:[1999,2040],yd:[0,9],xt:small?[1999,2025,2040]:[1999,2010,2020,2030,2040],yt:[0,2,4,6,8],yTitle:'AVERAGE ELECTRICITY OUTPUT · TW',xTitle:'YEAR'}),c=clipping(svg,'clip-electricity',a.m,a.ih),labels=[];
