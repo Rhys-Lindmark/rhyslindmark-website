@@ -1,0 +1,287 @@
+{
+  "meta": {
+    "profitBasis": "GAAP net income, adjusted to 2026 dollars with CPI-U",
+    "targetCPI": 330.873,
+    "aggregation": "Wintel = Microsoft + Intel; GAFA = Alphabet/Google + Apple + Meta + Amazon",
+    "marginNote": "Rounded period-weighted operating-margin estimates copied from the original chart; not derived from the net-income series.",
+    "provenance": "Original chart from Find current Nvidia margins, August 28, 2026. Prototype reuses its data without a fresh financial audit."
+  },
+  "series": [
+    {
+      "id": "IBM",
+      "start": 1971,
+      "end": 1990,
+      "data": [
+        {
+          "year": 1971,
+          "profit": 8.745
+        },
+        {
+          "year": 1972,
+          "profit": 10.051
+        },
+        {
+          "year": 1973,
+          "profit": 11.693
+        },
+        {
+          "year": 1975,
+          "profit": 12.233
+        },
+        {
+          "year": 1976,
+          "profit": 13.89
+        },
+        {
+          "year": 1977,
+          "profit": 14.792
+        },
+        {
+          "year": 1980,
+          "profit": 13.615
+        },
+        {
+          "year": 1983,
+          "profit": 18.208
+        },
+        {
+          "year": 1984,
+          "profit": 20.947
+        },
+        {
+          "year": 1985,
+          "profit": 20.172
+        },
+        {
+          "year": 1986,
+          "profit": 14.448
+        },
+        {
+          "year": 1987,
+          "profit": 15.318
+        },
+        {
+          "year": 1988,
+          "profit": 16.225
+        },
+        {
+          "year": 1989,
+          "profit": 16.017
+        },
+        {
+          "year": 1990,
+          "profit": 15.245
+        }
+      ],
+      "avgOperatingMargin": 18,
+      "color": "#aab3c2"
+    },
+    {
+      "id": "Wintel",
+      "start": 1990,
+      "end": 2010,
+      "data": [
+        {
+          "year": 1990,
+          "profit": 2.353
+        },
+        {
+          "year": 1991,
+          "profit": 3.113
+        },
+        {
+          "year": 1992,
+          "profit": 4.193
+        },
+        {
+          "year": 1993,
+          "profit": 7.45
+        },
+        {
+          "year": 1994,
+          "profit": 7.679
+        },
+        {
+          "year": 1995,
+          "profit": 10.9
+        },
+        {
+          "year": 1996,
+          "profit": 15.525
+        },
+        {
+          "year": 1997,
+          "profit": 21.436
+        },
+        {
+          "year": 1998,
+          "profit": 21.435
+        },
+        {
+          "year": 1999,
+          "profit": 29.982
+        },
+        {
+          "year": 2000,
+          "profit": 38.356
+        },
+        {
+          "year": 2001,
+          "profit": 16.14
+        },
+        {
+          "year": 2002,
+          "profit": 20.141
+        },
+        {
+          "year": 2003,
+          "profit": 28.112
+        },
+        {
+          "year": 2004,
+          "profit": 27.478
+        },
+        {
+          "year": 2005,
+          "profit": 35.438
+        },
+        {
+          "year": 2006,
+          "profit": 28.956
+        },
+        {
+          "year": 2007,
+          "profit": 33.583
+        },
+        {
+          "year": 2008,
+          "profit": 35.312
+        },
+        {
+          "year": 2009,
+          "profit": 29.204
+        },
+        {
+          "year": 2010,
+          "profit": 45.857
+        }
+      ],
+      "avgOperatingMargin": 32,
+      "color": "#38cad7"
+    },
+    {
+      "id": "GAFA",
+      "start": 2007,
+      "end": 2025,
+      "data": [
+        {
+          "year": 2007,
+          "profit": 13.045
+        },
+        {
+          "year": 2008,
+          "profit": 16.895
+        },
+        {
+          "year": 2009,
+          "profit": 24.144
+        },
+        {
+          "year": 2010,
+          "profit": 36.832
+        },
+        {
+          "year": 2011,
+          "profit": 54.855
+        },
+        {
+          "year": 2012,
+          "profit": 75.638
+        },
+        {
+          "year": 2013,
+          "profit": 73.21
+        },
+        {
+          "year": 2014,
+          "profit": 78.757
+        },
+        {
+          "year": 2015,
+          "profit": 103.346
+        },
+        {
+          "year": 2016,
+          "profit": 107.191
+        },
+        {
+          "year": 2017,
+          "profit": 107.96
+        },
+        {
+          "year": 2018,
+          "profit": 161.354
+        },
+        {
+          "year": 2019,
+          "profit": 154.883
+        },
+        {
+          "year": 2020,
+          "profit": 189.376
+        },
+        {
+          "year": 2021,
+          "profit": 297.261
+        },
+        {
+          "year": 2022,
+          "profit": 203.812
+        },
+        {
+          "year": 2023,
+          "profit": 260.952
+        },
+        {
+          "year": 2024,
+          "profit": 332.733
+        },
+        {
+          "year": 2025,
+          "profit": 392.889
+        }
+      ],
+      "avgOperatingMargin": 21,
+      "color": "#b68cff"
+    },
+    {
+      "id": "NVIDIA",
+      "start": 2022,
+      "end": 2026,
+      "data": [
+        {
+          "year": 2022,
+          "profit": 11.027
+        },
+        {
+          "year": 2023,
+          "profit": 4.743
+        },
+        {
+          "year": 2024,
+          "profit": 31.389
+        },
+        {
+          "year": 2025,
+          "profit": 74.897
+        },
+        {
+          "year": 2026,
+          "profit": 120.067
+        }
+      ],
+      "avgOperatingMargin": 56,
+      "color": "#50e68a"
+    }
+  ]
+}
