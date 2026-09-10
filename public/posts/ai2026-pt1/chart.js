@@ -9,11 +9,12 @@ function label(parent,x,y,text,anchor='start',cls=''){return node('text',{x,y,'t
 function svgBase(scene){const svg=scene.querySelector('svg'),r=scene.querySelector('.plot-wrap').getBoundingClientRect(),W=Math.max(280,r.width),H=Math.max(250,r.height);svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);node('title',{},svg,scene.querySelector('h3').textContent);return {svg,W,H,small:W<600};}
 function legend(scene,series){const l=scene.querySelector('.legend');l.replaceChildren();for(const s of series){const span=document.createElement('span'),i=document.createElement('i');i.style.setProperty('--color',s.color);span.style.setProperty('--color',s.color);if(s.forecast)i.style.borderTopStyle='dashed';span.append(i,document.createTextNode(s.name));l.appendChild(span);}}
 function revealLegend(scene,visible){[...scene.querySelectorAll('.legend span')].forEach((el,i)=>{const show=all||visible(i);el.classList.toggle('pending',!show);el.setAttribute('aria-hidden',String(!show));});}
-function axes(svg,W,H,{xd,yd,xt,yt,yfmt=v=>v,xfmt=v=>v,log=false,right=false,yTitle='',xTitle='YEAR'}){const small=W<600,m={l:small?42:58,r:right?(small?36:52):16,t:32,b:42},iw=W-m.l-m.r,ih=H-m.t-m.b,x=v=>m.l+(v-xd[0])/(xd[1]-xd[0])*iw,y=v=>m.t+ih*(1-(log?Math.log(v/yd[0])/Math.log(yd[1]/yd[0]):(v-yd[0])/(yd[1]-yd[0])));
+function verticalTitle(svg,x,y,text,right=false){const title=label(svg,x,y,text,'middle','axis-title');title.setAttribute('transform',`rotate(${right?90:-90} ${x} ${y})`);return title;}
+function axes(svg,W,H,{xd,yd,xt,yt,yfmt=v=>v,xfmt=v=>v,log=false,right=false,yTitle='',xTitle='YEAR'}){const small=W<600,m={l:small?64:80,r:right?(small?58:74):16,t:20,b:42},iw=W-m.l-m.r,ih=H-m.t-m.b,x=v=>m.l+(v-xd[0])/(xd[1]-xd[0])*iw,y=v=>m.t+ih*(1-(log?Math.log(v/yd[0])/Math.log(yd[1]/yd[0]):(v-yd[0])/(yd[1]-yd[0])));
  node('rect',{x:m.l,y:m.t,width:iw,height:ih,fill:'none',stroke:'#334351'},svg);
  yt.forEach(v=>{node('line',{x1:m.l,x2:m.l+iw,y1:y(v),y2:y(v),stroke:'#263744','stroke-width':.7},svg);label(svg,m.l-7,y(v)+4,yfmt(v),'end');});
  xt.forEach((v,i)=>{node('line',{x1:x(v),x2:x(v),y1:m.t,y2:m.t+ih,stroke:'#263744','stroke-width':.6},svg);label(svg,x(v),m.t+ih+18,xfmt(v),i===0?'start':i===xt.length-1?'end':'middle');});
- label(svg,m.l,14,yTitle,'start','axis-title');label(svg,m.l+iw/2,H-3,xTitle,'middle','axis-title');return {m,iw,ih,x,y};}
+ verticalTitle(svg,12,m.t+ih/2,yTitle);label(svg,m.l+iw/2,H-3,xTitle,'middle','axis-title');return {m,iw,ih,x,y};}
 function clipping(svg,id,m,ih){const defs=node('defs',{},svg),cp=node('clipPath',{id},defs),rect=node('rect',{x:m.l,y:m.t,width:0,height:ih},cp),g=node('g',{'clip-path':`url(#${id})`},svg);return {rect,g,defs};}
 function linePath(points,x,y){return points.map((p,i)=>`${i?'L':'M'}${x(p[0])},${y(p[1])}`).join(' ');}
 function drawLines(scene){const {svg,W,H,small}=svgBase(scene),investment=scene.dataset.kind==='investment',series=investment?data.investment:data.construction,xd=investment?[1852,2030]:[2014,2026.5834],yd=investment?[0,6]:[0,80];
@@ -39,7 +40,7 @@ function drawProfit(scene){const {svg,W,H,small}=svgBase(scene),margin=scene.dat
  return p=>{const t=clamp(.03+p/.84);bars.forEach(({bar,txt,val})=>{const v=val*t;bar.setAttribute('x',Math.min(x(0),x(v)));bar.setAttribute('width',Math.abs(x(v)-x(0)));txt.style.opacity=t>.94?1:0;});scene.querySelector('.readout').textContent=margin?'GAAP / LATEST QUARTER':'LATEST QUARTER × 4';};}
 function drawEras(scene){
  const {svg,W,H,small}=svgBase(scene),a=axes(svg,W,H,{xd:[1970,2026],yd:[2,450],xt:small?[1970,1990,2010,2026]:[1970,1980,1990,2000,2010,2020,2026],yt:[3,10,30,100,300],yfmt:v=>`$${v}B`,log:true,right:true,yTitle:small?'NET PROFIT · LOG':'NET PROFIT · 2026 $B (LOG)',xTitle:'FISCAL YEAR'}),ym=v=>a.m.t+a.ih*(1-v/60);
- for(const t of [0,10,20,30,40,50,60])label(svg,a.m.l+a.iw+7,ym(t)+4,`${t}%`);label(svg,W-a.m.r,14,small?'AVG. OP. MARGIN':'AVG. OPERATING MARGIN','end','axis-title');
+ for(const t of [0,10,20,30,40,50,60])label(svg,a.m.l+a.iw+7,ym(t)+4,`${t}%`);verticalTitle(svg,W-12,a.m.t+a.ih/2,small?'AVG. OP. MARGIN':'AVG. OPERATING MARGIN',true);
  const series=data.eras.map((s,i)=>{
   const profit=clipping(svg,`era-profit-${i}`,a.m,a.ih),margin=clipping(svg,`era-margin-${i}`,a.m,a.ih);
   node('path',{d:linePath(s.data.map(p=>[p.year,p.profit]),a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2.3,'stroke-linejoin':'round'},profit.g);
