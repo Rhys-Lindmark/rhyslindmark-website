@@ -242,7 +242,7 @@ function followSlideLink(){
  const raw=hash?hash[1]:query,id=/^\d+$/.test(raw||'')?String(Number(raw)):null,passage=id&&document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');
  slideLinksReady=true;if(!scene)return;
  setSlideAddress(id);
- const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=steps.indexOf(id),progress=scene.dataset.kind==='revenue'&&id==='6'?.66:index>0?index/steps.length:0;
+ const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=steps.indexOf(id),progress=scene.dataset.kind==='revenue'?(id==='6'?.796:.264):scene.dataset.kind==='eras'?.088:['fulltext','chapter','statement'].includes(scene.dataset.kind)?0:(Math.max(0,index)+.4)/steps.length;
  const travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight),top=window.scrollY+scene.getBoundingClientRect().top+(all?0:progress*travel);
  window.scrollTo({top,behavior:'instant'});request();
 }
