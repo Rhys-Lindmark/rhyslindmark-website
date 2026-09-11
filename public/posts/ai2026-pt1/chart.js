@@ -234,7 +234,7 @@ function setupBuildingReturn(scene){
 
 let slideLinksReady=false;
 function setSlideAddress(id){
- const url=new URL(window.location.href);url.searchParams.set('slide',id);url.hash=id;
+ const url=new URL(window.location.href);url.searchParams.set('slide',id);url.hash='';
  if(url.href!==window.location.href)window.history.replaceState(window.history.state,'',url.pathname+url.search+url.hash);
 }
 function followSlideLink(){

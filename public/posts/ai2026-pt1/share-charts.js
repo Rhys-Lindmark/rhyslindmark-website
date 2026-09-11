@@ -23,7 +23,7 @@ function snapshot(svg,figure){
  const legends=[...figure.querySelectorAll('.legend span')].filter(visible).map(n=>{const marker=n.querySelector('i'),s=marker?getComputedStyle(marker):null;return {text:prose(n),color:s?.getPropertyValue('--color').trim()||s?.borderTopColor||getComputedStyle(n).color,bar:!!s&&parseFloat(s.height)>parseFloat(s.width),dashed:s?.borderTopStyle==='dashed'};});
  const caption=figure.querySelector('figcaption'),sourceText=prose(caption),sources=caption?[...caption.querySelectorAll('a[href]')].map(a=>`${prose(a)}: ${a.href}`):[];
  const rawStep=scene.dataset.currentStep||passage?.dataset.passage||scene.dataset.step||scene.id,step=String(Math.floor(Number(rawStep)))||rawStep;
- return {xml:new XMLSerializer().serializeToString(clone),width,height,text:prose(passage),legends,sources:sources.length?sources:sourceText?[sourceText]:[],step,url:`https://www.rhyslindmark.com/posts/ai2026-pt1/?slide=${encodeURIComponent(step)}#${encodeURIComponent(step)}`,title:prose(svg.querySelector('title'))||svg.getAttribute('aria-label')||'Chart'};
+ return {xml:new XMLSerializer().serializeToString(clone),width,height,text:prose(passage),legends,sources:sources.length?sources:sourceText?[sourceText]:[],step,url:`https://www.rhyslindmark.com/posts/ai2026-pt1/?slide=${encodeURIComponent(step)}`,title:prose(svg.querySelector('title'))||svg.getAttribute('aria-label')||'Chart'};
 }
 function imageFrom(url){return new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>resolve(image);image.onerror=()=>reject(new Error('The chart image could not be prepared. Please try again.'));image.src=url;});}
 function wrap(ctx,value,width){const lines=[];for(const paragraph of value.split('\n')){if(!paragraph){lines.push('');continue;}let line='';for(const word of paragraph.split(/\s+/)){if(ctx.measureText(line?`${line} ${word}`:word).width<=width){line=line?`${line} ${word}`:word;continue;}if(line)lines.push(line);line='';for(const letter of word){if(line&&ctx.measureText(line+letter).width>width){lines.push(line);line='';}line+=letter;}}lines.push(line);}return lines;}
@@ -87,7 +87,7 @@ function posterShot(step){
  const svg=scene.querySelector('.plot-wrap svg, .benchmark-figure svg')||document.getElementById(`${step}-chart`)?.querySelector('.plot-wrap svg'),heading=passage.matches('div')?passage.querySelector('h2')||passage:passage;
  let shot;if(svg&&svg.children.length)shot=snapshot(svg,svg.closest('figure'));
  else shot={xml:`<svg xmlns="${NS}" viewBox="0 0 1024 600" width="1024" height="600"></svg>`,width:1024,height:600,cover:true,legends:[],sources:[],title:`AI 2026 · Slide ${step}`};
- shot.text=prose(heading);shot.step=String(step);shot.url=`https://www.rhyslindmark.com/posts/ai2026-pt1/?slide=${step}#${step}`;return shot;
+ shot.text=prose(heading);shot.step=String(step);shot.url=`https://www.rhyslindmark.com/posts/ai2026-pt1/?slide=${step}`;return shot;
 }
 if(new URL(window.location.href).searchParams.get('export-posters')==='1'){
  const build=document.createElement('button');build.type='button';build.textContent='Build slide previews';build.style.cssText='position:fixed;right:16px;bottom:16px;z-index:100;background:#142432;color:white';document.body.appendChild(build);
