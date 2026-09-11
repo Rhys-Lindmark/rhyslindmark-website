@@ -181,10 +181,10 @@ function drawShare(scene){
 }
 function drawUnits(scene){
  const {svg,W,H}=svgBase(scene),size=Math.min((W-30)/10,(H-95)/10),x=(W-size*10)/2,y=65,units=[];
- const total=label(svg,W/2,30,'','middle','series-label');total.style.fontSize='28px';total.style.fill='#63ff91';
- for(let i=0;i<100;i++)units.push(node('rect',{x:x+(i%10)*size+2,y:y+Math.floor(i/10)*size+2,width:Math.max(1,size-4),height:Math.max(1,size-4),fill:'#63ff91','fill-opacity':.15,stroke:'#63ff91'},svg));
- const detail=label(svg,W/2,H-8,'','middle','axis-title');legend(scene,[]);
- return p=>{const {index,local}=passageStage(scene,p),count=index||all?Math.max(1,Math.ceil(clamp(local/.8)*100)):1;units.forEach((u,i)=>{u.style.visibility=all||i<count?'visible':'hidden';u.setAttribute('x',index||all?x+(i%10)*size+2:W/2-size/2);u.setAttribute('y',index||all?y+Math.floor(i/10)*size+2:H/2-size/2);});total.textContent=index||all?'$2T':'$4B';detail.textContent=index||all?'100 GW × $20B/GW · EACH SQUARE = 1 GW':'1 GW';scene.querySelector('.readout').textContent=index||all?'$20B / GW':'$4B / GW';};
+ const total=label(svg,W/2,30,'$2T','middle','series-label');total.style.fontSize='28px';total.style.fill='#63ff91';
+ for(let i=0;i<100;i++)units.push(node('rect',{x:x+(i%10)*size+2,y:y+(9-Math.floor(i/10))*size+2,width:Math.max(1,size-4),height:Math.max(1,size-4),fill:'#63ff91','fill-opacity':.15,stroke:'#63ff91'},svg));
+ const firstValue=label(svg,x+size/2,y+9.5*size,'$4B','middle','series-label');firstValue.setAttribute('dominant-baseline','middle');firstValue.style.fontSize=`${Math.min(20,size*.3)}px`;firstValue.style.fill='#63ff91';legend(scene,[]);
+ return p=>{const {index,local}=passageStage(scene,p),expanded=index||all,count=expanded?Math.max(1,Math.ceil(clamp(local/.8)*100)):1;units.forEach((u,i)=>{u.style.visibility=all||i<count?'visible':'hidden';});total.style.visibility=expanded?'visible':'hidden';firstValue.style.visibility=expanded?'hidden':'visible';scene.querySelector('.readout').textContent=expanded?'$20B / GW':'$4B / GW';};
 }
 
 function followSlideLink(){
