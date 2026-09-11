@@ -130,3 +130,11 @@ html,body,#article,.scene{background-color:var(--bg)}
 .scene.fulltext.reading .passage{max-width:700px;margin:0 auto}
 .scene.fulltext.reading .passage h2{font-size:clamp(28px,3vw,40px);font-weight:700;line-height:1.2;letter-spacing:-.025em;margin:0 0 32px;color:#fff}
 .scene.fulltext.reading .passage p{font-size:clamp(18px,1.5vw,21px);font-weight:400;line-height:1.6;letter-spacing:normal;margin:0 0 1.3em}
+
+.benchmark-scroll{height:230svh;position:relative;margin:40px 0 64px}
+.scene.fulltext.reading .benchmark-figure{position:sticky;top:90px;display:block;width:100%;height:min(70svh,600px);margin:0;padding:0}
+.benchmark-figure svg{display:block;width:100%;height:calc(100% - 36px);overflow:visible;font-family:monospace;font-size:12px}
+.benchmark-figure figcaption{font-size:13px;padding:12px 0 0 64px}
+.all-mode .benchmark-scroll{height:auto}
+.all-mode .scene.fulltext.reading .benchmark-figure{position:relative;top:0}
+@media(prefers-reduced-motion:reduce){.benchmark-scroll{height:auto}.scene.fulltext.reading .benchmark-figure{position:relative;top:0}}

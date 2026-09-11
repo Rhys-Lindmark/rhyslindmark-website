@@ -1,0 +1,210 @@
+{
+  "source": "https://newsletter.semianalysis.com/p/openai-jalapeno-better-than-nvidia",
+  "method": "Approximate points read from the source chart images; straight segments connect observations. Throughput is millions of tokens per second per all-in utility MW; interactivity is tokens per second per user. FP4, 8K input / 1K output, source updated August 22, 2026. Only Jalapeño and GB200 NVL72 are shown.",
+  "charts": [
+    {
+      "model": "DeepSeek R1 0528 · 671B",
+      "image": "https://substack-post-media.s3.amazonaws.com/public/images/19a7f45a-df8e-436e-ba04-df5d8610f3da_2048x1330.png",
+      "xMax": 800,
+      "yMax": 13,
+      "series": [
+        {
+          "name": "GB200 NVL72",
+          "color": "#63ff91",
+          "points": [
+            [
+              27,
+              8
+            ],
+            [
+              68,
+              6.9
+            ],
+            [
+              97,
+              5.75
+            ],
+            [
+              124,
+              4.7
+            ],
+            [
+              150,
+              3.25
+            ],
+            [
+              167,
+              2.23
+            ],
+            [
+              198,
+              0.83
+            ],
+            [
+              237,
+              0.51
+            ],
+            [
+              265,
+              0.37
+            ],
+            [
+              288,
+              0.27
+            ],
+            [
+              313,
+              0.18
+            ]
+          ]
+        },
+        {
+          "name": "Jalapeño",
+          "color": "#b985ff",
+          "points": [
+            [
+              65,
+              12.2
+            ],
+            [
+              102,
+              11
+            ],
+            [
+              142,
+              9.1
+            ],
+            [
+              183,
+              6.9
+            ],
+            [
+              207,
+              4.6
+            ],
+            [
+              231,
+              2.82
+            ],
+            [
+              264,
+              1.7
+            ],
+            [
+              334,
+              0.77
+            ],
+            [
+              703,
+              0.56
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "model": "GPT-OSS · 120B",
+      "image": "https://substack-post-media.s3.amazonaws.com/public/images/9f245dd7-c6b7-48a3-9215-3976633bb77f_2048x1366.png",
+      "xMax": 1600,
+      "yMax": 60,
+      "series": [
+        {
+          "name": "GB200 NVL72",
+          "color": "#63ff91",
+          "points": [
+            [
+              68,
+              28.8
+            ],
+            [
+              94,
+              25.8
+            ],
+            [
+              136,
+              20
+            ],
+            [
+              177,
+              16.1
+            ],
+            [
+              234,
+              11.3
+            ],
+            [
+              275,
+              7.4
+            ],
+            [
+              334,
+              4.7
+            ],
+            [
+              390,
+              2.6
+            ],
+            [
+              442,
+              1.55
+            ],
+            [
+              480,
+              0.85
+            ],
+            [
+              536,
+              0.25
+            ]
+          ]
+        },
+        {
+          "name": "Jalapeño",
+          "color": "#b985ff",
+          "points": [
+            [
+              98,
+              53.2
+            ],
+            [
+              157,
+              49.9
+            ],
+            [
+              231,
+              44.6
+            ],
+            [
+              305,
+              36.2
+            ],
+            [
+              371,
+              26.4
+            ],
+            [
+              431,
+              17.7
+            ],
+            [
+              694,
+              9.1
+            ],
+            [
+              832,
+              5.8
+            ],
+            [
+              1235,
+              2.6
+            ],
+            [
+              1462,
+              1.8
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}
