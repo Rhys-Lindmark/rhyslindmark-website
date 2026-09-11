@@ -1734,19 +1734,19 @@
     "groups": [
       {
         "name": "Other Nvidia",
-        "color": "#008fab"
+        "color": "#239954"
       },
       {
         "name": "H100/H200",
-        "color": "#21c5df"
+        "color": "#38d975"
       },
       {
         "name": "B200",
-        "color": "#35e7ff"
+        "color": "#63ff91"
       },
       {
         "name": "B300",
-        "color": "#a1f7ff"
+        "color": "#adffc5"
       },
       {
         "name": "Other TPUs",
@@ -8023,19 +8023,19 @@
     "groups": [
       {
         "name": "Other Nvidia",
-        "color": "#008fab"
+        "color": "#239954"
       },
       {
         "name": "H100/H200",
-        "color": "#21c5df"
+        "color": "#38d975"
       },
       {
         "name": "B200",
-        "color": "#35e7ff"
+        "color": "#63ff91"
       },
       {
         "name": "B300",
-        "color": "#a1f7ff"
+        "color": "#adffc5"
       },
       {
         "name": "Other TPUs",
