@@ -102,3 +102,11 @@
 .scene.models.source-graph svg.source-chart{overflow:hidden;height:100%;min-height:0}
 .scene.models.source-graph svg.source-chart text{font-size:22px;fill:#b7c8d4}
 #chinchilla .source-chart image,#china-frontier .source-chart image{filter:invert(1) hue-rotate(180deg)}
+
+/* Scroll-driven jagged capability frontier. */
+.scene.intelligence-frontier{height:360svh}
+.scene.intelligence-frontier>.sticky{top:0;height:100svh;min-height:0;padding:0;background:#080a10;overflow:hidden}
+.intelligence-frontier .plot-wrap{width:100%;height:100%;min-height:0}
+.intelligence-frontier svg{width:100%;height:100%;overflow:hidden}
+.all-mode .scene.intelligence-frontier{height:auto}
+.all-mode .scene.intelligence-frontier>.sticky{position:relative;height:80svh;min-height:400px}

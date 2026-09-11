@@ -26,6 +26,45 @@
   function draw(scene) {
     const kind = scene.dataset.kind, svg = scene.querySelector('svg');
     if (!svg) return;
+    if (kind === 'frontier') {
+      const box=scene.querySelector('.plot-wrap').getBoundingClientRect();
+      const W=Math.max(280,box.width),H=Math.max(300,box.height),cx=W/2,cy=H*.51;
+      const radius=Math.min(W*.32,H*.29),small=W<600;
+      svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+      node('title',{},svg,'Spiky intelligence grows into a human job');
+      const defs=node('defs',{},svg);
+      const grid=node('pattern',{id:'frontier-grid',width:44,height:44,patternUnits:'userSpaceOnUse'},defs);
+      node('path',{d:'M 44 0 L 0 0 0 44',fill:'none',stroke:'#8f66db','stroke-opacity':.15,'stroke-width':.7},grid);
+      const gradient=node('radialGradient',{id:'frontier-red'},defs);
+      node('stop',{offset:'0%','stop-color':'#ff765f'},gradient);
+      node('stop',{offset:'65%','stop-color':'#f13661'},gradient);
+      node('stop',{offset:'100%','stop-color':'#ab164b'},gradient);
+      node('rect',{width:W,height:H,fill:'#080a10'},svg);
+      node('rect',{width:W,height:H,fill:'url(#frontier-grid)'},svg);
+      const halo=node('circle',{cx,cy,r:radius,fill:'#91e9f2','fill-opacity':.035,stroke:'#94e7ef','stroke-width':1.5},svg);
+      const shape=node('path',{fill:'url(#frontier-red)',stroke:'#ff738a','stroke-width':1.5,'stroke-linejoin':'round'},svg);
+      const outline=node('circle',{cx,cy,r:radius,fill:'none',stroke:'#a4e8ef','stroke-width':1.5,'stroke-dasharray':'3 6'},svg);
+      const human=label(svg,cx,cy-radius-25,'HUMAN JOB');
+      const ai=label(svg,cx,cy+radius+46,'TASKS AI CAN DO');
+      for(const el of [human,ai]){el.style.fontSize=small?'12px':'14px';el.style.letterSpacing='.12em';el.style.fill='#e6edf3';}
+      const ticks=node('g',{stroke:'#8ee8ed','stroke-opacity':.5},svg);
+      for(let i=0;i<32;i++){const a=i*Math.PI/16;node('line',{x1:cx+Math.cos(a)*(radius+7),y1:cy+Math.sin(a)*(radius+7),x2:cx+Math.cos(a)*(radius+12),y2:cy+Math.sin(a)*(radius+12)},ticks);}
+      renderers.set(scene,p=>{
+        const t=reduce.matches?.48:clamp((p-.08)/.84);
+        const growth=.24+1.2*t+Math.pow(t,5)*Math.hypot(W,H)/radius*2.8;
+        let d='';
+        for(let i=0;i<240;i++){
+          const a=i/240*Math.PI*2;
+          const spike=.61+.19*Math.sin(a*7+.9)+.12*Math.cos(a*13)+.07*Math.sin(a*23+1.4);
+          const r=radius*growth*spike;
+          d+=`${i?'L':'M'}${(cx+Math.cos(a)*r).toFixed(2)},${(cy+Math.sin(a)*r).toFixed(2)}`;
+        }
+        shape.setAttribute('d',d+'Z');
+        const fade=1-clamp((t-.65)/.22);
+        for(const el of [human,ai,outline,ticks,halo])el.style.opacity=fade;
+      });
+      return;
+    }
     if (kind === 'sourcegraph') {
       const reveal=svg.querySelector('.source-reveal');
       renderers.set(scene,p=>reveal.setAttribute('width',Number(reveal.dataset.width)*(reduce.matches?1:clamp(p/.7))));
