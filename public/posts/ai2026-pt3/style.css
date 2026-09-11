@@ -38,3 +38,8 @@ footer{padding:50px 24px 70px}footer details{max-width:740px;margin:0 auto 50px}
 /* Fill the available graph area while keeping every label and axis visible. */
 .scene.agents .graph-link img{width:100%;height:100%;object-fit:contain}
 .all-mode .scene.agents .graph-link img{width:100%;height:auto}
+
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.intro-fallback{display:block;width:100%;height:auto}
+ai-building-intro{--intro-top:58px}
+@media(max-width:760px){ai-building-intro{--intro-top:52px}}
