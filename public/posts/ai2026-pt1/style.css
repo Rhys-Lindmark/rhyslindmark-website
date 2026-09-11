@@ -218,3 +218,17 @@ html,body,#article,.scene{background-color:var(--bg)}
  .scene.building-return .sticky{top:52px;height:calc(100svh - 52px);padding:0}
  .building-return ai-building-intro{position:absolute;inset:0;width:100%;height:100%;margin:0}
 }
+
+/* Keep the chart viewport stable while the navigation slides out of view. */
+:root{--header-height:58px;--header-visible-height:var(--header-height)}
+body.header-hidden{--header-visible-height:0px}
+header{transition:transform .18s ease;will-change:transform}
+body.header-hidden header{transform:translateY(-100%)}
+body:not(.all-mode) .scene:not(.fulltext)>.sticky,
+body:not(.all-mode) .scene.building-return>.sticky{top:0;height:100svh}
+.scene{scroll-margin-top:0}
+/* The progress line follows the top edge, below navigation when it is visible. */
+.scene .sticky>.track{position:absolute;top:0;bottom:auto;left:0;right:0;height:3px;margin:0;z-index:6;transform:translateY(var(--header-visible-height));transition:transform .18s ease}
+@media(max-width:760px){:root{--header-height:52px}}
+@media(prefers-reduced-motion:reduce){header,.scene .sticky>.track{transition:none}}
+@media print{body:not(.all-mode) .scene:not(.fulltext)>.sticky,body:not(.all-mode) .scene.building-return>.sticky{position:relative;top:0;height:700px}}

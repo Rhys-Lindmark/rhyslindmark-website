@@ -3,6 +3,19 @@
 const NS='http://www.w3.org/2000/svg',root=document.getElementById('article'),button=document.getElementById('overview'),reduce=matchMedia('(prefers-reduced-motion: reduce)'),scenes=[...document.querySelectorAll('.scene')];
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
 let data,all=reduce.matches,raf=0;const renderers=new Map();
+// Header visibility never changes scene dimensions or scroll progress.
+const header=document.querySelector('header');
+let headerScrollY=Math.max(0,window.scrollY),headerDirection=0,headerTravel=0;
+function updateHeader(){
+ const y=Math.max(0,window.scrollY),delta=y-headerScrollY,direction=Math.sign(delta);
+ if(direction&&direction!==headerDirection){headerDirection=direction;headerTravel=0;}
+ headerTravel+=Math.abs(delta);headerScrollY=y;
+ if(y<=header.offsetHeight){document.body.classList.remove('header-hidden');headerTravel=0;}
+ else if(headerTravel>=8){document.body.classList.toggle('header-hidden',direction>0);headerTravel=0;}
+}
+window.addEventListener('scroll',updateHeader,{passive:true});
+header.addEventListener('focusin',()=>document.body.classList.remove('header-hidden'));
+updateHeader();
 const colors={'AI supply chain':'#35e7ff','GAFA':'#ffe84a','Wintel':'#b985ff','IBM':'#ff70de','Model labs':'#63ff91','Apps':'#ffe84a','Foundation models':'#39ffc1','Hosting':'#b985ff','Chips':'#63ff91'};
 function node(tag,attrs={},parent,text){const n=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;parent.appendChild(n);return n;}
 function label(parent,x,y,text,anchor='start',cls=''){return node('text',{x,y,'text-anchor':anchor,class:cls},parent,text);}
@@ -216,11 +229,11 @@ function followSlideLink(){
  const id=match[1],passage=document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');if(!scene)return;
  if(window.location.hash!==`#${id}`)window.history.replaceState(null,'',`#${id}`);
  const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=steps.indexOf(id),progress=scene.dataset.kind==='revenue'&&id==='6'?.66:index>0?index/steps.length:0;
- const travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight),top=window.scrollY+scene.getBoundingClientRect().top-document.querySelector('header').offsetHeight+(all?0:progress*travel);
+ const travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight),top=window.scrollY+scene.getBoundingClientRect().top+(all?0:progress*travel);
  window.scrollTo({top,behavior:'instant'});request();
 }
-function sceneProgress(scene){if(all)return 1;const rect=scene.getBoundingClientRect(),sticky=scene.querySelector('.sticky'),headerH=document.querySelector('header').offsetHeight;return clamp((headerH-rect.top)/Math.max(1,scene.offsetHeight-sticky.offsetHeight));}
-function update(){raf=0;let current=scenes[0];for(const scene of scenes){const p=sceneProgress(scene);renderers.get(scene)?.(p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight-document.querySelector('header').offsetHeight);card.style.setProperty('--card-shift',`${all?0:lerp(viewportHeight,-card.offsetHeight,clamp(cp))}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);if(scene.getBoundingClientRect().top<innerHeight*.4)current=scene;}document.getElementById('counter').textContent=`${String(Math.floor(Number(current.dataset.currentStep||current.dataset.step))).padStart(2,'0')} / 47`;}
+function sceneProgress(scene){if(all)return 1;const rect=scene.getBoundingClientRect(),sticky=scene.querySelector('.sticky');return clamp((-rect.top)/Math.max(1,scene.offsetHeight-sticky.offsetHeight));}
+function update(){raf=0;let current=scenes[0];for(const scene of scenes){const p=sceneProgress(scene);renderers.get(scene)?.(p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight);card.style.setProperty('--card-shift',`${all?0:lerp(viewportHeight,-card.offsetHeight,clamp(cp))}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);if(scene.getBoundingClientRect().top<innerHeight*.4)current=scene;}document.getElementById('counter').textContent=`${String(Math.floor(Number(current.dataset.currentStep||current.dataset.step))).padStart(2,'0')} / 47`;}
 function request(){if(!raf)raf=requestAnimationFrame(update);}
 function toggle(){document.body.classList.toggle('all-mode',all);button.setAttribute('aria-pressed',String(all));button.textContent=all?'Follow scroll':'Show all';request();}
 button.addEventListener('click',()=>{const active=scenes.find(s=>s.getBoundingClientRect().top<=100&&s.getBoundingClientRect().bottom>100)||scenes[0];all=!all;toggle();requestAnimationFrame(()=>{active.scrollIntoView();request();});});reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});
