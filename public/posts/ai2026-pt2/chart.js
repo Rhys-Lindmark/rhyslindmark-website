@@ -47,7 +47,12 @@
       legend(scene,rows);
       renderers.set(scene,p=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
-        segments.forEach((g,i)=>g.style.opacity=reduce.matches||stage===0||i===Math.min(3,Math.floor(local*4))?'1':'.24');
+        // Let the second passage enter before focusing its three expense segments.
+        const focus=stage===0||local<.25?-1:Math.min(2,Math.floor((local-.25)/.25));
+        segments.forEach((g,i)=>g.style.opacity=reduce.matches||focus<0||i===focus?'1':'.45');
+        scene.querySelectorAll('.legend span').forEach((el,i)=>{
+          el.style.opacity=reduce.matches||focus<0||i===focus?'1':'.45';
+        });
       });
     } else if (kind === 'expansion') {
       const left=small?80:100,right=small?16:40,bottom=H-44,width=W-left-right;
