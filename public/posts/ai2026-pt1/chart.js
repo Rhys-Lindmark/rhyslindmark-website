@@ -89,9 +89,9 @@ function setupMeme(scene){const img=scene.querySelector('img');return p=>{const 
 
 function setupVideo(scene){
  const video=scene.querySelector('video');let loaded=false,inView=false;
- video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;
+ video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;video.controls=false;
  const load=()=>{if(loaded)return;loaded=true;video.preload='auto';video.querySelector('source').src=video.querySelector('source').dataset.src;video.load();};
- const sync=()=>{if(!inView||document.hidden){video.pause();return;}load();if(!reduce.matches)video.play().catch(()=>{video.controls=true;});};
+ const sync=()=>{if(!inView||document.hidden){video.pause();return;}load();if(!reduce.matches)video.play().catch(()=>{});};
  new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting))load();},{rootMargin:'500px'}).observe(scene);
  new IntersectionObserver(entries=>{inView=entries.some(e=>e.isIntersecting);sync();},{threshold:.2}).observe(video);
  document.addEventListener('visibilitychange',sync);
