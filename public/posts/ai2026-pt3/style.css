@@ -1,0 +1,40 @@
+.post-title{font:12px var(--mono);color:var(--muted)}
+#reading-mode{margin-left:auto;font-size:11px}
+.post-intro{min-height:85svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 24px 50px}
+.post-intro h1{font-size:clamp(100px,20vw,250px);line-height:1;letter-spacing:-.075em;font-weight:450;margin:28px 0;color:#fff}
+.subtitle{font-size:clamp(20px,3vw,30px);color:var(--muted);margin:16px 0 40px}
+.post-intro nav,footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 30px;font:13px var(--mono)}
+.scroll-hint{margin-top:60px;color:#7e9aab;font:12px var(--mono)}
+.body-copy{width:min(740px,calc(100% - 48px));margin:0 auto;padding:30px 0;font-size:clamp(19px,2.1vw,25px);line-height:1.65}
+.body-copy p{margin:0}.body-copy a,.passage a{color:#8bdeec;text-decoration:underline}
+.article-heading{min-height:65svh;display:grid;place-items:center;padding:70px 24px}
+.article-heading h2{font-size:clamp(58px,11vw,140px);font-weight:450;letter-spacing:-.055em;line-height:1.05;text-align:center;color:#fff;max-width:1100px}
+.scene.agents{height:var(--scene-height,300svh);--axis-inset:80px}
+.scene.agents>.sticky{top:0;height:100svh;min-height:0;overflow:hidden;padding:76px max(22px,calc((100vw - 1200px)/2)) 24px}
+.scene.agents figure{gap:16px;min-height:0}
+.scene.agents h3{text-align:center;font-size:14px;color:#d1dce5;flex:none}
+.graph-link{display:flex;align-items:center;justify-content:center;flex:1;min-height:0;overflow:hidden}
+.graph-link img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.scene.agents figcaption{text-align:center;flex:none;font-size:11px}
+body:not(.all-mode) #article .scene.agents .passage{position:absolute;top:0;left:50%;right:auto;width:min(440px,calc(100% - 48px));max-width:440px;max-height:none;min-height:0;margin:0;padding:24px 28px;background:#0c141ef5;border:1px solid #566b7b;border-radius:6px;box-shadow:0 16px 60px #0007;z-index:3;transform:translate(-50%,var(--card-shift,100svh));overflow:visible}
+.passage .card-copy p{font-size:clamp(18px,2vw,24px);line-height:1.5;letter-spacing:-.015em;margin:0}
+.card-copy[hidden]{display:none}
+.scene.agents .track{flex:none}
+.article-visual{display:block;width:min(850px,calc(100% - 40px));margin:32px auto 65px}
+.article-visual img{display:block;width:100%;height:auto;max-height:75svh;object-fit:contain}
+.article-embed{width:min(550px,calc(100% - 40px));margin:35px auto 60px}
+.article-embed blockquote{margin:0;padding:26px;border:1px solid #334351;border-radius:12px;font-size:18px}
+.quoted-source{border-left:2px solid #526777;padding:26px 30px;margin:24px auto}
+.closing-copy{padding:100px 0 140px;font-size:clamp(28px,4vw,48px);color:#fff}
+footer{padding:50px 24px 70px}footer details{max-width:740px;margin:0 auto 50px}footer nav{line-height:1.7}
+.all-mode .scene.agents{height:auto;margin:45px auto 70px}
+.all-mode .scene.agents>.sticky{position:relative;top:0;height:auto;min-height:0;overflow:visible;padding:24px max(22px,calc((100vw - 1100px)/2));gap:24px}
+.all-mode .scene.agents .passage{position:static;transform:none;order:-1;width:min(740px,100%);max-width:740px;max-height:none;background:none;border:0;box-shadow:none;padding:0;margin:0 auto}
+.all-mode .card-copy+.card-copy{margin-top:28px}.all-mode .card-copy[hidden]{display:block}
+.all-mode .graph-link img{max-height:85svh;width:auto;max-width:100%;height:auto}
+.all-mode .graph-link{flex:auto}.all-mode .track{display:none}
+@media(max-width:760px){header{padding:0 16px;gap:12px}.post-title{font-size:10px}#reading-mode{padding:8px}.scene.agents>.sticky{padding:68px 10px 20px}body:not(.all-mode) #article .scene.agents .passage{width:min(320px,calc(100% - 40px));padding:20px}.passage .card-copy p{font-size:18px}.scene.agents h3{font-size:12px}.scene.agents figcaption{font-size:10px}.body-copy{padding:25px 0}.article-heading{min-height:50svh}.all-mode .scene.agents>.sticky{padding-inline:12px}}
+@media print{header,.scroll-hint,#reading-mode,.track{display:none!important}.scene.agents{height:auto!important;break-inside:avoid}.scene.agents>.sticky{position:static!important;height:auto!important;overflow:visible!important;padding:24px!important;display:flex!important}.scene.agents .passage{position:static!important;transform:none!important;background:none!important;box-shadow:none!important;border:0!important;max-height:none!important;width:100%!important;max-width:none!important;order:-1}.card-copy[hidden]{display:block!important}.card-copy+.card-copy{margin-top:20px}.graph-link img{max-height:500px!important}.article-heading,.post-intro{min-height:0}.article-heading{padding:40px}.body-copy{padding:18px 0}}
+/* Fill the available graph area while keeping every label and axis visible. */
+.scene.agents .graph-link img{width:100%;height:100%;object-fit:contain}
+.all-mode .scene.agents .graph-link img{width:100%;height:auto}

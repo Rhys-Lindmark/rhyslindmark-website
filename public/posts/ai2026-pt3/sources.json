@@ -1,0 +1,143 @@
+{
+  "document": "https://docs.google.com/document/d/1d5P5P-p45LJvGHiFjOkHKraul2yPhIAkHCBcPfnZm4Q/edit",
+  "figures": [
+    {
+      "file": "claude-usage.webp",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/33714223-881d-4a0f-847a-f99749e96dd6_3840x2888.webp",
+      "title": "Where AI found product-market fit",
+      "documentIndex": 584
+    },
+    {
+      "file": "coding-spend.png",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/6051c062-8efd-45e4-9bfb-754ad54ea4d2_1042x512.png",
+      "title": "AI spend per employee",
+      "documentIndex": 826
+    },
+    {
+      "file": "omarchy.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/5fbe6fc6-35bc-43cf-8d90-95dcf21a785d_1456x1037.jpeg",
+      "title": "The one-person software team",
+      "documentIndex": 1341
+    },
+    {
+      "file": "software-pipeline.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/f3f0fa4e-96b8-419a-b8d7-6c9c9a10ce87_722x400.jpeg",
+      "title": "The software factory",
+      "documentIndex": 2289
+    },
+    {
+      "file": "employment.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/3349f5b3-314f-45e6-954d-343d0430f712_1404x1215.jpeg",
+      "title": "Becoming tractor-pilled",
+      "documentIndex": 2385
+    },
+    {
+      "file": "code-history.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/b855edc1-c654-4841-bbbc-8e69e92ee1ed_1445x1005.jpeg",
+      "title": "The market for code, 1980\u20132025",
+      "documentIndex": 3259
+    },
+    {
+      "file": "code-future.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/003cc366-acb1-4f4b-81f3-02397d3bd2b9_1448x960.jpeg",
+      "title": "The trillion-dollar agent opportunity",
+      "documentIndex": 4129
+    },
+    {
+      "file": "solar.png",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/90542a84-ced0-419a-a6af-7d772cc5cfe3_1998x2058.png",
+      "title": "The solar learning curve",
+      "documentIndex": 4338
+    },
+    {
+      "file": "experience-curves.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/3c470d79-c2b4-4693-baa6-20ca8ce443b9_1447x1051.jpeg",
+      "title": "Cars, solar, and code",
+      "documentIndex": 4489
+    },
+    {
+      "file": "productivity.png",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/72376069-f756-43e9-af8e-71cac7427917_1424x1188.png",
+      "title": "Where is the productivity growth?",
+      "documentIndex": 4674
+    },
+    {
+      "file": "tfp.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/f3868bac-f890-4b2b-8338-d9d140a1022e_1451x1047.jpeg",
+      "title": "Technology and total factor productivity",
+      "documentIndex": 4910
+    },
+    {
+      "file": "ai-economy.png",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/e029b157-74e9-4cab-ac8e-6113bb4f282b_2666x1360.png",
+      "title": "AI in the productivity statistics",
+      "documentIndex": 4994
+    },
+    {
+      "file": "white-collar.png",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/8f5b4647-3817-45e1-a566-a81d6a7a3cb2_1472x2174.png",
+      "title": "The white-collar wage pool",
+      "documentIndex": 5209
+    },
+    {
+      "file": "app-revenue.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/ace4bdfb-7ece-41e1-99c2-941cf9c60455_1447x1146.jpeg",
+      "title": "AI beyond software development",
+      "documentIndex": 5459
+    },
+    {
+      "file": "context-graphs.png",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/7c76463a-758e-47ff-9fcc-79442fe732af_1024x572.png",
+      "title": "From what to why",
+      "documentIndex": 6466
+    },
+    {
+      "file": "labor-markets.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/a3ea83cd-f6ee-43d4-8baf-1cd4e31eafb7_723x422.jpeg",
+      "title": "White-collar and blue-collar labor",
+      "documentIndex": 6590
+    },
+    {
+      "file": "blue-collar.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/88f1dfab-7364-4dda-88a7-0fd2d649241c_1369x1909.jpeg",
+      "title": "The blue-collar wage pool",
+      "documentIndex": 6740
+    },
+    {
+      "file": "waymo-share.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/53f52f3d-3f73-4cc0-83da-f1a87953ede4_680x402.jpeg",
+      "title": "Waymo in the Bay Area",
+      "documentIndex": 6934
+    },
+    {
+      "file": "waymo-data.png",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/0cde022d-37c6-466e-afe5-ee9e088dcd45_3313x2028.png",
+      "title": "Millions of real miles, billions simulated",
+      "documentIndex": 7091
+    },
+    {
+      "file": "waymo-cities.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/54e3a85d-5dfe-4b2e-9346-c4735b65f21f_1242x1274.jpeg",
+      "title": "Waymo\u2019s surge",
+      "documentIndex": 7145
+    },
+    {
+      "file": "robot-data.png",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/74b0f36c-a450-4005-be1d-d10287e77b5b_2308x932.png",
+      "title": "Data for a robot brain",
+      "documentIndex": 9170
+    },
+    {
+      "file": "umi.jpeg",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/e56ea7ed-3d14-4531-90be-5deadc5c534c_770x500.jpeg",
+      "title": "Universal Manipulation Interface: collecting physical training data",
+      "documentIndex": 9470
+    },
+    {
+      "file": "sim-to-real.png",
+      "source": "https://substack-post-media.s3.amazonaws.com/public/images/773ad4cf-01e3-41dd-90cf-b7f8f1f3d230_4327x2027.png",
+      "title": "Real \u2192 Sim \u2192 Real",
+      "documentIndex": 11019
+    }
+  ]
+}
