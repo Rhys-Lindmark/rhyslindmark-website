@@ -7,12 +7,12 @@ function el(parent,tag,attrs={},text){const n=document.createElementNS(NS,tag);f
 for(const host of document.querySelectorAll('.benchmark-scroll[data-benchmark]')){
  const d=data.charts[Number(host.dataset.benchmark)],svg=host.querySelector('svg'),figure=host.querySelector('figure');let paths=[];
  function draw(){
-  const W=Math.max(280,svg.clientWidth),H=Math.max(240,svg.clientHeight),m={l:64,r:18,t:26,b:50},iw=W-m.l-m.r,ih=H-m.t-m.b,x=v=>m.l+v/d.xMax*iw,y=v=>m.t+(1-v/d.yMax)*ih;
+  const W=Math.max(280,svg.clientWidth),H=Math.max(240,svg.clientHeight),m={l:W<600?36:64,r:W<600?4:18,t:26,b:50},iw=W-m.l-m.r,ih=H-m.t-m.b,x=v=>m.l+v/d.xMax*iw,y=v=>m.t+(1-v/d.yMax)*ih;
   svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);el(svg,'title',{},`${d.model}: throughput per MW versus interactivity`);
   const text=(px,py,t,attrs={})=>el(svg,'text',{x:px,y:py,fill:'#a4bbc9','text-anchor':'middle',...attrs},t);
   for(let i=0;i<=4;i++){let v=i*d.xMax/4;el(svg,'line',{x1:x(v),x2:x(v),y1:y(0),y2:y(d.yMax),stroke:'#263640'});text(x(v),H-30,String(v));}
-  const ticks=d.yMax===13?[0,3,6,9,12]:[0,15,30,45,60];for(const v of ticks){el(svg,'line',{x1:x(0),x2:x(d.xMax),y1:y(v),y2:y(v),stroke:'#263640'});text(m.l-8,y(v)+4,`${v}M`,{'text-anchor':'end'});}
-  text(m.l+iw/2,H-4,'INTERACTIVITY · TOK/S/USER');text(14,m.t+ih/2,'THROUGHPUT · TOK/S/MW',{transform:`rotate(-90 14 ${m.t+ih/2})`});
+  const ticks=d.yMax===13?[0,3,6,9,12]:[0,15,30,45,60];for(const v of ticks){el(svg,'line',{x1:x(0),x2:x(d.xMax),y1:y(v),y2:y(v),stroke:'#263640'});text(m.l-(W<600?3:8),y(v)+4,`${v}M`,{'text-anchor':'end','class':'axis-tick'});}
+  text(m.l+iw/2,H-4,'INTERACTIVITY · TOK/S/USER');text(W<600?5:14,m.t+ih/2,'THROUGHPUT · TOK/S/MW',{'class':'axis-title',transform:`rotate(-90 ${W<600?5:14} ${m.t+ih/2})`});
   paths=d.series.map(s=>{
    const g=el(svg,'g'),path=el(g,'path',{d:s.points.map(([a,b],i)=>`${i?'L':'M'}${x(a)},${y(b)}`).join(' '),fill:'none',stroke:s.color,'stroke-width':3,pathLength:1,'stroke-dasharray':1});
    const dots=s.points.map(([a,b])=>el(g,'circle',{cx:x(a),cy:y(b),r:3,fill:s.color}));

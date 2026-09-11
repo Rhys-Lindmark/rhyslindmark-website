@@ -10,11 +10,11 @@ function svgBase(scene){const svg=scene.querySelector('svg'),r=scene.querySelect
 function legend(scene,series){const l=scene.querySelector('.legend');l.replaceChildren();for(const s of series){const span=document.createElement('span'),i=document.createElement('i');i.style.setProperty('--color',s.color);span.style.setProperty('--color',s.color);if(s.forecast)i.style.borderTopStyle='dashed';span.append(i,document.createTextNode(s.name));l.appendChild(span);}}
 function revealLegend(scene,visible){[...scene.querySelectorAll('.legend span')].forEach((el,i)=>{const show=all||visible(i);el.classList.toggle('pending',!show);el.setAttribute('aria-hidden',String(!show));});}
 function verticalTitle(svg,x,y,text,right=false){const title=label(svg,x,y,text,'middle','axis-title');title.setAttribute('transform',`rotate(${right?90:-90} ${x} ${y})`);return title;}
-function axes(svg,W,H,{xd,yd,xt,yt,yfmt=v=>v,xfmt=v=>v,log=false,right=false,yTitle='',xTitle='YEAR'}){const small=W<600,m={l:small?64:80,r:right?(small?58:74):16,t:20,b:42},iw=W-m.l-m.r,ih=H-m.t-m.b,x=v=>m.l+(v-xd[0])/(xd[1]-xd[0])*iw,y=v=>m.t+ih*(1-(log?Math.log(v/yd[0])/Math.log(yd[1]/yd[0]):(v-yd[0])/(yd[1]-yd[0])));
+function axes(svg,W,H,{xd,yd,xt,yt,yfmt=v=>v,xfmt=v=>v,log=false,right=false,yTitle='',xTitle='YEAR'}){const small=W<600,m={l:small?32:80,r:right?(small?32:74):(small?4:16),t:20,b:42},iw=W-m.l-m.r,ih=H-m.t-m.b,x=v=>m.l+(v-xd[0])/(xd[1]-xd[0])*iw,y=v=>m.t+ih*(1-(log?Math.log(v/yd[0])/Math.log(yd[1]/yd[0]):(v-yd[0])/(yd[1]-yd[0])));
  node('rect',{x:m.l,y:m.t,width:iw,height:ih,fill:'none',stroke:'#334351'},svg);
- yt.forEach(v=>{node('line',{x1:m.l,x2:m.l+iw,y1:y(v),y2:y(v),stroke:'#263744','stroke-width':.7},svg);label(svg,m.l-7,y(v)+4,yfmt(v),'end');});
+ yt.forEach(v=>{node('line',{x1:m.l,x2:m.l+iw,y1:y(v),y2:y(v),stroke:'#263744','stroke-width':.7},svg);label(svg,m.l-(small?3:7),y(v)+4,yfmt(v),'end','axis-tick');});
  xt.forEach((v,i)=>{node('line',{x1:x(v),x2:x(v),y1:m.t,y2:m.t+ih,stroke:'#263744','stroke-width':.6},svg);label(svg,x(v),m.t+ih+18,xfmt(v),i===0?'start':i===xt.length-1?'end':'middle');});
- verticalTitle(svg,12,m.t+ih/2,yTitle);label(svg,m.l+iw/2,H-3,xTitle,'middle','axis-title');return {m,iw,ih,x,y};}
+ verticalTitle(svg,small?5:12,m.t+ih/2,yTitle);label(svg,m.l+iw/2,H-3,xTitle,'middle','axis-title');return {m,iw,ih,x,y};}
 function clipping(svg,id,m,ih){const defs=node('defs',{},svg),cp=node('clipPath',{id},defs),rect=node('rect',{x:m.l,y:m.t,width:0,height:ih},cp),g=node('g',{'clip-path':`url(#${id})`},svg);return {rect,g,defs};}
 function linePath(points,x,y){return points.map((p,i)=>`${i?'L':'M'}${x(p[0])},${y(p[1])}`).join(' ');}
 function drawLines(scene){const {svg,W,H,small}=svgBase(scene),investment=scene.dataset.kind==='investment',series=investment?data.investment:data.construction,xd=investment?[1852,2030]:[2014,2026.5834],yd=investment?[0,6]:[0,80];
@@ -40,7 +40,7 @@ function drawProfit(scene){const {svg,W,H,small}=svgBase(scene),margin=scene.dat
  return p=>{const t=clamp(.03+p/.84);bars.forEach(({bar,txt,val})=>{const v=val*t;bar.setAttribute('x',Math.min(x(0),x(v)));bar.setAttribute('width',Math.abs(x(v)-x(0)));txt.style.opacity=t>.94?1:0;});scene.querySelector('.readout').textContent=margin?'GAAP / LATEST QUARTER':'LATEST QUARTER × 4';};}
 function drawEras(scene){
  const {svg,W,H,small}=svgBase(scene),a=axes(svg,W,H,{xd:[1970,2026],yd:[2,450],xt:small?[1970,1990,2010,2026]:[1970,1980,1990,2000,2010,2020,2026],yt:[3,10,30,100,300],yfmt:v=>`$${v}B`,log:true,right:true,yTitle:small?'NET PROFIT · LOG':'NET PROFIT · 2026 $B (LOG)',xTitle:'FISCAL YEAR'}),ym=v=>a.m.t+a.ih*(1-v/60);
- for(const t of [0,10,20,30,40,50,60])label(svg,a.m.l+a.iw+7,ym(t)+4,`${t}%`);verticalTitle(svg,W-12,a.m.t+a.ih/2,small?'AVG. OP. MARGIN':'AVG. OPERATING MARGIN',true);
+ for(const t of [0,10,20,30,40,50,60])label(svg,a.m.l+a.iw+(small?3:7),ym(t)+4,`${t}%`,'start','axis-tick');verticalTitle(svg,W-(small?5:12),a.m.t+a.ih/2,small?'AVG. OP. MARGIN':'AVG. OPERATING MARGIN',true);
  const series=data.eras.map((s,i)=>{
   const profit=clipping(svg,`era-profit-${i}`,a.m,a.ih),margin=clipping(svg,`era-margin-${i}`,a.m,a.ih);
   node('path',{d:linePath(s.data.map(p=>[p.year,p.profit]),a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2.3,'stroke-linejoin':'round'},profit.g);
@@ -173,7 +173,7 @@ function drawCenters(scene){
 }
 
 function drawShare(scene){
- const {svg,W,H,small}=svgBase(scene),d=data.powerShare,m={l:42,r:12,t:30,b:38},iw=W-m.l-m.r,ih=H-m.t-m.b,y=v=>m.t+ih*(1-v/100),bars=[],ticks=[];
+ const {svg,W,H,small}=svgBase(scene),d=data.powerShare,m={l:small?28:42,r:small?4:12,t:30,b:38},iw=W-m.l-m.r,ih=H-m.t-m.b,y=v=>m.t+ih*(1-v/100),bars=[],ticks=[];
  for(const v of [0,25,50,75,100]){node('line',{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:'#263744'},svg);label(svg,m.l-6,y(v)+4,`${v}%`,'end');}
  d.quarters.forEach((q,j)=>{let bottom=0;const g=node('g',{},svg);q.values.forEach((v,i)=>{const b=node('rect',{y:y(bottom+v),height:ih*v/100,fill:d.groups[i].color},g);node('title',{},b,`${q.label} · ${d.groups[i].name}: ${v.toFixed(1)}%`);bars.push({b,j});bottom+=v;});ticks.push(label(svg,0,H-12,small?q.label.replace('20',''):q.label,'middle'));});
  const future=node('rect',{y:m.t,height:ih,fill:'#b985ff','fill-opacity':.04,stroke:'#b985ff','stroke-dasharray':'5 6'},svg);legend(scene,d.groups);
