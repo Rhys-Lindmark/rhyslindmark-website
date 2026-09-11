@@ -191,7 +191,7 @@
           const value=row[metric],color=j?'#ff914f':'#43a9ff',yy=cy+j*(bh+7);
           const bar=node('rect',{x:Math.min(x(0),x(value)),y:yy,width:Math.abs(x(value)-x(0)),height:bh,fill:color},svg);
           const t=label(svg,value<0?x(value)+5:x(value)+6,yy+bh/2+4,`${value}%`,'start');t.style.fill='#fff';
-          bars.push({bar,t,value,metric});
+          bars.push({bar,t,value,metric,company:row.name});
         });
       });
       legend(scene,[{name:'Gross margin',color:'#43a9ff'},{name:'Operating margin, ex-SBC',color:'#ff914f'}]);
@@ -199,12 +199,12 @@
         const stage=Number(scene.dataset.stage||0);
         const focus=stage===1?'gross':stage===2?'operating':null;
         const progress=reduce.matches||stage>0?1:clamp(Number(scene.dataset.localProgress||0)/.8);
-        bars.forEach(({bar,t,metric,value})=>{
+        bars.forEach(({bar,t,metric,value,company})=>{
           const current=value*progress;
           bar.setAttribute('x',Math.min(x(0),x(current)));
           bar.setAttribute('width',Math.abs(x(current)-x(0)));
           t.setAttribute('x',x(current)+(value<0?5:6));
-          const opacity=reduce.matches||!focus||metric===focus?'1':'.18';
+          const opacity=reduce.matches||!focus||(metric===focus&&company!=='NVIDIA')?'1':'.18';
           bar.style.opacity=opacity;t.style.opacity=progress>=1?opacity:'0';
         });
         scene.querySelectorAll('.legend span').forEach((el,i)=>{
