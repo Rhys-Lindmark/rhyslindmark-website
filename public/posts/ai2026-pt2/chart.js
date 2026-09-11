@@ -13,6 +13,9 @@
     parent.append(el); return el;
   }
   const label = (svg, x, y, text, anchor = 'middle') => node('text', {x, y, 'text-anchor': anchor}, svg, text);
+  function verticalTitle(svg, y, text) {
+    return node('text', {x: 14, y, 'text-anchor': 'middle', class: 'axis-title', transform: `rotate(-90 14 ${y})`}, svg, text);
+  }
   function legend(scene, rows) {
     const target = scene.querySelector('.legend'); target.replaceChildren();
     rows.forEach(row => {
@@ -25,14 +28,14 @@
     if (!svg) return;
     const box = scene.querySelector('.plot-wrap').getBoundingClientRect();
     const W = Math.max(280, box.width), H = Math.max(220, box.height), small = W < 600;
-    const m = {l: small ? 46 : 85, r: small ? 18 : 45, t: 28, b: 55};
+    const m = {l: small ? 78 : 100, r: small ? 18 : 45, t: 28, b: 55};
     const iw = W-m.l-m.r, ih = H-m.t-m.b;
     svg.replaceChildren(); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     node('title', {}, svg, svg.getAttribute('aria-label'));
     if (kind === 'business') {
       const rows=data.business, left=small?24:70, width=W-left*2;
       const top=H*.28, bh=Math.min(180,H*.32), segments=[];
-      label(svg,left,top-26,'Anthropic revenue · $30B/GW','start');
+      label(svg,left+width/2,top+bh+52,'REVENUE ALLOCATION · USD BILLIONS / GW');
       let total=0;
       rows.forEach((row,i)=>{
         const x=left+total/30*width,bw=row.value/30*width;
@@ -47,12 +50,13 @@
         segments.forEach((g,i)=>g.style.opacity=reduce.matches||stage===0||i===Math.min(3,Math.floor(local*4))?'1':'.24');
       });
     } else if (kind === 'expansion') {
-      const left=small?42:80,right=small?16:40,bottom=H-44,width=W-left-right;
+      const left=small?80:100,right=small?16:40,bottom=H-44,width=W-left-right;
       const sy=v=>Math.sign(v)*Math.log1p(Math.abs(v)/10),lo=sy(-140),hi=sy(80);
       const x=v=>left+(v-1999)/28*width,y=v=>28+(bottom-28)*(1-(sy(v)-lo)/(hi-lo));
       [-100,-50,-20,0,20,50].forEach(v=>{node('line',{x1:left,x2:W-right,y1:y(v),y2:y(v),stroke:v===0?'#e6edf3':'#2a3a47'},svg);label(svg,left-8,y(v)+4,`${v}%`,'end');});
       [2000,2010,2020,2026].forEach(v=>label(svg,x(v),H-25,v));
-      label(svg,left+width/2,H-5,'FISCAL YEAR · SYMLOG MARGIN');
+      label(svg,left+width/2,H-5,'FISCAL YEAR');
+      verticalTitle(svg,(28+bottom)/2,'OPERATING MARGIN · EX-SBC (%) · SYMLOG');
       const paths=[];
       data.expansion.forEach(row=>{
         const g=node('g',{},svg);
@@ -95,13 +99,13 @@
         label(svg,m.l-9,y(v)+4,revenue&&v<1?'$100M':`$${v}B`,'end');
       });
       label(svg,m.l+iw/2,H-7,revenue?'YEAR':'YEARS SINCE ≈$10B REVENUE');
+      verticalTitle(svg,m.t+ih/2,revenue?'ANNUALIZED REVENUE · USD (LOG SCALE)':'REVENUE · INFLATION-ADJUSTED USD');
       const defs=node('defs',{},svg), clip=node('clipPath',{id:`reveal-${kind}`},defs);
       const rect=node('rect',{x:m.l-3,y:0,width:iw+6,height:H},clip);
       const g=node('g',{'clip-path':`url(#reveal-${kind})`},svg);
       for(const row of data[kind]) {
         node('path',{d:row.points.map((p,i)=>`${i?'L':'M'}${x(p[0])},${y(p[1])}`).join(' '),fill:'none',stroke:row.color,'stroke-width':small?2.5:3.5},g);
         const end=row.points.at(-1); node('circle',{cx:x(end[0]),cy:y(end[1]),r:4,fill:row.color},g);
-        if(revenue && row.name==='Combined') label(g,x(end[0])-5,y(end[1])-13,'$105B','end');
         if(!revenue && ['Anthropic','OpenAI'].includes(row.name)) {
           const t=label(g,x(end[0])+9,y(end[1])-10,`${row.name} $${end[1]}B`,'start');t.style.fill=row.color;
         }
@@ -109,8 +113,10 @@
       legend(scene,data[kind]);
       renderers.set(scene,p=>rect.setAttribute('width',(iw+6)*(reduce.matches?1:clamp(p/.78))));
     } else if (kind === 'margins') {
-      const left=small?78:150, right=small?34:75, width=W-left-right;
+      const left=small?104:150, right=small?34:75, width=W-left-right;
       const x=v=>left+(v+140)/230*width;
+      verticalTitle(svg,H/2,'COMPANY');
+      label(svg,left+width/2,H-5,'MARGIN (%)');
       [-100,-50,0,50].forEach(v=>{
         node('line',{x1:x(v),x2:x(v),y1:28,y2:H-30,stroke:v===0?'#9aafbf':'#2a3a47'},svg);
         label(svg,x(v),17,`${v}%`);
@@ -131,7 +137,8 @@
         const v=value*(reduce.matches?1:clamp(p/.78));bar.setAttribute('x',Math.min(x(0),x(v)));bar.setAttribute('width',Math.abs(x(v)-x(0)));t.style.opacity=p>.72||reduce.matches?'1':'0';
       }));
     } else if (kind === 'costs') {
-      const left=small?70:130,right=small?18:50,width=W-left-right,x=v=>left+v/240*width;
+      const left=small?104:150,right=small?18:50,width=W-left-right,x=v=>left+v/240*width;
+      verticalTitle(svg,H/2,'COMPANY');
       [0,100,200].forEach(v=>{node('line',{x1:x(v),x2:x(v),y1:25,y2:H-45,stroke:v===100?'#e6edf3':'#2a3a47','stroke-dasharray':v===100?'5 5':''},svg);label(svg,x(v),16,`$${v}`);});
       const bars=[];
       data.costs.forEach((row,i)=>{
@@ -174,7 +181,7 @@
     if(scene){const steps=(scene.dataset.steps||scene.id).split(','),index=steps.indexOf(id),travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight);window.scrollTo({top:window.scrollY+scene.getBoundingClientRect().top+(reduce.matches?0:(index/steps.length)*travel),behavior:'instant'});}request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=axes-2');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     document.body.classList.toggle('all-mode',reduce.matches);
     for(const scene of scenes){draw(scene);const plot=scene.querySelector('.plot-wrap');if(plot)new ResizeObserver(()=>{draw(scene);request();}).observe(plot);}
     reduce.addEventListener('change',()=>{document.body.classList.toggle('all-mode',reduce.matches);scenes.forEach(draw);request();});
