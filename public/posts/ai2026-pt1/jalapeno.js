@@ -20,10 +20,11 @@ for(const host of document.querySelectorAll('.benchmark-scroll[data-benchmark]')
    return {path,dots,label};
   });update();
  }
- function update(){
-  const all=reduce.matches||document.body.classList.contains('all-mode'),p=all?1:clamp((90-host.getBoundingClientRect().top)/Math.max(1,host.offsetHeight-figure.offsetHeight));
+ function update(force=false){
+  const all=force===true||reduce.matches||document.body.classList.contains('all-mode'),p=all?1:clamp((90-host.getBoundingClientRect().top)/Math.max(1,host.offsetHeight-figure.offsetHeight));
   paths.forEach(({path,dots,label},i)=>{const t=all?1:clamp((p-(i?.45:.04))/.38);path.style.visibility=t>0?'visible':'hidden';path.setAttribute('stroke-dashoffset',1-t);label.style.visibility=t>0?'visible':'hidden';dots.forEach((dot,j)=>dot.style.visibility=t>0&&j/(dots.length-1)<=t?'visible':'hidden');});
  }
+ addEventListener('prepare-share-poster',event=>{if(event.detail.step===36)update(true);});
  charts.push(update);new ResizeObserver(draw).observe(svg);draw();
 }
 let frame=0;function request(){if(!frame)frame=requestAnimationFrame(()=>{frame=0;charts.forEach(fn=>fn());});}
