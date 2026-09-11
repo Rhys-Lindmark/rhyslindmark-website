@@ -33,7 +33,7 @@
 .scene.eras,.scene.meme{--heading-color:#ff70de}
 .scene .passage h2{color:#fff}.scene .figure-heading h3{color:var(--heading-color)}
 
-.scene.eras{height:650svh}.all-mode .scene.eras{height:auto}
+.scene.eras{height:850svh}.all-mode .scene.eras{height:auto}
 
 /* The 100 GW opportunity. */
 .scene.capacity{height:500svh}.scene.panorama{height:480svh}.scene.centers{height:500svh}

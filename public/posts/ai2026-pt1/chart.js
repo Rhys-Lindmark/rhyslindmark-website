@@ -64,7 +64,8 @@ function drawEras(scene){
  // Keep direct labels above every series, including those drawn later.
  series.forEach(({txt})=>svg.appendChild(txt));legend(scene,[]);
  return p=>{
-  const phase=clamp(p/.96)*8,active=Math.min(7,Math.floor(phase)),current=series[Math.floor(active/2)].s;
+  scene.dataset.cardProgress=String(clamp(p/.22));
+  const phase=clamp((p-.25)/.71)*8,active=Math.min(7,Math.floor(phase)),current=series[Math.floor(active/2)].s;
   scene.querySelector('.readout').textContent=all?'':`${current.id} ${active%2?current.avgOperatingMargin+'% margin':'profit'}`;
   series.forEach(({s,profit,margin,txt},i)=>{
    const pt=clamp((phase-i*2)/.8),mt=clamp((phase-i*2-1)/.8),year=lerp(s.data[0].year,s.data.at(-1).year,pt);
