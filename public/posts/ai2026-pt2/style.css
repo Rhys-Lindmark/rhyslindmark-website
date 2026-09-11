@@ -18,3 +18,38 @@
 .all-mode .scene.models .meme-frame{min-height:50svh}
 @media(max-width:760px){.post-title{font-size:10px}.scene.models{--axis-inset:58px}.scene.models>.sticky{padding-top:65px;padding-bottom:20px}.scene.models .legend{padding-left:40px;gap:6px 12px}.scene.models .chart-title{font-size:11px;margin-bottom:8px}.scene.models .passage h2{font-size:18px}.all-mode .scene.models .plot-wrap{height:400px}}
 @media print{.scene.models{height:auto!important}.scene.models .sticky{height:auto!important;min-height:0;overflow:visible}.scene.models .plot-wrap{height:480px;flex:auto}.scene.models .passage{position:relative!important;left:0!important;transform:none!important}.track{display:none!important}}
+
+/* Consecutive passages share one pinned visual. */
+.scene.models.business,.scene.models.expansion{height:520svh}
+.scene.models.compute{height:920svh}
+.scene.models.spiral{height:420svh}
+.scene.models .legend span{transition:opacity .2s ease}
+.scene.models.business[data-stage="1"] .passage{width:min(390px,calc(100% - 80px));max-height:80%}
+.scene.models.compute .legend{padding-left:40px}
+.scene.models .plot-wrap g{transition:opacity .25s ease}
+.scene.models.tweet-scene{height:auto;min-height:100svh}
+.scene.models.tweet-scene>.sticky{position:relative;top:0;height:auto;min-height:100svh;align-items:center;justify-content:center;padding-block:100px;overflow:visible}
+.tweet-heading{width:min(100%,750px);margin-bottom:32px}
+.tweet-heading h2{font-size:clamp(28px,4vw,48px);text-align:center}
+.tweet-panel{width:min(100%,550px)}
+.tweet-panel blockquote{margin:0;padding:24px;border:1px solid #526777;background:#101820;border-radius:16px}
+.tweet-panel .twitter-tweet-rendered{margin:0!important;overflow:hidden;border-radius:16px}
+.spiral-frame{flex:1;min-height:0;display:grid;place-items:center;overflow:hidden}
+.spiral-image{width:min(70svh,85vw);height:min(70svh,85vw);object-fit:contain;border-radius:50%;animation:spiral-spin 28s linear infinite;animation-play-state:paused}
+.spiral.is-visible:not(.paused) .spiral-image{animation-play-state:running}
+.spin-toggle{position:absolute;right:24px;top:76px;z-index:4;background:#101820}
+@keyframes spiral-spin{to{transform:rotate(360deg)}}
+.scene.models.chapter{height:100svh}
+.scene.models.chapter>.sticky{position:relative!important;height:100svh!important;align-items:center;justify-content:center}
+.scene.models.chapter .passage{transform:none!important;position:static!important;background:none;border:0;box-shadow:none;width:100%;max-width:none;max-height:none;padding:0;margin:auto;overflow:visible}
+.scene.models.chapter h2{font-size:clamp(80px,16vw,200px);font-weight:450;letter-spacing:-.065em;text-align:center}
+.all-mode .scene.models.business,.all-mode .scene.models.expansion,.all-mode .scene.models.compute,.all-mode .scene.models.spiral{height:auto}
+.all-mode .scene.models .passage [data-passage]+[data-passage]{margin-top:24px}
+.all-mode .spiral-image{animation:none!important}
+.all-mode .spin-toggle{display:none}
+@media(max-width:760px){.scene.models.business[data-stage="1"] .passage{width:calc(100% - 90px)}.scene.models.business .passage h2{font-size:17px}.scene.models.compute .legend{padding-left:8px}.spin-toggle{right:16px;top:66px}.scene.models.tweet-scene>.sticky{padding-inline:18px}.tweet-heading h2{font-size:30px}.spiral-image{width:88vw;height:88vw}}
+@media(prefers-reduced-motion:reduce){.spiral-image{animation:none!important}.spin-toggle{display:none}.scene.models .plot-wrap g{transition:none}}
+@media print{.spiral-image{animation:none!important}.spin-toggle{display:none}.scene.models .passage [hidden]{display:block!important}}
+
+.scene.models .passage[hidden]{display:none}
+.all-mode .scene.models [data-passage][hidden]{display:block}
