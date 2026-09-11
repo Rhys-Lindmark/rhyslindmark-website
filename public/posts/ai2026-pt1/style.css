@@ -192,3 +192,13 @@ html,body,#article,.scene{background-color:var(--bg)}
 }
 
 .scene.chart-only .passage{display:none}
+
+.side-video-frame video{pointer-events:none}
+@media(max-width:760px){
+ .scene.sidevideo>.sticky{padding:0!important;min-height:0}
+ .scene.sidevideo .sticky>figure{position:absolute;inset:0;width:100%;height:100%;margin:0}
+ .sidevideo .side-video-frame{position:absolute;inset:0;display:block}
+ .sidevideo .side-video-frame video{width:100%;height:100%;max-height:none;object-fit:cover}
+ .sidevideo figcaption{position:absolute;bottom:12px;right:16px;margin:0;padding:4px 8px;border:0;background:#070b1099}
+ .sidevideo .track{position:absolute;bottom:0;left:0;right:0;margin:0;z-index:2}
+}
