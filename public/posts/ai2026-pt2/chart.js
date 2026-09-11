@@ -97,7 +97,7 @@
       node('rect',{x:left,y:top+rdMainHeight,width:rdWidth*.4/.48-4,height:trainHeight,fill:'#39ffc1'},rd);
       node('rect',{x:left+rdWidth*.4/.48,y:top+rdMainHeight,width:rdWidth*.08/.48-4,height:trainHeight,fill:'#8aecbb'},rd);
       node('rect',{x:left+rdWidth,y:top,width:infWidth,height,fill:'#43a9ff'},inf);
-      const text=(g,x,y,t,anchor='start')=>{const el=label(g,x,y,t,anchor);el.style.fill='#e6edf3';return el;};
+      const text=(g,x,y,t,anchor='start')=>{const el=label(g,x,y,t,anchor);el.style.fill=y>=top?'#071018':'#e6edf3';return el;};
       text(rd,left,25,'R&D · $5B');text(inf,left+rdWidth,25,small?'Inference':'Inference · $2B');
       if(small)text(inf,left+rdWidth,43,'$2B');
       text(rd,left+12,top+28,'$4.5B');text(rd,left+12,top+48,'Other R&D');
