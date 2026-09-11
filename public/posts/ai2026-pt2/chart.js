@@ -36,7 +36,7 @@
       (revenue ? [2023,2024,2025,2026,2027] : [0,2,4,6,8,10]).forEach(v => label(svg,x(v),H-30,v));
       (revenue ? [.1,1,10,100] : [0,50,100,150]).forEach(v => {
         node('line',{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:'#2a3a47'},svg);
-        label(svg,m.l-9,y(v)+4,v<1?'$100M':`$${v}B`,'end');
+        label(svg,m.l-9,y(v)+4,revenue&&v<1?'$100M':`$${v}B`,'end');
       });
       label(svg,m.l+iw/2,H-7,revenue?'YEAR':'YEARS SINCE ≈$10B REVENUE');
       const defs=node('defs',{},svg), clip=node('clipPath',{id:`reveal-${kind}`},defs);
