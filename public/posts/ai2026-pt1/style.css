@@ -232,3 +232,5 @@ body:not(.all-mode) .scene.building-return>.sticky{top:0;height:100svh}
 @media(max-width:760px){:root{--header-height:52px}}
 @media(prefers-reduced-motion:reduce){header,.scene .sticky>.track{transition:none}}
 @media print{body:not(.all-mode) .scene:not(.fulltext)>.sticky,body:not(.all-mode) .scene.building-return>.sticky{position:relative;top:0;height:700px}}
+
+header .brand{font:500 18px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:normal}
