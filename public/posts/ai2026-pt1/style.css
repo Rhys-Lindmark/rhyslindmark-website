@@ -190,3 +190,5 @@ html,body,#article,.scene{background-color:var(--bg)}
   font-size:15px;line-height:24px;
  }
 }
+
+.scene.chart-only .passage{display:none}
