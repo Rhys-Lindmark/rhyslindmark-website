@@ -248,3 +248,7 @@ header .brand{font:500 18px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .network-demo svg text{font-family:inherit;fill:#e6edf3;stroke:none;paint-order:normal}
 
 @media(max-width:760px){.network-demo svg text{font-size:22px!important}}
+
+/* Clip the native X iframe so its white canvas cannot peek around the card. */
+.tweet-inline .twitter-tweet-rendered{margin:0!important;border-radius:16px;overflow:hidden;background:#15202b}
+.tweet-inline iframe{display:block;border:0;border-radius:16px;clip-path:inset(0 round 16px);background:#15202b}
