@@ -241,3 +241,10 @@ header .brand{font:500 18px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .scene.chapter .sticky,.scene.statement .sticky{padding-block:24px;justify-content:center}
 .scene.chapter .passage,.scene.statement .passage{align-items:center;justify-content:center;text-align:center;margin:auto}
 .scene.chapter .passage h2,.scene.statement .passage h2{margin-inline:auto;text-align:center}
+
+/* Compact neural-network demonstrations within the reading column. */
+.network-demo{width:100%;margin:0 0 32px}
+.network-demo svg{display:block;width:100%;height:auto;overflow:visible}
+.network-demo svg text{font-family:inherit;fill:#e6edf3;stroke:none;paint-order:normal}
+
+@media(max-width:760px){.network-demo svg text{font-size:22px!important}}
