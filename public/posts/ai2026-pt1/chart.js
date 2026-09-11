@@ -201,8 +201,15 @@ function drawShare(scene){
 function drawUnits(scene){
  const {svg,W,H}=svgBase(scene),size=Math.min((W-30)/10,(H-95)/10),x=(W-size*10)/2,y=65,units=[];
  const total=label(svg,W/2,30,'$2T','middle','series-label');total.style.fontSize='28px';total.style.fill='#63ff91';
- for(let i=0;i<100;i++)units.push(node('rect',{x:x+(i%10)*size+2,y:y+(9-Math.floor(i/10))*size+2,width:Math.max(1,size-4),height:Math.max(1,size-4),fill:'#63ff91','fill-opacity':.15,stroke:'#63ff91'},svg));
- const firstValue=label(svg,x+size/2,y+9.5*size,'$20B','middle','series-label');firstValue.setAttribute('dominant-baseline','middle');firstValue.style.fontSize=`${Math.min(20,size*.3)}px`;firstValue.style.fill='#63ff91';legend(scene,[]);
+ for(let i=0;i<100;i++){
+  const chip=node('g',{transform:`translate(${x+(i%10)*size},${y+(9-Math.floor(i/10))*size}) scale(${size/100})`,stroke:'#63ff91','stroke-width':2.5,'stroke-linejoin':'round'},svg);
+  node('path',{d:'M27 16H73L84 27V73L73 84H27L16 73V27Z',fill:'#63ff91','fill-opacity':.15},chip);
+  let pins='';for(const p of [30,43,57,70])pins+=`M${p} 5V16M${p} 84V95M5 ${p}H16M84 ${p}H95`;
+  node('path',{d:pins,fill:'none','stroke-linecap':'round'},chip);
+  for(const [cx,cy] of [[27,27],[73,27],[27,73],[73,73]])node('circle',{cx,cy,r:2.8,fill:'none','stroke-width':2},chip);
+  units.push(chip);
+ }
+ const firstValue=label(svg,x+size/2,y+9.5*size,'$20B','middle','series-label');firstValue.setAttribute('dominant-baseline','middle');firstValue.style.fontSize=`${Math.min(20,size*.23)}px`;firstValue.style.fill='#63ff91';legend(scene,[]);
  return p=>{const {index,local}=passageStage(scene,p),expanded=index||all,count=expanded?Math.max(1,Math.ceil(clamp(local/.8)*100)):1;units.forEach((u,i)=>{u.style.visibility=all||i<count?'visible':'hidden';});total.style.visibility=expanded?'visible':'hidden';firstValue.style.visibility=expanded?'hidden':'visible';scene.querySelector('.readout').textContent='$20B / GW';};
 }
 
