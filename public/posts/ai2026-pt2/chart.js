@@ -62,16 +62,33 @@
       [2000,2010,2020,2026].forEach(v=>label(svg,x(v),H-25,v));
       label(svg,left+width/2,H-5,'FISCAL YEAR');
       verticalTitle(svg,(28+bottom)/2,'OPERATING MARGIN · EX-SBC (%) · SYMLOG');
-      const paths=[];
-      data.expansion.forEach(row=>{
-        const g=node('g',{},svg);
-        node('path',{d:row.points.map((pt,i)=>`${i?'L':'M'}${x(pt[0])},${y(pt[1])}`).join(' '),fill:'none',stroke:row.color,'stroke-width':row.estimated?3:2.5,'stroke-dasharray':row.estimated?'7 5':'none'},g);
-        const last=row.points.at(-1);node('circle',{cx:x(last[0]),cy:y(last[1]),r:row.estimated?5:3,fill:row.estimated?'#0b1015':row.color,stroke:row.color,'stroke-width':2},g);
-        if(row.estimated){const t=label(g,x(last[0])-9,y(last[1])+4,`${row.name.split(' ')[0]} ${last[1]}%`,'end');t.style.fill=row.color;}
-        paths.push({g,row});
+      const paths=[], defs=node('defs',{},svg);
+      data.expansion.forEach((row,i)=>{
+        const g=node('g',{},svg), focus=['Amazon','Uber','Anthropic est.'].includes(row.name);
+        const clip=node('clipPath',{id:`expansion-reveal-${i}`},defs);
+        const reveal=node('rect',{x:left-6,y:0,width:width+12,height:H},clip);
+        const path=node('path',{d:row.points.map((pt,j)=>`${j?'L':'M'}${x(pt[0])},${y(pt[1])}`).join(' '),fill:'none',stroke:row.color,'stroke-width':focus?3.5:2.5,'stroke-dasharray':row.estimated?'7 5':'none','clip-path':`url(#expansion-reveal-${i})`},g);
+        const last=row.points.at(-1), marker=node('g',{},g);
+        node('circle',{cx:x(last[0]),cy:y(last[1]),r:row.estimated?5:3,fill:row.estimated?'#0b1015':row.color,stroke:row.color,'stroke-width':2},marker);
+        if(row.estimated){const t=label(marker,x(last[0])-9,y(last[1])+4,`${row.name.split(' ')[0]} ${last[1]}%`,'end');t.style.fill=row.color;}
+        paths.push({g,row,path,reveal,marker,focus});
       });
       legend(scene,data.expansion);
-      renderers.set(scene,()=>paths.forEach(({g,row})=>g.style.opacity=reduce.matches||Number(scene.dataset.stage||0)>0||row.estimated?'1':'.25'));
+      renderers.set(scene,()=>{
+        const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
+        const comparison=reduce.matches||stage>0, progress=reduce.matches?1:clamp((local-.08)/.72);
+        paths.forEach(({g,row,path,reveal,marker,focus},i)=>{
+          const visible=comparison||row.estimated;
+          const opacity=comparison?(focus||row.name==='OpenAI est.'?1:.25):(row.name==='OpenAI est.'?.25+.75*clamp(local/.45):.4);
+          g.style.opacity=visible?String(opacity):'0';
+          path.style.opacity=comparison?'1':'0';
+          const first=row.points[0],last=row.points.at(-1);
+          reveal.setAttribute('width',focus&&comparison?Math.max(0,x(first[0])-left+6+(x(last[0])-x(first[0])+6)*progress):width+12);
+          marker.style.opacity=!comparison||row.estimated||!focus||progress===1?'1':'0';
+          const item=scene.querySelectorAll('.legend span')[i];
+          item.hidden=!visible;item.style.display=visible?'':'none';item.style.opacity=String(opacity);
+        });
+      });
     } else if (kind === 'compute') {
       const left=small?12:65,top=70,width=W-2*left,height=H-top-45,rdWidth=width*5/7,infWidth=width*2/7;
       const rd=node('g',{},svg),inf=node('g',{},svg);
