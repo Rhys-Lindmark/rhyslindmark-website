@@ -198,9 +198,14 @@
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0);
         const focus=stage===1?'gross':stage===2?'operating':null;
-        bars.forEach(({bar,t,metric})=>{
+        const progress=reduce.matches||stage>0?1:clamp(Number(scene.dataset.localProgress||0)/.8);
+        bars.forEach(({bar,t,metric,value})=>{
+          const current=value*progress;
+          bar.setAttribute('x',Math.min(x(0),x(current)));
+          bar.setAttribute('width',Math.abs(x(current)-x(0)));
+          t.setAttribute('x',x(current)+(value<0?5:6));
           const opacity=reduce.matches||!focus||metric===focus?'1':'.18';
-          bar.style.opacity=opacity;t.style.opacity=opacity;
+          bar.style.opacity=opacity;t.style.opacity=progress>=1?opacity:'0';
         });
         scene.querySelectorAll('.legend span').forEach((el,i)=>{
           el.style.opacity=reduce.matches||!focus||i===(stage===1?0:1)?'1':'.25';
