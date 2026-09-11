@@ -87,7 +87,7 @@ function drawMarketcap(scene){
  node('path',{d:linePath(points,a.x,a.y),fill:'none',stroke:'#63ff91','stroke-width':2.3,'stroke-linejoin':'round'},c.g);
  const cursor=node('line',{y1:a.m.t,y2:a.m.t+a.ih,stroke:'#90abc0','stroke-dasharray':'2 5'},svg),dot=node('circle',{r:4,fill:'#63ff91'},svg),value=label(svg,0,0,'','start','series-label');
  legend(scene,[]);
- return p=>{const t=clamp(.02+p/.86),date=lerp(...xd,t);let i=0;while(i<points.length-1&&points[i+1][0]<=date)i++;const point=points[i],x=a.x(date);c.rect.setAttribute('width',a.iw*t);cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);dot.setAttribute('cx',a.x(point[0]));dot.setAttribute('cy',a.y(point[1]));value.setAttribute('x',a.x(point[0])+(t>.65?-8:8));value.setAttribute('y',a.y(point[1])-12);value.setAttribute('text-anchor',t>.65?'end':'start');value.textContent=point[1]<.001?`$${Math.round(point[1]*1e6)}M`:point[1]<1?`$${Math.round(point[1]*1000)}B`:`$${point[1].toFixed(2)}T`;scene.querySelector('.readout').textContent=new Date(point[0]).toLocaleDateString('en-US',{month:'short',year:'numeric',timeZone:'UTC'});};
+ return p=>{const {index,local}=passageStage(scene,p),t=all||index>0?1:clamp(.02+local/.86),date=lerp(...xd,t);let i=0;while(i<points.length-1&&points[i+1][0]<=date)i++;const point=points[i],x=a.x(date);c.rect.setAttribute('width',a.iw*t);cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);dot.setAttribute('cx',a.x(point[0]));dot.setAttribute('cy',a.y(point[1]));value.setAttribute('x',a.x(point[0])+(t>.65?-8:8));value.setAttribute('y',a.y(point[1])-12);value.setAttribute('text-anchor',t>.65?'end':'start');value.textContent=point[1]<.001?`$${Math.round(point[1]*1e6)}M`:point[1]<1?`$${Math.round(point[1]*1000)}B`:`$${point[1].toFixed(2)}T`;scene.querySelector('.readout').textContent=new Date(point[0]).toLocaleDateString('en-US',{month:'short',year:'numeric',timeZone:'UTC'});};
 }
 function setupSideVideo(scene){
  const video=scene.querySelector('video');let inView=false;
@@ -97,7 +97,7 @@ function setupSideVideo(scene){
  document.addEventListener('visibilitychange',sync);reduce.addEventListener('change',sync);
  return p=>passageStage(scene,p);
 }
-function setupMeme(scene){const img=scene.querySelector('img');return p=>{const show=all||p>=.45,t=all?1:clamp((p-.45)/.5);img.style.visibility=show?'visible':'hidden';img.setAttribute('aria-hidden',String(!show));img.style.transform=`scale(${lerp(.12,1,t*t)})`;};}
+function setupMeme(scene){const img=scene.querySelector('img');return p=>{const show=true,t=all?1:clamp(p/.9);img.style.visibility=show?'visible':'hidden';img.setAttribute('aria-hidden',String(!show));img.style.transform=`scale(${lerp(.12,1,t*t)})`;};}
 
 function setupVideo(scene){
  const video=scene.querySelector('video');let loaded=false,inView=false;
