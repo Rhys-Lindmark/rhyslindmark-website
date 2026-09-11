@@ -1,0 +1,215 @@
+{
+  "source": "https://metr.org/assets/benchmark_results_1_1.yaml",
+  "unit": "minutes of human task duration",
+  "reliability": 0.8,
+  "rows": [
+    {
+      "name": "gpt2",
+      "date": "2019-02-14",
+      "sota": true,
+      "ci_high": 0.068612,
+      "ci_low": 0.001589,
+      "estimate": 0.0128
+    },
+    {
+      "name": "davinci_002",
+      "date": "2020-05-28",
+      "sota": true,
+      "ci_high": 0.105813,
+      "ci_low": 0.034813,
+      "estimate": 0.056238
+    },
+    {
+      "name": "gpt_3_5_turbo_instruct",
+      "date": "2022-03-15",
+      "sota": true,
+      "ci_high": 0.492933,
+      "ci_low": 0.141649,
+      "estimate": 0.25538
+    },
+    {
+      "name": "gpt_4",
+      "date": "2023-03-14",
+      "sota": true,
+      "ci_high": 2.523746,
+      "ci_low": 0.342984,
+      "estimate": 0.889561
+    },
+    {
+      "name": "gpt_4_1106_inspect",
+      "date": "2023-11-06",
+      "sota": true,
+      "ci_high": 2.358414,
+      "ci_low": 0.276599,
+      "estimate": 0.783032
+    },
+    {
+      "name": "claude_3_opus_inspect",
+      "date": "2024-03-04",
+      "sota": false,
+      "ci_high": 2.118276,
+      "ci_low": 0.190491,
+      "estimate": 0.638973
+    },
+    {
+      "name": "gpt_4_turbo_inspect",
+      "date": "2024-04-09",
+      "sota": false,
+      "ci_high": 2.196806,
+      "ci_low": 0.428277,
+      "estimate": 0.927933
+    },
+    {
+      "name": "gpt_4o_inspect",
+      "date": "2024-05-13",
+      "sota": true,
+      "ci_high": 3.01517,
+      "ci_low": 0.562997,
+      "estimate": 1.267009
+    },
+    {
+      "name": "claude_3_5_sonnet_20240620_inspect",
+      "date": "2024-06-20",
+      "sota": true,
+      "ci_high": 4.573519,
+      "ci_low": 0.57927,
+      "estimate": 1.671757
+    },
+    {
+      "name": "o1_preview",
+      "date": "2024-09-12",
+      "sota": true,
+      "ci_high": 8.912444,
+      "ci_low": 2.012646,
+      "estimate": 4.420545
+    },
+    {
+      "name": "claude_3_5_sonnet_20241022_inspect",
+      "date": "2024-10-22",
+      "sota": true,
+      "ci_high": 7.363864,
+      "ci_low": 0.89379,
+      "estimate": 2.595677
+    },
+    {
+      "name": "o1_inspect",
+      "date": "2024-12-05",
+      "sota": true,
+      "ci_high": 16.640636,
+      "ci_low": 3.036033,
+      "estimate": 7.090121
+    },
+    {
+      "name": "claude_3_7_sonnet_inspect",
+      "date": "2025-02-24",
+      "sota": true,
+      "ci_high": 28.889879,
+      "ci_low": 4.575608,
+      "estimate": 12.09179
+    },
+    {
+      "name": "o3_inspect",
+      "date": "2025-04-16",
+      "sota": true,
+      "ci_high": 57.823511,
+      "ci_low": 15.127348,
+      "estimate": 29.981603
+    },
+    {
+      "name": "claude_4_opus_inspect",
+      "date": "2025-05-22",
+      "sota": false,
+      "ci_high": 41.937268,
+      "ci_low": 8.483125,
+      "estimate": 20.429752
+    },
+    {
+      "name": "claude_4_1_opus_inspect",
+      "date": "2025-08-05",
+      "sota": false,
+      "ci_high": 47.785951,
+      "ci_low": 10.538456,
+      "estimate": 23.455761
+    },
+    {
+      "name": "gpt_5_2025_08_07_inspect",
+      "date": "2025-08-07",
+      "sota": true,
+      "ci_high": 70.093125,
+      "ci_low": 19.184874,
+      "estimate": 38.312431
+    },
+    {
+      "name": "gemini_3_pro",
+      "date": "2025-11-18",
+      "sota": true,
+      "ci_high": 103.295501,
+      "ci_low": 25.650451,
+      "estimate": 54.142849
+    },
+    {
+      "name": "gpt_5_1_codex_max_inspect",
+      "date": "2025-11-19",
+      "sota": false,
+      "ci_high": 88.365435,
+      "ci_low": 27.30204,
+      "estimate": 50.632499
+    },
+    {
+      "name": "claude_opus_4_5_inspect",
+      "date": "2025-11-24",
+      "sota": true,
+      "ci_high": 104.641318,
+      "ci_low": 20.660485,
+      "estimate": 49.430584
+    },
+    {
+      "name": "gpt_5_2",
+      "date": "2025-12-11",
+      "sota": true,
+      "ci_high": 131.730719,
+      "ci_low": 31.665111,
+      "estimate": 66.002649
+    },
+    {
+      "name": "claude_opus_4_6_inspect",
+      "date": "2026-02-05",
+      "sota": true,
+      "ci_high": 170.437873,
+      "ci_low": 27.026521,
+      "estimate": 69.874587
+    },
+    {
+      "name": "gpt_5_3_codex",
+      "date": "2026-02-05",
+      "sota": false,
+      "ci_high": 122.058963,
+      "ci_low": 22.361504,
+      "estimate": 54.739407
+    },
+    {
+      "name": "gemini_3_1_pro",
+      "date": "2026-02-19",
+      "sota": false,
+      "ci_high": 158.618017,
+      "ci_low": 52.025934,
+      "estimate": 89.801503
+    },
+    {
+      "name": "gpt_5_4",
+      "date": "2026-03-05",
+      "sota": false,
+      "ci_high": 108.679232,
+      "ci_low": 23.957027,
+      "estimate": 53.877851
+    },
+    {
+      "name": "claude_mythos_preview_early_inspect",
+      "date": "2026-04-07",
+      "sota": true,
+      "ci_high": 398.514614,
+      "ci_low": 97.30292,
+      "estimate": 185.911829
+    }
+  ]
+}

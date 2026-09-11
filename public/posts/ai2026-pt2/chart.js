@@ -26,12 +26,37 @@
   function draw(scene) {
     const kind = scene.dataset.kind, svg = scene.querySelector('svg');
     if (!svg) return;
+    if (kind === 'sourcegraph') {
+      const reveal=svg.querySelector('.source-reveal');
+      renderers.set(scene,p=>reveal.setAttribute('width',Number(reveal.dataset.width)*(reduce.matches?1:clamp(p/.7))));
+      return;
+    }
     const box = scene.querySelector('.plot-wrap').getBoundingClientRect();
     const W = Math.max(280, box.width), H = Math.max(220, box.height), small = W < 600;
     const m = {l: small ? 78 : 100, r: small ? 18 : 45, t: 28, b: 55};
     const iw = W-m.l-m.r, ih = H-m.t-m.b;
     svg.replaceChildren(); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     node('title', {}, svg, svg.getAttribute('aria-label'));
+    if(kind==='metr') {
+      const left=small?75:100,right=small?25:70,top=35,bottom=H-55;
+      const x=v=>left+(Date.parse(v)-Date.parse('2019-01-01'))/(Date.parse('2026-09-01')-Date.parse('2019-01-01'))*(W-left-right);
+      const y=v=>bottom-(Math.log10(v/.008)/Math.log10(600/.008))*(bottom-top);
+      [.0166667,.1,1,10,60,240].forEach((v,i)=>{node('line',{x1:left,x2:W-right,y1:y(v),y2:y(v),stroke:'#2a3a47'},svg);label(svg,left-9,y(v)+4,['1 sec','6 sec','1 min','10 min','1 hour','4 hours'][i],'end');});
+      [2019,2021,2023,2025,2026].forEach(v=>label(svg,x(v+'-01-01'),H-30,v));
+      verticalTitle(svg,(top+bottom)/2,'HUMAN TASK DURATION · 80% SUCCESS');
+      label(svg,(left+W-right)/2,H-7,'MODEL RELEASE DATE');
+      const names={gpt2:'GPT-2',davinci_002:'GPT-3',gpt_3_5_turbo_instruct:'GPT-3.5',gpt_4:'GPT-4',o1_preview:'o1-preview',claude_3_7_sonnet_inspect:'Claude 3.7',o3_inspect:'o3',claude_mythos_preview_early_inspect:'Mythos (early)'};
+      const marks=[];
+      data.metr.rows.forEach((r,i)=>{
+        const g=node('g',{},svg),xx=x(r.date),yy=y(r.estimate);
+        node('title',{},g,`${r.name}: ${r.estimate.toFixed(2)} minutes, 80% success`);
+        if(r.ci_low>0)node('line',{x1:xx,x2:xx,y1:y(Math.min(600,r.ci_high)),y2:y(Math.max(.008,r.ci_low)),stroke:'#39ffc1',opacity:'.22','stroke-width':2},g);
+        node('circle',{cx:xx,cy:yy,r:r.sota?5:3,fill:r.sota?'#39ffc1':'#67887c'},g);
+        if(names[r.name]&&(!small||[0,3,9,25].includes(i))){const end=i===data.metr.rows.length-1;label(g,xx+(end?-10:9),yy-10,names[r.name],end?'end':'start');}
+        marks.push(g);
+      });
+      renderers.set(scene,p=>marks.forEach((g,i)=>g.style.opacity=reduce.matches||i/(marks.length-1)<=clamp(p/.7)?'1':'.06'));
+    } else
     if (kind === 'business') {
       const rows=data.business, left=small?24:70, width=W-left*2;
       const top=H*.28, bh=Math.min(180,H*.32), segments=[];
@@ -212,6 +237,7 @@
   }
   try {
     const response=await fetch('/posts/ai2026-pt2/charts.json?v=axes-2');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     document.body.classList.toggle('all-mode',reduce.matches);
     for(const scene of scenes){draw(scene);const plot=scene.querySelector('.plot-wrap');if(plot)new ResizeObserver(()=>{draw(scene);request();}).observe(plot);}
     reduce.addEventListener('change',()=>{document.body.classList.toggle('all-mode',reduce.matches);scenes.forEach(draw);request();});
