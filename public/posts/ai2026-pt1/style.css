@@ -209,3 +209,8 @@ html,body,#article,.scene{background-color:var(--bg)}
 
 /* Match infrastructure legend markers to the chart’s vertical bars. */
 .roi .legend span:nth-child(odd) i{width:6px;height:16px;border:0;background:var(--color)}
+
+/* Keep scroll progress visible through the closing building sequence. */
+.scene.fulltext.building-return .track{display:block;position:absolute;bottom:0;left:0;right:0;height:3px;margin:0;z-index:2}
+.all-mode .scene.fulltext.building-return .track{display:none}
+@media print{.scene.fulltext.building-return .track{display:none}}
