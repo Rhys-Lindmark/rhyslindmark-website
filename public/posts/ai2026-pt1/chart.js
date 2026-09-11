@@ -224,7 +224,7 @@ function drawROI(scene){
  node('path',{d:linePath(d.aiRevenue,a.x,a.y),fill:'none',stroke:'#ff70de','stroke-width':3,'stroke-dasharray':'7 5'},revenue.g);
  const topLabel=label(svg,a.x(2035),a.y(4)+18,'$4T+','middle','series-label');topLabel.style.fill='#35e7ff';const aiLabel=label(svg,a.x(2040)-8,a.y(1)-12,'$1T','end','series-label');aiLabel.style.fill='#ff70de';
  legend(scene,[{name:'Internet infrastructure',color:'#35e7ff'},{name:'Internet revenue',color:'#35e7ff'},{name:'AI infrastructure',color:'#b985ff'},{name:'AI revenue',color:'#ff70de'}]);
- return p=>{const {index,local}=passageStage(scene,p),it=all||index>0?1:clamp(local/.8),at=all||index>1?1:index===1?clamp(local/.8):0,rt=all||index>2?1:index===2?clamp(local/.8):0;internet.rect.setAttribute('width',it*a.iw);infra.rect.setAttribute('width',at*a.iw);revenue.rect.setAttribute('width',rt*a.iw);topLabel.style.visibility=it>.8?'visible':'hidden';aiLabel.style.visibility=rt===1?'visible':'hidden';revealLegend(scene,i=>i<2||i===2&&at>0||i===3&&rt>0);};
+ return p=>{const {index,local}=passageStage(scene,p),stage=index-2,it=all||stage>0?1:stage===0?clamp(local/.8):0,at=all||stage>1?1:stage===1?clamp(local/.8):0,rt=all||stage>2?1:stage===2?clamp(local/.8):0;internet.rect.setAttribute('width',it*a.iw);infra.rect.setAttribute('width',at*a.iw);revenue.rect.setAttribute('width',rt*a.iw);topLabel.style.visibility=it>.8?'visible':'hidden';aiLabel.style.visibility=rt===1?'visible':'hidden';revealLegend(scene,i=>i<2&&it>0||i===2&&at>0||i===3&&rt>0);};
 }
 function setupBuildingReturn(scene){
  const building=scene.querySelector('ai-building-intro');let overlay;
