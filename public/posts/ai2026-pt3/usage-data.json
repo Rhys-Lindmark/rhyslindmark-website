@@ -1,0 +1,30 @@
+{
+  "title": "AI usage by job type",
+  "period": "February 2025",
+  "source": "https://substack-post-media.s3.amazonaws.com/public/images/33714223-881d-4a0f-847a-f99749e96dd6_3840x2888.webp",
+  "note": "Values transcribed from the author-supplied Anthropic chart, rounded to one decimal place. The series are shares of U.S. workers and shares of Claude conversations, not the percentage of workers using AI.",
+  "rows": [
+    {"job":"Office and administrative support","label":"Office & admin","workers":12.2,"claude":7.9},
+    {"job":"Transportation and material moving","label":"Transport & moving","workers":9.1,"claude":0.3},
+    {"job":"Sales and related","label":"Sales","workers":8.8,"claude":2.3},
+    {"job":"Food preparation and serving related","label":"Food preparation","workers":8.7,"claude":0.5},
+    {"job":"General management","label":"Management","workers":6.9,"claude":4.5},
+    {"job":"Business and financial operations","label":"Business & finance","workers":6.6,"claude":5.9},
+    {"job":"Healthcare practitioners and technical","label":"Healthcare practitioners","workers":6.1,"claude":2.6},
+    {"job":"Production services","label":"Production","workers":5.8,"claude":2.9},
+    {"job":"Education instruction and library","label":"Education & library","workers":5.8,"claude":9.3},
+    {"job":"Healthcare support","label":"Healthcare support","workers":4.7,"claude":0.3},
+    {"job":"Construction and extraction","label":"Construction","workers":4.1,"claude":0.4},
+    {"job":"Installation, maintenance, and repair","label":"Installation & repair","workers":3.9,"claude":0.7},
+    {"job":"Computer and mathematical","label":"Computer & mathematical","workers":3.4,"claude":37.2},
+    {"job":"Building grounds cleaning and maintenance","label":"Cleaning & grounds","workers":2.9,"claude":0.1},
+    {"job":"Protective service","label":"Protective services","workers":2.3,"claude":0.4},
+    {"job":"Personal care and service","label":"Personal care","workers":2.0,"claude":0.5},
+    {"job":"Architecture and engineering","label":"Architecture & engineering","workers":1.7,"claude":4.5},
+    {"job":"Community and social service","label":"Community & social services","workers":1.6,"claude":2.1},
+    {"job":"Arts, design, sports, entertainment, and media","label":"Arts & media","workers":1.4,"claude":10.3},
+    {"job":"Life, physical, and social science","label":"Sciences","workers":0.9,"claude":6.4},
+    {"job":"Legal services","label":"Legal","workers":0.8,"claude":0.9},
+    {"job":"Farming, fishing, and forestry","label":"Farming, fishing & forestry","workers":0.3,"claude":0.1}
+  ]
+}

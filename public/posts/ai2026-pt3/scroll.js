@@ -40,6 +40,9 @@
       card.style.setProperty('--card-shift', `${reduced.matches ? 0 : sticky.offsetHeight - (sticky.offsetHeight + card.offsetHeight) * local}px`);
       scene.querySelector('.track span').style.width = `${progress * 100}%`;
       scene.dataset.stage = stage;
+      scene.dataset.progress = progress;
+      scene.dataset.localProgress = local;
+      if (scene.dataset.chart) scene.dispatchEvent(new CustomEvent('chart-progress', {detail:{stage,local,reduced:reduced.matches}}));
     });
     syncAddress();
   }
