@@ -107,7 +107,7 @@
       legend(scene,[{name:'Other R&D',color:'#17bdb6'},{name:'GPT-4.5 final run',color:'#39ffc1'},{name:'Other final runs',color:'#8aecbb'},{name:'Inference',color:'#43a9ff'}]);
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0);
-        rd.style.opacity=!reduce.matches&&stage===3?'.15':'1';
+        rd.style.opacity=!reduce.matches&&stage>=3?'.15':'1';
         inf.style.opacity=!reduce.matches&&stage===2?'.15':'1';
       });
     } else
@@ -220,7 +220,7 @@
     window.addEventListener('scroll',()=>{const delta=scrollY-previous;if(Math.abs(delta)>8){document.body.classList.toggle('header-hidden',delta>0&&scrollY>58);previous=scrollY;}},{passive:true});
     document.querySelector('header').addEventListener('focusin',()=>document.body.classList.remove('header-hidden'));
     const spin=document.querySelector('.spin-toggle');
-    spin.addEventListener('click',()=>{const paused=spin.getAttribute('aria-pressed')!=='true';spin.setAttribute('aria-pressed',String(paused));spin.textContent=paused?'Resume rotation':'Pause rotation';spin.closest('.spiral').classList.toggle('paused',paused);});
+    spin.addEventListener('click',()=>{const paused=spin.getAttribute('aria-pressed')!=='true';spin.setAttribute('aria-pressed',String(paused));spin.textContent=paused?'Resume flow':'Pause flow';spin.closest('.spiral').classList.toggle('paused',paused);});
     requestAnimationFrame(followHash);update();
   } catch(error) {
     document.body.classList.add('all-mode');
