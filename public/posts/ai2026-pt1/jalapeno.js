@@ -4,7 +4,7 @@ const response=await fetch('/posts/ai2026-pt1/jalapeno.json');if(!response.ok)re
 const data=await response.json(),NS='http://www.w3.org/2000/svg',reduce=matchMedia('(prefers-reduced-motion: reduce)'),charts=[];
 const clamp=v=>Math.max(0,Math.min(1,v));
 function el(parent,tag,attrs={},text){const n=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))n.setAttribute(k,v);if(text!==undefined)n.textContent=text;parent.appendChild(n);return n;}
-for(const host of document.querySelectorAll('.benchmark-scroll')){
+for(const host of document.querySelectorAll('.benchmark-scroll[data-benchmark]')){
  const d=data.charts[Number(host.dataset.benchmark)],svg=host.querySelector('svg'),figure=host.querySelector('figure');let paths=[];
  function draw(){
   const W=Math.max(280,svg.clientWidth),H=Math.max(240,svg.clientHeight),m={l:64,r:18,t:26,b:50},iw=W-m.l-m.r,ih=H-m.t-m.b,x=v=>m.l+v/d.xMax*iw,y=v=>m.t+(1-v/d.yMax)*ih;
