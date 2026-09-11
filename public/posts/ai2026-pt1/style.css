@@ -206,3 +206,6 @@ html,body,#article,.scene{background-color:var(--bg)}
 .scene.sidevideo{height:700svh}.all-mode .scene.sidevideo{height:auto}
 
 .scene.capacity[id="21"]{height:700svh}.all-mode .scene.capacity[id="21"]{height:auto}
+
+/* Match infrastructure legend markers to the chart’s vertical bars. */
+.roi .legend span:nth-child(odd) i{width:6px;height:16px;border:0;background:var(--color)}
