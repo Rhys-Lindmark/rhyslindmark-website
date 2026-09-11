@@ -210,6 +210,34 @@
     }
     svg.hidden = false; svg.removeAttribute('hidden'); scene.querySelector('.fallback').hidden = true;
   }
+  const slideEntries=[];
+  let continuation=false,nextSlide=19,slideLinksReady=false;
+  for(const el of document.querySelector('#article').children){
+    if(el.id==='sources')break;
+    if(el.classList.contains('scene')){
+      const steps=(el.dataset.steps||el.id).split(',');
+      steps.forEach((anchor,index)=>slideEntries.push({id:continuation?String(nextSlide++):anchor,anchor,el,index,count:steps.length}));
+      if(el.id==='18')continuation=true;
+    }else if(continuation&&el.matches('.body-copy,.article-visual,.article-embed,.article-heading')){
+      slideEntries.push({id:String(nextSlide++),anchor:el.id,el,index:0,count:1});
+    }
+  }
+  function setSlideAddress(id){
+    const url=new URL(location.href);
+    if(id)url.searchParams.set('slide',id);else url.searchParams.delete('slide');
+    url.hash='';
+    if(url.href!==location.href)history.replaceState(history.state,'',url.pathname+url.search);
+  }
+  function syncSlideAddress(){
+    if(!slideLinksReady)return;
+    let current;
+    for(const entry of slideEntries){
+      if(entry.el.getBoundingClientRect().top>innerHeight*.35)break;
+      if(!entry.el.classList.contains('scene')||entry.index===Number(entry.el.dataset.stage||0))current=entry;
+    }
+    if(current)setSlideAddress(current.id);
+    else if(scrollY<innerHeight)setSlideAddress(null);
+  }
   function update() {
     frame=0;
     for(const scene of scenes){
@@ -229,11 +257,20 @@
         const rect=scene.getBoundingClientRect();scene.classList.toggle('is-visible',rect.top<innerHeight&&rect.bottom>0);
       }
     }
+    syncSlideAddress();
   }
   function request(){if(!frame)frame=requestAnimationFrame(update);}
   function followHash(){
-    const id=location.hash.slice(1),scene=scenes.find(s=>(s.dataset.steps||s.id).split(',').includes(id));
-    if(scene){const steps=(scene.dataset.steps||scene.id).split(','),index=steps.indexOf(id),travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight);window.scrollTo({top:window.scrollY+scene.getBoundingClientRect().top+(reduce.matches?0:(index/steps.length)*travel+(index>0?1:0)),behavior:'instant'});}request();
+    const hash=decodeURIComponent(location.hash.slice(1)),query=new URL(location.href).searchParams.get('slide');
+    const entry=hash?slideEntries.find(e=>e.anchor===hash):slideEntries.find(e=>e.id===(query==='17'?'18':query));
+    slideLinksReady=false;
+    if(entry){
+      const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;
+      const progress=reduce.matches?0:(entry.index+.4)/entry.count;
+      window.scrollTo({top:scrollY+entry.el.getBoundingClientRect().top+travel*progress,behavior:'instant'});
+      setSlideAddress(entry.id);
+    }else if(hash){document.getElementById(hash)?.scrollIntoView({behavior:'instant'});}
+    slideLinksReady=true;request();
   }
   try {
     const response=await fetch('/posts/ai2026-pt2/charts.json?v=axes-2');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
@@ -241,7 +278,7 @@
     document.body.classList.toggle('all-mode',reduce.matches);
     for(const scene of scenes){draw(scene);const plot=scene.querySelector('.plot-wrap');if(plot)new ResizeObserver(()=>{draw(scene);request();}).observe(plot);}
     reduce.addEventListener('change',()=>{document.body.classList.toggle('all-mode',reduce.matches);scenes.forEach(draw);request();});
-    window.addEventListener('scroll',request,{passive:true});window.addEventListener('resize',request,{passive:true});window.addEventListener('hashchange',followHash);
+    window.addEventListener('scroll',request,{passive:true});window.addEventListener('resize',request,{passive:true});window.addEventListener('hashchange',followHash);window.addEventListener('popstate',followHash);
     let previous=scrollY;
     window.addEventListener('scroll',()=>{const delta=scrollY-previous;if(Math.abs(delta)>8){document.body.classList.toggle('header-hidden',delta>0&&scrollY>58);previous=scrollY;}},{passive:true});
     document.querySelector('header').addEventListener('focusin',()=>document.body.classList.remove('header-hidden'));
