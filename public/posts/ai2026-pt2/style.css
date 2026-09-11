@@ -75,7 +75,7 @@
 /* Long-form continuation: prose flows normally; only graphs pin. */
 .body-copy{width:min(740px,calc(100% - 48px));margin:0 auto;padding:28px 0;color:#e6edf3;font-size:17px;line-height:1.55}
 .body-copy p{margin:0}.body-copy p+p{margin-top:1.4em}
-.body-copy a{color:#8bdeec;text-decoration:underline;text-underline-offset:4px}
+.body-copy a{color:inherit;text-decoration:underline;text-underline-offset:4px}
 .article-visual{width:min(1050px,calc(100% - 40px));margin:28px auto 70px}
 .article-visual img{display:block;width:100%;height:auto;max-height:75svh;object-fit:contain}
 .article-visual img[src$="3838.png"]{max-height:480px}
