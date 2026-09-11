@@ -104,7 +104,7 @@
         const comparison=reduce.matches||stage>0, progress=reduce.matches?1:clamp((local-.08)/.72);
         paths.forEach(({g,row,path,reveal,marker,focus},i)=>{
           const visible=comparison||row.estimated;
-          const opacity=comparison?(focus||row.name==='OpenAI est.'?1:.25):(row.name==='OpenAI est.'?.25+.75*clamp(local/.45):.4);
+          const opacity=comparison?(focus||row.name==='OpenAI est.'?1:.25):1;
           g.style.opacity=visible?String(opacity):'0';
           path.style.opacity=comparison?'1':'0';
           const first=row.points[0],last=row.points.at(-1);
