@@ -136,7 +136,19 @@ export function articleSlide(url) {
 }
 
 function htmlText(value) {
-	return value.replace(/<br\s*\/?\s*>/gi, ' ').replace(/<[^>]*>/g, '').replace(/&(#x[\da-f]+|#\d+|amp|quot|apos|lt|gt|nbsp);/gi, (entity, code) => {
+	let text = '';
+	let inTag = false;
+	for (const character of value) {
+		if (character === '<') {
+			inTag = true;
+			text += ' ';
+		} else if (character === '>' && inTag) {
+			inTag = false;
+		} else if (!inTag) {
+			text += character;
+		}
+	}
+	return text.replace(/&(#x[\da-f]+|#\d+|amp|quot|apos|lt|gt|nbsp);/gi, (entity, code) => {
 		if (code[0] === '#') {
 			const number = code[1].toLowerCase() === 'x' ? parseInt(code.slice(2), 16) : Number(code.slice(1));
 			return number > 0 && number <= 0x10ffff ? String.fromCodePoint(number) : entity;

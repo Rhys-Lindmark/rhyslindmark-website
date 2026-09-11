@@ -132,6 +132,13 @@ test('slide metadata replaces prior social tags without duplicates and escapes t
  assert(container.includes('property="og:description" content="Chinese chips"'));
 });
 
+test('slide metadata safely reduces overlapping markup to escaped plain text', () => {
+ const html = '<html><head></head><body><h2 data-passage="22">Safe <<script>script>alert(1)</script> &amp; sound</h2></body></html>';
+ const result = withSlideMetadata(html, 22);
+ assert(result.includes('content="Safe script&gt;alert(1) &amp; sound"'));
+ assert.equal(result.includes('content="Safe <script'), false);
+});
+
 test('article middleware changes only successful HTML GET requests and preserves fallback', async () => {
  const run = async (path, response, method='GET') => onRequest({request:new Request(`https://www.rhyslindmark.com${path}`,{method}),next:async()=>response});
  const response=await run(`${articlePath}?slide=22`,new Response(slideHTML,{headers:{'content-type':'text/html','etag':'stale','content-length':'12'}}));
