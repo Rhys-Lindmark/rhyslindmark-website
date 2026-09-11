@@ -143,12 +143,11 @@ html,body,#article,.scene{background-color:var(--bg)}
 
 .chapter-divider{border:0;border-top:1px solid #334351;max-width:700px;margin:100px auto}
 .scene.roi{height:850svh}
-.scene.fulltext.building-return{height:340svh}
-.scene.fulltext.building-return .sticky{position:sticky;top:58px;height:calc(100svh - 58px);min-height:0;display:flex;flex-direction:column;justify-content:flex-start;padding:24px}
-.scene.fulltext.building-return .passage{flex:none;max-width:700px;margin:0 auto 20px}
-.scene.fulltext.building-return .passage p{font-size:clamp(20px,2vw,28px)}
+.scene.building-return{height:340svh}
+.scene.building-return .sticky{background:#070b10;position:sticky;top:58px;height:calc(100svh - 58px);min-height:0;display:flex;flex-direction:column;justify-content:flex-start;padding:24px}
+.scene.building-return .passage p{font-size:clamp(20px,2vw,28px)}
 .building-return ai-building-intro{display:block;min-height:0;width:min(100%,calc((100svh - 230px)*1.5));margin:auto}
-.all-mode .scene.building-return{height:auto}.all-mode .scene.fulltext.building-return .sticky{position:relative;top:0;height:auto;min-height:100svh}
+.all-mode .scene.building-return{height:auto}.all-mode .scene.building-return .sticky{position:relative;top:0;height:auto;min-height:100svh}
 
 /* Center mobile scroll cards while preserving their vertical scroll motion. */
 @media(max-width:760px){
@@ -180,13 +179,13 @@ html,body,#article,.scene{background-color:var(--bg)}
 /* Match Anthropic's econ-scenarios narrative type scale. */
 .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2,
 .scene.fulltext.reading .passage p,
-.scene.fulltext.building-return .passage p{
+.scene.building-return .passage p{
  font-size:17px;line-height:1.55;font-weight:400;letter-spacing:0;
 }
 @media(max-width:700px){
  .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2,
  .scene.fulltext.reading .passage p,
- .scene.fulltext.building-return .passage p{
+ .scene.building-return .passage p{
   font-size:15px;line-height:24px;
  }
 }
@@ -211,6 +210,6 @@ html,body,#article,.scene{background-color:var(--bg)}
 .roi .legend span:nth-child(odd) i{width:6px;height:16px;border:0;background:var(--color)}
 
 /* Keep scroll progress visible through the closing building sequence. */
-.scene.fulltext.building-return .track{display:block;position:absolute;bottom:0;left:0;right:0;height:3px;margin:0;z-index:2}
-.all-mode .scene.fulltext.building-return .track{display:none}
-@media print{.scene.fulltext.building-return .track{display:none}}
+.scene.building-return .track{display:block;position:absolute;bottom:0;left:0;right:0;height:3px;margin:0;z-index:2}
+.all-mode .scene.building-return .track{display:none}
+@media print{.scene.building-return .track{display:none}}
