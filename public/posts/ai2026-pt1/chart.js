@@ -218,12 +218,12 @@ function drawROI(scene){
  const internet=clipping(svg,'roi-internet',a.m,a.ih),infra=clipping(svg,'roi-ai-infra',a.m,a.ih),revenue=clipping(svg,'roi-ai-revenue',a.m,a.ih);
  function value(points,year){let i=points.findIndex(p=>p[0]>=year);if(i===0)return points[0][1];if(i<0)return points.at(-1)[1];let l=points[i-1],r=points[i];return lerp(l[1],r[1],(year-l[0])/(r[0]-l[0]));}
  const bw=a.iw/46*.35;
- for(let year=1995;year<=2040;year++){const v=value(d.internetInfra,year);node('rect',{x:a.x(year)-bw,y:a.y(v),width:bw,height:a.y(0)-a.y(v),fill:'#35e7ff',opacity:.7},internet.g);if(year>=2020){const v=value(d.aiInfra,year);node('rect',{x:a.x(year),y:a.y(v),width:bw,height:a.y(0)-a.y(v),fill:'#b985ff',opacity:.8},infra.g);}}
+ for(let year=1995;year<=2040;year++){const v=value(d.internetInfra,year);node('rect',{x:a.x(year)-bw,y:a.y(v),width:bw,height:a.y(0)-a.y(v),fill:'#35e7ff',opacity:.7},internet.g);if(year>=2020){const v=value(d.aiInfra,year);node('rect',{x:a.x(year),y:a.y(v),width:bw,height:a.y(0)-a.y(v),fill:'#63ff91',opacity:.8},infra.g);}}
  node('path',{d:linePath(d.internetRevenue.filter(p=>p[0]<=2025),a.x,a.y),fill:'none',stroke:'#35e7ff','stroke-width':3},internet.g);
  node('path',{d:linePath(d.internetRevenue.filter(p=>p[0]>=2025),a.x,a.y),fill:'none',stroke:'#35e7ff','stroke-width':3,'stroke-dasharray':'7 5'},internet.g);
- node('path',{d:linePath(d.aiRevenue,a.x,a.y),fill:'none',stroke:'#ff70de','stroke-width':3,'stroke-dasharray':'7 5'},revenue.g);
- const topLabel=label(svg,a.x(2035),a.y(4)+18,'$4T+','middle','series-label');topLabel.style.fill='#35e7ff';const aiLabel=label(svg,a.x(2040)-8,a.y(1)-12,'$1T','end','series-label');aiLabel.style.fill='#ff70de';
- legend(scene,[{name:'Internet infrastructure',color:'#35e7ff'},{name:'Internet revenue',color:'#35e7ff'},{name:'AI infrastructure',color:'#b985ff'},{name:'AI revenue',color:'#ff70de'}]);
+ node('path',{d:linePath(d.aiRevenue,a.x,a.y),fill:'none',stroke:'#63ff91','stroke-width':3,'stroke-dasharray':'7 5'},revenue.g);
+ const topLabel=label(svg,a.x(2035),a.y(4)+18,'$4T+','middle','series-label');topLabel.style.fill='#35e7ff';const aiLabel=label(svg,a.x(2040)-8,a.y(1)-12,'$1T','end','series-label');aiLabel.style.fill='#63ff91';
+ legend(scene,[{name:'Internet infrastructure',color:'#35e7ff'},{name:'Internet revenue',color:'#35e7ff'},{name:'AI infrastructure',color:'#63ff91'},{name:'AI revenue',color:'#63ff91'}]);
  return p=>{const {index,local}=passageStage(scene,p),stage=index-2,it=all||stage>0?1:stage===0?clamp(local/.8):0,at=all||stage>1?1:stage===1?clamp(local/.8):0,rt=all||stage>2?1:stage===2?clamp(local/.8):0;internet.rect.setAttribute('width',it*a.iw);infra.rect.setAttribute('width',at*a.iw);revenue.rect.setAttribute('width',rt*a.iw);topLabel.style.visibility=it>.8?'visible':'hidden';aiLabel.style.visibility=rt===1?'visible':'hidden';revealLegend(scene,i=>i<2&&it>0||i===2&&at>0||i===3&&rt>0);};
 }
 function setupBuildingReturn(scene){
