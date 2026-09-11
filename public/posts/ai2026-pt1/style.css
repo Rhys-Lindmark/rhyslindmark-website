@@ -204,3 +204,5 @@ html,body,#article,.scene{background-color:var(--bg)}
 }
 
 .scene.sidevideo{height:700svh}.all-mode .scene.sidevideo{height:auto}
+
+.scene.capacity[id="21"]{height:700svh}.all-mode .scene.capacity[id="21"]{height:auto}
