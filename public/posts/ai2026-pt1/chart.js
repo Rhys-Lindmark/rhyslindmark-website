@@ -229,7 +229,7 @@ function drawROI(scene){
 function setupBuildingReturn(scene){
  const building=scene.querySelector('ai-building-intro');let overlay;
  customElements.whenDefined('ai-building-intro').then(()=>{const root=building.shadowRoot;if(!root)return;const style=document.createElement('style');style.textContent=':host,.pin,.controls{background:#070b10!important}.camera{max-width:100%!important}svg .bot,svg .cursor,svg .drop,svg .note,svg .paint-brush,svg .paint-stroke,svg .code-flow,svg .scanline,svg .lab-head,svg .pipette-drop,svg .water-stream,svg .splash,svg .music-note{animation:none!important;opacity:0!important}:host([data-floor="servers"]) .brain,:host([data-floor="servers"]) .brain-halo{opacity:0!important}:host([data-floor="brains"]) .server,:host([data-floor="brains"]) .rack{opacity:0!important}';root.appendChild(style);overlay=node('g',{},root.querySelector('svg'));node('rect',{x:0,y:0,width:1536,height:1024,fill:'#070b10',opacity:.45},overlay);const glow=node('rect',{x:145,y:690,width:1250,height:270,rx:18,fill:'#63ff91',opacity:.08},overlay);overlay.glow=glow;request();});
- return p=>{const {index,local}=passageStage(scene,p),t=all?1:index?clamp(local/.6):0;building.dataset.floor=t>.5?'brains':'servers';if(overlay)overlay.glow.setAttribute('y',lerp(690,410,t));};
+ return p=>{const {index,local}=passageStage(scene,p),t=all?1:index?clamp(local/.6):0;building.dataset.floor=t>.5?'brains':'servers';if(overlay){overlay.glow.setAttribute('y',lerp(690,375,t));overlay.glow.setAttribute('height',lerp(270,250,t));}};
 }
 
 function followSlideLink(){
