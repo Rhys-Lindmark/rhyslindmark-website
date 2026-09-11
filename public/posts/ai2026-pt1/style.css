@@ -176,3 +176,17 @@ html,body,#article,.scene{background-color:var(--bg)}
 .scene.video video::-webkit-media-controls{display:none!important}
 .scene.video figcaption{position:absolute;bottom:12px;right:16px;border:0;padding:4px 8px;background:#070b1099}
 .scene.video .track{position:absolute;bottom:0;left:0;right:0;margin:0;z-index:2}
+
+/* Match Anthropic's econ-scenarios narrative type scale. */
+.scene:not(.chapter):not(.statement):not(.fulltext) .passage h2,
+.scene.fulltext.reading .passage p,
+.scene.fulltext.building-return .passage p{
+ font-size:17px;line-height:1.55;font-weight:400;letter-spacing:0;
+}
+@media(max-width:700px){
+ .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2,
+ .scene.fulltext.reading .passage p,
+ .scene.fulltext.building-return .passage p{
+  font-size:15px;line-height:24px;
+ }
+}
