@@ -1,0 +1,20 @@
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.post-title{font:12px var(--mono);color:var(--muted)}
+.scene.models{height:300svh;--axis-inset:100px}
+.scene.models>.sticky{min-height:0;padding-top:76px;padding-bottom:24px}
+.scene.models .plot-wrap{min-height:0;flex:1}
+.scene.models .chart-title{text-align:center;font:14px/1.4 var(--mono);margin:0 0 16px;color:#fff}
+.scene.models .legend{padding-left:80px}
+.scene.models .legend i{border-top-width:3px}
+.scene.models .meme-frame img{width:min(850px,90vw);height:auto;image-rendering:auto;max-height:80svh;object-fit:contain}
+.scene.models.meme{height:180svh}
+.scene.models .fallback{width:100%;height:100%;object-fit:contain}
+.scene.models svg[hidden]{display:none}
+.scene.models .passage{max-height:75%}
+.all-mode .scene.models{height:auto}
+.all-mode .scene.models>.sticky{height:auto;min-height:0;overflow:visible;gap:16px}
+.all-mode .scene.models .plot-wrap{height:540px;flex:auto}
+.all-mode .scene.models .passage{max-height:none}
+.all-mode .scene.models .meme-frame{min-height:50svh}
+@media(max-width:760px){.post-title{font-size:10px}.scene.models{--axis-inset:58px}.scene.models>.sticky{padding-top:65px;padding-bottom:20px}.scene.models .legend{padding-left:40px;gap:6px 12px}.scene.models .chart-title{font-size:11px;margin-bottom:8px}.scene.models .passage h2{font-size:18px}.all-mode .scene.models .plot-wrap{height:400px}}
+@media print{.scene.models{height:auto!important}.scene.models .sticky{height:auto!important;min-height:0;overflow:visible}.scene.models .plot-wrap{height:480px;flex:auto}.scene.models .passage{position:relative!important;left:0!important;transform:none!important}.track{display:none!important}}

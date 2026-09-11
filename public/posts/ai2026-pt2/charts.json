@@ -1,0 +1,427 @@
+{
+  "notes": "Revenue and growth lines are approximate samples redrawn from the author-supplied charts, not a new audit. Annualized revenue is a run rate, not revenue already earned in a year. Growth compares inflation-adjusted revenue rebased to approximately $10B. Margin figures are transcribed from the supplied chart; operating margin excludes stock-based compensation. Slide 5 uses the rounded figures in the author\u2019s text.",
+  "source": "https://docs.google.com/document/d/1hhf525UL1k_EU9YSgqtvQXsSvSVbcqejB8OSE6WMp68/edit?tab=t.0",
+  "revenue": [
+    {
+      "name": "OpenAI",
+      "color": "#35e7ff",
+      "points": [
+        [
+          2023.16,
+          0.2
+        ],
+        [
+          2023.65,
+          1
+        ],
+        [
+          2024,
+          2.1
+        ],
+        [
+          2024.45,
+          3.4
+        ],
+        [
+          2025,
+          5.3
+        ],
+        [
+          2025.58,
+          12
+        ],
+        [
+          2026,
+          20
+        ],
+        [
+          2026.62,
+          40
+        ]
+      ]
+    },
+    {
+      "name": "Anthropic",
+      "color": "#ff70de",
+      "points": [
+        [
+          2024,
+          0.1
+        ],
+        [
+          2025,
+          1
+        ],
+        [
+          2025.25,
+          2
+        ],
+        [
+          2025.58,
+          5
+        ],
+        [
+          2026,
+          9
+        ],
+        [
+          2026.16,
+          14
+        ],
+        [
+          2026.25,
+          19
+        ],
+        [
+          2026.45,
+          47
+        ],
+        [
+          2026.6,
+          65
+        ]
+      ]
+    },
+    {
+      "name": "Combined",
+      "color": "#ff914f",
+      "points": [
+        [
+          2024,
+          2.1
+        ],
+        [
+          2025,
+          6.5
+        ],
+        [
+          2025.58,
+          17
+        ],
+        [
+          2026,
+          30
+        ],
+        [
+          2026.63,
+          105
+        ]
+      ]
+    }
+  ],
+  "growth": [
+    {
+      "name": "Apple",
+      "color": "#cccccc",
+      "points": [
+        [
+          0,
+          10
+        ],
+        [
+          1.5,
+          17
+        ],
+        [
+          2.5,
+          21
+        ],
+        [
+          3.7,
+          30
+        ],
+        [
+          4.7,
+          33
+        ],
+        [
+          5.7,
+          57
+        ],
+        [
+          6.7,
+          92
+        ],
+        [
+          7.7,
+          132
+        ],
+        [
+          9.7,
+          152
+        ]
+      ]
+    },
+    {
+      "name": "Tesla",
+      "color": "#ff555f",
+      "points": [
+        [
+          0,
+          10
+        ],
+        [
+          1.4,
+          21
+        ],
+        [
+          2.5,
+          24
+        ],
+        [
+          3.4,
+          30
+        ],
+        [
+          4.4,
+          49
+        ],
+        [
+          5.4,
+          68
+        ],
+        [
+          6.4,
+          77
+        ],
+        [
+          7.4,
+          76
+        ]
+      ]
+    },
+    {
+      "name": "NVIDIA",
+      "color": "#91d830",
+      "points": [
+        [
+          0,
+          10
+        ],
+        [
+          1.5,
+          11
+        ],
+        [
+          2.7,
+          10
+        ],
+        [
+          3.8,
+          15
+        ],
+        [
+          4.8,
+          23
+        ],
+        [
+          5.8,
+          22
+        ],
+        [
+          6.9,
+          48
+        ],
+        [
+          7.9,
+          99
+        ],
+        [
+          8.9,
+          160
+        ]
+      ]
+    },
+    {
+      "name": "Walmart",
+      "color": "#ffcf63",
+      "points": [
+        [
+          0,
+          10
+        ],
+        [
+          2,
+          16
+        ],
+        [
+          3,
+          20
+        ],
+        [
+          4.8,
+          27
+        ],
+        [
+          5.5,
+          33
+        ],
+        [
+          7.5,
+          51
+        ],
+        [
+          8.5,
+          61
+        ],
+        [
+          9.5,
+          67
+        ]
+      ]
+    },
+    {
+      "name": "Ford",
+      "color": "#969dff",
+      "points": [
+        [
+          0,
+          10
+        ],
+        [
+          1.8,
+          12
+        ],
+        [
+          2.8,
+          9.5
+        ],
+        [
+          3.8,
+          12
+        ],
+        [
+          5.7,
+          11.5
+        ],
+        [
+          6.8,
+          12.3
+        ],
+        [
+          7.8,
+          14.3
+        ],
+        [
+          8.8,
+          14.7
+        ],
+        [
+          9.8,
+          14
+        ]
+      ]
+    },
+    {
+      "name": "Mobil",
+      "color": "#ff914f",
+      "points": [
+        [
+          0,
+          10
+        ],
+        [
+          2,
+          16
+        ],
+        [
+          3,
+          18
+        ],
+        [
+          4.8,
+          23
+        ],
+        [
+          5.6,
+          22
+        ],
+        [
+          6.6,
+          25
+        ],
+        [
+          7.6,
+          30
+        ],
+        [
+          8.6,
+          30.5
+        ],
+        [
+          9.6,
+          27.5
+        ]
+      ]
+    },
+    {
+      "name": "OpenAI",
+      "color": "#43a9ff",
+      "points": [
+        [
+          0,
+          10
+        ],
+        [
+          1,
+          26.5
+        ],
+        [
+          1.17,
+          39.5
+        ]
+      ]
+    },
+    {
+      "name": "Anthropic",
+      "color": "#39ffc1",
+      "points": [
+        [
+          0,
+          10
+        ],
+        [
+          0.13,
+          14
+        ],
+        [
+          0.28,
+          30
+        ],
+        [
+          0.54,
+          74
+        ]
+      ]
+    }
+  ],
+  "margins": [
+    {
+      "name": "NVIDIA",
+      "gross": 75,
+      "operating": 68.3
+    },
+    {
+      "name": "OpenAI",
+      "gross": 39,
+      "operating": -122
+    },
+    {
+      "name": "Anthropic",
+      "gross": 44,
+      "operating": 5.1
+    }
+  ],
+  "costs": [
+    {
+      "name": "OpenAI",
+      "inference": 60,
+      "training": 160
+    },
+    {
+      "name": "Anthropic",
+      "inference": 60,
+      "training": 40
+    }
+  ]
+}
