@@ -15,10 +15,20 @@ const p=Math.min(1,Math.max(0,(top-r.top)/Math.max(1,r.height-innerHeight+top)))
 const q=Math.min(1,Math.max(0,(p-.2)/.72)),e=q*q*(3-2*q);
 const viewport=root.querySelector('.viewport');
 const baseWidth=innerWidth<=760?viewport.clientWidth:Math.min(viewport.clientWidth,Math.max(200,innerHeight-200)*1.5);
-const baseHeight=baseWidth/1.5,scale=1+1.2*e;
-// Resize at layout resolution instead of magnifying a pre-rasterized GPU layer.
+const baseHeight=baseWidth/1.5;
+// On portrait screens, fill the viewport with the bottom floor (image y=630..1024).
+// Centering that crop removes the geniuses floor instead of leaving it above the racks.
+if(innerWidth<=760){
+const targetHeight=Math.max(baseHeight,viewport.clientHeight*1024/394);
+const height=baseHeight+(targetHeight-baseHeight)*e;
+const center=.5+(827/1024-.5)*e;
+camera.style.width=`${height*1.5}px`;
+camera.style.top=`${height*(.5-center)}px`;
+}else{
+const scale=1+1.2*e;
 camera.style.width=`${baseWidth*scale}px`;
 camera.style.top=`${-baseHeight*(.3*(scale-1)+.29*e)}px`;
+}
 };
 const update=()=>{if(!raf)raf=requestAnimationFrame(paint);};
 window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});
