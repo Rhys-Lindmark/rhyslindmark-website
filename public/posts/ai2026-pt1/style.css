@@ -125,3 +125,8 @@ html,body,#article,.scene{background-color:var(--bg)}
 
 .share .legend{gap:4px 14px;font-size:11px}.share .legend span{min-width:116px}.share .legend i{width:12px;border-top-width:6px}
 @media(max-width:760px){.share .legend{font-size:9px;gap:4px 8px}.share .legend span{min-width:94px}.share .legend i{width:9px}}
+
+.scene.fulltext.reading .sticky{justify-content:flex-start;padding:clamp(48px,8svh,90px) 24px}
+.scene.fulltext.reading .passage{max-width:700px;margin:0 auto}
+.scene.fulltext.reading .passage h2{font-size:clamp(28px,3vw,40px);font-weight:700;line-height:1.2;letter-spacing:-.025em;margin:0 0 32px;color:#fff}
+.scene.fulltext.reading .passage p{font-size:clamp(18px,1.5vw,21px);font-weight:400;line-height:1.6;letter-spacing:normal;margin:0 0 1.3em}
