@@ -37,9 +37,6 @@
       ctx.fillStyle=k%5===0?'#ffd491':'#a3f4ff';
       ctx.beginPath();ctx.arc(p.x,p.y,1.4,0,Math.PI*2);ctx.fill();
     }
-    ctx.fillStyle='#99b0c1';ctx.font='12px monospace';ctx.textAlign='left';
-    ctx.fillText('INWARD SPIRAL',16,height*.52);
-    ctx.textAlign='right';ctx.fillText('AXIAL STRETCHING ↑',width-16,68);
   }
   function running(){return visible&&!document.hidden&&!reduce.matches&&!scene.classList.contains('paused');}
   function tick(now){frame=0;if(!running()){last=0;return;}time+=last?Math.min(.05,(now-last)/1000):0;last=now;render();frame=requestAnimationFrame(tick);}
