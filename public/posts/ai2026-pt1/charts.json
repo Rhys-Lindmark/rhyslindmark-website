@@ -3,24 +3,24 @@
     "1": "The data center buildout is now 2% of GDP, reaching the size of the railroads, cars, highways, and telecoms.",
     "2": "We build more data centers than offices.",
     "3": "These complexes are massive.",
-    "4": "Nvidia is at the center of the data center buildout. Chip production has 10x\u2019ed from 2M H100e to over 20M H100e.",
+    "4": "Nvidia is at the center of the data center buildout. Chip production has 10x’ed from 2M H100e to over 20M H100e.",
     "5": "This has increased their revenue from $100B to $300B a year.",
-    "6": "Nvidia is making over 50% of all company\u2019s revenues from GenAI.",
-    "7": "Plus, they\u2019re doing so with never-before-seen operating margins. They have 66% operating margins compared to 33% for GAFA.",
+    "6": "Nvidia is making over 50% of all company’s revenues from GenAI.",
+    "7": "Plus, they’re doing so with never-before-seen operating margins. They have 66% operating margins compared to 33% for GAFA.",
     "8": "And an annualized profit of $250B compared to $125B for GAFA.",
     "9": "This is even more impressive when you compare it to previous eras. IBM, Wintel, and GAFA had around 25% margin. Nvidia has averaged 56%.",
-    "10": "Nvidia is a really good business. They\u2019ve become the most valuable company in the world.",
-    "11": "Now everyone else wants part of the GPU pie. Nvidia\u2019s margin is the rest of the industry\u2019s opportunity.",
+    "10": "Nvidia is a really good business. They’ve become the most valuable company in the world.",
+    "11": "Now everyone else wants part of the GPU pie. Nvidia’s margin is the rest of the industry’s opportunity.",
     "12": "The 100 GW Opportunity",
-    "13": "\u2026So what\u2019s the actual opportunity here? Has Nvidia already eaten all the profits? Likely not.",
+    "13": "…So what’s the actual opportunity here? Has Nvidia already eaten all the profits? Likely not.",
     "14": "From 2020 to 2025, we built 10 GW+ of data center capacity. Nvidia GPUs filled 70% of them.",
-    "15": "But we\u2019re likely to 10x to 100 GW by 2040.",
-    "16": "...It\u2019s easy to add a bar to a chart.",
-    "17": "It\u2019s hard to actually build a gigawatt.",
+    "15": "But we’re likely to 10x to 100 GW by 2040.",
+    "16": "...It’s easy to add a bar to a chart.",
+    "17": "It’s hard to actually build a gigawatt.",
     "18": "A gigawatt is massive.",
     "19": "It has giga in the name.",
-    "20": "It\u2019s 1,000,000 US homes. The electricity for a whole city.",
-    "21": "It\u2019s tough to know how many data centers will actually get built and wired up.",
+    "20": "It’s 1,000,000 US homes. The electricity for a whole city.",
+    "21": "It’s tough to know how many data centers will actually get built and wired up.",
     "22": "Epoch estimates 100 GW by 2030 (not 2040)",
     "23": "But their data center permit database only shows 32 GW by 2028.",
     "24": "Here are the biggest datacenters this decade.",
@@ -28,17 +28,17 @@
     "26": "Part of this is an electricity issue. The US is at 1 TW trying to get to 2 TW. While China is at 4 TW, planning to get to 8 TW.",
     "27": "In any scenario, expect 100 GW of data centers soon, mostly in the US and China.",
     "28": "All of these data centers will need GPUs.",
-    "29": "Thus far, Nvidia has kept its market share as the main provider of GPUs\u2014around 70% of a growing pie.",
+    "29": "Thus far, Nvidia has kept its market share as the main provider of GPUs—around 70% of a growing pie.",
     "30": "But going forward, this pie is up for grabs.",
     "31": "Each GW powers ~$40B of chips. As we get more efficient, each GW will power ~$4B.",
     "32": "So roughly the opportunity here is: 100 GW * $20B/GW = $2T opportunity to build chips.",
-    "33": "Many companies are trying to soak up Nvidia\u2019s margin here.",
+    "33": "Many companies are trying to soak up Nvidia’s margin here.",
     "34": "1. Hyperscalers like Amazon Trainium and Google TPUs.",
-    "35": "The Trainium 3 might become the Amazon Basics of GPUs. Anthropic committed to 5 GW of compute through AWS. Lots will be Nvidia chips (see new 2M GPU Amazon-Nvidia commitment), but lots will be Trainium chips.\n\nGoogle might be getting out of the foundation model game to focus entirely on GCP (Gemini is Cooked but GCP is Cooking). They\u2019re expanding their TPU lineup into training (8t) vs. inference (8i).\n\nRoughly speaking, I see Trainium and TPUs as fighting for the training, not inference, market.",
+    "35": "The Trainium 3 might become the Amazon Basics of GPUs. Anthropic committed to 5 GW of compute through AWS. Lots will be Nvidia chips (see new 2M GPU Amazon-Nvidia commitment), but lots will be Trainium chips.\n\nGoogle might be getting out of the foundation model game to focus entirely on GCP (Gemini is Cooked but GCP is Cooking). They’re expanding their TPU lineup into training (8t) vs. inference (8i).\n\nRoughly speaking, I see Trainium and TPUs as fighting for the training, not inference, market.",
     "36": "2. Startups like Cerebras (~$44B market cap), Etched ($21B valuation), and Samba Nova ($11B valuation).",
-    "37": "Most of these (decacorn-sized) startups are focused on inference.\n\nCerebras is going to add 750MW of ultra-low latency chips to power ChatGPT\u2019s new Ultrafast mode. On Ultrafast, Sol 5.6 answered 2,500 HLE questions in 11 hours vs. Claude Fable 5 in 78 hours. In other words, \u201cUltrafast worked through the frontier of human knowledge in a single working day.\u201d (!!!)\n\nEtched is building frontier inference clusters that break up then optimize pre-fill and decode. Pre-fill is compute-constrained, so they\u2019re compute maxxing by voltage minimizing (LVI). Decode is memory-constrained, so they\u2019re building Cluster Scale Memory with a better NVLink, so larger clusters can decode at once. As their founders said recently on Invest Like The Best, it\u2019s crazy that training clusters like Colossus are 100,000 chips networked together, while inference clusters are still just eight chips.",
+    "37": "Most of these (decacorn-sized) startups are focused on inference.\n\nCerebras is going to add 750MW of ultra-low latency chips to power ChatGPT’s new Ultrafast mode. On Ultrafast, Sol 5.6 answered 2,500 HLE questions in 11 hours vs. Claude Fable 5 in 78 hours. In other words, “Ultrafast worked through the frontier of human knowledge in a single working day.” (!!!)\n\nEtched is building frontier inference clusters that break up then optimize pre-fill and decode. Pre-fill is compute-constrained, so they’re compute maxxing by voltage minimizing (LVI). Decode is memory-constrained, so they’re building Cluster Scale Memory with a better NVLink, so larger clusters can decode at once. As their founders said recently on Invest Like The Best, it’s crazy that training clusters like Colossus are 100,000 chips networked together, while inference clusters are still just eight chips.",
     "38": "3. Model providers like OpenAI.",
-    "39": "OAI released Jalape\u00f1o\u2019s first results at the end of August. It\u2019s also focused on inference.\n\nAnd damn, it\u2019s impressive. It\u2019s Pareto-dominant against GB200s and VR200s at tokens/s and tok/s/MW:\n\nOpenAI bought 40% of all DRAM. Then used their own models for chip design. There are a few great articles analyzing their design (1, 2). Fundamentally, I understand it as a chip that is not optimized for training, nor even optimized for inference generally. It\u2019s a decode-first, watt-minimizing chip, optimized for efficiently streaming 1 TB of model weights out of HBM."
+    "39": "OAI released Jalapeño’s first results at the end of August. It’s also focused on inference.\n\nAnd damn, it’s impressive. It’s Pareto-dominant against GB200s and VR200s at tokens/s and tok/s/MW:\n\nOpenAI bought 40% of all DRAM. Then used their own models for chip design. There are a few great articles analyzing their design (1, 2). Fundamentally, I understand it as a chip that is not optimized for training, nor even optimized for inference generally. It’s a decode-first, watt-minimizing chip, optimized for efficiently streaming 1 TB of model weights out of HBM."
   },
   "investment": [
     {
@@ -2438,8 +2438,8 @@
     }
   ],
   "provenance": {
-    "1": "Approximate coordinate readings from Redpoint chart. AI curves are scenarios. Axis calibrated piecewise to the source\u2019s early and modern date spacing, then redrawn on a linear year axis.",
-    "2": "Approximate color-traced lines from Joseph Politano image. Observed image ends mid-2025. User-requested dashed extrapolation through Aug 2026 uses a least-squares slope over each series\u2019 final 12 months, anchored at its final observed point. Extrapolation is not reported data.",
+    "1": "Approximate coordinate readings from Redpoint chart. AI curves are scenarios. Axis calibrated piecewise to the source’s early and modern date spacing, then redrawn on a linear year axis.",
+    "2": "Approximate color-traced lines from Joseph Politano image. Observed image ends mid-2025. User-requested dashed extrapolation through Aug 2026 uses a least-squares slope over each series’ final 12 months, anchored at its final observed point. Extrapolation is not reported data.",
     "4": "Epoch AI CSV, updated Aug 27 2026. Cumulative H100-equivalent compute medians, all records up to each quarter; incomplete data retained and marked in final quarter.",
     "5-6": "Approximate pixel measurements from Exponential View source. Units converted from $million to $billion. Subpixel bars are null, not zeros. Revenues are not deduplicated.",
     "7-8": "Exact values from original editable Nvidia profitability chart. IBM uses pretax proxy. OpenAI private-company figures; Anthropic positive adjusted operating income, amount not disclosed. GAFA means in prose are not totals.",
@@ -2451,15 +2451,15 @@
       "provenance": "Original chart from Find current Nvidia margins, August 28, 2026. Prototype reuses its data without a fresh financial audit."
     },
     "29-30": "Epoch AI chip-sales CSV: cumulative total chip TDP shares through Q1 2026. Future allocation is intentionally unspecified.",
-    "31-32": "Author estimates: $40B/GW today, $4B/GW efficiency endpoint; separate midpoint scenario $20B/GW \u00d7 100 GW = $2T. Squares represent 1 GW each.",
-    "17-19": "Video downloaded from Christina Lorey\u2019s Facebook post https://www.facebook.com/watch/?v=981584664561581 . The post credits Palloff on Reddit for the footage. Full 102-second clip, played muted in a loop beside passages 17\u201319.",
+    "31-32": "Author estimates: $40B/GW today, $4B/GW efficiency endpoint; separate midpoint scenario $20B/GW × 100 GW = $2T. Squares represent 1 GW each.",
+    "17-19": "Video downloaded from Christina Lorey’s Facebook post https://www.facebook.com/watch/?v=981584664561581 . The post credits Palloff on Reddit for the footage. Full 102-second clip, played muted in a loop beside passages 17–19.",
     "20": "New AI-generated city-at-night illustration inspired by the supplied StockCake reference, with a teal skyline and foreground electricity pylons.",
-    "26": "Historical generating capacity, not electricity output. US: EIA utility-scale net summer capacity, excluding small-scale solar; China: NBS total installed capacity. Definitions and coverage differ. US annual observations 2014\u20132025; China selected reported observations connected by straight lines. Dashed 2040 extensions are author scenarios: US 2 TW and China 8 TW."
+    "26": "Historical generating capacity, not electricity output. US: EIA utility-scale net summer capacity, excluding small-scale solar; China: NBS total installed capacity. Definitions and coverage differ. US annual observations 2014–2025; China selected reported observations connected by straight lines. Dashed 2040 extensions are author scenarios: US 2 TW and China 8 TW."
   },
   "marketcap": {
     "source": "https://companiesmarketcap.com/nvidia/marketcap/",
     "retrieved": "2026-09-10",
-    "note": "Source historical chart samples, January 1999\u2013August 2026. First sample January 29, 1999, following the January 22 IPO. Straight segments connect observations. Source m values multiplied by 100,000, as in its chart renderer.",
+    "note": "Source historical chart samples, January 1999–August 2026. First sample January 29, 1999, following the January 22 IPO. Straight segments connect observations. Source m values multiplied by 100,000, as in its chart renderer.",
     "points": [
       {
         "date": "1999-01-29",
@@ -5400,7 +5400,7 @@
   "centers": {
     "source": "https://epoch.ai/data/ai-data-centers",
     "retrieved": "2026-09-10",
-    "notes": "Top 10 centers by IT power at each point in Epoch AI timelines, 2023\u20132030. Linear interpolation between dated milestones; future values are project estimates, not completed capacity. Sites absent before their first milestone are not ranked. Each site holds its last recorded value thereafter.",
+    "notes": "Top 10 centers by IT power at each point in Epoch AI timelines, 2023–2030. Linear interpolation between dated milestones; future values are project estimates, not completed capacity. Sites absent before their first milestone are not ranked. Each site holds its last recorded value thereafter.",
     "series": [
       {
         "name": "Colossus 2",
@@ -7933,7 +7933,7 @@
       "https://www.stats.gov.cn/english/PressRelease/202102/t20210228_1814177.html",
       "https://www.stats.gov.cn/english/PressRelease/202502/t20250228_1958822.html"
     ],
-    "notes": "Historical generating capacity, not electricity output. US: EIA utility-scale net summer capacity, excluding small-scale solar; China: NBS total installed capacity. Definitions and coverage differ. US annual observations 2014\u20132025; China selected reported observations connected by straight lines. Dashed 2040 extensions are author scenarios: US 2 TW and China 8 TW.",
+    "notes": "Historical generating capacity, not electricity output. US: EIA utility-scale net summer capacity, excluding small-scale solar; China: NBS total installed capacity. Definitions and coverage differ. US annual observations 2014–2025; China selected reported observations connected by straight lines. Dashed 2040 extensions are author scenarios: US 2 TW and China 8 TW.",
     "series": [
       {
         "name": "US",
@@ -8282,7 +8282,7 @@
   "investmentAIScenarios": {
     "sourceSeries": [
       {
-        "name": "AI \u00b7 base",
+        "name": "AI · base",
         "color": "#39ffc1",
         "points": [
           [
@@ -8329,7 +8329,7 @@
         "forecast": true
       },
       {
-        "name": "AI \u00b7 bull",
+        "name": "AI · bull",
         "color": "#f9ff80",
         "points": [
           [
@@ -8361,5 +8361,176 @@
       }
     ],
     "method": "Pointwise median (midpoint of the two source scenarios), linearly interpolated at their combined year anchors. Shared pre-divergence history retained."
+  },
+  "roi": {
+    "note": "Approximate redraw from author-supplied chart; US constant 2025 dollars, trillions per year. Future values are scenarios. Internet revenue exceeds chart ceiling.",
+    "internetInfra": [
+      [
+        1995,
+        0.27
+      ],
+      [
+        2000,
+        0.52
+      ],
+      [
+        2004,
+        0.39
+      ],
+      [
+        2010,
+        0.4
+      ],
+      [
+        2015,
+        0.43
+      ],
+      [
+        2020,
+        0.46
+      ],
+      [
+        2025,
+        0.46
+      ],
+      [
+        2030,
+        0.46
+      ],
+      [
+        2035,
+        0.45
+      ],
+      [
+        2040,
+        0.43
+      ]
+    ],
+    "internetRevenue": [
+      [
+        1995,
+        0.65
+      ],
+      [
+        2000,
+        0.95
+      ],
+      [
+        2005,
+        1.35
+      ],
+      [
+        2010,
+        1.75
+      ],
+      [
+        2015,
+        2.3
+      ],
+      [
+        2017,
+        2.65
+      ],
+      [
+        2020,
+        3
+      ],
+      [
+        2023,
+        3.35
+      ],
+      [
+        2025,
+        3.55
+      ],
+      [
+        2030,
+        4.25
+      ],
+      [
+        2040,
+        5.5
+      ]
+    ],
+    "aiInfra": [
+      [
+        2020,
+        0.015
+      ],
+      [
+        2023,
+        0.03
+      ],
+      [
+        2025,
+        0.1
+      ],
+      [
+        2028,
+        0.24
+      ],
+      [
+        2030,
+        0.36
+      ],
+      [
+        2033,
+        0.48
+      ],
+      [
+        2035,
+        0.5
+      ],
+      [
+        2036,
+        0.5
+      ],
+      [
+        2040,
+        0.35
+      ]
+    ],
+    "aiRevenue": [
+      [
+        2020,
+        0
+      ],
+      [
+        2023,
+        0.01
+      ],
+      [
+        2025,
+        0.04
+      ],
+      [
+        2028,
+        0.1
+      ],
+      [
+        2030,
+        0.22
+      ],
+      [
+        2032,
+        0.4
+      ],
+      [
+        2034,
+        0.64
+      ],
+      [
+        2036,
+        0.86
+      ],
+      [
+        2038,
+        0.96
+      ],
+      [
+        2040,
+        1
+      ]
+    ]
   }
 }
