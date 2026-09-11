@@ -150,15 +150,30 @@
       const defs=node('defs',{},svg), clip=node('clipPath',{id:`reveal-${kind}`},defs);
       const rect=node('rect',{x:m.l-3,y:0,width:iw+6,height:H},clip);
       const g=node('g',{'clip-path':`url(#reveal-${kind})`},svg);
+      const series=[];
       for(const row of data[kind]) {
-        node('path',{d:row.points.map((p,i)=>`${i?'L':'M'}${x(p[0])},${y(p[1])}`).join(' '),fill:'none',stroke:row.color,'stroke-width':small?2.5:3.5},g);
-        const end=row.points.at(-1); node('circle',{cx:x(end[0]),cy:y(end[1]),r:4,fill:row.color},g);
-        if(!revenue && ['Anthropic','OpenAI'].includes(row.name)) {
-          const t=label(g,x(end[0])+9,y(end[1])-10,`${row.name} $${end[1]}B`,'start');t.style.fill=row.color;
+        const group=node('g',{},g);
+        const path=node('path',{d:row.points.map((p,i)=>`${i?'L':'M'}${x(p[0])},${y(p[1])}`).join(' '),fill:'none',stroke:row.color,'stroke-width':small?2.5:3.5},group);
+        const end=row.points.at(-1),tip=node('g',{},group);
+        node('circle',{cx:x(end[0]),cy:y(end[1]),r:4,fill:row.color},tip);
+        const ai=['Anthropic','OpenAI'].includes(row.name);
+        if(!revenue && ai) {
+          const t=label(tip,x(end[0])+9,y(end[1])-10,`${row.name} $${end[1]}B`,'start');t.style.fill=row.color;
         }
+        series.push({group,path,tip,ai,length:path.getTotalLength()});
       }
       legend(scene,data[kind]);
-      renderers.set(scene,p=>rect.setAttribute('width',(iw+6)*(reduce.matches?1:clamp(p/.78))));
+      renderers.set(scene,p=>{
+        if(revenue){rect.setAttribute('width',(iw+6)*(reduce.matches?1:clamp(p/.78)));return;}
+        rect.setAttribute('width',iw+6);
+        series.forEach(({group,path,tip,ai,length},i)=>{
+          const progress=reduce.matches?1:clamp(ai?(p-.5)/.4:p/.4);
+          group.style.opacity=progress>0?'1':'0';
+          path.style.strokeDasharray=String(length);path.style.strokeDashoffset=String(length*(1-progress));
+          tip.style.opacity=progress>=1?'1':'0';
+          const item=scene.querySelectorAll('.legend span')[i];item.style.visibility=ai&&!reduce.matches&&p<=.5?'hidden':'visible';
+        });
+      });
     } else if (kind === 'margins') {
       const left=small?104:150, right=small?34:75, width=W-left-right;
       const x=v=>left+(v+140)/230*width;
