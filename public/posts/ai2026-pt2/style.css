@@ -53,3 +53,8 @@
 
 .scene.models .passage[hidden]{display:none}
 .all-mode .scene.models [data-passage][hidden]{display:block}
+
+.scene.models.margins{height:720svh}
+.scene.models.margins svg rect,.scene.models.margins svg text{transition:opacity .25s ease}
+.all-mode .scene.models.margins{height:auto}
+@media(prefers-reduced-motion:reduce){.scene.models.margins svg rect,.scene.models.margins svg text{transition:none}}

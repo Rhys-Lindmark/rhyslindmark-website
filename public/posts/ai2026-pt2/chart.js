@@ -129,13 +129,21 @@
           const value=row[metric],color=j?'#ff914f':'#43a9ff',yy=cy+j*(bh+7);
           const bar=node('rect',{x:Math.min(x(0),x(value)),y:yy,width:Math.abs(x(value)-x(0)),height:bh,fill:color},svg);
           const t=label(svg,value<0?x(value)+5:x(value)+6,yy+bh/2+4,`${value}%`,'start');t.style.fill='#fff';
-          bars.push({bar,t,value});
+          bars.push({bar,t,value,metric});
         });
       });
       legend(scene,[{name:'Gross margin',color:'#43a9ff'},{name:'Operating margin, ex-SBC',color:'#ff914f'}]);
-      renderers.set(scene,p=>bars.forEach(({bar,t,value})=>{
-        const v=value*(reduce.matches?1:clamp(p/.78));bar.setAttribute('x',Math.min(x(0),x(v)));bar.setAttribute('width',Math.abs(x(v)-x(0)));t.style.opacity=p>.72||reduce.matches?'1':'0';
-      }));
+      renderers.set(scene,()=>{
+        const stage=Number(scene.dataset.stage||0);
+        const focus=stage===1?'gross':stage===2?'operating':null;
+        bars.forEach(({bar,t,metric})=>{
+          const opacity=reduce.matches||!focus||metric===focus?'1':'.18';
+          bar.style.opacity=opacity;t.style.opacity=opacity;
+        });
+        scene.querySelectorAll('.legend span').forEach((el,i)=>{
+          el.style.opacity=reduce.matches||!focus||i===(stage===1?0:1)?'1':'.25';
+        });
+      });
     } else if (kind === 'costs') {
       const left=small?104:150,right=small?18:50,width=W-left-right,x=v=>left+v/240*width;
       verticalTitle(svg,H/2,'COMPANY');
@@ -178,7 +186,7 @@
   function request(){if(!frame)frame=requestAnimationFrame(update);}
   function followHash(){
     const id=location.hash.slice(1),scene=scenes.find(s=>(s.dataset.steps||s.id).split(',').includes(id));
-    if(scene){const steps=(scene.dataset.steps||scene.id).split(','),index=steps.indexOf(id),travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight);window.scrollTo({top:window.scrollY+scene.getBoundingClientRect().top+(reduce.matches?0:(index/steps.length)*travel),behavior:'instant'});}request();
+    if(scene){const steps=(scene.dataset.steps||scene.id).split(','),index=steps.indexOf(id),travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight);window.scrollTo({top:window.scrollY+scene.getBoundingClientRect().top+(reduce.matches?0:(index/steps.length)*travel+(index>0?1:0)),behavior:'instant'});}request();
   }
   try {
     const response=await fetch('/posts/ai2026-pt2/charts.json?v=axes-2');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
