@@ -66,3 +66,48 @@ ai-building-intro{--intro-top:58px}
 @media print{.usage-chart{display:none!important}.usage-fallback[hidden]{display:flex!important}.usage-legend .claude-key{opacity:1}}
 
 .usage-chart svg.compact .usage-job,.usage-chart svg.compact .worker-value,.usage-chart svg.compact .claude-value,.usage-chart svg.compact .usage-tick{font-size:9px}
+/* One plot system, without image headings or per-chart toolbars. */
+.scene.agents figure{position:static;gap:12px}
+.native-plot{flex:1;width:100%;min-height:0}
+.native-plot svg{display:block;width:100%;height:100%;overflow:visible}
+.native-plot svg text{font:12px var(--mono);fill:#91a6b5}
+.native-plot svg .axis-label{font-size:10px;letter-spacing:.02em}
+.native-plot svg .axis-tick,.native-plot svg .row-label{font-size:11px}
+.native-plot svg .value-label,.native-plot svg .annotation{font-size:11px;fill:#d1dce5}
+.native-plot svg .point-label{font-size:10px}
+.native-plot svg .large-value{font-size:clamp(12px,1.3vw,19px);fill:#e6edf3}
+.native-plot svg .card-label{font-size:14px;fill:#e6edf3}
+.native-plot svg .card-body{font-size:12px;fill:#a5bdca}
+.native-plot svg .card-caption{font-size:10px;fill:#91a6b5}
+.native-plot svg .network-label{font-size:14px;fill:#e6edf3}
+.native-plot svg .network-core{fill:#0b1015;font-size:11px}
+.native-legend{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;flex:none;min-height:16px;padding-bottom:8px;font:11px/1.4 var(--mono);color:#a5bdca}
+.native-legend[hidden]{display:none}.native-legend span{display:inline-flex;align-items:center;gap:7px}.native-legend i{display:block;width:12px;height:3px;flex:none}
+#article .scene.agents figcaption{position:absolute;bottom:16px;left:24px;border:0;padding:0;text-align:left;font:10px/1.4 var(--mono);opacity:.7;z-index:4}
+#article .scene.agents figcaption:hover{opacity:1}
+@media(min-width:761px){#article .scene.agents[data-native]>.sticky{padding-left:max(410px,calc((100vw - 1440px)/2 + 390px));padding-right:30px}}
+.all-mode .native-plot{height:720px;flex:none}
+.all-mode #white-collar .native-plot{height:1450px}
+.all-mode #article .scene.agents[data-native]>.sticky{padding:24px max(22px,calc((100vw - 1100px)/2)) 50px}
+.all-mode #article .scene.agents figcaption{left:24px;bottom:8px}
+@media(max-width:760px){
+ .native-plot svg .axis-tick,.native-plot svg .row-label,.native-plot svg .value-label,.native-plot svg .annotation{font-size:9px}
+ .native-plot svg .axis-label{font-size:8px}
+ .native-plot svg .point-label{font-size:8px}
+ .native-plot svg .card-label{font-size:11px}.native-plot svg .card-body{font-size:10px}.native-plot svg .card-caption{font-size:8px}
+ .native-plot svg .large-value{font-size:12px}
+ .native-legend{font-size:9px;gap:5px 12px;padding-bottom:4px}
+ #article .scene.agents figcaption{left:12px;bottom:12px;font-size:9px}
+ .all-mode #white-collar .native-plot{height:1850px}
+ .all-mode #sim-to-real .native-plot{height:1150px}
+ .all-mode #ai-economy .native-plot{height:850px}
+}
+@media print{.native-plot{height:600px;flex:none}.native-legend{display:flex!important}.scene.agents figure{break-inside:avoid}#article .scene.agents figcaption{position:static!important}.scene.agents[data-native]>.sticky{display:block!important;padding:20px!important}#white-collar .native-plot{height:1500px}.usage-chart{display:block!important}.usage-fallback[hidden]{display:none!important}}
+.all-mode #white-collar .native-plot{height:2000px}
+@media(max-width:760px){.all-mode #white-collar .native-plot{height:2350px}}
+
+/* Match Part 1’s card surface, mobile width, and chart typography. */
+body:not(.all-mode) #article .scene.agents .passage{background:#101820f7;border-color:#526777;border-radius:4px;box-shadow:0 12px 40px #0006}
+.native-plot svg text,.usage-chart svg text,.native-legend,.usage-legend{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;letter-spacing:normal}
+.native-plot svg .labor-detail{fill:#fff;font-size:14px;paint-order:stroke;stroke:#070b10;stroke-width:3px}
+@media(max-width:760px){body:not(.all-mode) #article .scene.agents .passage{width:min(300px,calc(100% - 32px));padding:18px}.native-plot svg .labor-detail{font-size:12px}}

@@ -1,0 +1,2024 @@
+{
+  "white-collar": {
+    "kind": "table",
+    "title": "The white-collar wage pool",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/8f5b4647-3817-45e1-a566-a81d6a7a3cb2_1472x2174.png",
+    "note": "Exact displayed quantities transcribed from the supplied 2023 occupation table. Employee counts are rounded to the nearest thousand; wage-pool totals are source-rounded and are not recomputed.",
+    "data": {
+      "columns": [
+        {
+          "key": "occupation",
+          "label": "Occupation"
+        },
+        {
+          "key": "employees",
+          "label": "Employees",
+          "format": "compact"
+        },
+        {
+          "key": "wage",
+          "label": "Median annual wage",
+          "format": "dollars"
+        },
+        {
+          "key": "tam",
+          "label": "Wage pool",
+          "format": "dollars"
+        }
+      ],
+      "rows": [
+        {
+          "occupation": "Registered nurses",
+          "employees": 3300000,
+          "wage": 86070,
+          "tam": 284000000000
+        },
+        {
+          "occupation": "Software developers",
+          "employees": 1692000,
+          "wage": 132270,
+          "tam": 224000000000
+        },
+        {
+          "occupation": "Lawyers",
+          "employees": 859000,
+          "wage": 145760,
+          "tam": 125000000000
+        },
+        {
+          "occupation": "Accountants and auditors",
+          "employees": 1562000,
+          "wage": 79880,
+          "tam": 125000000000
+        },
+        {
+          "occupation": "Customer service representatives",
+          "employees": 2955000,
+          "wage": 39680,
+          "tam": 117000000000
+        },
+        {
+          "occupation": "Management analysts",
+          "employees": 1018000,
+          "wage": 99410,
+          "tam": 101000000000
+        },
+        {
+          "occupation": "Elementary school teachers",
+          "employees": 1441000,
+          "wage": 63680,
+          "tam": 92000000000
+        },
+        {
+          "occupation": "Wholesale/manufacturing sales, nontechnical",
+          "employees": 1356000,
+          "wage": 65630,
+          "tam": 89000000000
+        },
+        {
+          "occupation": "Secretaries and administrative assistants, general",
+          "employees": 1982000,
+          "wage": 44280,
+          "tam": 88000000000
+        },
+        {
+          "occupation": "Bookkeeping, accounting, and auditing clerks",
+          "employees": 1664000,
+          "wage": 47440,
+          "tam": 79000000000
+        },
+        {
+          "occupation": "Service sales representatives",
+          "employees": 1170000,
+          "wage": 64700,
+          "tam": 76000000000
+        },
+        {
+          "occupation": "General maintenance and repair workers",
+          "employees": 1617000,
+          "wage": 46700,
+          "tam": 75000000000
+        },
+        {
+          "occupation": "Secondary school teachers",
+          "employees": 1071000,
+          "wage": 65220,
+          "tam": 70000000000
+        },
+        {
+          "occupation": "Market research analysts and marketing specialists",
+          "employees": 903000,
+          "wage": 74680,
+          "tam": 67000000000
+        },
+        {
+          "occupation": "Human resources specialists",
+          "employees": 946000,
+          "wage": 67650,
+          "tam": 63000000000
+        },
+        {
+          "occupation": "Medical and health services managers",
+          "employees": 563000,
+          "wage": 110680,
+          "tam": 62000000000
+        },
+        {
+          "occupation": "Computer systems analysts",
+          "employees": 527000,
+          "wage": 103800,
+          "tam": 55000000000
+        },
+        {
+          "occupation": "Construction managers",
+          "employees": 521000,
+          "wage": 104900,
+          "tam": 55000000000
+        },
+        {
+          "occupation": "Teaching assistants, except postsecondary",
+          "employees": 1389000,
+          "wage": 35550,
+          "tam": 49000000000
+        },
+        {
+          "occupation": "Middle school teachers",
+          "employees": 640000,
+          "wage": 64290,
+          "tam": 41000000000
+        },
+        {
+          "occupation": "Securities, commodities, and financial services sales",
+          "employees": 514000,
+          "wage": 76900,
+          "tam": 40000000000
+        },
+        {
+          "occupation": "Licensed practical and vocational nurses",
+          "employees": 658000,
+          "wage": 59730,
+          "tam": 39000000000
+        },
+        {
+          "occupation": "Automotive service technicians and mechanics",
+          "employees": 795000,
+          "wage": 47770,
+          "tam": 38000000000
+        },
+        {
+          "occupation": "Receptionists and information clerks",
+          "employees": 1055000,
+          "wage": 35840,
+          "tam": 38000000000
+        },
+        {
+          "occupation": "Buyers and purchasing agents",
+          "employees": 524000,
+          "wage": 71950,
+          "tam": 38000000000
+        },
+        {
+          "occupation": "Nurse practitioners",
+          "employees": 293000,
+          "wage": 126260,
+          "tam": 37000000000
+        },
+        {
+          "occupation": "Executive secretaries and executive administrative assistants",
+          "employees": 516000,
+          "wage": 70310,
+          "tam": 36000000000
+        },
+        {
+          "occupation": "Financial and investment analysts",
+          "employees": 347000,
+          "wage": 99010,
+          "tam": 34000000000
+        },
+        {
+          "occupation": "Industrial engineers",
+          "employees": 337000,
+          "wage": 99380,
+          "tam": 33000000000
+        },
+        {
+          "occupation": "Medical assistants",
+          "employees": 784000,
+          "wage": 42000,
+          "tam": 33000000000
+        },
+        {
+          "occupation": "Civil engineers",
+          "employees": 342000,
+          "wage": 95890,
+          "tam": 33000000000
+        },
+        {
+          "occupation": "Wholesale/manufacturing sales, technical/scientific",
+          "employees": 325000,
+          "wage": 99710,
+          "tam": 32000000000
+        },
+        {
+          "occupation": "Insurance sales agents",
+          "employees": 548000,
+          "wage": 59080,
+          "tam": 32000000000
+        },
+        {
+          "occupation": "Network and computer systems administrators",
+          "employees": 335000,
+          "wage": 95360,
+          "tam": 32000000000
+        }
+      ],
+      "year": 2023
+    }
+  },
+  "app-revenue": {
+    "kind": "bars",
+    "title": "AI beyond software development",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/ace4bdfb-7ece-41e1-99c2-941cf9c60455_1447x1146.jpeg",
+    "note": "Exact displayed revenue/ARR labels from the supplied chart. These are the chart\u2019s selected applications, not total category revenue; coding excludes Cursor, Anthropic, and OpenAI per the accompanying text.",
+    "data": {
+      "orientation": "vertical",
+      "stacked": false,
+      "series": [
+        {
+          "name": "2025"
+        },
+        {
+          "name": "2026"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Coding & apps",
+          "values": [
+            655000000.0,
+            1430000000.0
+          ]
+        },
+        {
+          "label": "Creative & media",
+          "values": [
+            1170000000.0,
+            1480000000.0
+          ]
+        },
+        {
+          "label": "Legal",
+          "values": [
+            640000000.0,
+            900000000.0
+          ]
+        },
+        {
+          "label": "Enterprise & search",
+          "values": [
+            500000000.0,
+            950000000.0
+          ]
+        },
+        {
+          "label": "Healthcare",
+          "values": [
+            267000000.0,
+            417000000.0
+          ]
+        },
+        {
+          "label": "Customer service",
+          "values": [
+            130000000.0,
+            200000000.0
+          ]
+        }
+      ],
+      "value": {
+        "label": "Annualized revenue / ARR (USD)",
+        "domain": [
+          0,
+          1600000000.0
+        ],
+        "ticks": [
+          0,
+          500000000.0,
+          1000000000.0,
+          1500000000.0
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      }
+    }
+  },
+  "labor-markets": {
+    "kind": "bars",
+    "title": "White-collar and blue-collar labor",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/a3ea83cd-f6ee-43d4-8baf-1cd4e31eafb7_723x422.jpeg",
+    "note": "Exact labels transcribed from supplied chart: all BLS occupations, 155.5M jobs. Bars encode average wage; employee count and wage pool are separate annotations.",
+    "data": {
+      "orientation": "vertical",
+      "stacked": false,
+      "series": [
+        {
+          "name": "Average annual wage"
+        }
+      ],
+      "rows": [
+        {
+          "label": "White-collar",
+          "values": [
+            91684
+          ],
+          "employees": 78300000,
+          "wagePool": 7180000000000.0,
+          "detail": "78.3M employees \u00b7 $7.18T wage pool"
+        },
+        {
+          "label": "Blue-collar",
+          "values": [
+            47510
+          ],
+          "employees": 77200000,
+          "wagePool": 3670000000000.0,
+          "detail": "77.2M employees \u00b7 $3.67T wage pool"
+        }
+      ],
+      "value": {
+        "label": "Average annual wage (USD per employee)",
+        "domain": [
+          0,
+          105000
+        ],
+        "ticks": [
+          0,
+          20000,
+          40000,
+          60000,
+          80000,
+          100000
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      }
+    }
+  },
+  "blue-collar": {
+    "kind": "bars",
+    "title": "The blue-collar wage pool",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/88f1dfab-7364-4dda-88a7-0fd2d649241c_1369x1909.jpeg",
+    "note": "Exact displayed quantities and classifications transcribed from supplied May 2025 top-25 chart. Its values and occupational grouping differ from the separate 2023 occupation table; those differences are preserved.",
+    "data": {
+      "orientation": "horizontal",
+      "stacked": true,
+      "series": [
+        {
+          "name": "White-collar"
+        },
+        {
+          "name": "Blue-collar"
+        }
+      ],
+      "rows": [
+        {
+          "label": "General & ops managers",
+          "values": [
+            473000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 135000,
+          "detail": "$135K average salary"
+        },
+        {
+          "label": "Nurses",
+          "values": [
+            343000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 101000,
+          "detail": "$101K average salary"
+        },
+        {
+          "label": "Software developers",
+          "values": [
+            250000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 148000,
+          "detail": "$148K average salary"
+        },
+        {
+          "label": "Financial managers",
+          "values": [
+            157000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 187000,
+          "detail": "$187K average salary"
+        },
+        {
+          "label": "Home health & care aides",
+          "values": [
+            0,
+            156000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 36000,
+          "detail": "$36K average salary"
+        },
+        {
+          "label": "Retail salespeople",
+          "values": [
+            0,
+            145000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 37000,
+          "detail": "$37K average salary"
+        },
+        {
+          "label": "Lawyers",
+          "values": [
+            140000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 186000,
+          "detail": "$186K average salary"
+        },
+        {
+          "label": "Accountants & auditors",
+          "values": [
+            137000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 95000,
+          "detail": "$95K average salary"
+        },
+        {
+          "label": "IT managers",
+          "values": [
+            129000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 192000,
+          "detail": "$192K average salary"
+        },
+        {
+          "label": "Freight & material movers",
+          "values": [
+            0,
+            125000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 42000,
+          "detail": "$42K average salary"
+        },
+        {
+          "label": "Fast-food workers",
+          "values": [
+            0,
+            124000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 32000,
+          "detail": "$32K average salary"
+        },
+        {
+          "label": "Heavy truck drivers",
+          "values": [
+            0,
+            123000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 60000,
+          "detail": "$60K average salary"
+        },
+        {
+          "label": "Customer service reps",
+          "values": [
+            121000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 47000,
+          "detail": "$47K average salary"
+        },
+        {
+          "label": "Project management specialists",
+          "values": [
+            118000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 111000,
+          "detail": "$111K average salary"
+        },
+        {
+          "label": "General office clerks",
+          "values": [
+            114000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 46000,
+          "detail": "$46K average salary"
+        },
+        {
+          "label": "Stockers & order fillers",
+          "values": [
+            0,
+            112000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 40000,
+          "detail": "$40K average salary"
+        },
+        {
+          "label": "Office supervisors",
+          "values": [
+            106000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 73000,
+          "detail": "$73K average salary"
+        },
+        {
+          "label": "Sales managers",
+          "values": [
+            105000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 164000,
+          "detail": "$164K average salary"
+        },
+        {
+          "label": "Service sales reps",
+          "values": [
+            104000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 82000,
+          "detail": "$82K average salary"
+        },
+        {
+          "label": "Cashiers",
+          "values": [
+            0,
+            103000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 33000,
+          "detail": "$33K average salary"
+        },
+        {
+          "label": "Management analysts",
+          "values": [
+            102000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 114000,
+          "detail": "$114K average salary"
+        },
+        {
+          "label": "Wholesale sales reps",
+          "values": [
+            102000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 83000,
+          "detail": "$83K average salary"
+        },
+        {
+          "label": "Business ops: all other",
+          "values": [
+            102000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 94000,
+          "detail": "$94K average salary"
+        },
+        {
+          "label": "Elementary teachers",
+          "values": [
+            101000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 73000,
+          "detail": "$73K average salary"
+        },
+        {
+          "label": "Managers: all other",
+          "values": [
+            96000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 154000,
+          "detail": "$154K average salary"
+        }
+      ],
+      "value": {
+        "label": "Annual wage pool (USD)",
+        "domain": [
+          0,
+          500000000000.0
+        ],
+        "ticks": [
+          0,
+          100000000000.0,
+          200000000000.0,
+          300000000000.0,
+          400000000000.0,
+          500000000000.0
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      },
+      "year": 2025
+    }
+  },
+  "waymo-share": {
+    "kind": "line",
+    "title": "Waymo in the Bay Area",
+    "source": "https://x.com/_balaji_km/status/2085505334102409481",
+    "note": "Approximate monthly values visually digitized from the supplied YipitData graph, August 2023\u2013June 2026. Geographic expansions change the comparison area; this is not a fixed-geography series. Percentages use a 0\u2013100 scale.",
+    "data": {
+      "series": [
+        {
+          "name": "Waymo",
+          "points": [
+            [
+              2023.5833,
+              0
+            ],
+            [
+              2023.6667,
+              3.5
+            ],
+            [
+              2023.75,
+              4
+            ],
+            [
+              2023.8333,
+              5
+            ],
+            [
+              2023.9167,
+              7
+            ],
+            [
+              2024.0,
+              6.4
+            ],
+            [
+              2024.0833,
+              7.2
+            ],
+            [
+              2024.1667,
+              7.2
+            ],
+            [
+              2024.25,
+              8.5
+            ],
+            [
+              2024.3333,
+              11
+            ],
+            [
+              2024.4167,
+              11.5
+            ],
+            [
+              2024.5,
+              13.5
+            ],
+            [
+              2024.5833,
+              15
+            ],
+            [
+              2024.6667,
+              16
+            ],
+            [
+              2024.75,
+              19.5
+            ],
+            [
+              2024.8333,
+              23
+            ],
+            [
+              2024.9167,
+              21
+            ],
+            [
+              2025.0,
+              23
+            ],
+            [
+              2025.0833,
+              23.5
+            ],
+            [
+              2025.1667,
+              27
+            ],
+            [
+              2025.25,
+              28.5
+            ],
+            [
+              2025.3333,
+              27
+            ],
+            [
+              2025.4167,
+              18
+            ],
+            [
+              2025.5,
+              25
+            ],
+            [
+              2025.5833,
+              21
+            ],
+            [
+              2025.6667,
+              26
+            ],
+            [
+              2025.75,
+              28
+            ],
+            [
+              2025.8333,
+              19
+            ],
+            [
+              2025.9167,
+              16.5
+            ],
+            [
+              2026.0,
+              15.5
+            ],
+            [
+              2026.0833,
+              16.5
+            ],
+            [
+              2026.1667,
+              16.5
+            ],
+            [
+              2026.25,
+              17.5
+            ],
+            [
+              2026.3333,
+              16
+            ],
+            [
+              2026.4167,
+              14.5
+            ]
+          ]
+        },
+        {
+          "name": "Lyft",
+          "points": [
+            [
+              2023.5833,
+              34
+            ],
+            [
+              2023.6667,
+              36.5
+            ],
+            [
+              2023.75,
+              36
+            ],
+            [
+              2023.8333,
+              34
+            ],
+            [
+              2023.9167,
+              30.5
+            ],
+            [
+              2024.0,
+              29.5
+            ],
+            [
+              2024.0833,
+              28.5
+            ],
+            [
+              2024.1667,
+              27.5
+            ],
+            [
+              2024.25,
+              27
+            ],
+            [
+              2024.3333,
+              25.5
+            ],
+            [
+              2024.4167,
+              26.5
+            ],
+            [
+              2024.5,
+              27
+            ],
+            [
+              2024.5833,
+              29
+            ],
+            [
+              2024.6667,
+              26.5
+            ],
+            [
+              2024.75,
+              26
+            ],
+            [
+              2024.8333,
+              22
+            ],
+            [
+              2024.9167,
+              24
+            ],
+            [
+              2025.0,
+              23
+            ],
+            [
+              2025.0833,
+              21.5
+            ],
+            [
+              2025.1667,
+              18.7
+            ],
+            [
+              2025.25,
+              18.5
+            ],
+            [
+              2025.3333,
+              19
+            ],
+            [
+              2025.4167,
+              21.5
+            ],
+            [
+              2025.5,
+              20.5
+            ],
+            [
+              2025.5833,
+              24
+            ],
+            [
+              2025.6667,
+              22
+            ],
+            [
+              2025.75,
+              21.5
+            ],
+            [
+              2025.8333,
+              22
+            ],
+            [
+              2025.9167,
+              21.8
+            ],
+            [
+              2026.0,
+              22.1
+            ],
+            [
+              2026.0833,
+              21.5
+            ],
+            [
+              2026.1667,
+              23
+            ],
+            [
+              2026.25,
+              21.7
+            ],
+            [
+              2026.3333,
+              23.5
+            ],
+            [
+              2026.4167,
+              23.8
+            ]
+          ]
+        },
+        {
+          "name": "Uber",
+          "points": [
+            [
+              2023.5833,
+              65.5
+            ],
+            [
+              2023.6667,
+              59
+            ],
+            [
+              2023.75,
+              59.3
+            ],
+            [
+              2023.8333,
+              60
+            ],
+            [
+              2023.9167,
+              62
+            ],
+            [
+              2024.0,
+              63.2
+            ],
+            [
+              2024.0833,
+              63.5
+            ],
+            [
+              2024.1667,
+              64.7
+            ],
+            [
+              2024.25,
+              63.5
+            ],
+            [
+              2024.3333,
+              62
+            ],
+            [
+              2024.4167,
+              60.5
+            ],
+            [
+              2024.5,
+              58
+            ],
+            [
+              2024.5833,
+              55
+            ],
+            [
+              2024.6667,
+              56.5
+            ],
+            [
+              2024.75,
+              53.5
+            ],
+            [
+              2024.8333,
+              53.5
+            ],
+            [
+              2024.9167,
+              54.5
+            ],
+            [
+              2025.0,
+              53
+            ],
+            [
+              2025.0833,
+              54.2
+            ],
+            [
+              2025.1667,
+              53.6
+            ],
+            [
+              2025.25,
+              52.2
+            ],
+            [
+              2025.3333,
+              52.5
+            ],
+            [
+              2025.4167,
+              60
+            ],
+            [
+              2025.5,
+              54
+            ],
+            [
+              2025.5833,
+              54.5
+            ],
+            [
+              2025.6667,
+              51
+            ],
+            [
+              2025.75,
+              51
+            ],
+            [
+              2025.8333,
+              58
+            ],
+            [
+              2025.9167,
+              61.5
+            ],
+            [
+              2026.0,
+              62.3
+            ],
+            [
+              2026.0833,
+              62
+            ],
+            [
+              2026.1667,
+              60.3
+            ],
+            [
+              2026.25,
+              60.5
+            ],
+            [
+              2026.3333,
+              60
+            ],
+            [
+              2026.4167,
+              61
+            ]
+          ]
+        }
+      ],
+      "x": {
+        "label": "Month",
+        "domain": [
+          2023.5833333333333,
+          2026.4166666666667
+        ],
+        "ticks": [
+          2024,
+          2025,
+          2026
+        ],
+        "format": "year",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Market share (%)",
+        "domain": [
+          0,
+          70
+        ],
+        "ticks": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70
+        ],
+        "format": "percent",
+        "scale": "linear"
+      },
+      "annotations": [
+        {
+          "x": 2025.4166666666667,
+          "y": 60,
+          "label": "Jun 2025 expansion"
+        },
+        {
+          "x": 2025.8333333333333,
+          "y": 58,
+          "label": "Nov 2025 expansion"
+        }
+      ]
+    }
+  },
+  "waymo-data": {
+    "kind": "bars",
+    "title": "Millions of real miles, billions simulated",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/0cde022d-37c6-466e-afe5-ee9e088dcd45_3313x2028.png",
+    "note": "Exact displayed figures from supplied image. Native chart uses an explicitly logarithmic axis to preserve the 1M\u2013~10B range without the original artificial scale break. The source gives simulated driving as an approximate average, not a Waymo-specific total.",
+    "data": {
+      "orientation": "horizontal",
+      "stacked": false,
+      "series": [
+        {
+          "name": "Miles before deployment"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Tesla",
+          "values": [
+            70000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "70M"
+        },
+        {
+          "label": "Baidu Apollo",
+          "values": [
+            20000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "20M"
+        },
+        {
+          "label": "WeRide",
+          "values": [
+            15000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "15M"
+        },
+        {
+          "label": "Pony.ai",
+          "values": [
+            13000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "13M"
+        },
+        {
+          "label": "Wayve (UK)",
+          "values": [
+            10000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "10M"
+        },
+        {
+          "label": "Cruise",
+          "values": [
+            4000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "4M"
+        },
+        {
+          "label": "Waymo",
+          "values": [
+            25000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "25M"
+        },
+        {
+          "label": "Waymo \u00b7 new city",
+          "values": [
+            1000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "1M"
+        },
+        {
+          "label": "Simulated driving (average)",
+          "values": [
+            10000000000.0
+          ],
+          "group": "Simulation",
+          "valueLabel": "~10B"
+        }
+      ],
+      "value": {
+        "label": "Miles (log scale)",
+        "domain": [
+          100000.0,
+          10000000000.0
+        ],
+        "ticks": [
+          100000.0,
+          1000000.0,
+          10000000.0,
+          100000000.0,
+          1000000000.0,
+          10000000000.0
+        ],
+        "format": "compact",
+        "scale": "log"
+      }
+    }
+  },
+  "waymo-cities": {
+    "kind": "line",
+    "title": "Waymo\u2019s surge",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/54e3a85d-5dfe-4b2e-9346-c4735b65f21f_1242x1274.jpeg",
+    "note": "Representative points visually digitized from the supplied Consumer Edge chart; values and month positions are approximate, not raw observations. Market denominator is Lyft, Uber, and Waymo. Series retained separately from the later YipitData chart because source, date, and geography differ.",
+    "data": {
+      "series": [
+        {
+          "name": "San Francisco",
+          "points": [
+            [
+              2022.5,
+              0
+            ],
+            [
+              2023.17,
+              0
+            ],
+            [
+              2023.33,
+              0.7
+            ],
+            [
+              2023.42,
+              0.8
+            ],
+            [
+              2023.5,
+              1.2
+            ],
+            [
+              2023.58,
+              1.7
+            ],
+            [
+              2023.67,
+              1.5
+            ],
+            [
+              2023.75,
+              1.4
+            ],
+            [
+              2023.83,
+              1.8
+            ],
+            [
+              2023.92,
+              2.5
+            ],
+            [
+              2024,
+              2.9
+            ],
+            [
+              2024.17,
+              4.5
+            ],
+            [
+              2024.25,
+              5.1
+            ],
+            [
+              2024.33,
+              5.4
+            ],
+            [
+              2024.42,
+              6.5
+            ],
+            [
+              2024.5,
+              7.8
+            ],
+            [
+              2024.58,
+              8.1
+            ],
+            [
+              2024.67,
+              9.2
+            ],
+            [
+              2024.75,
+              8.9
+            ],
+            [
+              2024.83,
+              9.6
+            ],
+            [
+              2024.92,
+              9.4
+            ],
+            [
+              2025,
+              9.2
+            ],
+            [
+              2025.08,
+              6.1
+            ],
+            [
+              2025.17,
+              7.9
+            ],
+            [
+              2025.25,
+              8.2
+            ],
+            [
+              2025.33,
+              9.1
+            ],
+            [
+              2025.42,
+              9.7
+            ],
+            [
+              2025.46,
+              10.2
+            ]
+          ]
+        },
+        {
+          "name": "Phoenix",
+          "points": [
+            [
+              2022.5,
+              0.2
+            ],
+            [
+              2022.67,
+              0.3
+            ],
+            [
+              2022.75,
+              0.9
+            ],
+            [
+              2022.92,
+              1.4
+            ],
+            [
+              2023.08,
+              1.8
+            ],
+            [
+              2023.17,
+              1.7
+            ],
+            [
+              2023.33,
+              2.2
+            ],
+            [
+              2023.42,
+              2.4
+            ],
+            [
+              2023.5,
+              2.8
+            ],
+            [
+              2023.58,
+              3.1
+            ],
+            [
+              2023.67,
+              3.2
+            ],
+            [
+              2023.75,
+              3
+            ],
+            [
+              2023.83,
+              3.3
+            ],
+            [
+              2023.92,
+              3.3
+            ],
+            [
+              2024,
+              3.6
+            ],
+            [
+              2024.08,
+              3.2
+            ],
+            [
+              2024.17,
+              3.9
+            ],
+            [
+              2024.25,
+              4.1
+            ],
+            [
+              2024.33,
+              4.4
+            ],
+            [
+              2024.42,
+              5.2
+            ],
+            [
+              2024.5,
+              6.3
+            ],
+            [
+              2024.58,
+              7.1
+            ],
+            [
+              2024.67,
+              6.8
+            ],
+            [
+              2024.75,
+              6.9
+            ],
+            [
+              2024.83,
+              7.9
+            ],
+            [
+              2024.92,
+              7.4
+            ],
+            [
+              2025,
+              7.9
+            ],
+            [
+              2025.08,
+              6.1
+            ],
+            [
+              2025.17,
+              7.1
+            ],
+            [
+              2025.25,
+              7.3
+            ],
+            [
+              2025.33,
+              6.7
+            ],
+            [
+              2025.38,
+              6.3
+            ],
+            [
+              2025.46,
+              7.5
+            ]
+          ]
+        },
+        {
+          "name": "Los Angeles",
+          "points": [
+            [
+              2022.5,
+              0
+            ],
+            [
+              2023.92,
+              0
+            ],
+            [
+              2024,
+              0.1
+            ],
+            [
+              2024.08,
+              0.2
+            ],
+            [
+              2024.17,
+              0.4
+            ],
+            [
+              2024.25,
+              0.6
+            ],
+            [
+              2024.33,
+              0.9
+            ],
+            [
+              2024.42,
+              1.2
+            ],
+            [
+              2024.5,
+              1.5
+            ],
+            [
+              2024.58,
+              1.4
+            ],
+            [
+              2024.67,
+              1.9
+            ],
+            [
+              2024.75,
+              2.1
+            ],
+            [
+              2024.83,
+              2.4
+            ],
+            [
+              2024.92,
+              2.8
+            ],
+            [
+              2025,
+              3
+            ],
+            [
+              2025.08,
+              2.4
+            ],
+            [
+              2025.17,
+              3.3
+            ],
+            [
+              2025.25,
+              3.4
+            ],
+            [
+              2025.33,
+              4
+            ],
+            [
+              2025.38,
+              4.8
+            ],
+            [
+              2025.46,
+              4.8
+            ]
+          ]
+        }
+      ],
+      "x": {
+        "label": "Year",
+        "domain": [
+          2022.5,
+          2025.46
+        ],
+        "ticks": [
+          2023,
+          2024,
+          2025
+        ],
+        "format": "year",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Waymo share of ride-sharing market (%)",
+        "domain": [
+          0,
+          11
+        ],
+        "ticks": [
+          0,
+          2,
+          4,
+          6,
+          8,
+          10
+        ],
+        "format": "percent",
+        "scale": "linear"
+      }
+    }
+  },
+  "robot-data": {
+    "kind": "pairedDots",
+    "title": "Data for a robot brain",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/74b0f36c-a450-4005-be1d-d10287e77b5b_2308x932.png",
+    "note": "Exact labels transcribed from supplied chart. Waymo figures are lower bounds (plus signs preserved). Human sleep is the source\u2019s analogy for simulated experience. Zero GEN-1.5 pretraining simulation is text-only because zero cannot be positioned on a logarithmic axis.",
+    "data": {
+      "panels": [
+        {
+          "name": "Real hours",
+          "rows": [
+            {
+              "label": "Human",
+              "value": 76000,
+              "valueLabel": "76K",
+              "detail": "Age 13"
+            },
+            {
+              "label": "Waymo",
+              "value": 800000,
+              "valueLabel": "800K+",
+              "detail": "2020 \u00b7 public driverless launch"
+            },
+            {
+              "label": "Generalist GEN-1.5",
+              "value": 650000,
+              "valueLabel": "650K",
+              "detail": "2026"
+            },
+            {
+              "label": "NVIDIA GR00T N1.7",
+              "value": 32000,
+              "valueLabel": "32K",
+              "detail": "2026"
+            }
+          ]
+        },
+        {
+          "name": "Simulated hours",
+          "rows": [
+            {
+              "label": "Human",
+              "value": 38000,
+              "valueLabel": "38K asleep",
+              "detail": "Age 13"
+            },
+            {
+              "label": "Waymo",
+              "value": 600000000,
+              "valueLabel": "600M+",
+              "detail": "2020 \u00b7 public driverless launch"
+            },
+            {
+              "label": "Generalist GEN-1.5",
+              "value": 0,
+              "valueLabel": "0 in pretraining",
+              "detail": "2026"
+            },
+            {
+              "label": "NVIDIA GR00T N1.7",
+              "value": 8000,
+              "valueLabel": "8K",
+              "detail": "2026"
+            }
+          ]
+        }
+      ],
+      "value": {
+        "label": "Hours (log scale)",
+        "domain": [
+          1000,
+          1000000000.0
+        ],
+        "ticks": [
+          1000,
+          1000000.0,
+          1000000000.0
+        ],
+        "format": "compact",
+        "scale": "log"
+      }
+    }
+  },
+  "sim-to-real": {
+    "kind": "scatter",
+    "title": "Real \u2192 Sim \u2192 Real",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/773ad4cf-01e3-41dd-90cf-b7f8f1f3d230_4327x2027.png",
+    "note": "Approximate marker centers visually transcribed from the source\u2019s primary real/simulation correlation panel; 16 points, not original raw data. Identity line retained. Source uncertainty ellipses are not converted into invented error bars. Two supporting training-series panels are transcribed approximately. Dense spatial success maps on the source\u2019s right are omitted because their underlying data cannot be recovered reliably from the image.",
+    "data": {
+      "points": [
+        {
+          "x": 0.16,
+          "y": 0.115,
+          "group": "GR00T N1.6 ID"
+        },
+        {
+          "x": 0.76,
+          "y": 0.72,
+          "group": "GR00T N1.6 ID"
+        },
+        {
+          "x": 0.92,
+          "y": 0.82,
+          "group": "GR00T N1.6 ID"
+        },
+        {
+          "x": 0.98,
+          "y": 0.915,
+          "group": "GR00T N1.6 ID"
+        },
+        {
+          "x": 0.08,
+          "y": 0.077,
+          "group": "GR00T N1.6 OOD"
+        },
+        {
+          "x": 0.38,
+          "y": 0.37,
+          "group": "GR00T N1.6 OOD"
+        },
+        {
+          "x": 0.42,
+          "y": 0.395,
+          "group": "GR00T N1.6 OOD"
+        },
+        {
+          "x": 0.42,
+          "y": 0.44,
+          "group": "GR00T N1.6 OOD"
+        },
+        {
+          "x": 0.52,
+          "y": 0.49,
+          "group": "\u03c00.5 ID"
+        },
+        {
+          "x": 0.82,
+          "y": 0.82,
+          "group": "\u03c00.5 ID"
+        },
+        {
+          "x": 1,
+          "y": 0.97,
+          "group": "\u03c00.5 ID"
+        },
+        {
+          "x": 1,
+          "y": 0.99,
+          "group": "\u03c00.5 ID"
+        },
+        {
+          "x": 0.4,
+          "y": 0.38,
+          "group": "\u03c00.5 OOD"
+        },
+        {
+          "x": 0.6,
+          "y": 0.54,
+          "group": "\u03c00.5 OOD"
+        },
+        {
+          "x": 0.76,
+          "y": 0.74,
+          "group": "\u03c00.5 OOD"
+        },
+        {
+          "x": 0.8,
+          "y": 0.7,
+          "group": "\u03c00.5 OOD"
+        }
+      ],
+      "groups": [
+        {
+          "name": "GR00T N1.6 ID",
+          "shape": "circle"
+        },
+        {
+          "name": "GR00T N1.6 OOD",
+          "shape": "square"
+        },
+        {
+          "name": "\u03c00.5 ID",
+          "shape": "circle"
+        },
+        {
+          "name": "\u03c00.5 OOD",
+          "shape": "square"
+        }
+      ],
+      "x": {
+        "label": "Real-world success rate",
+        "domain": [
+          0,
+          1
+        ],
+        "ticks": [
+          0,
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1
+        ],
+        "format": "plain",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Simulation success rate",
+        "domain": [
+          0,
+          1
+        ],
+        "ticks": [
+          0,
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1
+        ],
+        "format": "plain",
+        "scale": "linear"
+      },
+      "identityLine": true,
+      "panels": [
+        {
+          "name": "\u03c00.5",
+          "kind": "line",
+          "series": [
+            {
+              "name": "Simulation",
+              "points": [
+                [
+                  1750,
+                  0.43
+                ],
+                [
+                  4400,
+                  0.68
+                ],
+                [
+                  9000,
+                  0.85
+                ],
+                [
+                  18000,
+                  0.85
+                ]
+              ]
+            },
+            {
+              "name": "Real",
+              "dashed": true,
+              "points": [
+                [
+                  2200,
+                  0.46
+                ],
+                [
+                  5600,
+                  0.71
+                ],
+                [
+                  11200,
+                  0.88
+                ],
+                [
+                  22500,
+                  0.9
+                ]
+              ]
+            }
+          ],
+          "x": {
+            "label": "Post-training iterations",
+            "domain": [
+              1500,
+              25000
+            ],
+            "ticks": [
+              2000,
+              5000,
+              10000,
+              20000
+            ],
+            "format": "compact",
+            "scale": "log"
+          },
+          "y": {
+            "label": "Success rate",
+            "domain": [
+              0,
+              1
+            ],
+            "ticks": [
+              0,
+              0.2,
+              0.4,
+              0.6,
+              0.8,
+              1
+            ],
+            "format": "plain",
+            "scale": "linear"
+          }
+        },
+        {
+          "name": "GR00T N1.6",
+          "kind": "line",
+          "series": [
+            {
+              "name": "Simulation",
+              "points": [
+                [
+                  9000,
+                  0.1
+                ],
+                [
+                  18000,
+                  0.56
+                ],
+                [
+                  27500,
+                  0.65
+                ],
+                [
+                  48000,
+                  0.63
+                ]
+              ]
+            },
+            {
+              "name": "Real",
+              "dashed": true,
+              "points": [
+                [
+                  11000,
+                  0.12
+                ],
+                [
+                  21500,
+                  0.59
+                ],
+                [
+                  33000,
+                  0.68
+                ],
+                [
+                  58000,
+                  0.67
+                ]
+              ]
+            }
+          ],
+          "x": {
+            "label": "Post-training iterations",
+            "domain": [
+              7500,
+              70000
+            ],
+            "ticks": [
+              10000,
+              20000,
+              30000,
+              50000
+            ],
+            "format": "compact",
+            "scale": "log"
+          },
+          "y": {
+            "label": "Success rate",
+            "domain": [
+              0,
+              1
+            ],
+            "ticks": [
+              0,
+              0.2,
+              0.4,
+              0.6,
+              0.8,
+              1
+            ],
+            "format": "plain",
+            "scale": "linear"
+          }
+        }
+      ]
+    }
+  }
+}

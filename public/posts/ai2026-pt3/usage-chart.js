@@ -82,7 +82,7 @@
     new ResizeObserver(draw).observe(wrap);
     scene.addEventListener('chart-progress', event => render(event.detail));
   } catch (error) {
-    wrap.hidden = true;fallback.hidden = false;
+    wrap.hidden = !svg.childElementCount;fallback.hidden = !!svg.childElementCount;
     console.error(error);
   }
 })();

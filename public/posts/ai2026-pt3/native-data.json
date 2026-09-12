@@ -1,0 +1,4453 @@
+{
+  "coding-spend": {
+    "kind": "line",
+    "title": "AI spend per employee",
+    "source": "https://ramp.com/data/ai-index#spend-per-employee#sector",
+    "sourceImage": "coding-spend.png",
+    "note": "Approximate sparse read-off from supplied Ramp image; February 2025 technology value $11.87 and final sector values are exact printed labels. Final month is inferred from monthly spacing, approximately July 2026.",
+    "approximate": true,
+    "data": {
+      "x": {
+        "label": "Year",
+        "domain": [
+          2023.58,
+          2026.58
+        ],
+        "ticks": [
+          2024,
+          2025,
+          2026
+        ],
+        "format": "year",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Monthly AI spend per employee (USD)",
+        "domain": [
+          0,
+          100
+        ],
+        "ticks": [
+          0,
+          20,
+          40,
+          60,
+          80,
+          100
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      },
+      "series": [
+        {
+          "name": "Technology and media",
+          "points": [
+            [
+              2023.58,
+              4
+            ],
+            [
+              2024,
+              5.5
+            ],
+            [
+              2024.5,
+              7
+            ],
+            [
+              2025,
+              11.3
+            ],
+            [
+              2025.08,
+              11.87
+            ],
+            [
+              2025.5,
+              20
+            ],
+            [
+              2025.75,
+              26
+            ],
+            [
+              2026,
+              34
+            ],
+            [
+              2026.17,
+              51
+            ],
+            [
+              2026.33,
+              64
+            ],
+            [
+              2026.5,
+              79.26
+            ]
+          ]
+        },
+        {
+          "name": "Finance and insurance",
+          "points": [
+            [
+              2023.58,
+              2.5
+            ],
+            [
+              2024,
+              3.3
+            ],
+            [
+              2024.5,
+              3.8
+            ],
+            [
+              2025,
+              5
+            ],
+            [
+              2025.08,
+              5.8
+            ],
+            [
+              2025.5,
+              10
+            ],
+            [
+              2025.75,
+              12
+            ],
+            [
+              2026,
+              19
+            ],
+            [
+              2026.17,
+              28
+            ],
+            [
+              2026.33,
+              33
+            ],
+            [
+              2026.5,
+              40.36
+            ]
+          ]
+        },
+        {
+          "name": "Professional, scientific, and technical services",
+          "points": [
+            [
+              2023.58,
+              2
+            ],
+            [
+              2024,
+              3
+            ],
+            [
+              2024.5,
+              3.7
+            ],
+            [
+              2025,
+              4.5
+            ],
+            [
+              2025.08,
+              5
+            ],
+            [
+              2025.5,
+              7.5
+            ],
+            [
+              2025.75,
+              10
+            ],
+            [
+              2026,
+              15
+            ],
+            [
+              2026.17,
+              23
+            ],
+            [
+              2026.33,
+              27
+            ],
+            [
+              2026.5,
+              32.28
+            ]
+          ]
+        },
+        {
+          "name": "Manufacturing",
+          "points": [
+            [
+              2023.58,
+              1
+            ],
+            [
+              2024,
+              1.2
+            ],
+            [
+              2024.5,
+              1.3
+            ],
+            [
+              2025,
+              1.8
+            ],
+            [
+              2025.08,
+              2
+            ],
+            [
+              2025.5,
+              2.5
+            ],
+            [
+              2025.75,
+              3
+            ],
+            [
+              2026,
+              4
+            ],
+            [
+              2026.17,
+              6
+            ],
+            [
+              2026.33,
+              7.5
+            ],
+            [
+              2026.5,
+              8.85
+            ]
+          ]
+        }
+      ],
+      "annotations": [
+        {
+          "x": 2025.08,
+          "y": 11.87,
+          "label": "Feb 2025 \u00b7 $11.87"
+        }
+      ]
+    }
+  },
+  "omarchy": {
+    "kind": "rectangles",
+    "title": "The one-person software team",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/5fbe6fc6-35bc-43cf-8d90-95dcf21a785d_1456x1037.jpeg",
+    "sourceImage": "omarchy.jpeg",
+    "note": "All cost, duration, team-size, and total labels transcribed exactly; this is the author\u2019s estimate, not observed billing data.",
+    "data": {
+      "x": {
+        "label": "Calendar time (months)",
+        "domain": [
+          0,
+          18
+        ],
+        "ticks": [
+          0,
+          3,
+          6,
+          9,
+          12,
+          15,
+          18
+        ],
+        "format": "plain",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Monthly cost (USD)",
+        "domain": [
+          0,
+          220000
+        ],
+        "ticks": [
+          0,
+          50000,
+          100000,
+          150000,
+          200000
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      },
+      "rectangles": [
+        {
+          "label": "10-person team",
+          "duration": 18,
+          "monthlyCost": 200000,
+          "total": 3600000,
+          "parts": [
+            {
+              "name": "Humans",
+              "monthlyCost": 200000
+            }
+          ]
+        },
+        {
+          "label": "1 person + AI",
+          "duration": 3,
+          "monthlyCost": 23000,
+          "total": 69000,
+          "parts": [
+            {
+              "name": "Human",
+              "monthlyCost": 20000
+            },
+            {
+              "name": "AI",
+              "monthlyCost": 3000
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "software-pipeline": {
+    "kind": "pipeline",
+    "title": "The software factory",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/f3f0fa4e-96b8-419a-b8d7-6c9c9a10ce87_722x400.jpeg",
+    "sourceImage": "software-pipeline.jpeg",
+    "note": "Stage shares and remaining-time labels transcribed exactly. Saved time is original minus remaining. Source labels modest AI as 83% left / 1.20\u00d7; AI-pilled 10% left / 10\u00d7.",
+    "data": {
+      "value": {
+        "label": "Original workload (%)",
+        "domain": [
+          0,
+          100
+        ],
+        "ticks": [
+          0,
+          20,
+          40,
+          60,
+          80,
+          100
+        ],
+        "format": "percent",
+        "scale": "linear"
+      },
+      "stages": [
+        {
+          "label": "Planning, PM, and comms",
+          "original": 20
+        },
+        {
+          "label": "Design",
+          "original": 10
+        },
+        {
+          "label": "Coding",
+          "original": 20
+        },
+        {
+          "label": "QA and security",
+          "original": 30
+        },
+        {
+          "label": "Other",
+          "original": 20
+        }
+      ],
+      "scenarios": [
+        {
+          "label": "Modest AI",
+          "remaining": [
+            19,
+            9,
+            10,
+            27,
+            18
+          ],
+          "saved": [
+            1,
+            1,
+            10,
+            3,
+            2
+          ],
+          "totalRemaining": 83,
+          "speedup": 1.2
+        },
+        {
+          "label": "AI-pilled",
+          "remaining": [
+            4,
+            1,
+            0,
+            1,
+            4
+          ],
+          "saved": [
+            16,
+            9,
+            20,
+            29,
+            16
+          ],
+          "totalRemaining": 10,
+          "speedup": 10
+        }
+      ]
+    }
+  },
+  "employment": {
+    "kind": "line",
+    "title": "Becoming tractor-pilled",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/3349f5b3-314f-45e6-954d-343d0430f712_1404x1215.jpeg",
+    "sourceImage": "employment.jpeg",
+    "note": "Approximate decadal read-off of the supplied FT graphic, not an underlying dataset. Agriculture has an additional 1800 point; the other two curves start 1810. Source credits Robert Z Lawrence; S Lebergott (NBER 1966); FRED; BLS.",
+    "approximate": true,
+    "data": {
+      "x": {
+        "label": "Year",
+        "domain": [
+          1800,
+          2020
+        ],
+        "ticks": [
+          1800,
+          1850,
+          1900,
+          1950,
+          2000,
+          2020
+        ],
+        "format": "year",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Share of U.S. employment (%)",
+        "domain": [
+          0,
+          100
+        ],
+        "ticks": [
+          0,
+          20,
+          40,
+          60,
+          80,
+          100
+        ],
+        "format": "percent",
+        "scale": "linear"
+      },
+      "series": [
+        {
+          "name": "Agriculture",
+          "points": [
+            [
+              1800,
+              74
+            ],
+            [
+              1810,
+              81
+            ],
+            [
+              1820,
+              79
+            ],
+            [
+              1830,
+              69
+            ],
+            [
+              1840,
+              63
+            ],
+            [
+              1850,
+              55
+            ],
+            [
+              1860,
+              53
+            ],
+            [
+              1870,
+              52.5
+            ],
+            [
+              1880,
+              51
+            ],
+            [
+              1890,
+              43
+            ],
+            [
+              1900,
+              40
+            ],
+            [
+              1910,
+              32
+            ],
+            [
+              1920,
+              26
+            ],
+            [
+              1930,
+              21
+            ],
+            [
+              1940,
+              17
+            ],
+            [
+              1950,
+              12
+            ],
+            [
+              1960,
+              8
+            ],
+            [
+              1970,
+              4.5
+            ],
+            [
+              1980,
+              3.5
+            ],
+            [
+              1990,
+              2.8
+            ],
+            [
+              2000,
+              1.8
+            ],
+            [
+              2010,
+              1.5
+            ],
+            [
+              2020,
+              1.5
+            ]
+          ]
+        },
+        {
+          "name": "Manufacturing",
+          "points": [
+            [
+              1810,
+              3
+            ],
+            [
+              1820,
+              5
+            ],
+            [
+              1830,
+              7
+            ],
+            [
+              1840,
+              9
+            ],
+            [
+              1850,
+              14.5
+            ],
+            [
+              1860,
+              14
+            ],
+            [
+              1870,
+              19
+            ],
+            [
+              1880,
+              19
+            ],
+            [
+              1890,
+              19
+            ],
+            [
+              1900,
+              20.5
+            ],
+            [
+              1910,
+              22.5
+            ],
+            [
+              1920,
+              27
+            ],
+            [
+              1930,
+              20.5
+            ],
+            [
+              1940,
+              20
+            ],
+            [
+              1950,
+              24
+            ],
+            [
+              1960,
+              23
+            ],
+            [
+              1970,
+              22.8
+            ],
+            [
+              1980,
+              19
+            ],
+            [
+              1990,
+              15
+            ],
+            [
+              2000,
+              12.5
+            ],
+            [
+              2010,
+              8.3
+            ],
+            [
+              2020,
+              8.1
+            ]
+          ]
+        },
+        {
+          "name": "Services and others",
+          "points": [
+            [
+              1810,
+              16.5
+            ],
+            [
+              1820,
+              20.5
+            ],
+            [
+              1830,
+              24.5
+            ],
+            [
+              1840,
+              28
+            ],
+            [
+              1850,
+              31
+            ],
+            [
+              1860,
+              33.5
+            ],
+            [
+              1870,
+              28.5
+            ],
+            [
+              1880,
+              30
+            ],
+            [
+              1890,
+              38.5
+            ],
+            [
+              1900,
+              40
+            ],
+            [
+              1910,
+              46.5
+            ],
+            [
+              1920,
+              47.5
+            ],
+            [
+              1930,
+              58
+            ],
+            [
+              1940,
+              63
+            ],
+            [
+              1950,
+              64.5
+            ],
+            [
+              1960,
+              69
+            ],
+            [
+              1970,
+              73
+            ],
+            [
+              1980,
+              78
+            ],
+            [
+              1990,
+              82.5
+            ],
+            [
+              2000,
+              86
+            ],
+            [
+              2010,
+              90.5
+            ],
+            [
+              2020,
+              90.8
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "code-history": {
+    "kind": "area",
+    "title": "The market for code, 1980\u20132025",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/b855edc1-c654-4841-bbbc-8e69e92ee1ed_1445x1005.jpeg",
+    "sourceImage": "code-history.jpeg",
+    "note": "Modeled annual spending in real 2025 USD. Area components are approximate image read-offs; bubble labels are exact. Original source includes conservative 2040 scenario, despite scene name mentioning history. Bubble area, not radius, represents annual gross LOC.",
+    "approximate": true,
+    "data": {
+      "x": {
+        "label": "Year",
+        "domain": [
+          1980,
+          2040
+        ],
+        "ticks": [
+          1980,
+          1990,
+          2000,
+          2010,
+          2025,
+          2040
+        ],
+        "format": "year",
+        "scale": "linear"
+      },
+      "scenarioStart": 2025,
+      "stacked": true,
+      "bubbleUnit": "Gross lines of code per year",
+      "y": {
+        "label": "Annual global spending (2025 USD)",
+        "domain": [
+          0,
+          4500000000000.0
+        ],
+        "ticks": [
+          0,
+          1000000000000.0,
+          2000000000000.0,
+          3000000000000.0,
+          4000000000000.0
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      },
+      "series": [
+        {
+          "name": "Salary + benefits",
+          "points": [
+            [
+              1980,
+              150000000000.0
+            ],
+            [
+              1990,
+              300000000000.0
+            ],
+            [
+              2000,
+              700000000000.0
+            ],
+            [
+              2010,
+              1300000000000.0
+            ],
+            [
+              2014,
+              1900000000000.0
+            ],
+            [
+              2020,
+              2400000000000.0
+            ],
+            [
+              2025,
+              3000000000000.0
+            ],
+            [
+              2028,
+              2800000000000.0
+            ],
+            [
+              2030,
+              2500000000000.0
+            ],
+            [
+              2035,
+              1550000000000.0
+            ],
+            [
+              2040,
+              1080000000000.0001
+            ]
+          ]
+        },
+        {
+          "name": "Agents",
+          "points": [
+            [
+              1980,
+              0.0
+            ],
+            [
+              1990,
+              0.0
+            ],
+            [
+              2000,
+              0.0
+            ],
+            [
+              2010,
+              0.0
+            ],
+            [
+              2014,
+              0.0
+            ],
+            [
+              2020,
+              0.0
+            ],
+            [
+              2025,
+              0.0
+            ],
+            [
+              2028,
+              150000000000.0
+            ],
+            [
+              2030,
+              420000000000.0
+            ],
+            [
+              2035,
+              1230000000000.0
+            ],
+            [
+              2040,
+              1620000000000.0
+            ]
+          ]
+        },
+        {
+          "name": "Computers + SaaS + cloud",
+          "points": [
+            [
+              1980,
+              30000000000.0
+            ],
+            [
+              1990,
+              60000000000.0
+            ],
+            [
+              2000,
+              140000000000.0
+            ],
+            [
+              2010,
+              260000000000.0
+            ],
+            [
+              2014,
+              380000000000.0
+            ],
+            [
+              2020,
+              480000000000.0
+            ],
+            [
+              2025,
+              600000000000.0
+            ],
+            [
+              2028,
+              650000000000.0
+            ],
+            [
+              2030,
+              680000000000.0
+            ],
+            [
+              2035,
+              820000000000.0
+            ],
+            [
+              2040,
+              900000000000.0
+            ]
+          ]
+        }
+      ],
+      "bubbles": [
+        {
+          "x": 1980,
+          "y": 180000000000.0,
+          "value": 7500000000.0,
+          "label": "7.5B LOC / yr"
+        },
+        {
+          "x": 2000,
+          "y": 840000000000.0,
+          "value": 59500000000.0,
+          "label": "59.5B LOC / yr"
+        },
+        {
+          "x": 2025,
+          "y": 3600000000000.0,
+          "value": 500000000000.0,
+          "label": "500B LOC / yr"
+        },
+        {
+          "x": 2040,
+          "y": 3600000000000.0,
+          "value": 1000000000000.0,
+          "label": "1T LOC / yr"
+        }
+      ],
+      "assumptions": [
+        "2040 scenario: elasticity 1",
+        "Productivity +100% (2\u00d7)",
+        "Unit cost \u221250%"
+      ]
+    }
+  },
+  "code-future": {
+    "kind": "area",
+    "title": "The trillion-dollar agent opportunity",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/003cc366-acb1-4f4b-81f3-02397d3bd2b9_1448x960.jpeg",
+    "sourceImage": "code-future.jpeg",
+    "note": "Optimistic modeled annual spending source. Area components are approximate read-offs; $10T and 10T LOC endpoint labels are exact. Conservative variant uses preceding source image, allowing prose to reveal conservative then optimistic outcomes without misleading substitution.",
+    "approximate": true,
+    "data": {
+      "x": {
+        "label": "Year",
+        "domain": [
+          1980,
+          2040
+        ],
+        "ticks": [
+          1980,
+          1990,
+          2000,
+          2010,
+          2025,
+          2040
+        ],
+        "format": "year",
+        "scale": "linear"
+      },
+      "scenarioStart": 2025,
+      "stacked": true,
+      "bubbleUnit": "Gross lines of code per year",
+      "y": {
+        "label": "Annual global spending (2025 USD)",
+        "domain": [
+          0,
+          13000000000000.0
+        ],
+        "ticks": [
+          0,
+          2000000000000.0,
+          4000000000000.0,
+          6000000000000.0,
+          8000000000000.0,
+          10000000000000.0,
+          12000000000000.0
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      },
+      "series": [
+        {
+          "name": "Salary + benefits",
+          "points": [
+            [
+              1980,
+              150000000000.0
+            ],
+            [
+              1990,
+              300000000000.0
+            ],
+            [
+              2000,
+              700000000000.0
+            ],
+            [
+              2010,
+              1300000000000.0
+            ],
+            [
+              2014,
+              1900000000000.0
+            ],
+            [
+              2020,
+              2400000000000.0
+            ],
+            [
+              2025,
+              3000000000000.0
+            ],
+            [
+              2028,
+              3060000000000.0
+            ],
+            [
+              2030,
+              3100000000000.0
+            ],
+            [
+              2035,
+              3200000000000.0
+            ],
+            [
+              2040,
+              3300000000000.0
+            ]
+          ]
+        },
+        {
+          "name": "Agents",
+          "points": [
+            [
+              1980,
+              0.0
+            ],
+            [
+              1990,
+              0.0
+            ],
+            [
+              2000,
+              0.0
+            ],
+            [
+              2010,
+              0.0
+            ],
+            [
+              2014,
+              0.0
+            ],
+            [
+              2020,
+              0.0
+            ],
+            [
+              2025,
+              0.0
+            ],
+            [
+              2028,
+              600000000000.0
+            ],
+            [
+              2030,
+              1100000000000.0
+            ],
+            [
+              2035,
+              2600000000000.0
+            ],
+            [
+              2040,
+              4700000000000.0
+            ]
+          ]
+        },
+        {
+          "name": "Computers + SaaS + cloud",
+          "points": [
+            [
+              1980,
+              30000000000.0
+            ],
+            [
+              1990,
+              60000000000.0
+            ],
+            [
+              2000,
+              140000000000.0
+            ],
+            [
+              2010,
+              260000000000.0
+            ],
+            [
+              2014,
+              380000000000.0
+            ],
+            [
+              2020,
+              480000000000.0
+            ],
+            [
+              2025,
+              600000000000.0
+            ],
+            [
+              2028,
+              850000000000.0
+            ],
+            [
+              2030,
+              1020000000000.0
+            ],
+            [
+              2035,
+              1450000000000.0
+            ],
+            [
+              2040,
+              2000000000000.0
+            ]
+          ]
+        }
+      ],
+      "bubbles": [
+        {
+          "x": 1980,
+          "y": 180000000000.0,
+          "value": 7500000000.0,
+          "label": "7.5B LOC / yr"
+        },
+        {
+          "x": 2000,
+          "y": 840000000000.0,
+          "value": 59500000000.0,
+          "label": "59.5B LOC / yr"
+        },
+        {
+          "x": 2025,
+          "y": 3600000000000.0,
+          "value": 500000000000.0,
+          "label": "500B LOC / yr"
+        },
+        {
+          "x": 2040,
+          "y": 10000000000000.0,
+          "value": 10000000000000.0,
+          "label": "10T LOC / yr"
+        }
+      ],
+      "variants": [
+        {
+          "name": "Conservative",
+          "source": "https://substack-post-media.s3.amazonaws.com/public/images/b855edc1-c654-4841-bbbc-8e69e92ee1ed_1445x1005.jpeg",
+          "series": [
+            {
+              "name": "Salary + benefits",
+              "points": [
+                [
+                  1980,
+                  150000000000.0
+                ],
+                [
+                  1990,
+                  300000000000.0
+                ],
+                [
+                  2000,
+                  700000000000.0
+                ],
+                [
+                  2010,
+                  1300000000000.0
+                ],
+                [
+                  2014,
+                  1900000000000.0
+                ],
+                [
+                  2020,
+                  2400000000000.0
+                ],
+                [
+                  2025,
+                  3000000000000.0
+                ],
+                [
+                  2028,
+                  2800000000000.0
+                ],
+                [
+                  2030,
+                  2500000000000.0
+                ],
+                [
+                  2035,
+                  1550000000000.0
+                ],
+                [
+                  2040,
+                  1080000000000.0001
+                ]
+              ]
+            },
+            {
+              "name": "Agents",
+              "points": [
+                [
+                  1980,
+                  0.0
+                ],
+                [
+                  1990,
+                  0.0
+                ],
+                [
+                  2000,
+                  0.0
+                ],
+                [
+                  2010,
+                  0.0
+                ],
+                [
+                  2014,
+                  0.0
+                ],
+                [
+                  2020,
+                  0.0
+                ],
+                [
+                  2025,
+                  0.0
+                ],
+                [
+                  2028,
+                  150000000000.0
+                ],
+                [
+                  2030,
+                  420000000000.0
+                ],
+                [
+                  2035,
+                  1230000000000.0
+                ],
+                [
+                  2040,
+                  1620000000000.0
+                ]
+              ]
+            },
+            {
+              "name": "Computers + SaaS + cloud",
+              "points": [
+                [
+                  1980,
+                  30000000000.0
+                ],
+                [
+                  1990,
+                  60000000000.0
+                ],
+                [
+                  2000,
+                  140000000000.0
+                ],
+                [
+                  2010,
+                  260000000000.0
+                ],
+                [
+                  2014,
+                  380000000000.0
+                ],
+                [
+                  2020,
+                  480000000000.0
+                ],
+                [
+                  2025,
+                  600000000000.0
+                ],
+                [
+                  2028,
+                  650000000000.0
+                ],
+                [
+                  2030,
+                  680000000000.0
+                ],
+                [
+                  2035,
+                  820000000000.0
+                ],
+                [
+                  2040,
+                  900000000000.0
+                ]
+              ]
+            }
+          ],
+          "bubbles": [
+            {
+              "x": 1980,
+              "y": 180000000000.0,
+              "value": 7500000000.0,
+              "label": "7.5B LOC / yr"
+            },
+            {
+              "x": 2000,
+              "y": 840000000000.0,
+              "value": 59500000000.0,
+              "label": "59.5B LOC / yr"
+            },
+            {
+              "x": 2025,
+              "y": 3600000000000.0,
+              "value": 500000000000.0,
+              "label": "500B LOC / yr"
+            },
+            {
+              "x": 2040,
+              "y": 3600000000000.0,
+              "value": 1000000000000.0,
+              "label": "1T LOC / yr"
+            }
+          ]
+        },
+        {
+          "name": "Optimistic",
+          "source": "https://substack-post-media.s3.amazonaws.com/public/images/003cc366-acb1-4f4b-81f3-02397d3bd2b9_1448x960.jpeg",
+          "series": [
+            {
+              "name": "Salary + benefits",
+              "points": [
+                [
+                  1980,
+                  150000000000.0
+                ],
+                [
+                  1990,
+                  300000000000.0
+                ],
+                [
+                  2000,
+                  700000000000.0
+                ],
+                [
+                  2010,
+                  1300000000000.0
+                ],
+                [
+                  2014,
+                  1900000000000.0
+                ],
+                [
+                  2020,
+                  2400000000000.0
+                ],
+                [
+                  2025,
+                  3000000000000.0
+                ],
+                [
+                  2028,
+                  3060000000000.0
+                ],
+                [
+                  2030,
+                  3100000000000.0
+                ],
+                [
+                  2035,
+                  3200000000000.0
+                ],
+                [
+                  2040,
+                  3300000000000.0
+                ]
+              ]
+            },
+            {
+              "name": "Agents",
+              "points": [
+                [
+                  1980,
+                  0.0
+                ],
+                [
+                  1990,
+                  0.0
+                ],
+                [
+                  2000,
+                  0.0
+                ],
+                [
+                  2010,
+                  0.0
+                ],
+                [
+                  2014,
+                  0.0
+                ],
+                [
+                  2020,
+                  0.0
+                ],
+                [
+                  2025,
+                  0.0
+                ],
+                [
+                  2028,
+                  600000000000.0
+                ],
+                [
+                  2030,
+                  1100000000000.0
+                ],
+                [
+                  2035,
+                  2600000000000.0
+                ],
+                [
+                  2040,
+                  4700000000000.0
+                ]
+              ]
+            },
+            {
+              "name": "Computers + SaaS + cloud",
+              "points": [
+                [
+                  1980,
+                  30000000000.0
+                ],
+                [
+                  1990,
+                  60000000000.0
+                ],
+                [
+                  2000,
+                  140000000000.0
+                ],
+                [
+                  2010,
+                  260000000000.0
+                ],
+                [
+                  2014,
+                  380000000000.0
+                ],
+                [
+                  2020,
+                  480000000000.0
+                ],
+                [
+                  2025,
+                  600000000000.0
+                ],
+                [
+                  2028,
+                  850000000000.0
+                ],
+                [
+                  2030,
+                  1020000000000.0
+                ],
+                [
+                  2035,
+                  1450000000000.0
+                ],
+                [
+                  2040,
+                  2000000000000.0
+                ]
+              ]
+            }
+          ],
+          "bubbles": [
+            {
+              "x": 1980,
+              "y": 180000000000.0,
+              "value": 7500000000.0,
+              "label": "7.5B LOC / yr"
+            },
+            {
+              "x": 2000,
+              "y": 840000000000.0,
+              "value": 59500000000.0,
+              "label": "59.5B LOC / yr"
+            },
+            {
+              "x": 2025,
+              "y": 3600000000000.0,
+              "value": 500000000000.0,
+              "label": "500B LOC / yr"
+            },
+            {
+              "x": 2040,
+              "y": 10000000000000.0,
+              "value": 10000000000000.0,
+              "label": "10T LOC / yr"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "solar": {
+    "kind": "line",
+    "title": "The solar learning curve",
+    "source": "https://ourworldindata.org/learning-curve",
+    "sourceImage": "solar.png",
+    "note": "Approximate sparse read-offs from supplied OWID image. Both axes logarithmic; capacity in MW, cost per watt in 2019 USD. The source explicitly reports a 20.2% average learning rate and 99.6% price decline since 1976.",
+    "approximate": true,
+    "data": {
+      "x": {
+        "label": "Cumulative installed solar PV capacity (MW)",
+        "domain": [
+          0.2,
+          700000
+        ],
+        "ticks": [
+          1,
+          10,
+          100,
+          1000,
+          10000,
+          100000
+        ],
+        "format": "compact",
+        "scale": "log"
+      },
+      "y": {
+        "label": "Price per watt (2019 USD)",
+        "domain": [
+          0.3,
+          120
+        ],
+        "ticks": [
+          0.5,
+          1,
+          2,
+          5,
+          10,
+          20,
+          50,
+          100
+        ],
+        "format": "dollars",
+        "scale": "log"
+      },
+      "series": [
+        {
+          "name": "Solar modules",
+          "points": [
+            [
+              0.3,
+              106
+            ],
+            [
+              0.85,
+              81
+            ],
+            [
+              1.7,
+              57
+            ],
+            [
+              3,
+              48
+            ],
+            [
+              7,
+              31
+            ],
+            [
+              20,
+              22
+            ],
+            [
+              65,
+              17
+            ],
+            [
+              85,
+              15
+            ],
+            [
+              120,
+              11
+            ],
+            [
+              175,
+              7.6
+            ],
+            [
+              265,
+              9
+            ],
+            [
+              400,
+              7.3
+            ],
+            [
+              480,
+              7.2
+            ],
+            [
+              620,
+              5.8
+            ],
+            [
+              850,
+              6.3
+            ],
+            [
+              1300,
+              5.1
+            ],
+            [
+              1900,
+              4.8
+            ],
+            [
+              2500,
+              4
+            ],
+            [
+              3400,
+              3.9
+            ],
+            [
+              7000,
+              4.2
+            ],
+            [
+              9500,
+              4.4
+            ],
+            [
+              12000,
+              4
+            ],
+            [
+              23500,
+              3.4
+            ],
+            [
+              36000,
+              2.3
+            ],
+            [
+              50000,
+              2
+            ],
+            [
+              71000,
+              1.7
+            ],
+            [
+              100000,
+              0.9
+            ],
+            [
+              135000,
+              0.7
+            ],
+            [
+              200000,
+              0.6
+            ],
+            [
+              300000,
+              0.55
+            ],
+            [
+              600000,
+              0.38
+            ]
+          ]
+        }
+      ],
+      "annotations": [
+        {
+          "x": 0.3,
+          "y": 106,
+          "label": "1976"
+        },
+        {
+          "x": 600000,
+          "y": 0.38,
+          "label": "2019"
+        }
+      ],
+      "learningRate": 20.2
+    }
+  },
+  "experience-curves": {
+    "kind": "line",
+    "title": "Cars, solar, and code",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/3c470d79-c2b4-4693-baa6-20ca8ce443b9_1447x1051.jpeg",
+    "sourceImage": "experience-curves.jpeg",
+    "note": "Approximate sparse read-offs. Source normalizes annual output to starting output; unit costs real 2025 USD. Code uses U.S. software investment as proxy, and 2030 is a dashed scenario. Source endpoint labels exact; values approximate.",
+    "approximate": true,
+    "data": {
+      "x": {
+        "label": "Annual output (multiple of starting output)",
+        "domain": [
+          0.25,
+          400
+        ],
+        "ticks": [
+          1,
+          2,
+          5,
+          10,
+          20,
+          50,
+          100
+        ],
+        "format": "plain",
+        "scale": "log"
+      },
+      "y": {
+        "label": "Unit cost (2025 USD)",
+        "domain": [
+          2000,
+          80000
+        ],
+        "ticks": [
+          5000,
+          10000,
+          50000
+        ],
+        "format": "dollars",
+        "scale": "log"
+      },
+      "series": [
+        {
+          "name": "Cars \u00b7 $ per car",
+          "points": [
+            [
+              1,
+              33000
+            ],
+            [
+              1.85,
+              27000
+            ],
+            [
+              4.2,
+              23000
+            ],
+            [
+              9,
+              20000
+            ],
+            [
+              13.4,
+              17800
+            ],
+            [
+              17,
+              15700
+            ],
+            [
+              29,
+              13000
+            ],
+            [
+              28.5,
+              9800
+            ],
+            [
+              38,
+              9800
+            ],
+            [
+              42,
+              9000
+            ],
+            [
+              53,
+              7100
+            ],
+            [
+              67,
+              6400
+            ]
+          ]
+        },
+        {
+          "name": "Solar \u00b7 $ per 100 MWh",
+          "points": [
+            [
+              1,
+              40700
+            ],
+            [
+              2,
+              33700
+            ],
+            [
+              3,
+              26000
+            ],
+            [
+              4.1,
+              20200
+            ],
+            [
+              6.1,
+              18000
+            ],
+            [
+              7.9,
+              13300
+            ],
+            [
+              10.2,
+              11700
+            ],
+            [
+              14,
+              9400
+            ],
+            [
+              18,
+              7900
+            ],
+            [
+              22,
+              6800
+            ],
+            [
+              27,
+              6100
+            ],
+            [
+              33,
+              5500
+            ],
+            [
+              42,
+              5000
+            ],
+            [
+              51,
+              4250
+            ],
+            [
+              67,
+              4280
+            ],
+            [
+              87,
+              4350
+            ]
+          ]
+        },
+        {
+          "name": "Code \u00b7 5,000 LOC",
+          "points": [
+            [
+              1,
+              49000
+            ],
+            [
+              1.25,
+              42000
+            ],
+            [
+              1.7,
+              36500
+            ],
+            [
+              2,
+              34300
+            ],
+            [
+              3.1,
+              30800
+            ],
+            [
+              3.9,
+              30000
+            ],
+            [
+              4.5,
+              25500
+            ],
+            [
+              5.7,
+              22500
+            ],
+            [
+              7.4,
+              20200
+            ],
+            [
+              10,
+              17500
+            ],
+            [
+              15,
+              14900
+            ],
+            [
+              20,
+              13300
+            ],
+            [
+              27,
+              11100
+            ],
+            [
+              33,
+              10000
+            ]
+          ]
+        },
+        {
+          "name": "Code \u00b7 2030 scenario",
+          "points": [
+            [
+              33,
+              10000
+            ],
+            [
+              67,
+              5000
+            ]
+          ],
+          "dashed": true
+        }
+      ],
+      "annotations": [
+        {
+          "x": 1,
+          "y": 49000,
+          "label": "Code 1990"
+        },
+        {
+          "x": 1,
+          "y": 40700,
+          "label": "Solar 2010"
+        },
+        {
+          "x": 1,
+          "y": 33000,
+          "label": "Cars 1909"
+        },
+        {
+          "x": 67,
+          "y": 6400,
+          "label": "Cars 1921"
+        },
+        {
+          "x": 67,
+          "y": 5000,
+          "label": "Code 2030*"
+        },
+        {
+          "x": 87,
+          "y": 4350,
+          "label": "Solar 2025"
+        }
+      ]
+    }
+  },
+  "productivity": {
+    "kind": "scatter",
+    "title": "Where is the productivity growth?",
+    "source": "https://www.stripeeconomics.com/p/ai-and-productivity",
+    "sourceImage": "productivity.png",
+    "note": "Approximate plotted-coordinate transcription, labels exact. Latest minus pre-pandemic productivity growth plotted against AI adoption in 2026 H1. Source reports R\u00b2 = 0.00; mining (NAICS 21) excluded.",
+    "approximate": true,
+    "data": {
+      "x": {
+        "label": "AI adoption rate \u00b7 2026 H1 (%)",
+        "domain": [
+          5,
+          48
+        ],
+        "ticks": [
+          10,
+          15,
+          20,
+          25,
+          30,
+          35,
+          40,
+          45
+        ],
+        "format": "percent",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Productivity growth: latest \u2212 pre-pandemic (%)",
+        "domain": [
+          -4,
+          10
+        ],
+        "ticks": [
+          -4,
+          -2,
+          0,
+          2,
+          4,
+          6,
+          8,
+          10
+        ],
+        "format": "percent",
+        "scale": "linear"
+      },
+      "points": [
+        {
+          "label": "Retail trade",
+          "x": 13.5,
+          "y": 5.75
+        },
+        {
+          "label": "Information",
+          "x": 38.5,
+          "y": 5.7
+        },
+        {
+          "label": "Real estate",
+          "x": 24.8,
+          "y": 5
+        },
+        {
+          "label": "Transportation and warehousing",
+          "x": 8,
+          "y": 2.5
+        },
+        {
+          "label": "Construction",
+          "x": 10,
+          "y": 1.5
+        },
+        {
+          "label": "Manufacturing",
+          "x": 14.5,
+          "y": 1.05
+        },
+        {
+          "label": "Arts and entertainment",
+          "x": 18.2,
+          "y": 0.48
+        },
+        {
+          "label": "Administrative and waste management",
+          "x": 17.4,
+          "y": 0.08
+        },
+        {
+          "label": "Wholesale trade",
+          "x": 15.3,
+          "y": -0.9
+        },
+        {
+          "label": "Healthcare",
+          "x": 21.1,
+          "y": 0.15
+        },
+        {
+          "label": "Professional, scientific, and technical",
+          "x": 35.5,
+          "y": 1
+        },
+        {
+          "label": "Finance and insurance",
+          "x": 31.7,
+          "y": -0.75
+        },
+        {
+          "label": "Management of companies",
+          "x": 41.9,
+          "y": -1.85
+        },
+        {
+          "label": "Educational services",
+          "x": 31.1,
+          "y": -2.25
+        },
+        {
+          "label": "Accommodation and food",
+          "x": 8.2,
+          "y": -1.05
+        },
+        {
+          "label": "Utilities",
+          "x": 12.9,
+          "y": -1.15
+        },
+        {
+          "label": "Other services",
+          "x": 10.1,
+          "y": -3.2
+        }
+      ],
+      "fit": {
+        "points": [
+          [
+            7,
+            0.5
+          ],
+          [
+            43,
+            1.05
+          ]
+        ],
+        "label": "R\u00b2 = 0.00"
+      }
+    }
+  },
+  "tfp": {
+    "kind": "bars",
+    "title": "Technology and total factor productivity",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/f3868bac-f890-4b2b-8338-d9d140a1022e_1451x1047.jpeg",
+    "sourceImage": "tfp.jpeg",
+    "note": "Totals are exact printed labels; technology components and period boundaries approximate read-offs. Source leaves 1941\u20131948 as a gap. This is an author-composed technology attribution chart, not direct BLS attribution.",
+    "approximate": true,
+    "data": {
+      "orientation": "vertical",
+      "stacked": true,
+      "series": [
+        {
+          "name": "Electricity"
+        },
+        {
+          "name": "Motor-related"
+        },
+        {
+          "name": "Computers"
+        },
+        {
+          "name": "Interstate highways"
+        },
+        {
+          "name": "IT-enabled logistics"
+        },
+        {
+          "name": "Process innovation"
+        },
+        {
+          "name": "Other"
+        }
+      ],
+      "rows": [
+        {
+          "label": "1900\u20131909",
+          "values": [
+            0.02,
+            0.2,
+            0,
+            0,
+            0,
+            0,
+            0.71
+          ],
+          "total": 0.93
+        },
+        {
+          "label": "1909\u20131919",
+          "values": [
+            0.07,
+            0.1,
+            0,
+            0,
+            0,
+            0,
+            0.47
+          ],
+          "total": 0.64
+        },
+        {
+          "label": "1919\u20131929",
+          "values": [
+            0.065,
+            0.305,
+            0,
+            0,
+            0,
+            0,
+            1.26
+          ],
+          "total": 1.63
+        },
+        {
+          "label": "1929\u20131941",
+          "values": [
+            0.17,
+            0.59,
+            0,
+            0,
+            0,
+            0,
+            1.1
+          ],
+          "total": 1.86
+        },
+        {
+          "label": "1948\u20131960",
+          "values": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.5,
+            1.48
+          ],
+          "total": 1.98
+        },
+        {
+          "label": "1960\u20131973",
+          "values": [
+            0,
+            0,
+            0,
+            0.5,
+            0,
+            0,
+            1.71
+          ],
+          "total": 2.21
+        },
+        {
+          "label": "1973\u20131995",
+          "values": [
+            0,
+            0,
+            0.28,
+            0,
+            0,
+            0,
+            0.16
+          ],
+          "total": 0.44
+        },
+        {
+          "label": "1995\u20132000",
+          "values": [
+            0,
+            0,
+            0.75,
+            0,
+            0,
+            0,
+            0.39
+          ],
+          "total": 1.14
+        },
+        {
+          "label": "2000\u20132006",
+          "values": [
+            0,
+            0,
+            0.51,
+            0,
+            0.5,
+            0,
+            0.66
+          ],
+          "total": 1.67
+        },
+        {
+          "label": "2006\u20132018",
+          "values": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.25,
+            0.35
+          ],
+          "total": 0.6
+        },
+        {
+          "label": "2018\u20132025",
+          "values": [
+            0,
+            0,
+            0.4,
+            0,
+            0,
+            0,
+            0.7
+          ],
+          "total": 1.1
+        }
+      ],
+      "value": {
+        "label": "TFP growth (percentage points / year)",
+        "domain": [
+          0,
+          2.6
+        ],
+        "ticks": [
+          0,
+          0.5,
+          1,
+          1.5,
+          2,
+          2.5
+        ],
+        "format": "plain",
+        "scale": "linear"
+      },
+      "gap": "1941\u20131948"
+    }
+  },
+  "ai-economy": {
+    "kind": "cards",
+    "title": "AI in the productivity statistics",
+    "source": "https://intelligence.exponentialview.co/assets/ev-state-of-ai-economy-2026.pdf",
+    "sourceImage": "ai-economy.png",
+    "note": "Six source panels faithfully transcribed: two AI impact categories and four historical examples. Values are the source\u2019s claims, not independently verified estimates.",
+    "data": {
+      "cards": [
+        {
+          "label": "Consumer surplus",
+          "group": "AI impacts",
+          "description": "Value reaches people at a near-zero price; GDP under-represents consumer benefit.",
+          "examples": [
+            "Free replacement of software and service purchases",
+            "Learning, leisure and convenience"
+          ],
+          "measurement": "Little is sold; benefits may escape GDP"
+        },
+        {
+          "label": "Producer surplus",
+          "group": "AI impacts",
+          "description": "Value embedded in sold goods and services is transacted and recorded in GDP.",
+          "examples": [
+            "AI-enabled features that drive revenue",
+            "Faster valuable releases",
+            "Service firm margins"
+          ],
+          "measurement": "More is recorded in GDP"
+        },
+        {
+          "label": "Electric lighting",
+          "group": "Consumer surplus",
+          "period": "1880\u20131920",
+          "description": "Light became ~99.97% cheaper; an hour\u2019s wage buys ~40,000\u00d7 more. Prices did not record this gain.",
+          "value": "\u2248 $0",
+          "measurement": "Direct GDP impact",
+          "citation": "Nordhaus (1996)"
+        },
+        {
+          "label": "Free digital goods",
+          "group": "Consumer surplus",
+          "period": "2000\u20132020",
+          "description": "Free search, encyclopaedias and maps displaced paid services; search alone was worth ~$17.5k/yr/person.",
+          "value": "\u2248 $0",
+          "measurement": "Direct GDP impact",
+          "citation": "Brynjolfsson et al. (2019)"
+        },
+        {
+          "label": "Steam",
+          "group": "Producer surplus",
+          "period": "1850\u20131870",
+          "description": "Mechanized factories and railways let one worker produce and move far more to market.",
+          "value": "+0.4",
+          "measurement": "pp/yr GDP",
+          "citation": "Crafts (2004)"
+        },
+        {
+          "label": "Automation",
+          "group": "Producer surplus",
+          "period": "1980\u20132000",
+          "description": "Programmable machine tools cut labor in every unit, raising output per worker.",
+          "value": "+0.37",
+          "measurement": "pp/yr GDP",
+          "citation": "Graetz & Michaels (2018)"
+        }
+      ]
+    }
+  },
+  "white-collar": {
+    "kind": "table",
+    "title": "The white-collar wage pool",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/8f5b4647-3817-45e1-a566-a81d6a7a3cb2_1472x2174.png",
+    "note": "Exact displayed quantities transcribed from the supplied 2023 occupation table. Employee counts are rounded to the nearest thousand; wage-pool totals are source-rounded and are not recomputed.",
+    "data": {
+      "columns": [
+        {
+          "key": "occupation",
+          "label": "Occupation"
+        },
+        {
+          "key": "employees",
+          "label": "Employees",
+          "format": "compact"
+        },
+        {
+          "key": "wage",
+          "label": "Median annual wage",
+          "format": "dollars"
+        },
+        {
+          "key": "tam",
+          "label": "Wage pool",
+          "format": "dollars"
+        }
+      ],
+      "rows": [
+        {
+          "occupation": "Registered nurses",
+          "employees": 3300000,
+          "wage": 86070,
+          "tam": 284000000000
+        },
+        {
+          "occupation": "Software developers",
+          "employees": 1692000,
+          "wage": 132270,
+          "tam": 224000000000
+        },
+        {
+          "occupation": "Lawyers",
+          "employees": 859000,
+          "wage": 145760,
+          "tam": 125000000000
+        },
+        {
+          "occupation": "Accountants and auditors",
+          "employees": 1562000,
+          "wage": 79880,
+          "tam": 125000000000
+        },
+        {
+          "occupation": "Customer service representatives",
+          "employees": 2955000,
+          "wage": 39680,
+          "tam": 117000000000
+        },
+        {
+          "occupation": "Management analysts",
+          "employees": 1018000,
+          "wage": 99410,
+          "tam": 101000000000
+        },
+        {
+          "occupation": "Elementary school teachers",
+          "employees": 1441000,
+          "wage": 63680,
+          "tam": 92000000000
+        },
+        {
+          "occupation": "Wholesale/manufacturing sales, nontechnical",
+          "employees": 1356000,
+          "wage": 65630,
+          "tam": 89000000000
+        },
+        {
+          "occupation": "Secretaries and administrative assistants, general",
+          "employees": 1982000,
+          "wage": 44280,
+          "tam": 88000000000
+        },
+        {
+          "occupation": "Bookkeeping, accounting, and auditing clerks",
+          "employees": 1664000,
+          "wage": 47440,
+          "tam": 79000000000
+        },
+        {
+          "occupation": "Service sales representatives",
+          "employees": 1170000,
+          "wage": 64700,
+          "tam": 76000000000
+        },
+        {
+          "occupation": "General maintenance and repair workers",
+          "employees": 1617000,
+          "wage": 46700,
+          "tam": 75000000000
+        },
+        {
+          "occupation": "Secondary school teachers",
+          "employees": 1071000,
+          "wage": 65220,
+          "tam": 70000000000
+        },
+        {
+          "occupation": "Market research analysts and marketing specialists",
+          "employees": 903000,
+          "wage": 74680,
+          "tam": 67000000000
+        },
+        {
+          "occupation": "Human resources specialists",
+          "employees": 946000,
+          "wage": 67650,
+          "tam": 63000000000
+        },
+        {
+          "occupation": "Medical and health services managers",
+          "employees": 563000,
+          "wage": 110680,
+          "tam": 62000000000
+        },
+        {
+          "occupation": "Computer systems analysts",
+          "employees": 527000,
+          "wage": 103800,
+          "tam": 55000000000
+        },
+        {
+          "occupation": "Construction managers",
+          "employees": 521000,
+          "wage": 104900,
+          "tam": 55000000000
+        },
+        {
+          "occupation": "Teaching assistants, except postsecondary",
+          "employees": 1389000,
+          "wage": 35550,
+          "tam": 49000000000
+        },
+        {
+          "occupation": "Middle school teachers",
+          "employees": 640000,
+          "wage": 64290,
+          "tam": 41000000000
+        },
+        {
+          "occupation": "Securities, commodities, and financial services sales",
+          "employees": 514000,
+          "wage": 76900,
+          "tam": 40000000000
+        },
+        {
+          "occupation": "Licensed practical and vocational nurses",
+          "employees": 658000,
+          "wage": 59730,
+          "tam": 39000000000
+        },
+        {
+          "occupation": "Automotive service technicians and mechanics",
+          "employees": 795000,
+          "wage": 47770,
+          "tam": 38000000000
+        },
+        {
+          "occupation": "Receptionists and information clerks",
+          "employees": 1055000,
+          "wage": 35840,
+          "tam": 38000000000
+        },
+        {
+          "occupation": "Buyers and purchasing agents",
+          "employees": 524000,
+          "wage": 71950,
+          "tam": 38000000000
+        },
+        {
+          "occupation": "Nurse practitioners",
+          "employees": 293000,
+          "wage": 126260,
+          "tam": 37000000000
+        },
+        {
+          "occupation": "Executive secretaries and executive administrative assistants",
+          "employees": 516000,
+          "wage": 70310,
+          "tam": 36000000000
+        },
+        {
+          "occupation": "Financial and investment analysts",
+          "employees": 347000,
+          "wage": 99010,
+          "tam": 34000000000
+        },
+        {
+          "occupation": "Industrial engineers",
+          "employees": 337000,
+          "wage": 99380,
+          "tam": 33000000000
+        },
+        {
+          "occupation": "Medical assistants",
+          "employees": 784000,
+          "wage": 42000,
+          "tam": 33000000000
+        },
+        {
+          "occupation": "Civil engineers",
+          "employees": 342000,
+          "wage": 95890,
+          "tam": 33000000000
+        },
+        {
+          "occupation": "Wholesale/manufacturing sales, technical/scientific",
+          "employees": 325000,
+          "wage": 99710,
+          "tam": 32000000000
+        },
+        {
+          "occupation": "Insurance sales agents",
+          "employees": 548000,
+          "wage": 59080,
+          "tam": 32000000000
+        },
+        {
+          "occupation": "Network and computer systems administrators",
+          "employees": 335000,
+          "wage": 95360,
+          "tam": 32000000000
+        }
+      ],
+      "year": 2023
+    }
+  },
+  "app-revenue": {
+    "kind": "bars",
+    "title": "AI beyond software development",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/ace4bdfb-7ece-41e1-99c2-941cf9c60455_1447x1146.jpeg",
+    "note": "Exact displayed revenue/ARR labels from the supplied chart. These are the chart\u2019s selected applications, not total category revenue; coding excludes Cursor, Anthropic, and OpenAI per the accompanying text.",
+    "data": {
+      "orientation": "vertical",
+      "stacked": false,
+      "series": [
+        {
+          "name": "2025"
+        },
+        {
+          "name": "2026"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Coding & apps",
+          "values": [
+            655000000.0,
+            1430000000.0
+          ]
+        },
+        {
+          "label": "Creative & media",
+          "values": [
+            1170000000.0,
+            1480000000.0
+          ]
+        },
+        {
+          "label": "Legal",
+          "values": [
+            640000000.0,
+            900000000.0
+          ]
+        },
+        {
+          "label": "Enterprise & search",
+          "values": [
+            500000000.0,
+            950000000.0
+          ]
+        },
+        {
+          "label": "Healthcare",
+          "values": [
+            267000000.0,
+            417000000.0
+          ]
+        },
+        {
+          "label": "Customer service",
+          "values": [
+            130000000.0,
+            200000000.0
+          ]
+        }
+      ],
+      "value": {
+        "label": "Annualized revenue / ARR (USD)",
+        "domain": [
+          0,
+          1600000000.0
+        ],
+        "ticks": [
+          0,
+          500000000.0,
+          1000000000.0,
+          1500000000.0
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      }
+    }
+  },
+  "labor-markets": {
+    "kind": "bars",
+    "title": "White-collar and blue-collar labor",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/a3ea83cd-f6ee-43d4-8baf-1cd4e31eafb7_723x422.jpeg",
+    "note": "Exact labels transcribed from supplied chart: all BLS occupations, 155.5M jobs. Bars encode average wage; employee count and wage pool are separate annotations.",
+    "data": {
+      "orientation": "vertical",
+      "stacked": false,
+      "series": [
+        {
+          "name": "Average annual wage"
+        }
+      ],
+      "rows": [
+        {
+          "label": "White-collar",
+          "values": [
+            91684
+          ],
+          "employees": 78300000,
+          "wagePool": 7180000000000.0,
+          "detail": "78.3M employees \u00b7 $7.18T wage pool"
+        },
+        {
+          "label": "Blue-collar",
+          "values": [
+            47510
+          ],
+          "employees": 77200000,
+          "wagePool": 3670000000000.0,
+          "detail": "77.2M employees \u00b7 $3.67T wage pool"
+        }
+      ],
+      "value": {
+        "label": "Average annual wage (USD per employee)",
+        "domain": [
+          0,
+          105000
+        ],
+        "ticks": [
+          0,
+          20000,
+          40000,
+          60000,
+          80000,
+          100000
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      }
+    }
+  },
+  "blue-collar": {
+    "kind": "bars",
+    "title": "The blue-collar wage pool",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/88f1dfab-7364-4dda-88a7-0fd2d649241c_1369x1909.jpeg",
+    "note": "Exact displayed quantities and classifications transcribed from supplied May 2025 top-25 chart. Its values and occupational grouping differ from the separate 2023 occupation table; those differences are preserved.",
+    "data": {
+      "orientation": "horizontal",
+      "stacked": true,
+      "series": [
+        {
+          "name": "White-collar"
+        },
+        {
+          "name": "Blue-collar"
+        }
+      ],
+      "rows": [
+        {
+          "label": "General & ops managers",
+          "values": [
+            473000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 135000,
+          "detail": "$135K average salary"
+        },
+        {
+          "label": "Nurses",
+          "values": [
+            343000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 101000,
+          "detail": "$101K average salary"
+        },
+        {
+          "label": "Software developers",
+          "values": [
+            250000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 148000,
+          "detail": "$148K average salary"
+        },
+        {
+          "label": "Financial managers",
+          "values": [
+            157000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 187000,
+          "detail": "$187K average salary"
+        },
+        {
+          "label": "Home health & care aides",
+          "values": [
+            0,
+            156000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 36000,
+          "detail": "$36K average salary"
+        },
+        {
+          "label": "Retail salespeople",
+          "values": [
+            0,
+            145000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 37000,
+          "detail": "$37K average salary"
+        },
+        {
+          "label": "Lawyers",
+          "values": [
+            140000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 186000,
+          "detail": "$186K average salary"
+        },
+        {
+          "label": "Accountants & auditors",
+          "values": [
+            137000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 95000,
+          "detail": "$95K average salary"
+        },
+        {
+          "label": "IT managers",
+          "values": [
+            129000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 192000,
+          "detail": "$192K average salary"
+        },
+        {
+          "label": "Freight & material movers",
+          "values": [
+            0,
+            125000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 42000,
+          "detail": "$42K average salary"
+        },
+        {
+          "label": "Fast-food workers",
+          "values": [
+            0,
+            124000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 32000,
+          "detail": "$32K average salary"
+        },
+        {
+          "label": "Heavy truck drivers",
+          "values": [
+            0,
+            123000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 60000,
+          "detail": "$60K average salary"
+        },
+        {
+          "label": "Customer service reps",
+          "values": [
+            121000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 47000,
+          "detail": "$47K average salary"
+        },
+        {
+          "label": "Project management specialists",
+          "values": [
+            118000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 111000,
+          "detail": "$111K average salary"
+        },
+        {
+          "label": "General office clerks",
+          "values": [
+            114000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 46000,
+          "detail": "$46K average salary"
+        },
+        {
+          "label": "Stockers & order fillers",
+          "values": [
+            0,
+            112000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 40000,
+          "detail": "$40K average salary"
+        },
+        {
+          "label": "Office supervisors",
+          "values": [
+            106000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 73000,
+          "detail": "$73K average salary"
+        },
+        {
+          "label": "Sales managers",
+          "values": [
+            105000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 164000,
+          "detail": "$164K average salary"
+        },
+        {
+          "label": "Service sales reps",
+          "values": [
+            104000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 82000,
+          "detail": "$82K average salary"
+        },
+        {
+          "label": "Cashiers",
+          "values": [
+            0,
+            103000000000.0
+          ],
+          "group": "Blue-collar",
+          "averageWage": 33000,
+          "detail": "$33K average salary"
+        },
+        {
+          "label": "Management analysts",
+          "values": [
+            102000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 114000,
+          "detail": "$114K average salary"
+        },
+        {
+          "label": "Wholesale sales reps",
+          "values": [
+            102000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 83000,
+          "detail": "$83K average salary"
+        },
+        {
+          "label": "Business ops: all other",
+          "values": [
+            102000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 94000,
+          "detail": "$94K average salary"
+        },
+        {
+          "label": "Elementary teachers",
+          "values": [
+            101000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 73000,
+          "detail": "$73K average salary"
+        },
+        {
+          "label": "Managers: all other",
+          "values": [
+            96000000000.0,
+            0
+          ],
+          "group": "White-collar",
+          "averageWage": 154000,
+          "detail": "$154K average salary"
+        }
+      ],
+      "value": {
+        "label": "Annual wage pool (USD)",
+        "domain": [
+          0,
+          500000000000.0
+        ],
+        "ticks": [
+          0,
+          100000000000.0,
+          200000000000.0,
+          300000000000.0,
+          400000000000.0,
+          500000000000.0
+        ],
+        "format": "dollars",
+        "scale": "linear"
+      },
+      "year": 2025
+    }
+  },
+  "waymo-share": {
+    "kind": "line",
+    "title": "Waymo in the Bay Area",
+    "source": "https://x.com/_balaji_km/status/2085505334102409481",
+    "note": "Approximate monthly values visually digitized from the supplied YipitData graph, August 2023\u2013June 2026. Geographic expansions change the comparison area; this is not a fixed-geography series. Percentages use a 0\u2013100 scale.",
+    "data": {
+      "series": [
+        {
+          "name": "Waymo",
+          "points": [
+            [
+              2023.5833,
+              0
+            ],
+            [
+              2023.6667,
+              3.5
+            ],
+            [
+              2023.75,
+              4
+            ],
+            [
+              2023.8333,
+              5
+            ],
+            [
+              2023.9167,
+              7
+            ],
+            [
+              2024.0,
+              6.4
+            ],
+            [
+              2024.0833,
+              7.2
+            ],
+            [
+              2024.1667,
+              7.2
+            ],
+            [
+              2024.25,
+              8.5
+            ],
+            [
+              2024.3333,
+              11
+            ],
+            [
+              2024.4167,
+              11.5
+            ],
+            [
+              2024.5,
+              13.5
+            ],
+            [
+              2024.5833,
+              15
+            ],
+            [
+              2024.6667,
+              16
+            ],
+            [
+              2024.75,
+              19.5
+            ],
+            [
+              2024.8333,
+              23
+            ],
+            [
+              2024.9167,
+              21
+            ],
+            [
+              2025.0,
+              23
+            ],
+            [
+              2025.0833,
+              23.5
+            ],
+            [
+              2025.1667,
+              27
+            ],
+            [
+              2025.25,
+              28.5
+            ],
+            [
+              2025.3333,
+              27
+            ],
+            [
+              2025.4167,
+              18
+            ],
+            [
+              2025.5,
+              25
+            ],
+            [
+              2025.5833,
+              21
+            ],
+            [
+              2025.6667,
+              26
+            ],
+            [
+              2025.75,
+              28
+            ],
+            [
+              2025.8333,
+              19
+            ],
+            [
+              2025.9167,
+              16.5
+            ],
+            [
+              2026.0,
+              15.5
+            ],
+            [
+              2026.0833,
+              16.5
+            ],
+            [
+              2026.1667,
+              16.5
+            ],
+            [
+              2026.25,
+              17.5
+            ],
+            [
+              2026.3333,
+              16
+            ],
+            [
+              2026.4167,
+              14.5
+            ]
+          ]
+        },
+        {
+          "name": "Lyft",
+          "points": [
+            [
+              2023.5833,
+              34
+            ],
+            [
+              2023.6667,
+              36.5
+            ],
+            [
+              2023.75,
+              36
+            ],
+            [
+              2023.8333,
+              34
+            ],
+            [
+              2023.9167,
+              30.5
+            ],
+            [
+              2024.0,
+              29.5
+            ],
+            [
+              2024.0833,
+              28.5
+            ],
+            [
+              2024.1667,
+              27.5
+            ],
+            [
+              2024.25,
+              27
+            ],
+            [
+              2024.3333,
+              25.5
+            ],
+            [
+              2024.4167,
+              26.5
+            ],
+            [
+              2024.5,
+              27
+            ],
+            [
+              2024.5833,
+              29
+            ],
+            [
+              2024.6667,
+              26.5
+            ],
+            [
+              2024.75,
+              26
+            ],
+            [
+              2024.8333,
+              22
+            ],
+            [
+              2024.9167,
+              24
+            ],
+            [
+              2025.0,
+              23
+            ],
+            [
+              2025.0833,
+              21.5
+            ],
+            [
+              2025.1667,
+              18.7
+            ],
+            [
+              2025.25,
+              18.5
+            ],
+            [
+              2025.3333,
+              19
+            ],
+            [
+              2025.4167,
+              21.5
+            ],
+            [
+              2025.5,
+              20.5
+            ],
+            [
+              2025.5833,
+              24
+            ],
+            [
+              2025.6667,
+              22
+            ],
+            [
+              2025.75,
+              21.5
+            ],
+            [
+              2025.8333,
+              22
+            ],
+            [
+              2025.9167,
+              21.8
+            ],
+            [
+              2026.0,
+              22.1
+            ],
+            [
+              2026.0833,
+              21.5
+            ],
+            [
+              2026.1667,
+              23
+            ],
+            [
+              2026.25,
+              21.7
+            ],
+            [
+              2026.3333,
+              23.5
+            ],
+            [
+              2026.4167,
+              23.8
+            ]
+          ]
+        },
+        {
+          "name": "Uber",
+          "points": [
+            [
+              2023.5833,
+              65.5
+            ],
+            [
+              2023.6667,
+              59
+            ],
+            [
+              2023.75,
+              59.3
+            ],
+            [
+              2023.8333,
+              60
+            ],
+            [
+              2023.9167,
+              62
+            ],
+            [
+              2024.0,
+              63.2
+            ],
+            [
+              2024.0833,
+              63.5
+            ],
+            [
+              2024.1667,
+              64.7
+            ],
+            [
+              2024.25,
+              63.5
+            ],
+            [
+              2024.3333,
+              62
+            ],
+            [
+              2024.4167,
+              60.5
+            ],
+            [
+              2024.5,
+              58
+            ],
+            [
+              2024.5833,
+              55
+            ],
+            [
+              2024.6667,
+              56.5
+            ],
+            [
+              2024.75,
+              53.5
+            ],
+            [
+              2024.8333,
+              53.5
+            ],
+            [
+              2024.9167,
+              54.5
+            ],
+            [
+              2025.0,
+              53
+            ],
+            [
+              2025.0833,
+              54.2
+            ],
+            [
+              2025.1667,
+              53.6
+            ],
+            [
+              2025.25,
+              52.2
+            ],
+            [
+              2025.3333,
+              52.5
+            ],
+            [
+              2025.4167,
+              60
+            ],
+            [
+              2025.5,
+              54
+            ],
+            [
+              2025.5833,
+              54.5
+            ],
+            [
+              2025.6667,
+              51
+            ],
+            [
+              2025.75,
+              51
+            ],
+            [
+              2025.8333,
+              58
+            ],
+            [
+              2025.9167,
+              61.5
+            ],
+            [
+              2026.0,
+              62.3
+            ],
+            [
+              2026.0833,
+              62
+            ],
+            [
+              2026.1667,
+              60.3
+            ],
+            [
+              2026.25,
+              60.5
+            ],
+            [
+              2026.3333,
+              60
+            ],
+            [
+              2026.4167,
+              61
+            ]
+          ]
+        }
+      ],
+      "x": {
+        "label": "Month",
+        "domain": [
+          2023.5833333333333,
+          2026.4166666666667
+        ],
+        "ticks": [
+          2024,
+          2025,
+          2026
+        ],
+        "format": "year",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Market share (%)",
+        "domain": [
+          0,
+          70
+        ],
+        "ticks": [
+          0,
+          10,
+          20,
+          30,
+          40,
+          50,
+          60,
+          70
+        ],
+        "format": "percent",
+        "scale": "linear"
+      },
+      "annotations": [
+        {
+          "x": 2025.4166666666667,
+          "y": 60,
+          "label": "Jun 2025 expansion"
+        },
+        {
+          "x": 2025.8333333333333,
+          "y": 58,
+          "label": "Nov 2025 expansion"
+        }
+      ]
+    }
+  },
+  "waymo-data": {
+    "kind": "bars",
+    "title": "Millions of real miles, billions simulated",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/0cde022d-37c6-466e-afe5-ee9e088dcd45_3313x2028.png",
+    "note": "Exact displayed figures from supplied image. Native chart uses an explicitly logarithmic axis to preserve the 1M\u2013~10B range without the original artificial scale break. The source gives simulated driving as an approximate average, not a Waymo-specific total.",
+    "data": {
+      "orientation": "horizontal",
+      "stacked": false,
+      "series": [
+        {
+          "name": "Miles before deployment"
+        }
+      ],
+      "rows": [
+        {
+          "label": "Tesla",
+          "values": [
+            70000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "70M"
+        },
+        {
+          "label": "Baidu Apollo",
+          "values": [
+            20000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "20M"
+        },
+        {
+          "label": "WeRide",
+          "values": [
+            15000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "15M"
+        },
+        {
+          "label": "Pony.ai",
+          "values": [
+            13000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "13M"
+        },
+        {
+          "label": "Wayve (UK)",
+          "values": [
+            10000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "10M"
+        },
+        {
+          "label": "Cruise",
+          "values": [
+            4000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "4M"
+        },
+        {
+          "label": "Waymo",
+          "values": [
+            25000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "25M"
+        },
+        {
+          "label": "Waymo \u00b7 new city",
+          "values": [
+            1000000.0
+          ],
+          "group": "Real",
+          "valueLabel": "1M"
+        },
+        {
+          "label": "Simulated driving (average)",
+          "values": [
+            10000000000.0
+          ],
+          "group": "Simulation",
+          "valueLabel": "~10B"
+        }
+      ],
+      "value": {
+        "label": "Miles (log scale)",
+        "domain": [
+          100000.0,
+          10000000000.0
+        ],
+        "ticks": [
+          100000.0,
+          1000000.0,
+          10000000.0,
+          100000000.0,
+          1000000000.0,
+          10000000000.0
+        ],
+        "format": "compact",
+        "scale": "log"
+      }
+    }
+  },
+  "waymo-cities": {
+    "kind": "line",
+    "title": "Waymo\u2019s surge",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/54e3a85d-5dfe-4b2e-9346-c4735b65f21f_1242x1274.jpeg",
+    "note": "Representative points visually digitized from the supplied Consumer Edge chart; values and month positions are approximate, not raw observations. Market denominator is Lyft, Uber, and Waymo. Series retained separately from the later YipitData chart because source, date, and geography differ.",
+    "data": {
+      "series": [
+        {
+          "name": "San Francisco",
+          "points": [
+            [
+              2022.5,
+              0
+            ],
+            [
+              2023.17,
+              0
+            ],
+            [
+              2023.33,
+              0.7
+            ],
+            [
+              2023.42,
+              0.8
+            ],
+            [
+              2023.5,
+              1.2
+            ],
+            [
+              2023.58,
+              1.7
+            ],
+            [
+              2023.67,
+              1.5
+            ],
+            [
+              2023.75,
+              1.4
+            ],
+            [
+              2023.83,
+              1.8
+            ],
+            [
+              2023.92,
+              2.5
+            ],
+            [
+              2024,
+              2.9
+            ],
+            [
+              2024.17,
+              4.5
+            ],
+            [
+              2024.25,
+              5.1
+            ],
+            [
+              2024.33,
+              5.4
+            ],
+            [
+              2024.42,
+              6.5
+            ],
+            [
+              2024.5,
+              7.8
+            ],
+            [
+              2024.58,
+              8.1
+            ],
+            [
+              2024.67,
+              9.2
+            ],
+            [
+              2024.75,
+              8.9
+            ],
+            [
+              2024.83,
+              9.6
+            ],
+            [
+              2024.92,
+              9.4
+            ],
+            [
+              2025,
+              9.2
+            ],
+            [
+              2025.08,
+              6.1
+            ],
+            [
+              2025.17,
+              7.9
+            ],
+            [
+              2025.25,
+              8.2
+            ],
+            [
+              2025.33,
+              9.1
+            ],
+            [
+              2025.42,
+              9.7
+            ],
+            [
+              2025.46,
+              10.2
+            ]
+          ]
+        },
+        {
+          "name": "Phoenix",
+          "points": [
+            [
+              2022.5,
+              0.2
+            ],
+            [
+              2022.67,
+              0.3
+            ],
+            [
+              2022.75,
+              0.9
+            ],
+            [
+              2022.92,
+              1.4
+            ],
+            [
+              2023.08,
+              1.8
+            ],
+            [
+              2023.17,
+              1.7
+            ],
+            [
+              2023.33,
+              2.2
+            ],
+            [
+              2023.42,
+              2.4
+            ],
+            [
+              2023.5,
+              2.8
+            ],
+            [
+              2023.58,
+              3.1
+            ],
+            [
+              2023.67,
+              3.2
+            ],
+            [
+              2023.75,
+              3
+            ],
+            [
+              2023.83,
+              3.3
+            ],
+            [
+              2023.92,
+              3.3
+            ],
+            [
+              2024,
+              3.6
+            ],
+            [
+              2024.08,
+              3.2
+            ],
+            [
+              2024.17,
+              3.9
+            ],
+            [
+              2024.25,
+              4.1
+            ],
+            [
+              2024.33,
+              4.4
+            ],
+            [
+              2024.42,
+              5.2
+            ],
+            [
+              2024.5,
+              6.3
+            ],
+            [
+              2024.58,
+              7.1
+            ],
+            [
+              2024.67,
+              6.8
+            ],
+            [
+              2024.75,
+              6.9
+            ],
+            [
+              2024.83,
+              7.9
+            ],
+            [
+              2024.92,
+              7.4
+            ],
+            [
+              2025,
+              7.9
+            ],
+            [
+              2025.08,
+              6.1
+            ],
+            [
+              2025.17,
+              7.1
+            ],
+            [
+              2025.25,
+              7.3
+            ],
+            [
+              2025.33,
+              6.7
+            ],
+            [
+              2025.38,
+              6.3
+            ],
+            [
+              2025.46,
+              7.5
+            ]
+          ]
+        },
+        {
+          "name": "Los Angeles",
+          "points": [
+            [
+              2022.5,
+              0
+            ],
+            [
+              2023.92,
+              0
+            ],
+            [
+              2024,
+              0.1
+            ],
+            [
+              2024.08,
+              0.2
+            ],
+            [
+              2024.17,
+              0.4
+            ],
+            [
+              2024.25,
+              0.6
+            ],
+            [
+              2024.33,
+              0.9
+            ],
+            [
+              2024.42,
+              1.2
+            ],
+            [
+              2024.5,
+              1.5
+            ],
+            [
+              2024.58,
+              1.4
+            ],
+            [
+              2024.67,
+              1.9
+            ],
+            [
+              2024.75,
+              2.1
+            ],
+            [
+              2024.83,
+              2.4
+            ],
+            [
+              2024.92,
+              2.8
+            ],
+            [
+              2025,
+              3
+            ],
+            [
+              2025.08,
+              2.4
+            ],
+            [
+              2025.17,
+              3.3
+            ],
+            [
+              2025.25,
+              3.4
+            ],
+            [
+              2025.33,
+              4
+            ],
+            [
+              2025.38,
+              4.8
+            ],
+            [
+              2025.46,
+              4.8
+            ]
+          ]
+        }
+      ],
+      "x": {
+        "label": "Year",
+        "domain": [
+          2022.5,
+          2025.46
+        ],
+        "ticks": [
+          2023,
+          2024,
+          2025
+        ],
+        "format": "year",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Waymo share of ride-sharing market (%)",
+        "domain": [
+          0,
+          11
+        ],
+        "ticks": [
+          0,
+          2,
+          4,
+          6,
+          8,
+          10
+        ],
+        "format": "percent",
+        "scale": "linear"
+      }
+    }
+  },
+  "robot-data": {
+    "kind": "pairedDots",
+    "title": "Data for a robot brain",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/74b0f36c-a450-4005-be1d-d10287e77b5b_2308x932.png",
+    "note": "Exact labels transcribed from supplied chart. Waymo figures are lower bounds (plus signs preserved). Human sleep is the source\u2019s analogy for simulated experience. Zero GEN-1.5 pretraining simulation is text-only because zero cannot be positioned on a logarithmic axis.",
+    "data": {
+      "panels": [
+        {
+          "name": "Real hours",
+          "rows": [
+            {
+              "label": "Human",
+              "value": 76000,
+              "valueLabel": "76K",
+              "detail": "Age 13"
+            },
+            {
+              "label": "Waymo",
+              "value": 800000,
+              "valueLabel": "800K+",
+              "detail": "2020 \u00b7 public driverless launch"
+            },
+            {
+              "label": "Generalist GEN-1.5",
+              "value": 650000,
+              "valueLabel": "650K",
+              "detail": "2026"
+            },
+            {
+              "label": "NVIDIA GR00T N1.7",
+              "value": 32000,
+              "valueLabel": "32K",
+              "detail": "2026"
+            }
+          ]
+        },
+        {
+          "name": "Simulated hours",
+          "rows": [
+            {
+              "label": "Human",
+              "value": 38000,
+              "valueLabel": "38K asleep",
+              "detail": "Age 13"
+            },
+            {
+              "label": "Waymo",
+              "value": 600000000,
+              "valueLabel": "600M+",
+              "detail": "2020 \u00b7 public driverless launch"
+            },
+            {
+              "label": "Generalist GEN-1.5",
+              "value": 0,
+              "valueLabel": "0 in pretraining",
+              "detail": "2026"
+            },
+            {
+              "label": "NVIDIA GR00T N1.7",
+              "value": 8000,
+              "valueLabel": "8K",
+              "detail": "2026"
+            }
+          ]
+        }
+      ],
+      "value": {
+        "label": "Hours (log scale)",
+        "domain": [
+          1000,
+          1000000000.0
+        ],
+        "ticks": [
+          1000,
+          1000000.0,
+          1000000000.0
+        ],
+        "format": "compact",
+        "scale": "log"
+      }
+    }
+  },
+  "sim-to-real": {
+    "kind": "scatter",
+    "title": "Real \u2192 Sim \u2192 Real",
+    "source": "https://substack-post-media.s3.amazonaws.com/public/images/773ad4cf-01e3-41dd-90cf-b7f8f1f3d230_4327x2027.png",
+    "note": "Approximate marker centers visually transcribed from the source\u2019s primary real/simulation correlation panel; 16 points, not original raw data. Identity line retained. Source uncertainty ellipses are not converted into invented error bars. Two supporting training-series panels are transcribed approximately. Dense spatial success maps on the source\u2019s right are omitted because their underlying data cannot be recovered reliably from the image.",
+    "data": {
+      "points": [
+        {
+          "x": 0.16,
+          "y": 0.115,
+          "group": "GR00T N1.6 ID"
+        },
+        {
+          "x": 0.76,
+          "y": 0.72,
+          "group": "GR00T N1.6 ID"
+        },
+        {
+          "x": 0.92,
+          "y": 0.82,
+          "group": "GR00T N1.6 ID"
+        },
+        {
+          "x": 0.98,
+          "y": 0.915,
+          "group": "GR00T N1.6 ID"
+        },
+        {
+          "x": 0.08,
+          "y": 0.077,
+          "group": "GR00T N1.6 OOD"
+        },
+        {
+          "x": 0.38,
+          "y": 0.37,
+          "group": "GR00T N1.6 OOD"
+        },
+        {
+          "x": 0.42,
+          "y": 0.395,
+          "group": "GR00T N1.6 OOD"
+        },
+        {
+          "x": 0.42,
+          "y": 0.44,
+          "group": "GR00T N1.6 OOD"
+        },
+        {
+          "x": 0.52,
+          "y": 0.49,
+          "group": "\u03c00.5 ID"
+        },
+        {
+          "x": 0.82,
+          "y": 0.82,
+          "group": "\u03c00.5 ID"
+        },
+        {
+          "x": 1,
+          "y": 0.97,
+          "group": "\u03c00.5 ID"
+        },
+        {
+          "x": 1,
+          "y": 0.99,
+          "group": "\u03c00.5 ID"
+        },
+        {
+          "x": 0.4,
+          "y": 0.38,
+          "group": "\u03c00.5 OOD"
+        },
+        {
+          "x": 0.6,
+          "y": 0.54,
+          "group": "\u03c00.5 OOD"
+        },
+        {
+          "x": 0.76,
+          "y": 0.74,
+          "group": "\u03c00.5 OOD"
+        },
+        {
+          "x": 0.8,
+          "y": 0.7,
+          "group": "\u03c00.5 OOD"
+        }
+      ],
+      "groups": [
+        {
+          "name": "GR00T N1.6 ID",
+          "shape": "circle"
+        },
+        {
+          "name": "GR00T N1.6 OOD",
+          "shape": "square"
+        },
+        {
+          "name": "\u03c00.5 ID",
+          "shape": "circle"
+        },
+        {
+          "name": "\u03c00.5 OOD",
+          "shape": "square"
+        }
+      ],
+      "x": {
+        "label": "Real-world success rate",
+        "domain": [
+          0,
+          1
+        ],
+        "ticks": [
+          0,
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1
+        ],
+        "format": "plain",
+        "scale": "linear"
+      },
+      "y": {
+        "label": "Simulation success rate",
+        "domain": [
+          0,
+          1
+        ],
+        "ticks": [
+          0,
+          0.2,
+          0.4,
+          0.6,
+          0.8,
+          1
+        ],
+        "format": "plain",
+        "scale": "linear"
+      },
+      "identityLine": true,
+      "panels": [
+        {
+          "name": "\u03c00.5",
+          "kind": "line",
+          "series": [
+            {
+              "name": "Simulation",
+              "points": [
+                [
+                  1750,
+                  0.43
+                ],
+                [
+                  4400,
+                  0.68
+                ],
+                [
+                  9000,
+                  0.85
+                ],
+                [
+                  18000,
+                  0.85
+                ]
+              ]
+            },
+            {
+              "name": "Real",
+              "dashed": true,
+              "points": [
+                [
+                  2200,
+                  0.46
+                ],
+                [
+                  5600,
+                  0.71
+                ],
+                [
+                  11200,
+                  0.88
+                ],
+                [
+                  22500,
+                  0.9
+                ]
+              ]
+            }
+          ],
+          "x": {
+            "label": "Post-training iterations",
+            "domain": [
+              1500,
+              25000
+            ],
+            "ticks": [
+              2000,
+              5000,
+              10000,
+              20000
+            ],
+            "format": "compact",
+            "scale": "log"
+          },
+          "y": {
+            "label": "Success rate",
+            "domain": [
+              0,
+              1
+            ],
+            "ticks": [
+              0,
+              0.2,
+              0.4,
+              0.6,
+              0.8,
+              1
+            ],
+            "format": "plain",
+            "scale": "linear"
+          }
+        },
+        {
+          "name": "GR00T N1.6",
+          "kind": "line",
+          "series": [
+            {
+              "name": "Simulation",
+              "points": [
+                [
+                  9000,
+                  0.1
+                ],
+                [
+                  18000,
+                  0.56
+                ],
+                [
+                  27500,
+                  0.65
+                ],
+                [
+                  48000,
+                  0.63
+                ]
+              ]
+            },
+            {
+              "name": "Real",
+              "dashed": true,
+              "points": [
+                [
+                  11000,
+                  0.12
+                ],
+                [
+                  21500,
+                  0.59
+                ],
+                [
+                  33000,
+                  0.68
+                ],
+                [
+                  58000,
+                  0.67
+                ]
+              ]
+            }
+          ],
+          "x": {
+            "label": "Post-training iterations",
+            "domain": [
+              7500,
+              70000
+            ],
+            "ticks": [
+              10000,
+              20000,
+              30000,
+              50000
+            ],
+            "format": "compact",
+            "scale": "log"
+          },
+          "y": {
+            "label": "Success rate",
+            "domain": [
+              0,
+              1
+            ],
+            "ticks": [
+              0,
+              0.2,
+              0.4,
+              0.6,
+              0.8,
+              1
+            ],
+            "format": "plain",
+            "scale": "linear"
+          }
+        }
+      ]
+    }
+  },
+  "context-graphs": {
+    "kind": "network",
+    "title": "Graph, knowledge graph, and context graph",
+    "source": "https://x.com/JayaGup10/status/2003525933534179480",
+    "note": "Conceptual native redraw of the supplied graph \u2192 knowledge graph \u2192 context graph diagram; nodes and links are illustrative, not measured data.",
+    "data": {}
+  }
+}
