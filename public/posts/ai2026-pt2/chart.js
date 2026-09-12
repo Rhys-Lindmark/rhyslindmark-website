@@ -26,6 +26,9 @@
   function draw(scene) {
     const kind = scene.dataset.kind, svg = scene.querySelector('svg');
     if (!svg) return;
+    if (kind === 'native-continuation') {
+      renderers.set(scene,window.drawContinuationChart(scene,data.continuation,()=>reduce.matches));return;
+    }
     if (kind === 'frontier') {
       const box=scene.querySelector('.plot-wrap').getBoundingClientRect();
       const W=Math.max(280,box.width),H=Math.max(300,box.height),cx=W/2,cy=H*.51;
@@ -334,6 +337,7 @@
   try {
     const response=await fetch('/posts/ai2026-pt2/charts.json?v=axes-2');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
+    const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     document.body.classList.toggle('all-mode',reduce.matches);
     for(const scene of scenes){draw(scene);const plot=scene.querySelector('.plot-wrap');if(plot)new ResizeObserver(()=>{draw(scene);request();}).observe(plot);}
     reduce.addEventListener('change',()=>{document.body.classList.toggle('all-mode',reduce.matches);scenes.forEach(draw);request();});

@@ -110,3 +110,8 @@
 .intelligence-frontier svg{width:100%;height:100%;overflow:hidden}
 .all-mode .scene.intelligence-frontier{height:auto}
 .all-mode .scene.intelligence-frontier>.sticky{position:relative;height:80svh;min-height:400px}
+
+.scene[data-kind="native-continuation"] .plot-wrap{width:100%;min-height:260px}
+.scene[data-kind="native-continuation"] .legend{padding-left:70px;gap:8px 18px}
+.scene[data-kind="native-continuation"] .model-name{fill:#e6edf3;paint-order:stroke;stroke:#0b1015;stroke-width:3px;stroke-linejoin:round}
+@media(max-width:600px){.scene[data-kind="native-continuation"] .legend{padding-left:30px;font-size:10px;gap:5px 12px}}
