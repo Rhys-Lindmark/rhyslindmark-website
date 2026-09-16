@@ -283,7 +283,7 @@ header .brand{font:500 18px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .lede-chant-break{margin-top:.9em!important}
 .lede-close{margin-top:1.5em!important}
 .day-count{font-family:var(--mono);font-variant-numeric:tabular-nums;color:#fff;border-bottom:2px solid #ffffff3d;padding-bottom:.04em}
-.lede-cue{color:var(--muted);margin:1.8em 0 .8em!important}
+.lede-cue{margin:1.8em 0 .8em!important}
 .lede-list{list-style:decimal;margin:0;padding:0 0 0 clamp(26px,2.4vw,34px)}
 .lede-list li{padding:0 0 .8em;font-size:clamp(18px,1.5vw,21px);line-height:1.6;letter-spacing:normal}
 .lede-list li::marker{color:#fff}

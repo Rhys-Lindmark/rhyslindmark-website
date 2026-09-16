@@ -9,10 +9,10 @@ const brains=this.getAttribute('focus-floor')==='brains';
 const agents=this.getAttribute('focus-floor')==='agents';
 const continueTo=this.getAttribute('continue-to');
 if(continueTo?.startsWith('#'))root.querySelector('.skip').href=continueTo;
-const img=root.querySelector('img');img.alt='A cutaway building with robots moving a block, coding, doing science, driving autonomously, and making art above a library of AI brains and a data center.';const imageSource=this.getAttribute('image-src')||'/posts/ai2026-pt1/intro/building.webp';img.src=imageSource+(imageSource.includes('?')?'&':'?')+'v=five-niches-2';
+const img=root.querySelector('img');img.alt='A cutaway building with robot arms moving a block, robots coding and doing science, an autonomous car, and generative art above a library of AI brains and a data center.';const imageSource=this.getAttribute('image-src')||'/posts/ai2026-pt1/intro/building.webp';img.src=imageSource+(imageSource.includes('?')?'&':'?')+'v=botless-niches-1';
 // Use a purpose-composed portrait asset on phones, retaining the desktop illustration.
 const picture=document.createElement('picture'),source=document.createElement('source');
-source.media='(max-width: 760px)';source.srcset='/posts/ai2026-pt1/intro/building-mobile.jpg?v=five-niches-2';
+source.media='(max-width: 760px)';source.srcset='/posts/ai2026-pt1/intro/building-mobile.jpg?v=botless-niches-1';
 img.before(picture);picture.append(source,img);
 const mobileStyle=document.createElement('style');mobileStyle.textContent=`
 .camera{width:100%;height:100%;max-width:none;aspect-ratio:auto;overflow:hidden;will-change:width,height,top}
@@ -22,14 +22,15 @@ const mobileStyle=document.createElement('style');mobileStyle.textContent=`
 .factory-arm{fill:none;stroke:#bdeee8;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px #72d8cf);animation:arm-work 5s ease-in-out infinite;transform-box:fill-box}
 .factory-arm.right{animation-delay:-2.5s}.reaction-bubble{fill:#b9fff0;filter:drop-shadow(0 0 3px #67e6d2);animation:reaction-rise 2.1s ease-out infinite;animation-delay:var(--delay)}
 .city-parallax{animation:city-pass 4.8s linear infinite}.road-dash{animation:road-pass 1.15s linear infinite}.dash-glow{fill:#b8fff0;filter:drop-shadow(0 0 4px #63e8d0);animation:dash-pulse 1.8s ease-in-out infinite}
-.art-line{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:70;filter:drop-shadow(0 0 3px currentColor);animation:art-draw 4.5s ease-in-out infinite;animation-delay:var(--delay)}
+.art-line{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:180;filter:drop-shadow(0 0 4px currentColor);animation:art-draw 5.4s ease-in-out infinite;animation-delay:var(--delay)}.art-particle{fill:currentColor;filter:drop-shadow(0 0 5px currentColor);animation:art-spark 3.2s ease-in-out infinite;animation-delay:var(--delay)}
 @keyframes transfer-block{0%,8%{transform:translateX(0)}38%,58%{transform:translateX(136px)}88%,100%{transform:translateX(0)}}
 @keyframes arm-work{0%,12%,48%,62%,100%{transform:rotate(0)}25%,35%{transform:rotate(-12deg)}}
 @keyframes reaction-rise{0%{opacity:0;transform:translateY(5px) scale(.6)}25%{opacity:.9}100%{opacity:0;transform:translateY(-21px) scale(1.2)}}
 @keyframes city-pass{from{transform:translateX(0)}to{transform:translateX(-48px)}}
 @keyframes road-pass{from{transform:translateY(-20px)}to{transform:translateY(28px)}}
 @keyframes dash-pulse{50%{opacity:.35}}
-@keyframes art-draw{0%{stroke-dashoffset:70;opacity:.1}42%,72%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:-70;opacity:.12}}
+@keyframes art-draw{0%{stroke-dashoffset:180;opacity:0}38%,68%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:-180;opacity:0}}
+@keyframes art-spark{0%,100%{opacity:.12;transform:scale(.55)}45%{opacity:1;transform:scale(1.7)}}
 @media(max-width:760px){
  .heading{display:none}.controls{position:absolute;bottom:8px;left:0;right:0;padding:6px;background:transparent;z-index:2}.skip{font-size:24px;text-shadow:0 2px 8px #000}
  .pin{min-height:0;height:calc(100svh - var(--intro-top))}.viewport{width:100%;height:100%;flex:1}.camera{width:100%;height:100%;aspect-ratio:auto}.camera img{object-fit:cover}.camera>svg{display:none}
@@ -44,10 +45,11 @@ root.querySelectorAll('.paint-brush,.paint-stroke,.water-stream,.splash,.music-n
 const heroSvg=root.querySelector('.camera>svg');
 heroSvg.insertAdjacentHTML('beforeend',`<defs>
  <clipPath id="car-windshield"><path d="M923 199H1143V276H923Z"/></clipPath>
- <clipPath id="art-canvas"><path d="M1271 210L1348 216L1344 310L1268 302Z"/></clipPath>
+ <clipPath id="art-canvas"><path d="M1212 190H1377V335H1212Z"/></clipPath>
 </defs>
 <g aria-hidden="true">
  <g class="factory-motion">
+  <rect x="251" y="291" width="29" height="28" rx="3" fill="#0c202c" opacity=".97"/>
   <path class="factory-arm" d="M207 279L225 293L239 301"/><circle cx="207" cy="279" r="3.2" fill="#bdeee8"/>
   <path class="factory-arm right" d="M306 278L291 293L278 302"/><circle cx="306" cy="278" r="3.2" fill="#bdeee8"/>
   <g class="workpiece"><rect x="179" y="295" width="16" height="16" rx="2" fill="#aaf8ee" opacity=".82"/><path d="M181 298h12v10h-12z" fill="#4fa9bd" opacity=".58"/></g>
@@ -62,10 +64,12 @@ heroSvg.insertAdjacentHTML('beforeend',`<defs>
   <g class="road-dash" stroke="#b7fff1" stroke-width="2"><path d="M1025 237l-4 14m20-14 4 14M1017 261l-6 20m42-20 6 20"/></g>
  </g>
  <rect class="dash-glow" x="1024" y="283" width="39" height="2.5" rx="1.2"/>
- <g clip-path="url(#art-canvas)" stroke-width="4">
-  <path class="art-line" style="--delay:0s;color:#73e8ff" stroke="currentColor" d="M1277 275q15-31 30-5t31-29"/>
-  <path class="art-line" style="--delay:-1.5s;color:#ffe38a" stroke="currentColor" d="M1281 289q18-16 29 2t29-10"/>
-  <path class="art-line" style="--delay:-3s;color:#aaffd7" stroke="currentColor" d="M1285 244q12 19 25 0t27 7"/>
+ <g clip-path="url(#art-canvas)" stroke-width="3.4">
+  <path class="art-line" style="--delay:0s;color:#73e8ff" stroke="currentColor" d="M1219 286q28-88 62-17t87-57"/>
+  <path class="art-line" style="--delay:-1.35s;color:#ffe38a" stroke="currentColor" d="M1217 307q38-51 67 0t83-45"/>
+  <path class="art-line" style="--delay:-2.7s;color:#aaffd7" stroke="currentColor" d="M1224 224q31 61 64 4t78 18"/>
+  <path class="art-line" style="--delay:-4.05s;color:#c18cff" stroke="currentColor" d="M1220 262q34-27 66 17t82-67"/>
+  <g style="color:#fff4a7"><circle class="art-particle" style="--delay:0s" cx="1244" cy="244" r="2.3"/><circle class="art-particle" style="--delay:-1s" cx="1307" cy="205" r="2"/><circle class="art-particle" style="--delay:-2s" cx="1352" cy="279" r="2.6"/></g>
  </g>
 </g>`);
 const camera=root.querySelector('.camera'),section=root.querySelector('.section');
