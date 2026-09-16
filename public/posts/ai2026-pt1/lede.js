@@ -57,7 +57,9 @@ io.observe(el);
 /* Jensen, briefly, at half opacity as his line goes by. */
 const jensen=document.querySelector('[data-jensen]'),jensenLine=document.querySelector('[data-jensen-line]');
 if(jensen&&jensenLine&&!reduce.matches){
- jensen.addEventListener('error',()=>jensen.remove());
+ // Take the file under whatever extension it was saved with; give up quietly if absent.
+ const tries=['jensen.jpg','jensen.jpeg','jensen.png','jensen.webp'];let at=0;
+ jensen.addEventListener('error',()=>{at++;at<tries.length?jensen.src='/posts/ai2026-pt1/'+tries[at]:jensen.remove();});
  let hide=0,cooling=false;
  const flash=()=>{
   if(cooling)return;
