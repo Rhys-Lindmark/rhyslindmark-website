@@ -23,7 +23,9 @@ function label(parent,x,y,value,attrs={}){
 function clamp(value,min=0,max=1){return Math.max(min,Math.min(max,value));}
 function ease(value){const t=clamp(value);return t*t*(3-2*t);}
 function initialWeight(index){return .08+(((index*37+17)%89)/100);}
-function trainedWeight(base,index,round){return clamp(base+Math.sin((index+1)*1.73+round*.91)*.13,.04,1);}
+function trainedWeight(base,index,round){
+ return clamp(base+Math.sin((index+1)*1.73+round*1.37)*.24+Math.cos((index+3)*.71+round*.83)*.09,.04,1);
+}
 function lineWidth(weight){return .35+weight*5.65;}
 
 function addToken(parent,x,y,value,color=COLORS.forward){
@@ -36,11 +38,11 @@ function addToken(parent,x,y,value,color=COLORS.forward){
 function create(host,index){
  const mode=host.dataset.networkDemo;
  if(!['training','inference','decode'].includes(mode))return;
- const titles={training:'Training through a weighted neural network',inference:'Prefill and decode through a weighted neural network',decode:'Token-by-token decoding through a weighted neural network'};
+ const titles={training:'Training through a weighted neural network',inference:'Inference through a weighted neural network',decode:'Decode through a weighted neural network'};
  const descriptions={
   training:'Activations flow forward through weighted connections, gradients flow backward, and connection thickness changes as weights update between zero and one.',
-  inference:'Prompt tokens prefill the fixed-weight network together, then decode sends another forward pass through it to generate the next token.',
-  decode:'Each forward pass through fixed weighted connections produces one token, which becomes context for the next pass.'
+  inference:'A forward pass through fixed weighted connections generates the next token.',
+  decode:'A forward pass through fixed weighted connections generates the next token.'
  };
  const svg=el('svg',{viewBox:'0 0 700 250',role:'img','aria-labelledby':`network-title-${index} network-desc-${index}`,preserveAspectRatio:'xMidYMid meet'},host);
  el('title',{id:`network-title-${index}`},svg,titles[mode]);
@@ -55,27 +57,25 @@ function create(host,index){
  const drawing=el('g',{'aria-hidden':'true'},svg);
  const counts=[3,5,4,3],xs=[54,250,450,646];
  const layers=counts.map((count,layer)=>Array.from({length:count},(_,node)=>({x:xs[layer],y:24+node*(144/(count-1)),layer,node})));
+ const oldWeightLayer=el('g',{},drawing),edgeLayer=el('g',{},drawing);
  const edges=[];
  for(let layer=0;layer<layers.length-1;layer++)for(const from of layers[layer])for(const to of layers[layer+1]){
   const edgeIndex=edges.length,weight=initialWeight(edgeIndex);
-  const line=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.edge,'stroke-width':lineWidth(weight),'stroke-linecap':'round',opacity:.14+weight*.62},drawing);
-  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line});
+  const oldLine=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.muted,'stroke-width':lineWidth(weight),'stroke-linecap':'round','stroke-dasharray':'2 3',visibility:'hidden'},oldWeightLayer);
+  const line=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.edge,'stroke-width':lineWidth(weight),'stroke-linecap':'round',opacity:.14+weight*.62},edgeLayer);
+  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line,oldLine});
  }
  const nodes=layers.map(layer=>layer.map(point=>el('circle',{cx:point.x,cy:point.y,r:9,fill:COLORS.bg,stroke:COLORS.muted,'stroke-width':1.5},drawing)));
- const pulseCount=mode==='training'?1:3;
- const pulses=edges.map(edge=>Array.from({length:pulseCount},()=>el('circle',{r:2.3+edge.weight*2.2,fill:COLORS.forward,visibility:'hidden',filter:`url(#network-glow-${index})`},drawing)));
-
- const feedback=el('path',{d:'M 650 96 H 682 V 190 H 54 V 176',fill:'none',stroke:COLORS.backward,'stroke-width':1.7,'stroke-dasharray':'6 5','stroke-linecap':'round',visibility:mode==='decode'?'visible':'hidden',opacity:.34},drawing);
- if(mode==='decode')el('path',{d:'M 49 182 L 54 175 L 59 182',fill:'none',stroke:COLORS.backward,'stroke-width':1.7},drawing);
+ const pulses=edges.map(edge=>[el('circle',{
+  r:2.3+edge.weight*2.2,fill:COLORS.forward,visibility:'hidden',
+  ...(mode==='training'?{filter:`url(#network-glow-${index})`}:{})
+ },drawing)]);
 
  const footer=label(drawing,350,238,'',{'text-anchor':'middle','font-size':14});
  const tokens=[];
- if(mode==='inference'){
-  ['The','sky','is'].forEach((token,i)=>tokens.push(addToken(drawing,247+i*55,190,token)));
-  tokens.push(addToken(drawing,432,190,'blue',COLORS.backward));
- }else if(mode==='decode'){
-  label(drawing,142,209,'KV cache',{'text-anchor':'end','font-size':12,fill:COLORS.muted});
-  ['The','sky','is','blue','.'].forEach((token,i)=>tokens.push(addToken(drawing,154+i*55,190,token,i<3?COLORS.forward:COLORS.backward)));
+ if(mode==='inference'||mode==='decode'){
+  ['The','sky','is'].forEach((token,i)=>tokens.push(addToken(drawing,219+i*55,202,token)));
+  tokens.push(addToken(drawing,384,202,'blue',COLORS.backward));
  }
 
  const demo={host,mode,elapsed:0,visible:false,render};
@@ -102,7 +102,7 @@ function create(host,index){
  }
 
  function render(staticFrame=false){
-  const cycle=mode==='training'?6:mode==='inference'?5.4:6.8;
+  const cycle=mode==='training'?6:3;
   const cycleTime=demo.elapsed%cycle,round=Math.floor(demo.elapsed/cycle);
   let phase='forward',progress=cycleTime/2,tokenCount=0;
 
@@ -111,26 +111,11 @@ function create(host,index){
    else if(cycleTime<4){phase='backward';progress=(cycleTime-2)/2;}
    else{phase='update';progress=(cycleTime-4)/2;}
    if(staticFrame){phase='update';progress=1;}
-   footer.textContent=phase==='forward'?'forward pass':phase==='backward'?'backpropagation':'weights update';
-  }else if(mode==='inference'){
-   if(cycleTime<2.55){phase='prefill';progress=cycleTime/2.2;tokenCount=3;}
-   else{phase='decode';progress=(cycleTime-2.55)/2.2;tokenCount=progress>.88?4:3;}
-   if(staticFrame){phase='decode';progress=1;tokenCount=4;}
-   footer.textContent=phase==='prefill'?'prefill · process the prompt together':'decode · generate the next token';
+   footer.textContent=phase==='forward'?'forward pass':phase==='backward'?'backpropagation':'weights update · thicker ↑  thinner ↓';
   }else{
-   if(cycleTime<2.6){
-    phase='prefill';progress=cycleTime/2.2;
-    tokenCount=Math.min(3,Math.floor(clamp(progress)*4));
-    feedback.setAttribute('opacity',.12);
-   }else{
-    phase='decode';
-    const decodeTime=cycleTime-2.6,pass=Math.min(1,Math.floor(decodeTime/2.1));
-    progress=(decodeTime%2.1)/1.65;
-    tokenCount=3+pass+(progress>.82?1:0);
-    feedback.setAttribute('opacity',progress>.82?1:.34);
-   }
-   if(staticFrame){phase='decode';tokenCount=5;progress=1;feedback.setAttribute('opacity',1);}
-   footer.textContent=phase==='prefill'?'prefill · fill the KV cache':'decode · read cache → one token';
+   phase='forward';progress=cycleTime/2.25;tokenCount=progress>.86?4:3;
+   if(staticFrame){progress=1;tokenCount=4;}
+   footer.textContent='';
   }
 
   const backwards=phase==='backward',signalColor=backwards?COLORS.backward:COLORS.forward;
@@ -141,18 +126,18 @@ function create(host,index){
   edges.forEach((edge,edgeIndex)=>{
    const before=round===0?edge.baseWeight:trainedWeight(edge.baseWeight,edgeIndex,round-1);
    const after=trainedWeight(edge.baseWeight,edgeIndex,round);
+   const delta=after-before,updating=mode==='training'&&phase==='update';
    edge.weight=mode==='training'?(phase==='update'?before+(after-before)*ease(progress):before):edge.baseWeight;
+   edge.oldLine.setAttribute('visibility',updating?'visible':'hidden');
+   if(updating){
+    edge.oldLine.setAttribute('stroke-width',lineWidth(before));
+    edge.oldLine.setAttribute('opacity',.16+Math.abs(delta)*.7);
+   }
    edge.line.setAttribute('stroke-width',lineWidth(edge.weight));
-   edge.line.setAttribute('opacity',.14+edge.weight*.7);
-   edge.line.setAttribute('stroke',phase==='update'?COLORS.forward:COLORS.edge);
+   edge.line.setAttribute('opacity',updating?.38+Math.abs(delta)*1.5:.14+edge.weight*.7);
+   edge.line.setAttribute('stroke',updating?(delta>=0?COLORS.forward:COLORS.backward):COLORS.edge);
 
-   if(phase==='prefill'){
-    pulses[edgeIndex].forEach((pulse,pulseIndex)=>{
-     const staggered=progress-pulseIndex*.09;
-     const local=clamp(staggered)*3-edge.layer;
-     if(local>=0&&local<=1&&staggered<=1)placePulse(edge,pulse,local,COLORS.forward);
-    });
-   }else if(phase!=='update'){
+   if(phase!=='update'){
     const local=backwards?(1-clamp(progress))*3-edge.layer:clamp(progress)*3-edge.layer;
     if(local>=0&&local<=1&&progress<=1)placePulse(edge,pulses[edgeIndex][0],local,signalColor);
    }
