@@ -24,9 +24,10 @@ function clamp(value,min=0,max=1){return Math.max(min,Math.min(max,value));}
 function ease(value){const t=clamp(value);return t*t*(3-2*t);}
 function initialWeight(index){return .08+(((index*37+17)%89)/100);}
 function trainedWeight(base,index,round){
- return clamp(base+Math.sin((index+1)*1.73+round*1.37)*.24+Math.cos((index+3)*.71+round*.83)*.09,.04,1);
+ const raw=((index*43+round*61+17)%101)/100;
+ return raw<.5?.03+raw*.18:.7+(raw-.5)*.6;
 }
-function lineWidth(weight){return .35+weight*5.65;}
+function lineWidth(weight){return .25+weight*9.75;}
 
 function addToken(parent,x,y,value,color=COLORS.forward){
  const group=el('g',{visibility:'hidden'},parent);
@@ -57,18 +58,16 @@ function create(host,index){
  const drawing=el('g',{'aria-hidden':'true'},svg);
  const counts=[3,5,4,3],xs=[54,250,450,646];
  const layers=counts.map((count,layer)=>Array.from({length:count},(_,node)=>({x:xs[layer],y:24+node*(144/(count-1)),layer,node})));
- const edgeLayer=el('g',{},drawing);
+ const edgeLayer=el('g',{},drawing),signalLayer=mode==='training'?el('g',{},drawing):null;
  const edges=[];
  for(let layer=0;layer<layers.length-1;layer++)for(const from of layers[layer])for(const to of layers[layer+1]){
   const edgeIndex=edges.length,weight=initialWeight(edgeIndex);
   const line=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.edge,'stroke-width':lineWidth(weight),'stroke-linecap':'round',opacity:.14+weight*.62},edgeLayer);
-  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line});
+  const signalLine=signalLayer?el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.forward,'stroke-width':2,'stroke-linecap':'round','stroke-dasharray':'9 10',visibility:'hidden'},signalLayer):null;
+  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line,signalLine});
  }
  const nodes=layers.map(layer=>layer.map(point=>el('circle',{cx:point.x,cy:point.y,r:9,fill:COLORS.bg,stroke:COLORS.muted,'stroke-width':1.5},drawing)));
- const pulses=edges.map(edge=>[el('circle',{
-  r:2.3+edge.weight*2.2,fill:COLORS.forward,visibility:'hidden',
-  ...(mode==='training'?{filter:`url(#network-glow-${index})`}:{})
- },drawing)]);
+ const pulses=mode==='training'?[]:edges.map(edge=>[el('circle',{r:2.3+edge.weight*2.2,fill:COLORS.forward,visibility:'hidden'},drawing)]);
 
  const footer=label(drawing,350,238,'',{'text-anchor':'middle','font-size':14});
  const tokens=[];
@@ -117,9 +116,9 @@ function create(host,index){
    footer.textContent='';
   }
 
-  const backwards=phase==='backward',signalColor=backwards?COLORS.backward:COLORS.forward;
-  const layerPosition=backwards?(1-clamp(progress))*3:clamp(progress)*3;
-  setNodes(phase==='update'?-1:Math.round(layerPosition),signalColor,1-Math.abs(Math.round(layerPosition)-layerPosition));
+  const backwards=phase==='backward',signalColor=backwards?COLORS.backward:COLORS.forward,smoothProgress=ease(progress);
+  const layerPosition=backwards?(1-smoothProgress)*3:smoothProgress*3;
+  setNodes(mode==='training'||phase==='update'?-1:Math.round(layerPosition),signalColor,1-Math.abs(Math.round(layerPosition)-layerPosition));
   hidePulses();
 
   edges.forEach((edge,edgeIndex)=>{
@@ -129,9 +128,17 @@ function create(host,index){
    edge.line.setAttribute('stroke-width',lineWidth(edge.weight));
    edge.line.setAttribute('opacity',.14+edge.weight*.7);
    edge.line.setAttribute('stroke',COLORS.edge);
+   if(edge.signalLine){
+    const strength=clamp(1-Math.abs(layerPosition-(edge.layer+.5))/.85),show=phase!=='update'&&strength>.02;
+    edge.signalLine.setAttribute('visibility',show?'visible':'hidden');
+    edge.signalLine.setAttribute('stroke',signalColor);
+    edge.signalLine.setAttribute('stroke-width',Math.max(1.8,lineWidth(edge.weight)*.55+1.4));
+    edge.signalLine.setAttribute('stroke-dashoffset',(backwards?1:-1)*smoothProgress*42);
+    edge.signalLine.setAttribute('opacity',.18+strength*.82);
+   }
 
-   if(phase!=='update'){
-    const local=backwards?(1-clamp(progress))*3-edge.layer:clamp(progress)*3-edge.layer;
+   if(mode!=='training'&&phase!=='update'){
+    const local=backwards?(1-smoothProgress)*3-edge.layer:smoothProgress*3-edge.layer;
     if(local>=0&&local<=1&&progress<=1)placePulse(edge,pulses[edgeIndex][0],local,signalColor);
    }
   });
