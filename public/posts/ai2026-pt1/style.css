@@ -283,6 +283,9 @@ header .brand{font:500 18px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .lede-chant{margin-bottom:.45em!important}
 .lede-close{margin-top:1.5em!important}
 .lede-rule{border:0;border-top:1px solid var(--line);margin:2em 0 0}
+.lede-one{min-height:185svh;padding-bottom:0}
+.lede-two{padding-top:clamp(40px,8svh,90px)}
+@media(max-width:760px){.lede-one{min-height:165svh}}
 .day-count{font-family:var(--mono);font-variant-numeric:tabular-nums;color:#fff;border-bottom:2px solid #ffffff3d;padding-bottom:.04em}
 .lede-cue{margin:1.8em 0 .8em!important}
 .lede-list{list-style:decimal;margin:0;padding:0 0 0 clamp(26px,2.4vw,34px)}
@@ -301,8 +304,7 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 @media(max-width:700px){body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2{font-size:18px}}
 
 /* Jensen flashes over the page as the reader passes his line in the lede. */
-.lede-jensen{position:fixed;inset:0;margin:auto;width:auto;height:auto;max-width:min(52vw,430px);max-height:72svh;opacity:0;transition:opacity .5s ease;pointer-events:none;z-index:8}
-.lede-jensen.is-on{opacity:.5}
+.lede-jensen{position:fixed;inset:0;margin:auto;width:auto;height:auto;max-width:min(52vw,430px);max-height:72svh;opacity:0;pointer-events:none;z-index:8;will-change:opacity}
 @media(prefers-reduced-motion:reduce){.lede-jensen{display:none}}
 
 /* Codex: electricity overlay on the city scene. */
@@ -317,7 +319,7 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 .meme-live{position:relative;margin:auto;aspect-ratio:660/432;width:min(92vw,1100px,calc(min(62svh,560px) * 660 / 432));container-type:inline-size;line-height:0}
 .meme-live.no-base{aspect-ratio:972/594;width:min(92vw,1100px,calc(min(62svh,560px) * 972 / 594))}
 .meme-live img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:1px solid var(--line)}
-.meme-legacy{display:none}
+.meme-live .meme-legacy{display:none}
 .meme-live.no-base .meme-legacy{display:block}
 .meme-live.no-base .meme-base,.meme-live.no-base .meme-cap{display:none}
 .meme-cap{position:absolute;left:0;right:0;margin:0;padding:0 3cqw;text-align:center;line-height:1.02;

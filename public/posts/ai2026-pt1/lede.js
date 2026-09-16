@@ -54,21 +54,23 @@ const io=new IntersectionObserver(entries=>{
 },{threshold:1,rootMargin:'0px 0px -25% 0px'});
 io.observe(el);
 
-/* Jensen, briefly, at half opacity as his line goes by. */
-const jensen=document.querySelector('[data-jensen]'),jensenLine=document.querySelector('[data-jensen-line]');
-if(jensen&&jensenLine&&!reduce.matches){
+/* Jensen fades up across slide one, reaching half opacity as it ends. */
+const jensen=document.querySelector('[data-jensen]'),slideOne=document.querySelector('.lede-one');
+if(jensen&&slideOne&&!reduce.matches){
  // Take the file under whatever extension it was saved with; give up quietly if absent.
  const tries=['jensen.jpg','jensen.jpeg','jensen.png','jensen.webp'];let at=0;
  jensen.addEventListener('error',()=>{at++;at<tries.length?jensen.src='/posts/ai2026-pt1/'+tries[at]:jensen.remove();});
- let hide=0,cooling=false;
- const flash=()=>{
-  if(cooling)return;
-  cooling=true;
-  jensen.classList.add('is-on');
-  clearTimeout(hide);
-  hide=setTimeout(()=>{jensen.classList.remove('is-on');cooling=false;},1100);
+ let jraf=0;
+ const paintJensen=()=>{
+  jraf=0;
+  const r=slideOne.getBoundingClientRect(),travel=Math.max(1,r.height-innerHeight);
+  const through=Math.min(1,Math.max(0,-r.top/travel));
+  // Nothing for the first stretch, then up to half opacity by the end of the slide.
+  jensen.style.opacity=String(.5*Math.min(1,Math.max(0,(through-.4)/.6)));
  };
- new IntersectionObserver(entries=>{if(entries[0].isIntersecting)flash();},
-  {rootMargin:'-45% 0px -45% 0px'}).observe(jensenLine);
+ const queueJensen=()=>{if(!jraf)jraf=requestAnimationFrame(paintJensen);};
+ addEventListener('scroll',queueJensen,{passive:true});
+ addEventListener('resize',queueJensen,{passive:true});
+ paintJensen();
 }
 })();
