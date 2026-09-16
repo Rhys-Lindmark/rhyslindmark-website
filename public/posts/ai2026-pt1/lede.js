@@ -65,8 +65,11 @@ if(jensen&&slideOne&&!reduce.matches){
   jraf=0;
   const r=slideOne.getBoundingClientRect(),travel=Math.max(1,r.height-innerHeight);
   const through=Math.min(1,Math.max(0,-r.top/travel));
-  // Nothing for the first stretch, then up to half opacity by the end of the slide.
-  jensen.style.opacity=String(.5*Math.min(1,Math.max(0,(through-.4)/.6)));
+  // An apparition: nothing at first, up to half opacity near the end of the slide,
+  // then gone again before the next one arrives.
+  const k=Math.min(1,Math.max(0,(through-.42)/.58));
+  const env=k<.62?k/.62:1-(k-.62)/.38;
+  jensen.style.opacity=String(.5*Math.max(0,env));
  };
  const queueJensen=()=>{if(!jraf)jraf=requestAnimationFrame(paintJensen);};
  addEventListener('scroll',queueJensen,{passive:true});
