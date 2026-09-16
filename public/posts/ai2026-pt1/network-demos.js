@@ -66,8 +66,11 @@ function create(host,index){
   edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line,oldLine});
  }
  const nodes=layers.map(layer=>layer.map(point=>el('circle',{cx:point.x,cy:point.y,r:9,fill:COLORS.bg,stroke:COLORS.muted,'stroke-width':1.5},drawing)));
- const pulseCount=mode==='training'?1:3;
- const pulses=edges.map(edge=>Array.from({length:pulseCount},()=>el('circle',{r:2.3+edge.weight*2.2,fill:COLORS.forward,visibility:'hidden',filter:`url(#network-glow-${index})`},drawing)));
+ const pulseCount=mode==='decode'?3:1;
+ const pulses=edges.map(edge=>Array.from({length:pulseCount},()=>el('circle',{
+  r:2.3+edge.weight*2.2,fill:COLORS.forward,visibility:'hidden',
+  ...(mode==='inference'?{}:{filter:`url(#network-glow-${index})`})
+ },drawing)));
 
  const feedback=el('path',{d:'M 650 96 H 682 V 190 H 54 V 176',fill:'none',stroke:COLORS.backward,'stroke-width':1.7,'stroke-dasharray':'6 5','stroke-linecap':'round',visibility:mode==='decode'?'visible':'hidden',opacity:.34},drawing);
  if(mode==='decode')el('path',{d:'M 49 182 L 54 175 L 59 182',fill:'none',stroke:COLORS.backward,'stroke-width':1.7},drawing);
@@ -75,8 +78,8 @@ function create(host,index){
  const footer=label(drawing,350,238,'',{'text-anchor':'middle','font-size':14});
  const tokens=[];
  if(mode==='inference'){
-  ['The','sky','is'].forEach((token,i)=>tokens.push(addToken(drawing,247+i*55,190,token)));
-  tokens.push(addToken(drawing,432,190,'blue',COLORS.backward));
+  ['The','sky','is'].forEach((token,i)=>tokens.push(addToken(drawing,219+i*55,202,token)));
+  tokens.push(addToken(drawing,384,202,'blue',COLORS.backward));
  }else if(mode==='decode'){
   label(drawing,142,209,'KV cache',{'text-anchor':'end','font-size':12,fill:COLORS.muted});
   ['The','sky','is','blue','.'].forEach((token,i)=>tokens.push(addToken(drawing,154+i*55,190,token,i<3?COLORS.forward:COLORS.backward)));
@@ -106,7 +109,7 @@ function create(host,index){
  }
 
  function render(staticFrame=false){
-  const cycle=mode==='training'?6:mode==='inference'?5.4:6.8;
+  const cycle=mode==='training'?6:mode==='inference'?3:6.8;
   const cycleTime=demo.elapsed%cycle,round=Math.floor(demo.elapsed/cycle);
   let phase='forward',progress=cycleTime/2,tokenCount=0;
 
@@ -117,10 +120,9 @@ function create(host,index){
    if(staticFrame){phase='update';progress=1;}
    footer.textContent=phase==='forward'?'forward pass':phase==='backward'?'backpropagation':'weights update · thicker ↑  thinner ↓';
   }else if(mode==='inference'){
-   if(cycleTime<2.55){phase='prefill';progress=cycleTime/2.2;tokenCount=3;}
-   else{phase='decode';progress=(cycleTime-2.55)/2.2;tokenCount=progress>.88?4:3;}
-   if(staticFrame){phase='decode';progress=1;tokenCount=4;}
-   footer.textContent=phase==='prefill'?'prefill · process the prompt together':'decode · generate the next token';
+   phase='forward';progress=cycleTime/2.25;tokenCount=progress>.86?4:3;
+   if(staticFrame){progress=1;tokenCount=4;}
+   footer.textContent='';
   }else{
    if(cycleTime<2.6){
     phase='prefill';progress=cycleTime/2.2;
