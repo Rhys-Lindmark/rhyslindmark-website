@@ -335,3 +335,8 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 .scene.chapter .passage h2::after{content:"";display:block;height:3px;border-radius:2px;
  margin:.34em auto 0;background:#ffffff5c}
 @media(max-width:760px){.scene.chapter .passage h2::after{height:2px;margin-top:.3em}}
+
+/* Reading slides were pinned to a full viewport, so a short passage left most of
+   the screen empty below it. Let them hug their content instead. */
+.scene.fulltext.reading{min-height:auto}
+.scene.fulltext.reading .sticky{min-height:auto}
