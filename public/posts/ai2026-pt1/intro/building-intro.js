@@ -100,7 +100,12 @@ const update=()=>{if(!raf)raf=requestAnimationFrame(paint);};
 window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});
 const observer=new IntersectionObserver(entries=>{this.toggleAttribute('data-offscreen',!entries[0].isIntersecting);},{threshold:0});observer.observe(this);
 const resize=new ResizeObserver(update);resize.observe(this);img.addEventListener('load',update);update();
-this.cleanup=()=>{removeEventListener('scroll',update);removeEventListener('resize',update);observer.disconnect();resize.disconnect();cancelAnimationFrame(raf);};
+let entranceRaf=0;
+const navigation=performance.getEntriesByType('navigation')[0];
+if(this.hasAttribute('auto-scroll')&&!location.hash&&!new URLSearchParams(location.search).has('slide')&&navigation?.type!=='back_forward'&&scrollY<2){
+  entranceRaf=requestAnimationFrame(()=>{entranceRaf=requestAnimationFrame(()=>{if(scrollY<2)scrollTo(0,Math.round(this.getBoundingClientRect().top+scrollY));});});
+}
+this.cleanup=()=>{removeEventListener('scroll',update);removeEventListener('resize',update);observer.disconnect();resize.disconnect();cancelAnimationFrame(raf);cancelAnimationFrame(entranceRaf);};
 }
 disconnectedCallback(){this.cleanup?.();}
 }
