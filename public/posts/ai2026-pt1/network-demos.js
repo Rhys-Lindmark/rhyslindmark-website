@@ -24,9 +24,10 @@ function clamp(value,min=0,max=1){return Math.max(min,Math.min(max,value));}
 function ease(value){const t=clamp(value);return t*t*(3-2*t);}
 function initialWeight(index){return .08+(((index*37+17)%89)/100);}
 function trainedWeight(base,index,round){
- return clamp(base+Math.sin((index+1)*1.73+round*1.37)*.24+Math.cos((index+3)*.71+round*.83)*.09,.04,1);
+ const raw=((index*43+round*61+17)%101)/100;
+ return raw<.5?.03+raw*.18:.7+(raw-.5)*.6;
 }
-function lineWidth(weight){return .35+weight*5.65;}
+function lineWidth(weight){return .25+weight*9.75;}
 
 function addToken(parent,x,y,value,color=COLORS.forward){
  const group=el('g',{visibility:'hidden'},parent);
@@ -64,11 +65,9 @@ function create(host,index){
   const line=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.edge,'stroke-width':lineWidth(weight),'stroke-linecap':'round',opacity:.14+weight*.62},edgeLayer);
   edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line});
  }
+ const trainingSweep=mode==='training'?el('line',{x1:54,x2:54,y1:12,y2:180,stroke:COLORS.forward,'stroke-width':4,opacity:.95,visibility:'hidden',filter:`url(#network-glow-${index})`},drawing):null;
  const nodes=layers.map(layer=>layer.map(point=>el('circle',{cx:point.x,cy:point.y,r:9,fill:COLORS.bg,stroke:COLORS.muted,'stroke-width':1.5},drawing)));
- const pulses=edges.map(edge=>[el('circle',{
-  r:2.3+edge.weight*2.2,fill:COLORS.forward,visibility:'hidden',
-  ...(mode==='training'?{filter:`url(#network-glow-${index})`}:{})
- },drawing)]);
+ const pulses=mode==='training'?[]:edges.map(edge=>[el('circle',{r:2.3+edge.weight*2.2,fill:COLORS.forward,visibility:'hidden'},drawing)]);
 
  const footer=label(drawing,350,238,'',{'text-anchor':'middle','font-size':14});
  const tokens=[];
@@ -117,9 +116,15 @@ function create(host,index){
    footer.textContent='';
   }
 
-  const backwards=phase==='backward',signalColor=backwards?COLORS.backward:COLORS.forward;
-  const layerPosition=backwards?(1-clamp(progress))*3:clamp(progress)*3;
-  setNodes(phase==='update'?-1:Math.round(layerPosition),signalColor,1-Math.abs(Math.round(layerPosition)-layerPosition));
+  const backwards=phase==='backward',signalColor=backwards?COLORS.backward:COLORS.forward,smoothProgress=ease(progress);
+  const layerPosition=backwards?(1-smoothProgress)*3:smoothProgress*3;
+  setNodes(mode==='training'||phase==='update'?-1:Math.round(layerPosition),signalColor,1-Math.abs(Math.round(layerPosition)-layerPosition));
+  if(trainingSweep){
+   const show=phase!=='update',x=backwards?646-592*smoothProgress:54+592*smoothProgress;
+   trainingSweep.setAttribute('visibility',show?'visible':'hidden');
+   trainingSweep.setAttribute('x1',x);trainingSweep.setAttribute('x2',x);
+   trainingSweep.setAttribute('stroke',signalColor);
+  }
   hidePulses();
 
   edges.forEach((edge,edgeIndex)=>{
@@ -130,8 +135,8 @@ function create(host,index){
    edge.line.setAttribute('opacity',.14+edge.weight*.7);
    edge.line.setAttribute('stroke',COLORS.edge);
 
-   if(phase!=='update'){
-    const local=backwards?(1-clamp(progress))*3-edge.layer:clamp(progress)*3-edge.layer;
+   if(mode!=='training'&&phase!=='update'){
+    const local=backwards?(1-smoothProgress)*3-edge.layer:smoothProgress*3-edge.layer;
     if(local>=0&&local<=1&&progress<=1)placePulse(edge,pulses[edgeIndex][0],local,signalColor);
    }
   });
