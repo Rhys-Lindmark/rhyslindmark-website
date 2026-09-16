@@ -134,6 +134,7 @@ html,body,#article,.scene{background-color:var(--bg)}
 .benchmark-scroll{height:230svh;position:relative;margin:40px 0 64px}
 .scene.fulltext.reading .benchmark-figure{position:sticky;top:90px;display:block;width:100%;height:min(70svh,600px);margin:0;padding:0}
 .benchmark-figure svg{display:block;width:100%;height:calc(100% - 36px);overflow:visible;font-family:monospace;font-size:12px}
+.china-gap .gap-value{fill:#fff}
 .benchmark-figure figcaption{font-size:13px;padding:12px 0 0 64px}
 .all-mode .benchmark-scroll{height:auto}
 .all-mode .scene.fulltext.reading .benchmark-figure{position:relative;top:0}
