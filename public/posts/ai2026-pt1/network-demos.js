@@ -23,7 +23,9 @@ function label(parent,x,y,value,attrs={}){
 function clamp(value,min=0,max=1){return Math.max(min,Math.min(max,value));}
 function ease(value){const t=clamp(value);return t*t*(3-2*t);}
 function initialWeight(index){return .08+(((index*37+17)%89)/100);}
-function trainedWeight(base,index,round){return clamp(base+Math.sin((index+1)*1.73+round*.91)*.13,.04,1);}
+function trainedWeight(base,index,round){
+ return clamp(base+Math.sin((index+1)*1.73+round*1.37)*.24+Math.cos((index+3)*.71+round*.83)*.09,.04,1);
+}
 function lineWidth(weight){return .35+weight*5.65;}
 
 function addToken(parent,x,y,value,color=COLORS.forward){
@@ -55,11 +57,13 @@ function create(host,index){
  const drawing=el('g',{'aria-hidden':'true'},svg);
  const counts=[3,5,4,3],xs=[54,250,450,646];
  const layers=counts.map((count,layer)=>Array.from({length:count},(_,node)=>({x:xs[layer],y:24+node*(144/(count-1)),layer,node})));
+ const oldWeightLayer=el('g',{},drawing),edgeLayer=el('g',{},drawing);
  const edges=[];
  for(let layer=0;layer<layers.length-1;layer++)for(const from of layers[layer])for(const to of layers[layer+1]){
   const edgeIndex=edges.length,weight=initialWeight(edgeIndex);
-  const line=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.edge,'stroke-width':lineWidth(weight),'stroke-linecap':'round',opacity:.14+weight*.62},drawing);
-  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line});
+  const oldLine=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.muted,'stroke-width':lineWidth(weight),'stroke-linecap':'round','stroke-dasharray':'2 3',visibility:'hidden'},oldWeightLayer);
+  const line=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.edge,'stroke-width':lineWidth(weight),'stroke-linecap':'round',opacity:.14+weight*.62},edgeLayer);
+  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line,oldLine});
  }
  const nodes=layers.map(layer=>layer.map(point=>el('circle',{cx:point.x,cy:point.y,r:9,fill:COLORS.bg,stroke:COLORS.muted,'stroke-width':1.5},drawing)));
  const pulseCount=mode==='training'?1:3;
@@ -111,7 +115,7 @@ function create(host,index){
    else if(cycleTime<4){phase='backward';progress=(cycleTime-2)/2;}
    else{phase='update';progress=(cycleTime-4)/2;}
    if(staticFrame){phase='update';progress=1;}
-   footer.textContent=phase==='forward'?'forward pass':phase==='backward'?'backpropagation':'weights update';
+   footer.textContent=phase==='forward'?'forward pass':phase==='backward'?'backpropagation':'weights update · thicker ↑  thinner ↓';
   }else if(mode==='inference'){
    if(cycleTime<2.55){phase='prefill';progress=cycleTime/2.2;tokenCount=3;}
    else{phase='decode';progress=(cycleTime-2.55)/2.2;tokenCount=progress>.88?4:3;}
@@ -141,10 +145,16 @@ function create(host,index){
   edges.forEach((edge,edgeIndex)=>{
    const before=round===0?edge.baseWeight:trainedWeight(edge.baseWeight,edgeIndex,round-1);
    const after=trainedWeight(edge.baseWeight,edgeIndex,round);
+   const delta=after-before,updating=mode==='training'&&phase==='update';
    edge.weight=mode==='training'?(phase==='update'?before+(after-before)*ease(progress):before):edge.baseWeight;
+   edge.oldLine.setAttribute('visibility',updating?'visible':'hidden');
+   if(updating){
+    edge.oldLine.setAttribute('stroke-width',lineWidth(before));
+    edge.oldLine.setAttribute('opacity',.16+Math.abs(delta)*.7);
+   }
    edge.line.setAttribute('stroke-width',lineWidth(edge.weight));
-   edge.line.setAttribute('opacity',.14+edge.weight*.7);
-   edge.line.setAttribute('stroke',phase==='update'?COLORS.forward:COLORS.edge);
+   edge.line.setAttribute('opacity',updating?.38+Math.abs(delta)*1.5:.14+edge.weight*.7);
+   edge.line.setAttribute('stroke',updating?(delta>=0?COLORS.forward:COLORS.backward):COLORS.edge);
 
    if(phase==='prefill'){
     pulses[edgeIndex].forEach((pulse,pulseIndex)=>{
