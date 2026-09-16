@@ -8,14 +8,14 @@
 
 /* Narrative cards float independently over the pinned chart. */
 .sticky{padding-left:max(24px,calc((100vw - 1440px)/2));padding-right:max(24px,calc((100vw - 1440px)/2));overflow:clip}
-.passage{position:absolute;z-index:3;left:max(24px,calc((100vw - 1440px)/2));top:50%;width:clamp(300px,30vw,430px);min-height:0;max-height:70%;overflow:auto;margin:0;padding:28px;background:#101820f7;border:1px solid #526777;border-radius:4px;box-shadow:0 12px 40px #0006;transform:translateY(calc(-50% + var(--card-shift,12svh)));opacity:var(--card-opacity,1);justify-content:flex-start}
+.passage{position:absolute;z-index:3;left:max(24px,calc((100vw - 1440px)/2));top:50%;width:clamp(280px,28vw,360px);min-height:0;max-height:70%;overflow:auto;margin:0;padding:24px;background:#101820f7;border:1px solid #526777;border-radius:4px;box-shadow:0 12px 40px #0006;transform:translateY(calc(-50% + var(--card-shift,12svh)));opacity:var(--card-opacity,1);justify-content:flex-start}
 .passage h2{font-size:clamp(20px,1.65vw,24px);line-height:1.4;letter-spacing:-.015em}
 .sticky>figure{width:100%;min-width:0}
 .all-mode .passage{position:relative;left:auto;top:auto;transform:none;opacity:1;width:min(100%,420px);max-width:none;max-height:none;min-height:0;margin:0 0 22px;flex-shrink:0}
 .all-mode .sticky{overflow:visible;height:auto;min-height:780px}
 .all-mode .plot-wrap{height:520px;flex:auto}
 .all-mode .video-frame,.all-mode .meme-frame{min-height:300px;max-height:560px}
-@media(max-width:760px){.sticky{padding-left:16px;padding-right:16px}.passage{left:16px;width:min(82vw,330px);padding:20px;max-height:65%}.passage h2{font-size:18px;line-height:1.4}.all-mode .passage,.all-mode .revenue .passage{min-height:0}.all-mode .sticky,.all-mode .revenue .sticky{height:auto;min-height:820px}}
+@media(max-width:760px){.sticky{padding-left:16px;padding-right:16px}.passage{left:16px;width:min(78vw,300px);padding:18px;max-height:65%}.passage h2{font-size:18px;line-height:1.4}.all-mode .passage,.all-mode .revenue .passage{min-height:0}.all-mode .sticky,.all-mode .revenue .sticky{height:auto;min-height:820px}}
 @media print{.passage{position:relative;left:auto;top:auto;transform:none;opacity:1;max-height:none;margin-bottom:20px}.sticky{overflow:visible}}
 
 /* Saturated series and scroll-synchronized legend entries. */
@@ -45,6 +45,9 @@
 .scene.chapter .track,.scene.statement .track{display:none}
 .photo-frame{flex:1;min-height:0;overflow:hidden;position:relative;background:#070b10}
 .photo-frame img{display:block;width:100%;height:100%;object-fit:cover}
+.city-electricity{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.city-electricity .electric-trace{fill:none;stroke:#72efff;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:.055 .945;filter:url(#city-electric-glow)}
+.city-electricity .electric-spark{fill:#e9fdff;stroke:#72efff;stroke-width:1.5;filter:url(#city-electric-glow)}
 .panorama .photo-frame img{width:182%;max-width:none;will-change:transform}
 .panorama .sticky,.city .sticky{padding-top:16px}
 .panorama .photo-frame:after,.city .photo-frame:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#07101a44,transparent 60%);pointer-events:none}
@@ -89,8 +92,8 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 .scene.revenue{--axis-inset:126px}
 .scene.margin,.scene.profit{--axis-inset:146px}
 .scene.centers{--axis-inset:266px}
-body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{left:calc(var(--card-gutter) + var(--axis-inset));width:min(clamp(300px,30vw,430px),calc(100% - var(--card-gutter) - var(--card-gutter) - var(--axis-inset)))}
-@media(max-width:760px){.scene{--card-gutter:16px;--axis-inset:80px}.scene.revenue{--axis-inset:94px}.scene.margin,.scene.profit{--axis-inset:98px}.scene.centers{--axis-inset:152px}body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{width:min(330px,calc(100% - 32px - var(--axis-inset)))}}
+body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{left:calc(var(--card-gutter) + var(--axis-inset));width:min(clamp(280px,28vw,360px),calc(100% - var(--card-gutter) - var(--card-gutter) - var(--axis-inset)))}
+@media(max-width:760px){.scene{--card-gutter:16px;--axis-inset:80px}.scene.revenue{--axis-inset:94px}.scene.margin,.scene.profit{--axis-inset:98px}.scene.centers{--axis-inset:152px}body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage{width:min(300px,calc(100% - 32px - var(--axis-inset)))}}
 @media(min-width:632px) and (max-width:760px){.scene{--axis-inset:96px}.scene.revenue{--axis-inset:126px}.scene.margin,.scene.profit{--axis-inset:146px}.scene.centers{--axis-inset:266px}}
 
 /* Align legend entries with the plot’s left axis. */
@@ -247,7 +250,7 @@ header .brand{font:500 18px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .network-demo svg{display:block;width:100%;height:auto;overflow:visible}
 .network-demo svg text{font-family:inherit;fill:#e6edf3;stroke:none;paint-order:normal}
 
-@media(max-width:760px){.network-demo svg text{font-size:22px!important}}
+@media(max-width:760px){.network-demo svg text{font-size:16px!important}}
 
 /* Clip the native X iframe so its white canvas cannot peek around the card. */
 .tweet-inline .twitter-tweet-rendered{margin:0!important;border-radius:16px;overflow:hidden;background:#15202b}
@@ -274,28 +277,22 @@ header .brand{font:500 18px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans
 
 /* Opening lede: the day counter and what the piece covers. */
 .lede{background:#070b10;padding:clamp(72px,14svh,150px) clamp(24px,7vw,110px) clamp(64px,12svh,130px)}
-.lede-inner{max-width:700px;margin:0 auto;color:#fff}
-.lede-inner p{font-size:clamp(18px,1.5vw,21px);font-weight:400;line-height:1.6;letter-spacing:normal;margin:0 0 1.3em}
+.lede-inner{max-width:1050px;margin:0 auto;color:#fff}
+.lede-inner p{font-size:clamp(23px,2.5vw,36px);line-height:1.45;letter-spacing:-.02em;margin:0 0 .85em}
 .lede-inner strong{font-weight:500;color:inherit}
-.lede-note{font-style:italic;color:var(--muted);margin:0 0 1.6em!important}
+.lede-note{font-style:italic;color:var(--muted);font-size:clamp(15px,1.3vw,19px)!important;margin:0 0 1.4em!important;letter-spacing:0}
 .lede-day{margin-bottom:1.1em!important}
-.lede-chant{margin-bottom:.45em!important}
+.lede-chant{margin-bottom:.34em!important}
 .lede-chant-break{margin-top:.9em!important}
 .lede-close{margin-top:1.5em!important}
-.lede-rule{border:0;border-top:1px solid var(--line);margin:2em 0 0}
 .day-count{font-family:var(--mono);font-variant-numeric:tabular-nums;color:#fff;border-bottom:2px solid #ffffff3d;padding-bottom:.04em}
-.lede-cue{margin:1.8em 0 .8em!important}
+.lede-cue{color:var(--muted);font-size:clamp(17px,1.5vw,21px)!important;letter-spacing:.02em;margin:1.6em 0 .7em!important}
 .lede-list{list-style:decimal;margin:0;padding:0 0 0 clamp(26px,2.4vw,34px)}
-.lede-list li{padding:0 0 .8em;font-size:clamp(18px,1.5vw,21px);line-height:1.6;letter-spacing:normal}
+.lede-list li{padding:0 0 .7em;font-size:clamp(18px,1.85vw,26px);line-height:1.4;letter-spacing:-.015em}
 .lede-list li::marker{color:#fff}
 
-@media(max-width:760px){.lede{padding:64px 16px 56px}.lede-inner p{font-size:18px}.lede-list li{padding:0 0 .7em;font-size:18px}}
+@media(max-width:760px){.lede{padding:64px 16px 56px}.lede-inner p{font-size:21px}.lede-list li{padding:0 0 .6em;font-size:17px}}
 
 /* Slide 1 reads its card in before the chart draws, so it needs more track. */
 .scene.investment{height:340svh}
 .all-mode .scene.investment{height:auto}
-
-/* Floating chart cards read at roughly the size of the Anthropic scenario cards.
-   Scoped to the cards so the reading slides’ body copy is left alone. */
-body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2{font-size:clamp(21px,1.62vw,26px);line-height:1.4}
-@media(max-width:700px){body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2{font-size:18px}}
