@@ -69,7 +69,10 @@ if(jensen&&slideOne&&!reduce.matches){
   // then gone again before the next one arrives.
   // The text clears early, then he has the black to himself for most of the slide.
   const k=Math.min(1,Math.max(0,(through-.15)/.85));
-  const env=k<.62?k/.62:1-(k-.62)/.38;
+  // Symmetric: eased in over the first third, held bright through the middle,
+  // eased out over the last third.
+  const ease=v=>v*v*(3-2*v);
+  const env=k<.3?ease(k/.3):k>.7?ease((1-k)/.3):1;
   jensen.style.opacity=String(.5*Math.max(0,env));
  };
  const queueJensen=()=>{if(!jraf)jraf=requestAnimationFrame(paintJensen);};
