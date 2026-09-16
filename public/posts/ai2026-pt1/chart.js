@@ -106,7 +106,7 @@ function setupSideVideo(scene){
  document.addEventListener('visibilitychange',sync);reduce.addEventListener('change',sync);
  return p=>passageStage(scene,p);
 }
-function setupMeme(scene){const img=scene.querySelector('img');return p=>{const show=true,t=all?1:clamp(p/.9);img.style.visibility=show?'visible':'hidden';img.setAttribute('aria-hidden',String(!show));img.style.transform=`scale(${lerp(.12,1,t*t)})`;};}
+function setupMeme(scene){/* Scale the whole card so the captions ride with the picture. */const box=scene.querySelector('.meme-live')||scene.querySelector('img');return p=>{const t=all?1:clamp(p/.9);box.style.visibility='visible';box.style.transform=`scale(${lerp(.12,1,t*t)})`;};}
 
 function setupVideo(scene){
  const video=scene.querySelector('video');let loaded=false,inView=false;

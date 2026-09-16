@@ -11,8 +11,8 @@ const show=v=>{const n=String(Math.max(1,Math.round(v)));if(el.textContent!==n)e
 if(reduce.matches){show(days);return;}
 el.textContent='1';
 
-const SENS=.05;   // days per pixel of scroll
-const DRIFT=45;   // furthest it ever wanders from today
+const SENS=.25;   // days per pixel of scroll
+const DRIFT=180;  // furthest it ever wanders from today
 const DECAY=.94;  // how fast it settles back once scrolling stops
 
 let offset=0,lastY=window.scrollY,raf=0,live=false;

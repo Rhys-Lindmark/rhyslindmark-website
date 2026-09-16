@@ -308,3 +308,20 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 .city-electricity{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;overflow:hidden}
 .city-electricity .electric-trace{fill:none;stroke:#72efff;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:.055 .945;filter:url(#city-electric-glow)}
 .city-electricity .electric-spark{fill:#e9fdff;stroke:#72efff;stroke-width:1.5;filter:url(#city-electric-glow)}
+
+/* The meme caption is live text over the untouched frame, so it stays sharp at
+   any size. Until bugs-bunny.jpg exists the old flattened JPEG stands in. */
+/* A query container computes its inline size as if empty, so the width has to come
+   from the outside: whichever of the viewport caps fits the 660x432 frame first. */
+.meme-live{position:relative;margin:auto;aspect-ratio:660/432;width:min(92vw,1100px,calc(min(62svh,560px) * 660 / 432));container-type:inline-size;line-height:0}
+.meme-live.no-base{aspect-ratio:972/594;width:min(92vw,1100px,calc(min(62svh,560px) * 972 / 594))}
+.meme-live img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:1px solid var(--line)}
+.meme-legacy{display:none}
+.meme-live.no-base .meme-legacy{display:block}
+.meme-live.no-base .meme-base,.meme-live.no-base .meme-cap{display:none}
+.meme-cap{position:absolute;left:0;right:0;margin:0;padding:0 3cqw;text-align:center;line-height:1.02;
+ font-family:Impact,Haettenschweiler,"Arial Narrow Bold","Franklin Gothic Bold",sans-serif;
+ font-size:11cqw;letter-spacing:.01em;color:#fff;text-transform:uppercase;
+ -webkit-text-stroke:.6cqw #000;paint-order:stroke fill;text-shadow:0 .25cqw .5cqw #000c}
+.meme-cap-top{top:2.5cqw}
+.meme-cap-bottom{bottom:2.5cqw}
