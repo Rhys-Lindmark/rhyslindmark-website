@@ -9,8 +9,7 @@ const introStyle=document.createElement('style');introStyle.textContent=`
 .section{height:820svh}
 .camera{opacity:var(--art-opacity,1);will-change:width,height,top,opacity}
 .titles{position:absolute;inset:0;z-index:3;display:grid;place-items:center;padding:clamp(24px,6vw,96px);pointer-events:none;text-align:center}
-.titles:before{content:'';position:absolute;inset:0;background:#070b10;opacity:var(--title-shade,0);will-change:opacity}
-.title{position:absolute;width:min(1180px,88vw);margin:0;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:650;letter-spacing:-.055em;line-height:.96;text-wrap:balance;text-shadow:0 4px 40px #000,0 1px 8px #000c;will-change:opacity,transform}
+.title{position:absolute;width:min(1180px,88vw);margin:0;color:#071018;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:650;letter-spacing:-.055em;line-height:.96;text-wrap:balance;will-change:opacity,transform}
 .title-one{font-size:clamp(48px,7.6vw,118px);opacity:var(--title-one,0);transform:translateY(var(--title-one-y,24px))}
 .title-two{font-size:clamp(44px,7vw,108px);opacity:var(--title-two,0);transform:translateY(var(--title-two-y,24px))}
 .portal-stage{position:absolute;inset:0;z-index:1;overflow:hidden;background:#102733;opacity:var(--portal-opacity,0);pointer-events:none;will-change:opacity}
@@ -18,7 +17,7 @@ const introStyle=document.createElement('style');introStyle.textContent=`
 .portal-grid{fill:none;stroke:#7aa3b5;stroke-width:2;opacity:.32}.portal-rack{fill:#112b38;stroke:#335566;stroke-width:4}.portal-light{fill:#caffff;filter:url(#portal-glow)}.portal-target{fill:#d9ffff;filter:url(#portal-glow-strong)}
 :host([preview]) .titles,:host([preview]) .portal-stage{display:none}:host([preview]) .camera{opacity:1}
 @media(max-width:760px){.section{height:760svh}.title{width:min(92vw,680px);font-size:clamp(42px,13vw,72px);line-height:1}.title-two{font-size:clamp(38px,11.5vw,66px)}}
-@media(prefers-reduced-motion:reduce){.section{height:auto}.titles{position:relative;display:flex;flex-direction:column;gap:24px;padding:72px 24px 36px}.titles:before{display:none}.title{position:relative;opacity:1;transform:none;width:min(100%,900px);font-size:clamp(42px,8vw,82px)}.camera{opacity:1}.portal-stage{display:none}}
+@media(prefers-reduced-motion:reduce){.section{height:auto}.titles{position:relative;display:flex;flex-direction:column;gap:24px;padding:72px 24px 36px}.title{position:relative;color:#fff;opacity:1;transform:none;width:min(100%,900px);font-size:clamp(42px,8vw,82px)}.camera{opacity:1}.portal-stage{display:none}}
 `;root.append(introStyle);
 root.querySelector('.pin').insertAdjacentHTML('afterbegin','<div class="titles"><h1 class="title title-one">Part I: Chips in a data center</h1><p class="title title-two">Nvidia &amp; The 100 GW Opportunity</p></div>');
 root.querySelector('.viewport').insertAdjacentHTML('afterend',`<div class="chip-stage"><img class="chip-image" src="/posts/ai2026-pt1/intro/chip.webp" alt="Underside of an AI processor with a dense grid of metallic contacts"><svg class="energy" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="rainbow" x1="0" y1="0" x2="1000" y2="1000" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff315f"/><stop offset=".18" stop-color="#ffb52e"/><stop offset=".36" stop-color="#f7ff3c"/><stop offset=".53" stop-color="#39ff9b"/><stop offset=".7" stop-color="#36d9ff"/><stop offset=".86" stop-color="#7868ff"/><stop offset="1" stop-color="#ff42ef"/></linearGradient><filter id="electric-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="node-glow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="12" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g class="energy-paths"><path class="energy-path" pathLength="1" d="M0 110H180V245H355V405H455V500H500"/><path class="energy-path" pathLength="1" d="M1000 110H820V245H645V405H545V500H500"/><path class="energy-path" pathLength="1" d="M0 300H145V365H300V455H430V500H500"/><path class="energy-path" pathLength="1" d="M1000 300H855V365H700V455H570V500H500"/><path class="energy-path" pathLength="1" d="M0 690H155V630H315V545H430V500H500"/><path class="energy-path" pathLength="1" d="M1000 690H845V630H685V545H570V500H500"/><path class="energy-path" pathLength="1" d="M0 890H190V755H360V595H455V500H500"/><path class="energy-path" pathLength="1" d="M1000 890H810V755H640V595H545V500H500"/><path class="energy-path" pathLength="1" d="M115 0V175H255V340H415V455H500"/><path class="energy-path" pathLength="1" d="M885 0V175H745V340H585V455H500"/><path class="energy-path" pathLength="1" d="M115 1000V825H255V660H415V545H500"/><path class="energy-path" pathLength="1" d="M885 1000V825H745V660H585V545H500"/></g><g class="energy-cores"><path class="energy-core" pathLength="1" d="M0 110H180V245H355V405H455V500H500"/><path class="energy-core" pathLength="1" d="M1000 110H820V245H645V405H545V500H500"/><path class="energy-core" pathLength="1" d="M0 690H155V630H315V545H430V500H500"/><path class="energy-core" pathLength="1" d="M1000 690H845V630H685V545H570V500H500"/><path class="energy-core" pathLength="1" d="M115 0V175H255V340H415V455H500"/><path class="energy-core" pathLength="1" d="M885 1000V825H745V660H585V545H500"/></g><circle class="energy-node" cx="500" cy="500" r="18"/><circle class="energy-node" cx="355" cy="405" r="7"/><circle class="energy-node" cx="645" cy="405" r="7"/><circle class="energy-node" cx="315" cy="545" r="7"/><circle class="energy-node" cx="685" cy="545" r="7"/></svg></div>`);
@@ -156,16 +155,14 @@ const paint=()=>{raf=0;if(this.hasAttribute('preview')||reduce.matches){camera.s
 const r=section.getBoundingClientRect(),top=parseFloat(getComputedStyle(this).getPropertyValue('--intro-top'))||0;
 const p=Math.min(1,Math.max(0,(top-r.top)/Math.max(1,r.height-innerHeight+top)));
 const smooth=value=>{const x=Math.min(1,Math.max(0,value));return x*x*(3-2*x);};
-const titleOne=smooth((p-.02)/.04)*(1-smooth((p-.14)/.05));
-const titleTwo=smooth((p-.19)/.05)*(1-smooth((p-.35)/.05));
-const titleShade=smooth((p-.01)/.05)*(1-smooth((p-.35)/.08));
+const titleOne=smooth((p-.76)/.035)*(1-smooth((p-.845)/.035));
+const titleTwo=smooth((p-.875)/.035)*(1-smooth((p-.965)/.03));
 const portalOpacity=smooth((p-.52)/.08);
 const portalZoom=smooth((p-.53)/.4);
 section.style.setProperty('--title-one',titleOne.toFixed(3));
-section.style.setProperty('--title-one-y',`${(24*(1-smooth((p-.02)/.04))-24*smooth((p-.14)/.05)).toFixed(1)}px`);
+section.style.setProperty('--title-one-y',`${(24*(1-smooth((p-.76)/.035))-24*smooth((p-.845)/.035)).toFixed(1)}px`);
 section.style.setProperty('--title-two',titleTwo.toFixed(3));
-section.style.setProperty('--title-two-y',`${(24*(1-smooth((p-.19)/.05))-24*smooth((p-.35)/.05)).toFixed(1)}px`);
-section.style.setProperty('--title-shade',(titleShade*.78).toFixed(3));
+section.style.setProperty('--title-two-y',`${(24*(1-smooth((p-.875)/.035))-24*smooth((p-.965)/.03)).toFixed(1)}px`);
 section.style.setProperty('--art-opacity',(1-portalOpacity).toFixed(3));
 section.style.setProperty('--portal-opacity',portalOpacity.toFixed(3));
 section.style.setProperty('--portal-scale',(1+18*portalZoom).toFixed(3));
