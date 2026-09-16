@@ -57,13 +57,12 @@ function create(host,index){
  const drawing=el('g',{'aria-hidden':'true'},svg);
  const counts=[3,5,4,3],xs=[54,250,450,646];
  const layers=counts.map((count,layer)=>Array.from({length:count},(_,node)=>({x:xs[layer],y:24+node*(144/(count-1)),layer,node})));
- const oldWeightLayer=el('g',{},drawing),edgeLayer=el('g',{},drawing);
+ const edgeLayer=el('g',{},drawing);
  const edges=[];
  for(let layer=0;layer<layers.length-1;layer++)for(const from of layers[layer])for(const to of layers[layer+1]){
   const edgeIndex=edges.length,weight=initialWeight(edgeIndex);
-  const oldLine=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.muted,'stroke-width':lineWidth(weight),'stroke-linecap':'round','stroke-dasharray':'2 3',visibility:'hidden'},oldWeightLayer);
   const line=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.edge,'stroke-width':lineWidth(weight),'stroke-linecap':'round',opacity:.14+weight*.62},edgeLayer);
-  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line,oldLine});
+  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line});
  }
  const nodes=layers.map(layer=>layer.map(point=>el('circle',{cx:point.x,cy:point.y,r:9,fill:COLORS.bg,stroke:COLORS.muted,'stroke-width':1.5},drawing)));
  const pulses=edges.map(edge=>[el('circle',{
@@ -111,7 +110,7 @@ function create(host,index){
    else if(cycleTime<4){phase='backward';progress=(cycleTime-2)/2;}
    else{phase='update';progress=(cycleTime-4)/2;}
    if(staticFrame){phase='update';progress=1;}
-   footer.textContent=phase==='forward'?'forward pass':phase==='backward'?'backpropagation':'weights update · thicker ↑  thinner ↓';
+   footer.textContent='';
   }else{
    phase='forward';progress=cycleTime/2.25;tokenCount=progress>.86?4:3;
    if(staticFrame){progress=1;tokenCount=4;}
@@ -126,16 +125,10 @@ function create(host,index){
   edges.forEach((edge,edgeIndex)=>{
    const before=round===0?edge.baseWeight:trainedWeight(edge.baseWeight,edgeIndex,round-1);
    const after=trainedWeight(edge.baseWeight,edgeIndex,round);
-   const delta=after-before,updating=mode==='training'&&phase==='update';
    edge.weight=mode==='training'?(phase==='update'?before+(after-before)*ease(progress):before):edge.baseWeight;
-   edge.oldLine.setAttribute('visibility',updating?'visible':'hidden');
-   if(updating){
-    edge.oldLine.setAttribute('stroke-width',lineWidth(before));
-    edge.oldLine.setAttribute('opacity',.16+Math.abs(delta)*.7);
-   }
    edge.line.setAttribute('stroke-width',lineWidth(edge.weight));
-   edge.line.setAttribute('opacity',updating?.38+Math.abs(delta)*1.5:.14+edge.weight*.7);
-   edge.line.setAttribute('stroke',updating?(delta>=0?COLORS.forward:COLORS.backward):COLORS.edge);
+   edge.line.setAttribute('opacity',.14+edge.weight*.7);
+   edge.line.setAttribute('stroke',COLORS.edge);
 
    if(phase!=='update'){
     const local=backwards?(1-clamp(progress))*3-edge.layer:clamp(progress)*3-edge.layer;
@@ -143,10 +136,6 @@ function create(host,index){
    }
   });
 
-  if(phase==='update'){
-   const shimmer=.45+.55*Math.sin(progress*Math.PI);
-   nodes.flat().forEach(node=>{node.setAttribute('stroke',COLORS.forward);node.setAttribute('stroke-width',1.5+shimmer);});
-  }
   tokens.forEach((group,tokenIndex)=>group.setAttribute('visibility',tokenIndex<tokenCount?'visible':'hidden'));
  }
 
