@@ -152,7 +152,7 @@ renderMotion(0);resumeMotion();document.addEventListener('visibilitychange',resu
 const camera=root.querySelector('.camera'),section=root.querySelector('.section');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
 let raf=0;
-const paint=()=>{raf=0;if(this.hasAttribute('preview')||reduce.matches){camera.style.width='';camera.style.height='';camera.style.top='';camera.style.transform='';return;}
+const paint=()=>{raf=0;if(this.hasAttribute('external-camera'))return;if(this.hasAttribute('preview')||reduce.matches){camera.style.width='';camera.style.height='';camera.style.top='';camera.style.transform='';return;}
 const r=section.getBoundingClientRect(),top=parseFloat(getComputedStyle(this).getPropertyValue('--intro-top'))||0;
 const scrollP=Math.min(1,Math.max(0,(top-r.top)/Math.max(1,r.height-innerHeight+top)));
 const titleStart=.387;
