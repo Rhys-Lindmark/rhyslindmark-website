@@ -250,7 +250,11 @@ function setSlideAddress(id){
 function followSlideLink(){
  const hash=window.location.hash.match(/^#(?:chart-)?(\d+)$/),query=new URL(window.location.href).searchParams.get('slide');
  const raw=hash?hash[1]:query,id=/^\d+$/.test(raw||'')?String(Number(raw)):null,passage=id&&document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');
- slideLinksReady=true;if(!scene)return;
+ slideLinksReady=true;
+ /* The lede is not a .scene; it is a plain block, so just park at its top. */
+ const block=!scene&&passage?.closest('.lede');
+ if(block){setSlideAddress(id);window.scrollTo({top:block.offsetTop,behavior:'instant'});return;}
+ if(!scene)return;
  setSlideAddress(id);
  const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=steps.indexOf(id),progress=scene.dataset.kind==='revenue'?(id==='6'?.796:.264):scene.dataset.kind==='eras'?.088:['fulltext','chapter','statement'].includes(scene.dataset.kind)?0:(Math.max(0,index)+.4)/steps.length;
  const travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight),top=window.scrollY+scene.getBoundingClientRect().top+(all?0:progress*travel);
@@ -272,6 +276,8 @@ try{const res=await fetch('/posts/ai2026-pt1/charts.json');if(!res.ok)throw new 
  const draw=scene=>{const kind=scene.dataset.kind;const fn=kind==='roi'?drawROI:kind==='investment'||kind==='construction'?drawLines:kind==='chips'?drawChips:kind==='revenue'?drawRevenue:kind==='margin'||kind==='profit'?drawProfit:kind==='marketcap'?drawMarketcap:kind==='capacity'?drawCapacity:kind==='centers'?drawCenters:kind==='permits'?drawPermits:kind==='electricity'?drawElectricity:kind==='share'?drawShare:kind==='units'?drawUnits:drawEras;renderers.set(scene,fn(scene));request();};
  for(const scene of scenes){if(['chapter','statement','fulltext','scrolltext'].includes(scene.dataset.kind))renderers.set(scene,()=>{});else if(['panorama','city'].includes(scene.dataset.kind))renderers.set(scene,setupPhoto(scene));else if(scene.dataset.kind==='buildingreturn')renderers.set(scene,setupBuildingReturn(scene));else if(scene.dataset.kind==='meme')renderers.set(scene,setupMeme(scene));else if(scene.dataset.kind==='video')renderers.set(scene,setupVideo(scene));else if(scene.dataset.kind==='sidevideo')renderers.set(scene,setupSideVideo(scene));else{draw(scene);new ResizeObserver(()=>draw(scene)).observe(scene.querySelector('.plot-wrap'));}}
  window.addEventListener('prepare-share-poster',event=>{const id=String(event.detail.step),passage=document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');if(!scene)return;const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=Math.max(0,steps.indexOf(id));let p=(index+.96)/steps.length;if(scene.dataset.kind==='revenue')p=id==='6'?.99:.64;renderers.get(scene)?.(p);});
- toggle();window.addEventListener('hashchange',followSlideLink);window.addEventListener('popstate',followSlideLink);requestAnimationFrame(followSlideLink);window.addEventListener('scroll',request,{passive:true});window.addEventListener('resize',request,{passive:true});update();
+ toggle();window.addEventListener('hashchange',followSlideLink);window.addEventListener('popstate',followSlideLink);if('scrollRestoration' in history)history.scrollRestoration='manual';requestAnimationFrame(followSlideLink);/* The rAF fires before images and charts have laid the page out, so the scroll can be
+   clobbered. Re-apply once everything has loaded, unless the reader already moved. */
+window.addEventListener('load',()=>{if(new URL(location.href).searchParams.get('slide')&&window.scrollY<4)followSlideLink();});window.addEventListener('scroll',request,{passive:true});window.addEventListener('resize',request,{passive:true});update();
 }catch(error){console.error(error);button.disabled=true;const p=document.createElement('p');p.textContent='Chart data could not load. Please reload the page.';root.prepend(p);}
 })();

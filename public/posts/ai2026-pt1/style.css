@@ -274,21 +274,21 @@ header .brand{font:500 18px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans
 
 /* Opening lede: the day counter and what the piece covers. */
 .lede{background:#070b10;padding:clamp(72px,14svh,150px) clamp(24px,7vw,110px) clamp(64px,12svh,130px)}
-.lede-inner{max-width:1050px;margin:0 auto;color:#fff}
-.lede-inner p{font-size:clamp(23px,2.5vw,36px);line-height:1.45;letter-spacing:-.02em;margin:0 0 .85em}
+.lede-inner{max-width:700px;margin:0 auto;color:#fff}
+.lede-inner p{font-size:clamp(18px,1.5vw,21px);font-weight:400;line-height:1.6;letter-spacing:normal;margin:0 0 1.3em}
 .lede-inner strong{font-weight:500;color:inherit}
-.lede-note{font-style:italic;color:var(--muted);font-size:clamp(15px,1.3vw,19px)!important;margin:0 0 1.4em!important;letter-spacing:0}
+.lede-note{font-style:italic;color:var(--muted);margin:0 0 1.6em!important}
 .lede-day{margin-bottom:1.1em!important}
-.lede-chant{margin-bottom:.34em!important}
+.lede-chant{margin-bottom:.45em!important}
 .lede-chant-break{margin-top:.9em!important}
 .lede-close{margin-top:1.5em!important}
 .day-count{font-family:var(--mono);font-variant-numeric:tabular-nums;color:#fff;border-bottom:2px solid #ffffff3d;padding-bottom:.04em}
-.lede-cue{color:var(--muted);font-size:clamp(17px,1.5vw,21px)!important;letter-spacing:.02em;margin:1.6em 0 .7em!important}
+.lede-cue{color:var(--muted);margin:1.8em 0 .8em!important}
 .lede-list{list-style:decimal;margin:0;padding:0 0 0 clamp(26px,2.4vw,34px)}
-.lede-list li{padding:0 0 .7em;font-size:clamp(18px,1.85vw,26px);line-height:1.4;letter-spacing:-.015em}
+.lede-list li{padding:0 0 .8em;font-size:clamp(18px,1.5vw,21px);line-height:1.6;letter-spacing:normal}
 .lede-list li::marker{color:#fff}
 
-@media(max-width:760px){.lede{padding:64px 16px 56px}.lede-inner p{font-size:21px}.lede-list li{padding:0 0 .6em;font-size:17px}}
+@media(max-width:760px){.lede{padding:64px 16px 56px}.lede-inner p{font-size:18px}.lede-list li{padding:0 0 .7em;font-size:18px}}
 
 /* Slide 1 reads its card in before the chart draws, so it needs more track. */
 .scene.investment{height:340svh}
