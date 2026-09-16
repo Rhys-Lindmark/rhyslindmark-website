@@ -8,7 +8,7 @@ const root=this.attachShadow({mode:'open'});root.innerHTML="<style>\n:host{displ
 root.querySelector('.controls').remove();
 const introStyle=document.createElement('style');introStyle.textContent=`
 .section{height:1510svh}
-.camera{opacity:var(--art-opacity,1);will-change:width,height,top,opacity}
+.camera{opacity:var(--art-opacity,1)}
 .titles{position:absolute;inset:0;z-index:3;display:grid;place-items:center;padding:clamp(24px,6vw,96px);pointer-events:none;text-align:center}
 .title{position:absolute;width:min(1180px,88vw);margin:0;color:#071018;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-weight:650;letter-spacing:-.055em;line-height:.96;text-wrap:balance;will-change:opacity,transform}
 .title-one{font-size:clamp(48px,7.6vw,118px);opacity:var(--title-one,0);transform:translateY(var(--title-one-y,24px))}
@@ -39,7 +39,7 @@ const picture=document.createElement('picture'),source=document.createElement('s
 source.media='(max-width: 760px)';source.srcset='/posts/ai2026-pt1/intro/building-mobile.jpg?v=botless-niches-1';
 img.before(picture);picture.append(source,img);
 const mobileStyle=document.createElement('style');mobileStyle.textContent=`
-.camera{width:100%;height:100%;max-width:none;aspect-ratio:auto;overflow:hidden;will-change:width,height,top}
+.camera{width:100%;height:100%;max-width:none;aspect-ratio:auto;overflow:visible;transform-origin:50% 50%;will-change:auto}
 .camera picture{display:block;width:100%;height:100%}.camera img{object-fit:cover}.camera svg{overflow:hidden}
 .controls{position:absolute;left:0;right:0;bottom:0;z-index:3;background:linear-gradient(transparent,#0b1015aa)}
 .reaction-bubble{fill:#b9fff0;filter:drop-shadow(0 0 3px #67e6d2);animation:reaction-rise 2.1s ease-out infinite;animation-delay:var(--delay)}
@@ -152,7 +152,7 @@ renderMotion(0);resumeMotion();document.addEventListener('visibilitychange',resu
 const camera=root.querySelector('.camera'),section=root.querySelector('.section');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
 let raf=0;
-const paint=()=>{raf=0;if(this.hasAttribute('preview')||reduce.matches){camera.style.width='';camera.style.height='';camera.style.top='';return;}
+const paint=()=>{raf=0;if(this.hasAttribute('preview')||reduce.matches){camera.style.width='';camera.style.height='';camera.style.top='';camera.style.transform='';return;}
 const r=section.getBoundingClientRect(),top=parseFloat(getComputedStyle(this).getPropertyValue('--intro-top'))||0;
 const scrollP=Math.min(1,Math.max(0,(top-r.top)/Math.max(1,r.height-innerHeight+top)));
 const titleStart=.387;
@@ -173,19 +173,23 @@ const q=Math.min(1,Math.max(0,(p-.4)/.18)),e=q*q*(3-2*q);
 const viewport=root.querySelector('.viewport');
 const baseWidth=innerWidth<=760?viewport.clientWidth:Math.max(viewport.clientWidth,viewport.clientHeight*1.5);
 const baseHeight=baseWidth/1.5;
-// Portrait starts full-screen, then zooms into the selected floor.
-if(innerWidth<=760){
-const scale=1+7*e,height=viewport.clientHeight*scale;
-const center=.5+((agents?.19:brains?.5:.835)-.5)*e;
-camera.style.width=`${viewport.clientWidth*scale}px`;
-camera.style.height=`${height}px`;
-camera.style.top=`${height*(.5-center)}px`;
-}else{
+// Keep the raster and SVG at a stable layout size. Resizing a huge clipped
+// image every frame can leave stale/missing raster tiles on reverse scrolling.
 const scale=1+7*e;
-camera.style.width=`${baseWidth*scale}px`;
-camera.style.height=`${baseHeight*scale}px`;
-camera.style.top=`${agents?baseHeight*.56*e:-baseHeight*(brains?.04*e:.3*(scale-1)+.29*e)}px`;
+let offset;
+if(innerWidth<=760){
+ const height=viewport.clientHeight;
+ const center=.5+((agents?.19:brains?.5:.835)-.5)*e;
+ camera.style.width=`${viewport.clientWidth}px`;
+ camera.style.height=`${height}px`;
+ offset=height*scale*(.5-center);
+}else{
+ camera.style.width=`${baseWidth}px`;
+ camera.style.height=`${baseHeight}px`;
+ offset=agents?baseHeight*.56*e:-baseHeight*(brains?.04*e:.3*(scale-1)+.29*e);
 }
+camera.style.top='0px';
+camera.style.transform=scale===1?'none':`translateY(${offset}px) scale(${scale})`;
 };
 const update=()=>{if(!raf)raf=requestAnimationFrame(paint);};
 window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});
