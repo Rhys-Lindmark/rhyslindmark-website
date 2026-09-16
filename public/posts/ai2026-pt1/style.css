@@ -328,3 +328,10 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
  -webkit-text-stroke:.6cqw #000;paint-order:stroke fill;text-shadow:0 .25cqw .5cqw #000c}
 .meme-cap-top{top:2.5cqw}
 .meme-cap-bottom{bottom:2.5cqw}
+
+/* A rule under the chapter titles, sized to the text, so they read as dividers
+   rather than as another sentence. */
+.scene.chapter .passage h2{width:fit-content;max-width:min(1000px,100%)}
+.scene.chapter .passage h2::after{content:"";display:block;height:3px;border-radius:2px;
+ margin:.34em auto 0;background:#ffffff5c}
+@media(max-width:760px){.scene.chapter .passage h2::after{height:2px;margin-top:.3em}}
