@@ -5,13 +5,10 @@ const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
 let data,all=reduce.matches,raf=0;const renderers=new Map();
 // Header visibility never changes scene dimensions or scroll progress.
 const header=document.querySelector('header');
-let headerScrollY=Math.max(0,window.scrollY),headerDirection=0,headerTravel=0;
+/* The bar belongs to the top of the page, not to the scroll direction: it shows
+   only while the reader is at the very top, and stays out of the way otherwise. */
 function updateHeader(){
- const y=Math.max(0,window.scrollY),delta=y-headerScrollY,direction=Math.sign(delta);
- if(direction&&direction!==headerDirection){headerDirection=direction;headerTravel=0;}
- headerTravel+=Math.abs(delta);headerScrollY=y;
- if(y<=header.offsetHeight){document.body.classList.remove('header-hidden');headerTravel=0;}
- else if(headerTravel>=8){document.body.classList.toggle('header-hidden',direction>0);headerTravel=0;}
+ document.body.classList.toggle('header-hidden',Math.max(0,window.scrollY)>header.offsetHeight);
 }
 window.addEventListener('scroll',updateHeader,{passive:true});
 header.addEventListener('focusin',()=>document.body.classList.remove('header-hidden'));
