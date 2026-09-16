@@ -33,7 +33,7 @@ const brains=this.getAttribute('focus-floor')==='brains';
 const agents=this.getAttribute('focus-floor')==='agents';
 const continueTo=this.getAttribute('continue-to');
 if(continueTo?.startsWith('#'))root.querySelector('.skip').href=continueTo;
-const img=root.querySelector('img');img.alt='A cutaway building with robot arms moving a block, robots coding and doing science, an autonomous car, and generative art above a library of AI brains and a data center.';const imageSource=this.getAttribute('image-src')||'/posts/ai2026-pt1/intro/building.webp';img.src=imageSource+(imageSource.includes('?')?'&':'?')+'v=botless-niches-1';
+const img=root.querySelector('img');img.alt='A cutaway building with robot arms moving a block, robots coding and doing science, an autonomous car, and generative art above a library of AI brains and a data center.';const imageSource=this.getAttribute('image-src')||'/posts/ai2026-pt1/intro/building-clean-roof.webp';img.src=imageSource+(imageSource.includes('?')?'&':'?')+'v=botless-niches-1';
 // Use a purpose-composed portrait asset on phones, retaining the desktop illustration.
 const picture=document.createElement('picture'),source=document.createElement('source');
 source.media='(max-width: 760px)';source.srcset='/posts/ai2026-pt1/intro/building-mobile.jpg?v=botless-niches-1';
