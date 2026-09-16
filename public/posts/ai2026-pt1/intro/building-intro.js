@@ -12,18 +12,22 @@ const introStyle=document.createElement('style');introStyle.textContent=`
 .title{position:absolute;width:min(1180px,88vw);margin:0;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:clamp(48px,7.6vw,118px);font-weight:650;letter-spacing:-.055em;line-height:.96;text-wrap:balance;text-shadow:0 4px 40px #000,0 1px 8px #000c;opacity:0;transform:translateY(24px);will-change:opacity,transform}
 .title-one{opacity:var(--title-one,1);transform:translateY(var(--title-one-y,0))}
 .title-two{opacity:var(--title-two,0);transform:translateY(var(--title-two-y,24px));font-size:clamp(44px,7vw,108px)}
+.portal-stage{position:absolute;inset:0;z-index:1;overflow:hidden;background:#102733;opacity:var(--portal-opacity,0);pointer-events:none;will-change:opacity}
+.portal-stage svg{width:100%;height:100%;display:block;transform:scale(var(--portal-scale,1));transform-origin:50% 50%;will-change:transform}
+.portal-grid{fill:none;stroke:#7aa3b5;stroke-width:2;opacity:.32}.portal-rack{fill:#112b38;stroke:#335566;stroke-width:4}.portal-light{fill:#caffff;filter:url(#portal-glow)}.portal-target{fill:#d9ffff;filter:url(#portal-glow-strong)}
 .chip-stage{position:absolute;inset:0;z-index:2;overflow:hidden;background:#061013;opacity:var(--chip-opacity,0);pointer-events:none;will-change:opacity}
 .chip-image{width:100%;height:100%;display:block;object-fit:cover;transform:scale(var(--chip-scale,1));filter:brightness(var(--chip-brightness,2.2)) blur(var(--chip-blur,8px));will-change:transform,filter}
 .energy{position:absolute;inset:0;width:100%;height:100%;overflow:visible;mix-blend-mode:screen;opacity:var(--energy-opacity,0)}
 .energy-path{fill:none;stroke:url(#rainbow);stroke-width:5;stroke-linecap:round;stroke-linejoin:round;path-length:1;stroke-dasharray:var(--energy-progress,0) 1;filter:url(#electric-glow)}
 .energy-core{fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:round;path-length:1;stroke-dasharray:var(--energy-progress,0) 1;opacity:.95}
 .energy-node{fill:#fff;filter:url(#node-glow);opacity:var(--energy-opacity,0);transform-box:fill-box;transform-origin:center;transform:scale(calc(.35 + var(--energy-progress,0)*.8))}
-:host([preview]) .titles,:host([preview]) .chip-stage{display:none}:host([preview]) .camera{opacity:1}
+:host([preview]) .titles,:host([preview]) .portal-stage,:host([preview]) .chip-stage{display:none}:host([preview]) .camera{opacity:1}
 @media(max-width:760px){.section{height:760svh}.title{width:min(92vw,680px);font-size:clamp(42px,13vw,72px);line-height:1}.title-two{font-size:clamp(38px,11.5vw,66px)}}
-@media(prefers-reduced-motion:reduce){.section{height:auto}.titles{position:relative;display:flex;flex-direction:column;gap:24px;padding:72px 24px 36px}.title{position:relative;opacity:1!important;transform:none!important;width:min(100%,900px);font-size:clamp(42px,8vw,82px)}.camera{opacity:.55}.chip-stage{position:relative;opacity:1;min-height:100svh}.chip-image{filter:none;transform:none}.energy{display:none}}
+@media(prefers-reduced-motion:reduce){.section{height:auto}.titles{position:relative;display:flex;flex-direction:column;gap:24px;padding:72px 24px 36px}.title{position:relative;opacity:1!important;transform:none!important;width:min(100%,900px);font-size:clamp(42px,8vw,82px)}.camera{opacity:.55}.portal-stage{display:none}.chip-stage{position:relative;opacity:1;min-height:100svh}.chip-image{filter:none;transform:none}.energy{display:none}}
 `;root.append(introStyle);
 root.querySelector('.pin').insertAdjacentHTML('afterbegin','<div class="titles"><h1 class="title title-one">Part I: Chips in a data center</h1><p class="title title-two">Nvidia &amp; The 100 GW Opportunity</p></div>');
 root.querySelector('.viewport').insertAdjacentHTML('afterend',`<div class="chip-stage"><img class="chip-image" src="/posts/ai2026-pt1/intro/chip.webp" alt="Underside of an AI processor with a dense grid of metallic contacts"><svg class="energy" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="rainbow" x1="0" y1="0" x2="1000" y2="1000" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ff315f"/><stop offset=".18" stop-color="#ffb52e"/><stop offset=".36" stop-color="#f7ff3c"/><stop offset=".53" stop-color="#39ff9b"/><stop offset=".7" stop-color="#36d9ff"/><stop offset=".86" stop-color="#7868ff"/><stop offset="1" stop-color="#ff42ef"/></linearGradient><filter id="electric-glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="7" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="node-glow" x="-300%" y="-300%" width="700%" height="700%"><feGaussianBlur stdDeviation="12" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><g class="energy-paths"><path class="energy-path" pathLength="1" d="M0 110H180V245H355V405H455V500H500"/><path class="energy-path" pathLength="1" d="M1000 110H820V245H645V405H545V500H500"/><path class="energy-path" pathLength="1" d="M0 300H145V365H300V455H430V500H500"/><path class="energy-path" pathLength="1" d="M1000 300H855V365H700V455H570V500H500"/><path class="energy-path" pathLength="1" d="M0 690H155V630H315V545H430V500H500"/><path class="energy-path" pathLength="1" d="M1000 690H845V630H685V545H570V500H500"/><path class="energy-path" pathLength="1" d="M0 890H190V755H360V595H455V500H500"/><path class="energy-path" pathLength="1" d="M1000 890H810V755H640V595H545V500H500"/><path class="energy-path" pathLength="1" d="M115 0V175H255V340H415V455H500"/><path class="energy-path" pathLength="1" d="M885 0V175H745V340H585V455H500"/><path class="energy-path" pathLength="1" d="M115 1000V825H255V660H415V545H500"/><path class="energy-path" pathLength="1" d="M885 1000V825H745V660H585V545H500"/></g><g class="energy-cores"><path class="energy-core" pathLength="1" d="M0 110H180V245H355V405H455V500H500"/><path class="energy-core" pathLength="1" d="M1000 110H820V245H645V405H545V500H500"/><path class="energy-core" pathLength="1" d="M0 690H155V630H315V545H430V500H500"/><path class="energy-core" pathLength="1" d="M1000 690H845V630H685V545H570V500H500"/><path class="energy-core" pathLength="1" d="M115 0V175H255V340H415V455H500"/><path class="energy-core" pathLength="1" d="M885 1000V825H745V660H585V545H500"/></g><circle class="energy-node" cx="500" cy="500" r="18"/><circle class="energy-node" cx="355" cy="405" r="7"/><circle class="energy-node" cx="645" cy="405" r="7"/><circle class="energy-node" cx="315" cy="545" r="7"/><circle class="energy-node" cx="685" cy="545" r="7"/></svg></div>`);
+root.querySelector('.viewport').insertAdjacentHTML('afterend',`<div class="portal-stage"><svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><radialGradient id="portal-bg"><stop offset="0" stop-color="#284857"/><stop offset=".45" stop-color="#193642"/><stop offset="1" stop-color="#0d202b"/></radialGradient><filter id="portal-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="portal-glow-strong" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="18" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs><rect width="1000" height="1000" fill="url(#portal-bg)"/><g class="portal-grid"><path d="M80 100L390 430M920 100L610 430M40 900L390 570M960 900L610 570"/><path d="M165 100L415 430M835 100L585 430M145 900L415 570M855 900L585 570"/><path d="M250 100L440 430M750 100L560 430M250 900L440 570M750 900L560 570"/><path d="M0 285H360M640 285H1000M0 715H360M640 715H1000"/><path d="M0 390H405M595 390H1000M0 610H405M595 610H1000"/></g><g><rect class="portal-rack" x="20" y="90" width="150" height="820"/><rect class="portal-rack" x="830" y="90" width="150" height="820"/><rect class="portal-rack" x="205" y="210" width="125" height="580"/><rect class="portal-rack" x="670" y="210" width="125" height="580"/></g><g><rect class="portal-light" x="72" y="180" width="30" height="30"/><rect class="portal-light" x="112" y="360" width="22" height="22"/><rect class="portal-light" x="60" y="675" width="38" height="38"/><rect class="portal-light" x="898" y="180" width="30" height="30"/><rect class="portal-light" x="866" y="360" width="22" height="22"/><rect class="portal-light" x="902" y="675" width="38" height="38"/><rect class="portal-light" x="250" y="320" width="24" height="24"/><rect class="portal-light" x="290" y="520" width="32" height="32"/><rect class="portal-light" x="726" y="320" width="24" height="24"/><rect class="portal-light" x="678" y="520" width="32" height="32"/><rect class="portal-light" x="405" y="385" width="18" height="18"/><rect class="portal-light" x="577" y="385" width="18" height="18"/><rect class="portal-light" x="390" y="605" width="22" height="22"/><rect class="portal-light" x="588" y="605" width="22" height="22"/></g><rect class="portal-target" x="462" y="462" width="76" height="76" rx="4"/></svg></div>`);
 const brains=this.getAttribute('focus-floor')==='brains';
 const agents=this.getAttribute('focus-floor')==='agents';
 const continueTo=this.getAttribute('continue-to');
@@ -153,32 +157,36 @@ const p=Math.min(1,Math.max(0,(top-r.top)/Math.max(1,r.height-innerHeight+top)))
 const smooth=value=>{const x=Math.min(1,Math.max(0,value));return x*x*(3-2*x);};
 const titleOne=1-smooth((p-.1)/.06);
 const titleTwo=smooth((p-.13)/.06)*(1-smooth((p-.3)/.06));
+const portalOpacity=smooth((p-.52)/.08);
+const portalZoom=smooth((p-.53)/.16);
 const chipOpacity=smooth((p-.68)/.1);
 const energy=smooth((p-.8)/.18);
 section.style.setProperty('--title-one',titleOne.toFixed(3));
 section.style.setProperty('--title-one-y',`${(-24*smooth((p-.1)/.06)).toFixed(1)}px`);
 section.style.setProperty('--title-two',titleTwo.toFixed(3));
 section.style.setProperty('--title-two-y',`${(24*(1-smooth((p-.13)/.06))-24*smooth((p-.3)/.06)).toFixed(1)}px`);
-section.style.setProperty('--art-opacity',((.38+.62*smooth((p-.34)/.1))*(1-chipOpacity)).toFixed(3));
+section.style.setProperty('--art-opacity',((.38+.62*smooth((p-.34)/.1))*(1-portalOpacity)).toFixed(3));
+section.style.setProperty('--portal-opacity',(portalOpacity*(1-chipOpacity)).toFixed(3));
+section.style.setProperty('--portal-scale',(1+18*portalZoom).toFixed(3));
 section.style.setProperty('--chip-opacity',chipOpacity.toFixed(3));
 section.style.setProperty('--chip-brightness',(2.2-1.2*chipOpacity).toFixed(3));
 section.style.setProperty('--chip-blur',`${(8*(1-chipOpacity)).toFixed(2)}px`);
 section.style.setProperty('--chip-scale',(1+.08*energy).toFixed(3));
 section.style.setProperty('--energy-opacity',energy.toFixed(3));
 section.style.setProperty('--energy-progress',energy.toFixed(3));
-const q=Math.min(1,Math.max(0,(p-.4)/.31)),e=q*q*(3-2*q);
+const q=Math.min(1,Math.max(0,(p-.4)/.18)),e=q*q*(3-2*q);
 const viewport=root.querySelector('.viewport');
 const baseWidth=innerWidth<=760?viewport.clientWidth:Math.max(viewport.clientWidth,viewport.clientHeight*1.5);
 const baseHeight=baseWidth/1.5;
 // Portrait starts full-screen, then zooms into the selected floor.
 if(innerWidth<=760){
-const scale=1+29*e,height=viewport.clientHeight*scale;
+const scale=1+7*e,height=viewport.clientHeight*scale;
 const center=.5+((agents?.19:brains?.5:.835)-.5)*e;
 camera.style.width=`${viewport.clientWidth*scale}px`;
 camera.style.height=`${height}px`;
 camera.style.top=`${height*(.5-center)}px`;
 }else{
-const scale=1+41*e;
+const scale=1+7*e;
 camera.style.width=`${baseWidth*scale}px`;
 camera.style.height=`${baseHeight*scale}px`;
 camera.style.top=`${agents?baseHeight*.56*e:-baseHeight*(brains?.04*e:.3*(scale-1)+.29*e)}px`;

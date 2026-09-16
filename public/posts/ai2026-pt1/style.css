@@ -247,7 +247,7 @@ header .brand{font:500 18px/1.2 -apple-system,BlinkMacSystemFont,"Segoe UI",sans
 .network-demo svg{display:block;width:100%;height:auto;overflow:visible}
 .network-demo svg text{font-family:inherit;fill:#e6edf3;stroke:none;paint-order:normal}
 
-@media(max-width:760px){.network-demo svg text{font-size:22px!important}}
+@media(max-width:760px){.network-demo svg text{font-size:16px!important}}
 
 /* Clip the native X iframe so its white canvas cannot peek around the card. */
 .tweet-inline .twitter-tweet-rendered{margin:0!important;border-radius:16px;overflow:hidden;background:#15202b}
@@ -303,3 +303,8 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 .lede-jensen{position:fixed;inset:0;margin:auto;width:auto;height:auto;max-width:min(52vw,430px);max-height:72svh;opacity:0;transition:opacity .5s ease;pointer-events:none;z-index:8}
 .lede-jensen.is-on{opacity:.5}
 @media(prefers-reduced-motion:reduce){.lede-jensen{display:none}}
+
+/* Codex: electricity overlay on the city scene. */
+.city-electricity{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;overflow:hidden}
+.city-electricity .electric-trace{fill:none;stroke:#72efff;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:.055 .945;filter:url(#city-electric-glow)}
+.city-electricity .electric-spark{fill:#e9fdff;stroke:#72efff;stroke-width:1.5;filter:url(#city-electric-glow)}

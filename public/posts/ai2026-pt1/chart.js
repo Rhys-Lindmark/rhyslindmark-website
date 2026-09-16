@@ -5,8 +5,7 @@ const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
 let data,all=reduce.matches,raf=0;const renderers=new Map();
 // Header visibility never changes scene dimensions or scroll progress.
 const header=document.querySelector('header');
-/* The bar belongs to the top of the page, not to the scroll direction: it shows
-   only while the reader is at the very top, and stays out of the way otherwise. */
+/* The bar belongs to the top of the page, not to the scroll direction. */
 function updateHeader(){
  document.body.classList.toggle('header-hidden',Math.max(0,window.scrollY)>header.offsetHeight);
 }
@@ -43,8 +42,8 @@ function drawLines(scene){const {svg,W,H,small}=svgBase(scene),investment=scene.
  for(const s of series){node('path',{d:linePath(s.points,a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2,'stroke-dasharray':s.forecast?(s.name.includes('bull')?'2 5':'7 4'):'none','stroke-linejoin':'round'},c.g);}
  if(!investment){series.forEach((s,i)=>{node('path',{d:linePath(wobbleProjection(s.projection,4231+i*5407),a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2,'stroke-linejoin':'round'},c.g);});const x=a.x(2022+10/12);node('line',{x1:x,x2:x,y1:a.m.t,y2:a.m.t+a.ih,stroke:'#9db2c3','stroke-width':1,'stroke-dasharray':'3 5'},c.g);}
  const cursor=node('line',{y1:a.m.t,y2:a.m.t+a.ih,stroke:'#90abc0','stroke-dasharray':'2 5',opacity:.6},svg);legend(scene,series);
- /* A series scene holds the plot completely empty until its card has landed; the .035
-    seed that normally anchors the reveal would otherwise draw the first years at once. */
+ /* A series scene holds the plot empty until its card has landed; the .035 seed that
+    normally anchors the reveal would otherwise draw the first years at once. */
  const gated=!!scene.dataset.cardSeries;
  return p=>{const idle=gated&&p<=0,t=clamp((gated?0:.035)+p/.84),year=lerp(...xd,t),x=a.x(year);c.rect.setAttribute('width',idle?0:Math.min(a.iw,x-a.m.l+1));cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);cursor.style.opacity=idle||t===1?0:.6;revealLegend(scene,i=>!idle&&year>=(series[i]?.points[0][0]??series[0].projection[0][0]));scene.querySelector('.readout').textContent=idle?'':String(Math.floor(year));};}
 function drawChips(scene){const {svg,W,H,small}=svgBase(scene),q=data.chips.quarters,groups=data.chips.groups,a=axes(svg,W,H,{xd:[0,q.length],yd:[0,26],xt:small?[.5,4.5,8.5]:q.map((_,i)=>i+.5),yt:[0,5,10,15,20,25],xfmt:v=>q[Math.floor(v)].label,yfmt:v=>`${v}M`,yTitle:'CUMULATIVE COMPUTE · MILLION H100e',xTitle:'QUARTER'}),c=clipping(svg,'clip-chips',a.m,a.ih),pat=node('pattern',{id:'incomplete',width:6,height:6,patternUnits:'userSpaceOnUse',patternTransform:'rotate(35)'},c.defs);node('line',{x1:0,x2:0,y1:0,y2:6,stroke:'#cbdce8','stroke-width':2,opacity:.55},pat);
@@ -129,12 +128,40 @@ function passageStage(scene,p){
 function setupPhoto(scene){
  const img=scene.querySelector('img'),frame=scene.querySelector('.photo-frame');
  img.addEventListener('load',request);new ResizeObserver(request).observe(frame);
- let strip;
+ let strip,electricity;
  if(scene.dataset.kind==='panorama'){
   strip=document.createElement('div');strip.className='panorama-strip';frame.appendChild(strip);strip.appendChild(img);
   for(let i=1;i<10;i++){const copy=img.cloneNode(true);copy.alt='';copy.setAttribute('aria-hidden','true');strip.appendChild(copy);}
  }
- return p=>{passageStage(scene,p);if(!strip)return;
+ if(scene.dataset.kind==='city'){
+  const overlay=node('svg',{class:'city-electricity',viewBox:'0 0 1672 941',preserveAspectRatio:'xMidYMid slice','aria-hidden':'true'},frame);
+  const defs=node('defs',{},overlay),filter=node('filter',{id:'city-electric-glow',x:'-50%',y:'-50%',width:'200%',height:'200%'},defs);
+  node('feGaussianBlur',{stdDeviation:4,result:'blur'},filter);const merge=node('feMerge',{},filter);node('feMergeNode',{in:'blur'},merge);node('feMergeNode',{in:'SourceGraphic'},merge);
+  const paths=[
+   'M1311 78 C1430 83 1550 91 1672 104','M1310 106 C1435 110 1555 117 1672 128',
+   'M1284 170 C1412 178 1543 197 1672 214','M1282 192 C1412 204 1545 217 1672 229',
+   'M1300 280 C1422 295 1549 315 1672 337','M1298 307 C1423 322 1552 339 1672 354',
+   'M1118 184 C1060 252 1012 316 961 369','M1118 202 C1057 271 1007 338 944 405',
+   'M1096 283 C1036 330 971 382 912 449','M1091 315 C1027 357 970 404 912 474'
+  ].map((d,i)=>{
+   const trace=node('path',{d,class:'electric-trace',pathLength:1,'vector-effect':'non-scaling-stroke'},overlay);
+   const spark=node('circle',{r:i<6?3.1:2.7,class:'electric-spark','vector-effect':'non-scaling-stroke'},overlay);
+   return {trace,spark,length:0,delay:(i%5)*.065+Math.floor(i/5)*.025};
+  });
+  const measure=()=>paths.forEach(item=>item.length=item.trace.getTotalLength());
+  img.complete?requestAnimationFrame(measure):img.addEventListener('load',()=>requestAnimationFrame(measure),{once:true});
+  electricity=p=>{
+   const active=all?0:clamp(p/.11)*clamp((1-p)/.11);
+   paths.forEach((item,i)=>{
+    if(!item.length)return;
+    const phase=(p*1.3+item.delay)%1,point=item.trace.getPointAtLength(item.length*phase),pulse=Math.sin(Math.PI*phase)*active;
+    item.trace.style.strokeDashoffset=String(-phase);
+    item.trace.style.opacity=String(.16*pulse);
+    item.spark.setAttribute('cx',point.x);item.spark.setAttribute('cy',point.y);item.spark.style.opacity=String(.92*pulse);
+   });
+  };
+ }
+ return p=>{passageStage(scene,p);electricity?.(p);if(!strip)return;
   const width=frame.clientWidth,height=frame.clientHeight,ratio=(img.naturalWidth||1920)/(img.naturalHeight||1080),tileWidth=Math.max(width,height*ratio)*1.25,total=tileWidth*10;
   strip.style.width=all?'100%':`${total}px`;
   strip.style.transform=all?'none':`translateX(${-clamp(p)*Math.max(0,total-width)}px)`;
@@ -250,11 +277,7 @@ function setSlideAddress(id){
 function followSlideLink(){
  const hash=window.location.hash.match(/^#(?:chart-)?(\d+)$/),query=new URL(window.location.href).searchParams.get('slide');
  const raw=hash?hash[1]:query,id=/^\d+$/.test(raw||'')?String(Number(raw)):null,passage=id&&document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');
- slideLinksReady=true;
- /* The lede is not a .scene; it is a plain block, so just park at its top. */
- const block=!scene&&passage?.closest('.lede');
- if(block){setSlideAddress(id);window.scrollTo({top:block.offsetTop,behavior:'instant'});return;}
- if(!scene)return;
+ slideLinksReady=true;if(!scene)return;
  setSlideAddress(id);
  const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=steps.indexOf(id),progress=scene.dataset.kind==='revenue'?(id==='7'?.796:.264):scene.dataset.kind==='eras'?.088:['fulltext','chapter','statement'].includes(scene.dataset.kind)?0:(Math.max(0,index)+.4)/steps.length;
  const travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight),top=window.scrollY+scene.getBoundingClientRect().top+(all?0:progress*travel);
