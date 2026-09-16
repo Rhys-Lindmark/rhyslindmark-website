@@ -67,7 +67,8 @@ if(jensen&&slideOne&&!reduce.matches){
   const through=Math.min(1,Math.max(0,-r.top/travel));
   // An apparition: nothing at first, up to half opacity near the end of the slide,
   // then gone again before the next one arrives.
-  const k=Math.min(1,Math.max(0,(through-.42)/.58));
+  // The text clears early, then he has the black to himself for most of the slide.
+  const k=Math.min(1,Math.max(0,(through-.15)/.85));
   const env=k<.62?k/.62:1-(k-.62)/.38;
   jensen.style.opacity=String(.5*Math.max(0,env));
  };
