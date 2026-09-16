@@ -58,14 +58,14 @@ function create(host,index){
  const drawing=el('g',{'aria-hidden':'true'},svg);
  const counts=[3,5,4,3],xs=[54,250,450,646];
  const layers=counts.map((count,layer)=>Array.from({length:count},(_,node)=>({x:xs[layer],y:24+node*(144/(count-1)),layer,node})));
- const edgeLayer=el('g',{},drawing);
+ const edgeLayer=el('g',{},drawing),signalLayer=mode==='training'?el('g',{},drawing):null;
  const edges=[];
  for(let layer=0;layer<layers.length-1;layer++)for(const from of layers[layer])for(const to of layers[layer+1]){
   const edgeIndex=edges.length,weight=initialWeight(edgeIndex);
   const line=el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.edge,'stroke-width':lineWidth(weight),'stroke-linecap':'round',opacity:.14+weight*.62},edgeLayer);
-  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line});
+  const signalLine=signalLayer?el('line',{x1:from.x,y1:from.y,x2:to.x,y2:to.y,stroke:COLORS.forward,'stroke-width':2,'stroke-linecap':'round','stroke-dasharray':'9 10',visibility:'hidden'},signalLayer):null;
+  edges.push({from,to,layer,index:edgeIndex,baseWeight:weight,weight,line,signalLine});
  }
- const trainingSweep=mode==='training'?el('line',{x1:54,x2:54,y1:12,y2:180,stroke:COLORS.forward,'stroke-width':4,opacity:.95,visibility:'hidden',filter:`url(#network-glow-${index})`},drawing):null;
  const nodes=layers.map(layer=>layer.map(point=>el('circle',{cx:point.x,cy:point.y,r:9,fill:COLORS.bg,stroke:COLORS.muted,'stroke-width':1.5},drawing)));
  const pulses=mode==='training'?[]:edges.map(edge=>[el('circle',{r:2.3+edge.weight*2.2,fill:COLORS.forward,visibility:'hidden'},drawing)]);
 
@@ -119,12 +119,6 @@ function create(host,index){
   const backwards=phase==='backward',signalColor=backwards?COLORS.backward:COLORS.forward,smoothProgress=ease(progress);
   const layerPosition=backwards?(1-smoothProgress)*3:smoothProgress*3;
   setNodes(mode==='training'||phase==='update'?-1:Math.round(layerPosition),signalColor,1-Math.abs(Math.round(layerPosition)-layerPosition));
-  if(trainingSweep){
-   const show=phase!=='update',x=backwards?646-592*smoothProgress:54+592*smoothProgress;
-   trainingSweep.setAttribute('visibility',show?'visible':'hidden');
-   trainingSweep.setAttribute('x1',x);trainingSweep.setAttribute('x2',x);
-   trainingSweep.setAttribute('stroke',signalColor);
-  }
   hidePulses();
 
   edges.forEach((edge,edgeIndex)=>{
@@ -134,6 +128,14 @@ function create(host,index){
    edge.line.setAttribute('stroke-width',lineWidth(edge.weight));
    edge.line.setAttribute('opacity',.14+edge.weight*.7);
    edge.line.setAttribute('stroke',COLORS.edge);
+   if(edge.signalLine){
+    const strength=clamp(1-Math.abs(layerPosition-(edge.layer+.5))/.85),show=phase!=='update'&&strength>.02;
+    edge.signalLine.setAttribute('visibility',show?'visible':'hidden');
+    edge.signalLine.setAttribute('stroke',signalColor);
+    edge.signalLine.setAttribute('stroke-width',Math.max(1.8,lineWidth(edge.weight)*.55+1.4));
+    edge.signalLine.setAttribute('stroke-dashoffset',(backwards?1:-1)*smoothProgress*42);
+    edge.signalLine.setAttribute('opacity',.18+strength*.82);
+   }
 
    if(mode!=='training'&&phase!=='update'){
     const local=backwards?(1-smoothProgress)*3-edge.layer:smoothProgress*3-edge.layer;
