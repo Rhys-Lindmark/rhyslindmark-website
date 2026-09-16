@@ -5,13 +5,24 @@ const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
 let data,all=reduce.matches,raf=0;const renderers=new Map();
 // Header visibility never changes scene dimensions or scroll progress.
 const header=document.querySelector('header');
-/* The bar belongs to the top of the page, not to the scroll direction. */
+// Start hidden, including restored scroll positions; reveal only on upward travel.
+let headerScrollY=Math.max(0,window.scrollY);
+function setHeaderVisible(visible){
+ document.body.classList.toggle('header-revealed',visible);
+ document.body.classList.toggle('header-hidden',!visible);
+}
+function resetHeader(){headerScrollY=Math.max(0,window.scrollY);setHeaderVisible(false);}
 function updateHeader(){
- document.body.classList.toggle('header-hidden',Math.max(0,window.scrollY)>header.offsetHeight);
+ const y=Math.max(0,Math.min(window.scrollY,document.documentElement.scrollHeight-innerHeight));
+ const delta=y-headerScrollY;
+ if(Math.abs(delta)<3)return;
+ setHeaderVisible(delta<0);
+ headerScrollY=y;
 }
 window.addEventListener('scroll',updateHeader,{passive:true});
-header.addEventListener('focusin',()=>document.body.classList.remove('header-hidden'));
-updateHeader();
+window.addEventListener('pageshow',resetHeader);
+header.addEventListener('focusin',()=>setHeaderVisible(true));
+resetHeader();
 const colors={'AI supply chain':'#35e7ff','GAFA':'#ffe84a','Wintel':'#b985ff','IBM':'#ff70de','Model labs':'#63ff91','Apps':'#ffe84a','Foundation models':'#39ffc1','Hosting':'#b985ff','Chips':'#63ff91'};
 function node(tag,attrs={},parent,text){const n=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;parent.appendChild(n);return n;}
 function label(parent,x,y,text,anchor='start',cls=''){return node('text',{x,y,'text-anchor':anchor,class:cls},parent,text);}
