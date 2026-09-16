@@ -37,16 +37,10 @@ const mobileStyle=document.createElement('style');mobileStyle.textContent=`
 .camera{width:100%;height:100%;max-width:none;aspect-ratio:auto;overflow:hidden;will-change:width,height,top}
 .camera picture{display:block;width:100%;height:100%}.camera img{object-fit:cover}.camera svg{overflow:hidden}
 .controls{position:absolute;left:0;right:0;bottom:0;z-index:3;background:linear-gradient(transparent,#0b1015aa)}
-.workpiece{filter:drop-shadow(0 0 5px #8df5e2);animation:transfer-block 5s cubic-bezier(.65,0,.35,1) infinite}
-.factory-arm{fill:none;stroke:#bdeee8;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 3px #72d8cf);animation:arm-work 5s ease-in-out infinite;transform-box:fill-box}
-.factory-arm.right{animation-delay:-2.5s}.reaction-bubble{fill:#b9fff0;filter:drop-shadow(0 0 3px #67e6d2);animation:reaction-rise 2.1s ease-out infinite;animation-delay:var(--delay)}
-.city-parallax{animation:city-pass 4.8s linear infinite}.road-dash{animation:road-pass 1.15s linear infinite}.dash-glow{fill:#b8fff0;filter:drop-shadow(0 0 4px #63e8d0);animation:dash-pulse 1.8s ease-in-out infinite}
+.reaction-bubble{fill:#b9fff0;filter:drop-shadow(0 0 3px #67e6d2);animation:reaction-rise 2.1s ease-out infinite;animation-delay:var(--delay)}
+.dash-glow{fill:#b8fff0;filter:drop-shadow(0 0 4px #63e8d0);animation:dash-pulse 1.8s ease-in-out infinite}
 .art-line{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:180;filter:drop-shadow(0 0 4px currentColor);animation:art-draw 5.4s ease-in-out infinite;animation-delay:var(--delay)}.art-particle{fill:currentColor;filter:drop-shadow(0 0 5px currentColor);animation:art-spark 3.2s ease-in-out infinite;animation-delay:var(--delay)}
-@keyframes transfer-block{0%,8%{transform:translateX(0)}38%,58%{transform:translateX(136px)}88%,100%{transform:translateX(0)}}
-@keyframes arm-work{0%,12%,48%,62%,100%{transform:rotate(0)}25%,35%{transform:rotate(-12deg)}}
-@keyframes reaction-rise{0%{opacity:0;transform:translateY(5px) scale(.6)}25%{opacity:.9}100%{opacity:0;transform:translateY(-21px) scale(1.2)}}
-@keyframes city-pass{from{transform:translateX(0)}to{transform:translateX(-48px)}}
-@keyframes road-pass{from{transform:translateY(-20px)}to{transform:translateY(28px)}}
+@keyframes reaction-rise{0%{opacity:0;transform:translateY(5px) scale(.6)}25%{opacity:.9}100%{opacity:0;transform:translateY(-13px) scale(1)}}
 @keyframes dash-pulse{50%{opacity:.35}}
 @keyframes art-draw{0%{stroke-dashoffset:180;opacity:0}38%,68%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:-180;opacity:0}}
 @keyframes art-spark{0%,100%{opacity:.12;transform:scale(.55)}45%{opacity:1;transform:scale(1.7)}}
@@ -63,24 +57,29 @@ const mobileStyle=document.createElement('style');mobileStyle.textContent=`
 root.querySelectorAll('.paint-brush,.paint-stroke,.water-stream,.splash,.music-note,.lab-frame,.lab-head').forEach(node=>node.remove());
 const heroSvg=root.querySelector('.camera>svg');
 heroSvg.insertAdjacentHTML('beforeend',`<defs>
- <clipPath id="car-windshield"><path d="M923 199H1143V276H923Z"/></clipPath>
+ <clipPath id="car-windshield"><path d="M932 211Q932 199 947 199H1112Q1125 199 1129 215L1140 255L1107 261L1105 277L1042 280L1016 274L989 270L949 279L947 258H932Z"/></clipPath>
  <clipPath id="art-canvas"><path d="M1212 190H1377V335H1212Z"/></clipPath>
 </defs>
 <g aria-hidden="true">
  <g class="factory-motion">
-  <rect x="251" y="291" width="29" height="28" rx="3" fill="#0c202c" opacity=".97"/>
-  <path class="factory-arm" d="M207 279L225 293L239 301"/><circle cx="207" cy="279" r="3.2" fill="#bdeee8"/>
-  <path class="factory-arm right" d="M306 278L291 293L278 302"/><circle cx="306" cy="278" r="3.2" fill="#bdeee8"/>
-  <g class="workpiece"><rect x="179" y="295" width="16" height="16" rx="2" fill="#aaf8ee" opacity=".82"/><path d="M181 298h12v10h-12z" fill="#4fa9bd" opacity=".58"/></g>
+  <!-- Opaque work bay replaces the painted arms so no stationary duplicates remain. -->
+  <path d="M171 250H349V315H171Z" fill="#102431"/>
+  <path d="M174 253H347M174 312H347" stroke="#304956" stroke-width="2"/>
+  <g class="mechanism" stroke-linecap="round" stroke-linejoin="round"></g>
+  <g class="carried-box"><rect x="-10" y="-10" width="20" height="20" rx="2" fill="#438da0" stroke="#b7fff4" stroke-width="2"/><rect x="-6" y="-6" width="12" height="12" rx="1" fill="#84e3dd"/></g>
  </g>
- <g class="science-motion">
-  <circle class="reaction-bubble" style="--delay:0s" cx="780" cy="289" r="2.8"/>
-  <circle class="reaction-bubble" style="--delay:-.7s" cx="790" cy="293" r="2"/>
-  <circle class="reaction-bubble" style="--delay:-1.4s" cx="774" cy="296" r="1.7"/>
+ <defs><clipPath id="flask-liquid"><path d="M775 292L770 307Q779 311 787 307L782 292Z"/></clipPath></defs>
+ <g class="science-motion" clip-path="url(#flask-liquid)">
+  <circle class="reaction-bubble" style="--delay:0s;transform-origin:775px 305px" cx="775" cy="305" r="1"/>
+  <circle class="reaction-bubble" style="--delay:-.7s;transform-origin:780px 306px" cx="780" cy="306" r="1.3"/>
+  <circle class="reaction-bubble" style="--delay:-1.4s;transform-origin:783px 305px" cx="783" cy="305" r=".8"/>
  </g>
- <g clip-path="url(#car-windshield)" fill="none" stroke="#8dd9e9" stroke-width="1.3" opacity=".68">
-  <g class="city-parallax"><path d="M930 251v-25h12v25m6 0v-39h15v39m8 0v-30h12v30m9 0v-45h17v45m8 0v-28h12v28m10 0v-36h16v36m8 0v-24h12v24m7 0v-42h14v42m8 0v-31h16v31"/><path d="M1140 251v-28h12v28m7 0v-39h15v39m8 0v-24h12v24"/></g>
-  <g class="road-dash" stroke="#b7fff1" stroke-width="2"><path d="M1025 237l-4 14m20-14 4 14M1017 261l-6 20m42-20 6 20"/></g>
+ <g clip-path="url(#car-windshield)" class="drive-scene">
+  <path d="M923 199H1143V280H923Z" fill="#102532"/>
+  <ellipse cx="1033" cy="260" rx="55" ry="20" fill="#23404d"/>
+  <path d="M1028 257L931 280H1135L1038 257Z" fill="#263d49"/>
+  <path d="M1027 258L929 280M1039 258L1137 280" stroke="#7fadb4" stroke-width="1"/>
+  <g class="city-depth"></g><g class="lane-depth" fill="#c5e8d9"></g>
  </g>
  <rect class="dash-glow" x="1024" y="283" width="39" height="2.5" rx="1.2"/>
  <g clip-path="url(#art-canvas)" stroke-width="3.4">
@@ -91,6 +90,60 @@ heroSvg.insertAdjacentHTML('beforeend',`<defs>
   <g style="color:#fff4a7"><circle class="art-particle" style="--delay:0s" cx="1244" cy="244" r="2.3"/><circle class="art-particle" style="--delay:-1s" cx="1307" cy="205" r="2"/><circle class="art-particle" style="--delay:-2s" cx="1352" cy="279" r="2.6"/></g>
  </g>
 </g>`);
+// A shared clock keeps both grippers attached to the same box. Two-bone inverse
+// kinematics preserves link lengths while the fixed shoulder joints stay bolted down.
+const mechanism=root.querySelector('.mechanism'),box=root.querySelector('.carried-box');
+const ns='http://www.w3.org/2000/svg';
+const svgNode=(tag,attrs,parent)=>{const n=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attrs))n.setAttribute(k,v);parent.append(n);return n;};
+const arms=[188,338].map((x,i)=>{
+ const paths=[['#07121b',13],['#a0bbc9',9],['#e1eef1',3]].map(([stroke,width])=>svgNode('path',{fill:'none',stroke,'stroke-width':width},mechanism));
+ const joints=[0,1,2].map(()=>svgNode('circle',{r:4.5,fill:'#233e50',stroke:'#c1d6df','stroke-width':1.7},mechanism));
+ const claw=svgNode('path',{fill:'none',stroke:'#c4e8ec','stroke-width':2},mechanism);
+ svgNode('path',{d:`M${x-11} 314h22l-3-9h-16Z`,fill:'#7996a7',stroke:'#152c3c','stroke-width':2},mechanism);
+ return {x,side:i===0?-1:1,paths,joints,claw};
+});
+const city=root.querySelector('.city-depth'),lanes=root.querySelector('.lane-depth');
+const buildings=Array.from({length:20},(_,i)=>{
+ const group=svgNode('g',{},city);
+ return {i,side:i%2?-1:1,face:svgNode('path',{fill:i%3?'#234454':'#2b5060',stroke:'#527b89','stroke-width':.45},group),edge:svgNode('path',{fill:'#142f3f'},group),windows:svgNode('path',{fill:'none',stroke:'#a0d4d9','stroke-width':1},group),group};
+});
+const dashes=Array.from({length:16},()=>svgNode('path',{},lanes));
+const renderMotion=t=>{
+ const cycle=(t/6)%1,travel=(1-Math.cos(cycle*Math.PI*2))/2;
+ const bx=251+24*travel,by=303-26*Math.sin(Math.PI*travel);
+ box.setAttribute('transform',`translate(${bx} ${by})`);
+ for(const arm of arms){
+  const sx=arm.x,sy=303,tx=bx+arm.side*12,ty=by;
+  const dx=tx-sx,dy=ty-sy,d=Math.hypot(dx,dy),length=49;
+  const h=Math.sqrt(Math.max(0,length*length-d*d/4));
+  const ex=(sx+tx)/2+arm.side*(-dy/d)*h,ey=(sy+ty)/2+arm.side*(dx/d)*h;
+  const path=`M${sx} ${sy}L${ex} ${ey}L${tx} ${ty}`;
+  arm.paths.forEach(p=>p.setAttribute('d',path));
+  [[sx,sy],[ex,ey],[tx,ty]].forEach(([x,y],i)=>{arm.joints[i].setAttribute('cx',x);arm.joints[i].setAttribute('cy',y);});
+  arm.claw.setAttribute('d',`M${tx} ${ty-5}h${-arm.side*3}v10h${arm.side*3}`);
+ }
+ // World-space depth decreases at constant speed; perspective supplies acceleration.
+ const project=(x,y,z)=>[1033+x*65/z,259-y*65/z];
+ const polygon=points=>'M'+points.map(p=>p.join(',')).join('L')+'Z';
+ buildings.forEach(b=>{
+  const z=1+((b.i>>1)*1.25+12.5-(t*1.6)%12.5)%12.5;
+  const x=b.side*(2.2+(b.i%3)*.25),w=b.side*(.8+(b.i%2)*.25),h=2.4+(b.i%4)*.65;
+  b.face.setAttribute('d',polygon([[x,0,z],[x+w,0,z],[x+w,h,z],[x,h,z]].map(p=>project(...p))));
+  b.edge.setAttribute('d',polygon([[x,0,z],[x,0,z+1],[x,h,z+1],[x,h,z]].map(p=>project(...p))));
+  let windows='';for(let r=1;r<7;r++)for(let c=1;c<3;c++){
+   const p=project(x+w*c/3,h*r/8,z),q=project(x+w*(c/3+.12),h*r/8,z);windows+=`M${p}L${q}`;
+  }b.windows.setAttribute('d',windows);b.windows.setAttribute('stroke-width',Math.min(2,1.8/z));
+  b.group.style.opacity=Math.min(1,(13.5-z)*2);b.z=z;
+ });
+ buildings.slice().sort((a,b)=>b.z-a.z).forEach(b=>city.append(b.group));
+ dashes.forEach((p,i)=>{const z=.7+((i>>1)*1.5+12-(t*1.6)%12)%12,x=i%2?-.65:.65;
+ p.setAttribute('d',polygon([[x-.025,0,z],[x+.025,0,z],[x+.025,0,z+.5],[x-.025,0,z+.5]].map(v=>project(v[0],-.32,v[2]))));});
+};
+let motionFrame=0,motionTime=0,lastMotion=0;
+const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+const animateMotion=now=>{motionFrame=0;if(document.hidden||this.hasAttribute('data-offscreen')||motionPreference.matches){lastMotion=0;return;}if(lastMotion)motionTime+=Math.min((now-lastMotion)/1000,.05);lastMotion=now;renderMotion(motionTime);motionFrame=requestAnimationFrame(animateMotion);};
+const resumeMotion=()=>{if(!motionFrame&&!motionPreference.matches)motionFrame=requestAnimationFrame(animateMotion);};
+renderMotion(0);resumeMotion();document.addEventListener('visibilitychange',resumeMotion);motionPreference.addEventListener('change',resumeMotion);
 const camera=root.querySelector('.camera'),section=root.querySelector('.section');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
 let raf=0;
@@ -133,14 +186,14 @@ camera.style.top=`${agents?baseHeight*.56*e:-baseHeight*(brains?.04*e:.3*(scale-
 };
 const update=()=>{if(!raf)raf=requestAnimationFrame(paint);};
 window.addEventListener('scroll',update,{passive:true});window.addEventListener('resize',update,{passive:true});
-const observer=new IntersectionObserver(entries=>{this.toggleAttribute('data-offscreen',!entries[0].isIntersecting);},{threshold:0});observer.observe(this);
+const observer=new IntersectionObserver(entries=>{this.toggleAttribute('data-offscreen',!entries[0].isIntersecting);if(entries[0].isIntersecting)resumeMotion();},{threshold:0});observer.observe(this);
 const resize=new ResizeObserver(update);resize.observe(this);img.addEventListener('load',update);update();
 let entranceRaf=0;
 const navigation=performance.getEntriesByType('navigation')[0];
 if(this.hasAttribute('auto-scroll')&&!location.hash&&!new URLSearchParams(location.search).has('slide')&&navigation?.type!=='back_forward'&&scrollY<2){
   entranceRaf=requestAnimationFrame(()=>{entranceRaf=requestAnimationFrame(()=>{if(scrollY<2)scrollTo(0,Math.round(this.getBoundingClientRect().top+scrollY));});});
 }
-this.cleanup=()=>{removeEventListener('scroll',update);removeEventListener('resize',update);observer.disconnect();resize.disconnect();cancelAnimationFrame(raf);cancelAnimationFrame(entranceRaf);};
+this.cleanup=()=>{cancelAnimationFrame(motionFrame);document.removeEventListener('visibilitychange',resumeMotion);motionPreference.removeEventListener('change',resumeMotion);removeEventListener('scroll',update);removeEventListener('resize',update);observer.disconnect();resize.disconnect();cancelAnimationFrame(raf);cancelAnimationFrame(entranceRaf);};
 }
 disconnectedCallback(){this.cleanup?.();}
 }
