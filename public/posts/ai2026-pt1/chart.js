@@ -30,11 +30,21 @@ function axes(svg,W,H,{xd,yd,xt,yt,yfmt=v=>v,xfmt=v=>v,log=false,right=false,yTi
  verticalTitle(svg,small?5:12,m.t+ih/2,yTitle);label(svg,m.l+iw/2,H-3,xTitle,'middle','axis-title');return {m,iw,ih,x,y};}
 function clipping(svg,id,m,ih){const defs=node('defs',{},svg),cp=node('clipPath',{id},defs),rect=node('rect',{x:m.l,y:m.t,width:0,height:ih},cp),g=node('g',{'clip-path':`url(#${id})`},svg);return {rect,g,defs};}
 function linePath(points,x,y){return points.map((p,i)=>`${i?'L':'M'}${x(p[0])},${y(p[1])}`).join(' ');}
+/* Projections are stored as a straight two-point segment. Redraw them with the same
+   month-to-month texture as the measured series, pinning both ends to the real figures. */
+function wobbleProjection(pts,seed){
+ if(!pts||pts.length<2)return pts;
+ const [x0,y0]=pts[0],[x1,y1]=pts[pts.length-1],n=16,out=[];let r=seed>>>0;
+ const noise=()=>((r=r*1664525+1013904223>>>0)/4294967296)-.5;
+ for(let i=0;i<=n;i++){const t=i/n,taper=Math.sin(Math.PI*t);
+  out.push([x0+(x1-x0)*t,y0+(y1-y0)*t+taper*(noise()*1.9+Math.sin(t*8.4+seed%5)*.6)]);}
+ return out;
+}
 function drawLines(scene){const {svg,W,H,small}=svgBase(scene),investment=scene.dataset.kind==='investment',series=investment?data.investment:data.construction,xd=investment?[1852,2030]:[2014,2026.5834],yd=investment?[0,6]:[0,80];
  const a=axes(svg,W,H,{xd,yd,xt:investment?(small?[1852,1900,1950,2000,2030]:[1852,1880,1910,1940,1970,2000,2030]):(small?[2014,2018,2022,2026.5834]:[2014,2016,2018,2020,2022,2024,2026.5834]),yt:investment?[0,1,2,3,4,5,6]:[0,20,40,60,80],yfmt:v=>investment?`${v}%`:`$${v}B`,xfmt:v=>v===2026.5834?'Aug 2026':String(Math.floor(v)),yTitle:investment?'CAPITAL EXPENDITURE / US GDP':'CONSTRUCTION SPENDING · $B'}),c=clipping(svg,`clip-${scene.dataset.step}`,a.m,a.ih);
  if(investment){node('rect',{x:a.x(1996),y:a.m.t,width:a.x(2002)-a.x(1996),height:a.ih,fill:'#b2a3d8',opacity:.07},c.g);}
  for(const s of series){node('path',{d:linePath(s.points,a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2,'stroke-dasharray':s.forecast?(s.name.includes('bull')?'2 5':'7 4'):'none','stroke-linejoin':'round'},c.g);}
- if(!investment){for(const s of series){node('path',{d:linePath(s.projection,a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2},c.g);}const x=a.x(2022+10/12);node('line',{x1:x,x2:x,y1:a.m.t,y2:a.m.t+a.ih,stroke:'#9db2c3','stroke-width':1,'stroke-dasharray':'3 5'},c.g);label(c.g,x-5,a.m.t+18,'ChatGPT','end','series-label');}
+ if(!investment){series.forEach((s,i)=>{node('path',{d:linePath(wobbleProjection(s.projection,4231+i*5407),a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2,'stroke-linejoin':'round'},c.g);});const x=a.x(2022+10/12);node('line',{x1:x,x2:x,y1:a.m.t,y2:a.m.t+a.ih,stroke:'#9db2c3','stroke-width':1,'stroke-dasharray':'3 5'},c.g);}
  const cursor=node('line',{y1:a.m.t,y2:a.m.t+a.ih,stroke:'#90abc0','stroke-dasharray':'2 5',opacity:.6},svg);legend(scene,series);
  return p=>{const t=clamp(.035+p/.84),year=lerp(...xd,t),x=a.x(year);c.rect.setAttribute('width',Math.min(a.iw,x-a.m.l+1));cursor.setAttribute('x1',x);cursor.setAttribute('x2',x);cursor.style.opacity=t===1?0:.6;revealLegend(scene,i=>year>=(series[i]?.points[0][0]??series[0].projection[0][0]));scene.querySelector('.readout').textContent=String(Math.floor(year));};}
 function drawChips(scene){const {svg,W,H,small}=svgBase(scene),q=data.chips.quarters,groups=data.chips.groups,a=axes(svg,W,H,{xd:[0,q.length],yd:[0,26],xt:small?[.5,4.5,8.5]:q.map((_,i)=>i+.5),yt:[0,5,10,15,20,25],xfmt:v=>q[Math.floor(v)].label,yfmt:v=>`${v}M`,yTitle:'CUMULATIVE COMPUTE · MILLION H100e',xTitle:'QUARTER'}),c=clipping(svg,'clip-chips',a.m,a.ih),pat=node('pattern',{id:'incomplete',width:6,height:6,patternUnits:'userSpaceOnUse',patternTransform:'rotate(35)'},c.defs);node('line',{x1:0,x2:0,y1:0,y2:6,stroke:'#cbdce8','stroke-width':2,opacity:.55},pat);
@@ -254,7 +264,7 @@ function syncSlideAddress(){
  if(document.querySelector(`[data-passage="${id}"]`))setSlideAddress(id);
 }
 function sceneProgress(scene){if(all)return 1;const rect=scene.getBoundingClientRect(),sticky=scene.querySelector('.sticky');return clamp((-rect.top)/Math.max(1,scene.offsetHeight-sticky.offsetHeight));}
-function update(){raf=0;for(const scene of scenes){const p=sceneProgress(scene);renderers.get(scene)?.(p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight);card.style.setProperty('--card-shift',`${all?0:lerp(viewportHeight,-card.offsetHeight,clamp(cp))}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);}syncSlideAddress();}
+function update(){raf=0;for(const scene of scenes){const p=sceneProgress(scene);/* A "series" scene reads its card into place first, holds it there, and only then spends the rest of the scroll drawing the chart. */const series=Number(scene.dataset.cardSeries||0);renderers.get(scene)?.(series?clamp((p-series)/(1-series)):p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight);card.style.setProperty('--card-shift',`${all?0:series?lerp(viewportHeight,26,clamp(p/series)):lerp(viewportHeight,-card.offsetHeight,clamp(cp))}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);}syncSlideAddress();}
 function request(){if(!raf)raf=requestAnimationFrame(update);}
 function toggle(){document.body.classList.toggle('all-mode',all);request();}
 reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});

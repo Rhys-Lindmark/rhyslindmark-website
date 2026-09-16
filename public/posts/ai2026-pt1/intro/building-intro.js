@@ -209,15 +209,24 @@ const jar=(x,y,s,d,dim)=>`<g transform="translate(${x} ${y}) scale(${s})" opacit
 </g>
 </g>`;
 
-const shelfBank=(x0,x1,dim,scale)=>{
-  const rows=[512,580,648],out=[];
-  for(const y of rows){
-    out.push(`<rect x="${x0}" y="${y+44*scale}" width="${x1-x0}" height="6" fill="#2b3d4f"/>`);
-    const pitch=38*scale;
-    for(let x=x0+pitch*.6;x<x1-pitch*.3;x+=pitch){
-      out.push(jar(r2(x),y,scale,r2(-rand()*6),dim));
-    }
+// Shelf banks in one-point perspective, so the jars genuinely recede rather
+// than repeating. Depth 0 is the bank nearest the glass; 3 is deepest.
+const VP_B={x:768,y:590};
+const shelfBank=(side,d)=>{
+  const s=1/(1+d*.42),out=[];
+  const near=side<0?-644:104,far=side<0?-104:644;
+  const px=wx=>r2(VP_B.x+wx*s),py=wy=>r2(VP_B.y+wy*s);
+  const dim=r2(.34+ (3-d)/3*.66);
+  for(const wy of[-78,-10,58]){
+    const y=py(wy),x0=px(Math.min(near,far)),x1=px(Math.max(near,far));
+    out.push(`<rect x="${x0}" y="${r2(y+44*s)}" width="${r2(x1-x0)}" height="${r2(6*s)}" fill="#2b3d4f" opacity="${dim}"/>`);
+    const pitch=38*s;
+    for(let x=x0+pitch*.6;x<x1-pitch*.3;x+=pitch)out.push(jar(r2(x),y,r2(s),r2(-rand()*6),dim));
   }
+  // Uprights break the run of jars into bays.
+  const x0=px(Math.min(near,far)),x1=px(Math.max(near,far));
+  for(let k=0;k<=4;k++){const x=r2(x0+(x1-x0)*k/4);
+    out.push(`<rect x="${r2(x-2*s)}" y="${py(-88)}" width="${r2(4*s)}" height="${r2(158*s)}" fill="#22303d" opacity="${dim}"/>`);}
   return out.join('');
 };
 
@@ -227,10 +236,12 @@ const floorB=()=>{
     return{x:r2(768+Math.cos(a)*78*rr),y:r2(578+Math.sin(a)*58*rr)};});
   const edges=[];
   nodes.forEach((n,i)=>nodes.forEach((m,j)=>{if(j<=i)return;const d=Math.hypot(n.x-m.x,n.y-m.y);if(d<52)edges.push(`M${n.x} ${n.y}L${m.x} ${m.y}`);}));
+  const banks=[];
+  for(let d=3;d>=0;d--)for(const side of[-1,1])banks.push(shelfBank(side,d));
   return `
 <rect x="${X0}" y="${FLOOR_B[0]}" width="${X1-X0}" height="${FLOOR_B[1]-FLOOR_B[0]}" fill="url(#floorBWall)"/>
-${shelfBank(150,660,.42,.62)}${shelfBank(876,1386,.42,.62)}
-${shelfBank(124,664,1,1)}${shelfBank(872,1412,1,1)}
+<ellipse cx="768" cy="590" rx="300" ry="120" fill="#0a3a3f" opacity=".45"/>
+${banks.join('')}
 <rect x="${X0}" y="700" width="${X1-X0}" height="16" fill="#17242f"/>
 <path d="M${X0} 700.5H${X1}" stroke="#3a5164" stroke-width="1.4"/>
 <path d="M130 700V668h380v32M906 700V668h380v32" fill="none" stroke="#4a627a" stroke-width="1.6" opacity=".55"/>
