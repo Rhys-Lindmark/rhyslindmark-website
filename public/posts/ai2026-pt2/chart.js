@@ -46,18 +46,13 @@
       const defs=node('defs',{},svg);
       const grid=node('pattern',{id:'frontier-grid',width:44,height:44,patternUnits:'userSpaceOnUse'},defs);
       node('path',{d:'M 44 0 L 0 0 0 44',fill:'none',stroke:'#8f66db','stroke-opacity':.15,'stroke-width':.7},grid);
-      const gradient=node('radialGradient',{id:'frontier-red',gradientUnits:'userSpaceOnUse',cx,cy,r:Math.hypot(W,H)*.72},defs);
-      node('stop',{offset:'0%','stop-color':'#ff765f'},gradient);
-      node('stop',{offset:'42%','stop-color':'#f13661'},gradient);
-      node('stop',{offset:'100%','stop-color':'#ab164b'},gradient);
       const warp=node('filter',{id:'frontier-warp',x:'-20%',y:'-20%',width:'140%',height:'140%'},defs);
       node('feTurbulence',{type:'fractalNoise',baseFrequency:'.009 .021',numOctaves:2,seed:11,result:'noise'},warp);
       node('feDisplacementMap',{in:'SourceGraphic',in2:'noise',scale:Math.max(7,radius*.065),xChannelSelector:'R',yChannelSelector:'B'},warp);
       node('rect',{width:W,height:H,fill:'#080a10'},svg);
       node('rect',{width:W,height:H,fill:'url(#frontier-grid)'},svg);
-      const floodLayer=node('rect',{width:W,height:H,fill:'#ed7966',opacity:0},svg);
       const halo=node('circle',{cx,cy,r:radius,fill:'#91e9f2','fill-opacity':.035,stroke:'#94e7ef','stroke-width':1.5},svg);
-      const shape=node('path',{fill:'url(#frontier-red)',stroke:'#ff738a','stroke-width':1.5,'stroke-linejoin':'round',filter:'url(#frontier-warp)'},svg);
+      const shape=node('path',{fill:'#ed7966',stroke:'#ff8a78','stroke-width':1.5,'stroke-linejoin':'round',filter:'url(#frontier-warp)'},svg);
       const outline=node('circle',{cx,cy,r:radius,fill:'none',stroke:'#a4e8ef','stroke-width':1.5,'stroke-dasharray':'3 6'},svg);
       const ticks=node('g',{stroke:'#8ee8ed','stroke-opacity':.5},svg);
       for(let i=0;i<32;i++){const a=i*Math.PI/16;node('line',{x1:cx+Math.cos(a)*(radius+7),y1:cy+Math.sin(a)*(radius+7),x2:cx+Math.cos(a)*(radius+12),y2:cy+Math.sin(a)*(radius+12)},ticks);}
@@ -65,12 +60,11 @@
       const ai=label(svg,cx,cy+5,'AI');
       for(const el of [human,ai]){el.style.fontSize=small?'12px':'14px';el.style.letterSpacing='.12em';el.style.fill='#e6edf3';}
       ai.style.fontSize=small?'16px':'19px';ai.style.fontWeight='700';ai.style.paintOrder='stroke';ai.style.stroke='#941744';ai.style.strokeWidth='5px';
-      // End on an uninterrupted field of color, above the grid, labels, and tendrils.
-      svg.append(floodLayer);
       renderers.set(scene,p=>{
         const t=reduce.matches?.58:clamp((p-.06)/.88);
         const ease=v=>v*v*(3-2*v);
-        const coreGrowth=.16+.54*ease(clamp(t/.7));
+        const late=clamp((t-.45)/.55);
+        const coreGrowth=.16+.54*ease(clamp(t/.7))+Math.pow(late,3)*Math.hypot(W,H)/radius*4.5;
         let d='';
         for(let i=0;i<240;i++){
           const a=i/240*Math.PI*2;
@@ -80,8 +74,6 @@
           d+=`${i?'L':'M'}${(cx+Math.cos(a)*r).toFixed(2)},${(cy+Math.sin(a)*r).toFixed(2)}`;
         }
         shape.setAttribute('d',d+'Z');
-        const flood=ease(clamp((t-.6)/.4));
-        floodLayer.setAttribute('opacity',String(flood));
         const humanFade=1-clamp((t-.57)/.2),aiFade=1-clamp((t-.8)/.17);
         for(const el of [human,outline,ticks,halo])el.style.opacity=humanFade;
         ai.style.opacity=aiFade;
