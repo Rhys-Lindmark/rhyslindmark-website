@@ -55,7 +55,7 @@
       node('feDisplacementMap',{in:'SourceGraphic',in2:'noise',scale:Math.max(7,radius*.065),xChannelSelector:'R',yChannelSelector:'B'},warp);
       node('rect',{width:W,height:H,fill:'#080a10'},svg);
       node('rect',{width:W,height:H,fill:'url(#frontier-grid)'},svg);
-      const floodLayer=node('rect',{width:W,height:H,fill:'url(#frontier-red)',opacity:0},svg);
+      const floodLayer=node('rect',{width:W,height:H,fill:'#f13661',opacity:0},svg);
       const halo=node('circle',{cx,cy,r:radius,fill:'#91e9f2','fill-opacity':.035,stroke:'#94e7ef','stroke-width':1.5},svg);
       const tendrilLayer=node('g',{'stroke-linecap':'round','stroke-linejoin':'round',filter:'url(#frontier-warp)'},svg);
       let seed=0x8f31c4a7;
@@ -94,6 +94,8 @@
       const ai=label(svg,cx,cy+5,'AI');
       for(const el of [human,ai]){el.style.fontSize=small?'12px':'14px';el.style.letterSpacing='.12em';el.style.fill='#e6edf3';}
       ai.style.fontSize=small?'16px':'19px';ai.style.fontWeight='700';ai.style.paintOrder='stroke';ai.style.stroke='#941744';ai.style.strokeWidth='5px';
+      // End on an uninterrupted field of color, above the grid, labels, and tendrils.
+      svg.append(floodLayer);
       renderers.set(scene,p=>{
         const t=reduce.matches?.58:clamp((p-.06)/.88);
         const ease=v=>v*v*(3-2*v);
@@ -113,7 +115,7 @@
           path.setAttribute('stroke-dashoffset',String(1-local));
           path.setAttribute('stroke-width',String(width*(.72+local*.62+flood*(branch?.9:1.7))));
         });
-        floodLayer.setAttribute('opacity',String(flood*.96));
+        floodLayer.setAttribute('opacity',String(flood));
         const humanFade=1-clamp((t-.57)/.2),aiFade=1-clamp((t-.8)/.17);
         for(const el of [human,outline,ticks,halo])el.style.opacity=humanFade;
         ai.style.opacity=aiFade;
