@@ -906,5 +906,24 @@
     "source": "https://epoch.ai/data-insights/openai-compute-spend",
     "notes": "Rounded source estimates. Other R&D includes experiments and unreleased models. Inference excludes Microsoft inference for Microsoft products. GPT-4.5 final run 90% CI: $170M\u2013$890M; other models: $24M\u2013$435M."
   },
-  "extensionNotes": "Slides 6\u20137 transcribe rounded values from the author\u2019s $30B/GW chart. Slides 8\u20139 approximately redraw the operating-margin image (symmetric-log axis; excludes stock-based compensation). OpenAI and Anthropic are estimates. Slides 10\u201313 adapt Epoch AI\u2019s 2024 cloud-compute expense estimates (CC BY); the highlighted training side includes R&D experiments, not just final training runs. Slide 15 animates the supplied spiral image; labels remain part of that source illustration."
+  "extensionNotes": "Slides 6\u20137 transcribe rounded values from the author\u2019s $30B/GW chart. Slides 8\u20139 approximately redraw the operating-margin image (symmetric-log axis; excludes stock-based compensation). OpenAI and Anthropic are estimates. Slides 10\u201313 adapt Epoch AI\u2019s 2024 cloud-compute expense estimates (CC BY); the highlighted training side includes R&D experiments, not just final training runs. Slide 15 animates the supplied spiral image; labels remain part of that source illustration.",
+  "trainingData": {
+    "note": "Illustrative token-equivalent estimates, redrawn natively from rest/3938.jpeg.",
+    "axis": "Token-equivalent terabytes",
+    "ticks": [0, 25, 50, 75, 100],
+    "rows": [
+      {"name": "GPT-4-era foundation", "detail": "internet corpus", "value": 100, "color": "#5b9bf8"},
+      {"name": "o1-era reasoning RL", "detail": "reasoning trajectories", "value": 2, "color": "#ef8a5c"},
+      {"name": "modern agentic RL", "detail": "agent trajectories", "value": 20, "color": "#7ed492"}
+    ]
+  },
+  "rlShare": {
+    "note": "Illustrative training-run costs in $M, redrawn natively from rest/4002.jpeg.",
+    "axis": "Assumed training-run cost",
+    "ticks": [[0, "$0M"], [400, "$400M"], [1000, "$1B"], [1500, "$1.5B"], [2000, "$2B"]],
+    "rows": [
+      {"name": "GPT-4", "detail": "2023 RLHF", "base": 396, "rl": 4, "share": "\u22481% RL", "cost": "\u2248$4M", "note": "$400M total \u00b7 plausible 0.3\u20132%"},
+      {"name": "GPT-5.6", "detail": "2026 reasoning + agents", "base": 1500, "rl": 500, "share": "\u224825% RL", "cost": "\u2248$500M", "note": "$2B total \u00b7 plausible 10\u201340%"}
+    ]
+  }
 }

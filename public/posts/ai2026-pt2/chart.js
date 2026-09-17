@@ -23,6 +23,14 @@
       el.style.setProperty('--color', row.color); el.append(marker, document.createTextNode(row.name)); target.append(el);
     });
   }
+  function regimeLabel(svg, row, left, cy, bh, small) {
+    // "GPT-4-era foundation" overruns any sane left gutter on a phone, so the
+    // name and its qualifier stack above the bar at narrow widths instead.
+    const x = small ? left : left - 14, anchor = small ? 'start' : 'end';
+    const nameY = small ? cy - bh / 2 - 20 : cy - 1, detailY = small ? cy - bh / 2 - 7 : cy + 15;
+    const name = label(svg, x, nameY, row.name, anchor); name.classList.add('value');
+    label(svg, x, detailY, row.detail, anchor);
+  }
   function draw(scene) {
     const kind = scene.dataset.kind, svg = scene.querySelector('svg');
     if (!svg) return;
@@ -216,6 +224,78 @@
           const item=scene.querySelectorAll('.legend span')[i];item.style.visibility=ai&&!reduce.matches&&p<=.5?'hidden':'visible';
         });
       });
+    } else if (kind === 'trainingdata') {
+      // Native redraw of rest/3938.jpeg. The slide used to be that JPEG behind a
+      // clip-path wipe, so the bars could never grow; these rects can.
+      const cfg=data.trainingData, left=small?20:200, right=small?54:110, width=W-left-right;
+      const x=v=>left+v/100*width, top=m.t+6, bottom=H-m.b;
+      if(!small)verticalTitle(svg,(top+bottom)/2,'TRAINING REGIME');
+      label(svg,left+width/2,H-10,cfg.axis);
+      cfg.ticks.forEach(v=>{
+        node('line',{x1:x(v),x2:x(v),y1:top,y2:bottom,stroke:'#2a3a47'},svg);
+        label(svg,x(v),bottom+22,String(v));
+      });
+      const bars=cfg.rows.map((row,i)=>{
+        const band=(bottom-top)/cfg.rows.length, cy=top+band*(i+.5), bh=Math.min(small?30:46,band*.5);
+        regimeLabel(svg,row,left,cy,bh,small);
+        const bar=node('rect',{x:left,y:cy-bh/2,width:0,height:bh,fill:row.color},svg);
+        // Wide bars caption themselves from the inside; short ones would be illegible there.
+        const inside=row.value>=50;
+        const est=label(svg,left,cy-3,'EST.',inside?'end':'start');
+        const value=label(svg,left,cy+15,`${row.value} TB`,inside?'end':'start');value.classList.add('value');
+        return {bar,est,value,row,inside};
+      });
+      renderers.set(scene,p=>{
+        const t=reduce.matches?1:clamp(p/.7);
+        bars.forEach(({bar,est,value,row,inside},i)=>{
+          // A short stagger so the three regimes read as three separate measurements.
+          const local=clamp((t-i*.12)/.64), eased=local*local*(3-2*local), end=x(row.value*eased);
+          bar.setAttribute('width',Math.max(0,end-left));
+          const tx=inside?end-12:end+10;
+          est.setAttribute('x',tx);value.setAttribute('x',tx);
+          const fade=reduce.matches?1:clamp((local-.55)/.45);
+          est.style.opacity=fade;value.style.opacity=fade;
+        });
+      });
+    } else if (kind === 'rlshare') {
+      // Native redraw of rest/4002.jpeg, for the same reason as above.
+      const cfg=data.rlShare, left=small?20:200, right=small?26:60, width=W-left-right;
+      const x=v=>left+v/2000*width, top=m.t+6, bottom=H-m.b;
+      if(!small)verticalTitle(svg,(top+bottom)/2,'TRAINING REGIME');
+      label(svg,left+width/2,H-10,cfg.axis);
+      cfg.ticks.forEach(([v,text])=>{
+        node('line',{x1:x(v),x2:x(v),y1:top,y2:bottom,stroke:'#2a3a47'},svg);
+        label(svg,x(v),bottom+22,text);
+      });
+      const bars=cfg.rows.map((row,i)=>{
+        const band=(bottom-top)/cfg.rows.length, cy=top+band*(i+.5), bh=Math.min(small?40:64,band*.5);
+        regimeLabel(svg,row,left,cy,bh,small);
+        const base=node('rect',{x:left,y:cy-bh/2,width:0,height:bh,fill:'#5a5f66'},svg);
+        const rl=node('rect',{x:left,y:cy-bh/2,width:0,height:bh,fill:'#ef8a5c'},svg);
+        // The GPT-4 sliver is ~0.2% of the axis, so its callout has to sit outside.
+        // The threshold scales with the plot: on a phone 80px of orange is still
+        // wide enough to caption from the inside, and outside would run off-canvas.
+        const inside=x(row.rl)-left>(small?55:90);
+        const share=label(svg,left,cy-3,row.share,inside?'middle':'start');share.classList.add('value');
+        const cost=label(svg,left,cy+15,row.cost,inside?'middle':'start');
+        // Right-aligning to a short bar end pushes this off the left edge on a phone.
+        const note=label(svg,left,cy+bh/2+20,row.note,small?'start':'end');
+        return {base,rl,share,cost,note,row,inside,bh,cy};
+      });
+      legend(scene,[{name:'Base / pretraining',color:'#5a5f66'},{name:'RL + trajectory post-training',color:'#ef8a5c'}]);
+      renderers.set(scene,p=>{
+        const t=reduce.matches?1:clamp(p/.7);
+        bars.forEach(({base,rl,share,cost,note,row,inside},i)=>{
+          const local=clamp((t-i*.16)/.7), eased=local*local*(3-2*local);
+          const split=x(row.base*eased), end=x((row.base+row.rl)*eased);
+          base.setAttribute('width',Math.max(0,split-left));
+          rl.setAttribute('x',split);rl.setAttribute('width',Math.max(0,end-split));
+          const tx=inside?(split+end)/2:end+10;
+          share.setAttribute('x',tx);cost.setAttribute('x',tx);note.setAttribute('x',small?left:end);
+          const fade=reduce.matches?1:clamp((local-.55)/.45);
+          share.style.opacity=fade;cost.style.opacity=fade;note.style.opacity=fade;
+        });
+      });
     } else if (kind === 'margins') {
       const left=small?104:150, right=small?34:75, width=W-left-right;
       const x=v=>left+(v+140)/230*width;
@@ -335,7 +415,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=axes-2');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=native-bars');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     document.body.classList.toggle('all-mode',reduce.matches);
