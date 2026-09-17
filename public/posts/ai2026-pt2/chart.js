@@ -34,37 +34,81 @@
       const W=Math.max(280,box.width),H=Math.max(300,box.height),cx=W/2,cy=H*.51;
       const radius=Math.min(W*.32,H*.29),small=W<600;
       svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-      node('title',{},svg,'Spiky intelligence grows into a human job');
+      node('title',{},svg,'AI capability grows through a field of human tasks');
       const defs=node('defs',{},svg);
       const grid=node('pattern',{id:'frontier-grid',width:44,height:44,patternUnits:'userSpaceOnUse'},defs);
       node('path',{d:'M 44 0 L 0 0 0 44',fill:'none',stroke:'#8f66db','stroke-opacity':.15,'stroke-width':.7},grid);
-      const gradient=node('radialGradient',{id:'frontier-red'},defs);
+      const gradient=node('radialGradient',{id:'frontier-red',gradientUnits:'userSpaceOnUse',cx,cy,r:Math.hypot(W,H)*.72},defs);
       node('stop',{offset:'0%','stop-color':'#ff765f'},gradient);
-      node('stop',{offset:'65%','stop-color':'#f13661'},gradient);
+      node('stop',{offset:'42%','stop-color':'#f13661'},gradient);
       node('stop',{offset:'100%','stop-color':'#ab164b'},gradient);
+      const warp=node('filter',{id:'frontier-warp',x:'-20%',y:'-20%',width:'140%',height:'140%'},defs);
+      node('feTurbulence',{type:'fractalNoise',baseFrequency:'.009 .021',numOctaves:2,seed:11,result:'noise'},warp);
+      node('feDisplacementMap',{in:'SourceGraphic',in2:'noise',scale:Math.max(7,radius*.065),xChannelSelector:'R',yChannelSelector:'B'},warp);
       node('rect',{width:W,height:H,fill:'#080a10'},svg);
       node('rect',{width:W,height:H,fill:'url(#frontier-grid)'},svg);
+      const floodLayer=node('rect',{width:W,height:H,fill:'url(#frontier-red)',opacity:0},svg);
       const halo=node('circle',{cx,cy,r:radius,fill:'#91e9f2','fill-opacity':.035,stroke:'#94e7ef','stroke-width':1.5},svg);
+      const tendrilLayer=node('g',{'stroke-linecap':'round','stroke-linejoin':'round',filter:'url(#frontier-warp)'},svg);
+      let seed=0x8f31c4a7;
+      const random=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};
+      const tendrils=[];
+      const addTendril=(angle,start,reach,bend,width,onset,branch=false,endAngle=angle)=>{
+        const normal=angle+Math.PI/2;
+        const sx=cx+Math.cos(angle)*start,sy=cy+Math.sin(angle)*start;
+        const ex=cx+Math.cos(endAngle)*reach,ey=cy+Math.sin(endAngle)*reach;
+        const d=[
+          `M${sx.toFixed(2)},${sy.toFixed(2)}`,
+          `C${(cx+Math.cos(angle)*reach*.34+Math.cos(normal)*bend).toFixed(2)},${(cy+Math.sin(angle)*reach*.34+Math.sin(normal)*bend).toFixed(2)}`,
+          `${(cx+Math.cos(endAngle)*reach*.66-Math.cos(normal)*bend*.7).toFixed(2)},${(cy+Math.sin(endAngle)*reach*.66-Math.sin(normal)*bend*.7).toFixed(2)}`,
+          `${ex.toFixed(2)},${ey.toFixed(2)}`
+        ].join(' ');
+        const path=node('path',{d,fill:'none',stroke:'url(#frontier-red)','stroke-width':width,'stroke-opacity':branch?.88:1,pathLength:1,'stroke-dasharray':'1','stroke-dashoffset':'1'},tendrilLayer);
+        tendrils.push({path,width,onset,branch});
+      };
+      const reach=Math.hypot(W,H)*.78;
+      for(let i=0;i<13;i++){
+        const angle=i/13*Math.PI*2+(random()-.5)*.32;
+        const bend=(random()-.5)*radius*(.8+random()*.8);
+        const onset=.07+random()*.3;
+        addTendril(angle,radius*.1,reach*(.72+random()*.42),bend,radius*(.04+random()*.055),onset);
+        const branchCount=i%3===0?2:1;
+        for(let j=0;j<branchCount;j++){
+          const side=random()<.5?-1:1;
+          addTendril(angle,radius*(.42+random()*.22),reach*(.48+random()*.32),-bend*(.3+random()*.3),radius*(.018+random()*.032),onset+.12+random()*.18,true,angle+side*(.3+random()*.48));
+        }
+      }
       const shape=node('path',{fill:'url(#frontier-red)',stroke:'#ff738a','stroke-width':1.5,'stroke-linejoin':'round'},svg);
       const outline=node('circle',{cx,cy,r:radius,fill:'none',stroke:'#a4e8ef','stroke-width':1.5,'stroke-dasharray':'3 6'},svg);
-      const human=label(svg,cx,cy-radius-25,'HUMAN JOB');
-      const ai=label(svg,cx,cy+radius+46,'TASKS AI CAN DO');
-      for(const el of [human,ai]){el.style.fontSize=small?'12px':'14px';el.style.letterSpacing='.12em';el.style.fill='#e6edf3';}
       const ticks=node('g',{stroke:'#8ee8ed','stroke-opacity':.5},svg);
       for(let i=0;i<32;i++){const a=i*Math.PI/16;node('line',{x1:cx+Math.cos(a)*(radius+7),y1:cy+Math.sin(a)*(radius+7),x2:cx+Math.cos(a)*(radius+12),y2:cy+Math.sin(a)*(radius+12)},ticks);}
+      const human=label(svg,cx,cy-radius-25,'Humans');
+      const ai=label(svg,cx,cy+5,'AI');
+      for(const el of [human,ai]){el.style.fontSize=small?'12px':'14px';el.style.letterSpacing='.12em';el.style.fill='#e6edf3';}
+      ai.style.fontSize=small?'16px':'19px';ai.style.fontWeight='700';ai.style.paintOrder='stroke';ai.style.stroke='#941744';ai.style.strokeWidth='5px';
       renderers.set(scene,p=>{
-        const t=reduce.matches?.48:clamp((p-.08)/.84);
-        const growth=.24+1.2*t+Math.pow(t,5)*Math.hypot(W,H)/radius*2.8;
+        const t=reduce.matches?.58:clamp((p-.06)/.88);
+        const ease=v=>v*v*(3-2*v);
+        const coreGrowth=.16+.34*ease(clamp(t/.58))+Math.pow(clamp((t-.82)/.18),2)*.5;
         let d='';
         for(let i=0;i<240;i++){
           const a=i/240*Math.PI*2;
-          const spike=.61+.19*Math.sin(a*7+.9)+.12*Math.cos(a*13)+.07*Math.sin(a*23+1.4);
-          const r=radius*growth*spike;
+          const texture=.84+.13*Math.sin(a*5+.9)+.08*Math.cos(a*11)+.04*Math.sin(a*29+1.4);
+          const pulse=1+.055*Math.sin(a*3+t*7)+.035*Math.cos(a*17-t*5);
+          const r=radius*coreGrowth*texture*pulse;
           d+=`${i?'L':'M'}${(cx+Math.cos(a)*r).toFixed(2)},${(cy+Math.sin(a)*r).toFixed(2)}`;
         }
         shape.setAttribute('d',d+'Z');
-        const fade=1-clamp((t-.65)/.22);
-        for(const el of [human,ai,outline,ticks,halo])el.style.opacity=fade;
+        const flood=Math.pow(clamp((t-.82)/.18),2);
+        tendrils.forEach(({path,width,onset,branch})=>{
+          const local=ease(clamp((t-onset)/(branch?.28:.48)));
+          path.setAttribute('stroke-dashoffset',String(1-local));
+          path.setAttribute('stroke-width',String(width*(.72+local*.62+flood*(branch?.9:1.7))));
+        });
+        floodLayer.setAttribute('opacity',String(flood*.96));
+        const humanFade=1-clamp((t-.57)/.2),aiFade=1-clamp((t-.8)/.17);
+        for(const el of [human,outline,ticks,halo])el.style.opacity=humanFade;
+        ai.style.opacity=aiFade;
       });
       return;
     }
