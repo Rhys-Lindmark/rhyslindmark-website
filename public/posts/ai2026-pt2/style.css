@@ -82,7 +82,10 @@
 .article-heading{min-height:70svh;display:grid;place-items:center;padding:70px 24px}
 .article-heading h2{font-size:clamp(60px,12vw,145px);font-weight:450;letter-spacing:-.06em;line-height:1.04;text-align:center;color:white;margin:0}
 .agent-loop{white-space:pre-wrap;font:16px/1.65 var(--mono);color:#39ffc1;border-left:2px solid #39ffc1;padding:22px 26px;background:#101820}
-.pullquote{font-size:20px;color:#fff}
+/* Matches .quoted-source below; the element selector keeps the inset padding
+   from being flattened by the .body-copy override in the mobile block. */
+blockquote.pullquote{border-left:2px solid #526777;padding:28px 32px;margin-block:28px;font-size:20px;color:#fff}
+@media(max-width:760px){blockquote.pullquote{padding:22px 24px;font-size:17px}}
 .quoted-source{border-left:2px solid #526777;padding:28px 32px;margin-block:28px;font-size:17px}
 .quoted-source cite{display:block;font:13px var(--mono);margin-top:24px}
 .article-embed{width:min(550px,calc(100% - 40px));margin:36px auto 70px;min-height:180px}
