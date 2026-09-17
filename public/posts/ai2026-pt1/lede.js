@@ -73,7 +73,7 @@ if(jensen&&slideOne&&!reduce.matches){
   // eased out over the last third.
   const ease=v=>v*v*(3-2*v);
   const env=k<.3?ease(k/.3):k>.7?ease((1-k)/.3):1;
-  jensen.style.opacity=String(.5*Math.max(0,env));
+  jensen.style.opacity=String(Math.max(0,env));
  };
  const queueJensen=()=>{if(!jraf)jraf=requestAnimationFrame(paintJensen);};
  addEventListener('scroll',queueJensen,{passive:true});

@@ -49,7 +49,6 @@ function wobbleProjection(pts,seed){
 }
 function drawLines(scene){const {svg,W,H,small}=svgBase(scene),investment=scene.dataset.kind==='investment',series=investment?data.investment:data.construction,xd=investment?[1852,2030]:[2014,2026.5834],yd=investment?[0,6]:[0,80];
  const a=axes(svg,W,H,{xd,yd,xt:investment?(small?[1852,1900,1950,2000,2030]:[1852,1880,1910,1940,1970,2000,2030]):(small?[2014,2018,2022,2026.5834]:[2014,2016,2018,2020,2022,2024,2026.5834]),yt:investment?[0,1,2,3,4,5,6]:[0,20,40,60,80],yfmt:v=>investment?`${v}%`:`$${v}B`,xfmt:v=>v===2026.5834?'Aug 2026':String(Math.floor(v)),yTitle:investment?'CAPITAL EXPENDITURE / US GDP':'CONSTRUCTION SPENDING · $B'}),c=clipping(svg,`clip-${scene.dataset.step}`,a.m,a.ih);
- if(investment){node('rect',{x:a.x(1996),y:a.m.t,width:a.x(2002)-a.x(1996),height:a.ih,fill:'#b2a3d8',opacity:.07},c.g);}
  for(const s of series){node('path',{d:linePath(s.points,a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2,'stroke-dasharray':s.forecast?(s.name.includes('bull')?'2 5':'7 4'):'none','stroke-linejoin':'round'},c.g);}
  if(!investment){series.forEach((s,i)=>{node('path',{d:linePath(wobbleProjection(s.projection,4231+i*5407),a.x,a.y),fill:'none',stroke:s.color,'stroke-width':2,'stroke-linejoin':'round'},c.g);});const x=a.x(2022+10/12);node('line',{x1:x,x2:x,y1:a.m.t,y2:a.m.t+a.ih,stroke:'#9db2c3','stroke-width':1,'stroke-dasharray':'3 5'},c.g);}
  const cursor=node('line',{y1:a.m.t,y2:a.m.t+a.ih,stroke:'#90abc0','stroke-dasharray':'2 5',opacity:.6},svg);legend(scene,series);

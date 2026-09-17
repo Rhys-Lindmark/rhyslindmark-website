@@ -311,7 +311,7 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 @media(max-width:700px){body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2{font-size:18px}}
 
 /* Jensen flashes over the page as the reader passes his line in the lede. */
-.lede-jensen{position:fixed;inset:0;margin:auto;width:auto;height:auto;max-width:min(52vw,430px);max-height:72svh;opacity:0;pointer-events:none;z-index:8;will-change:opacity}
+.lede-jensen{position:fixed;inset:0;margin:auto;width:auto;height:auto;max-width:min(86vw,1000px);max-height:76svh;opacity:0;pointer-events:none;z-index:8;will-change:opacity}
 @media(prefers-reduced-motion:reduce){.lede-jensen{display:none}}
 
 /* Codex: electricity overlay on the city scene. */
