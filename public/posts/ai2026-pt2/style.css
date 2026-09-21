@@ -30,6 +30,9 @@
 .scene.models.spiral{height:420svh}
 .scene.models .legend span{transition:opacity .2s ease}
 .scene.models.business[data-stage="1"] .passage{width:min(390px,calc(100% - 80px));max-height:80%}
+.business-sentence{display:block;opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease}
+.business-sentence+.business-sentence{margin-top:1em}
+.business-sentence.is-visible,.all-mode .business-sentence{opacity:1;transform:none}
 .scene.models.compute .legend{padding-left:40px}
 .scene.models .plot-wrap g{transition:opacity .25s ease}
 .scene.models.tweet-scene{height:auto;min-height:100svh}
@@ -54,6 +57,7 @@
 .all-mode .spin-toggle{display:none}
 @media(max-width:760px){.scene.models.business[data-stage="1"] .passage{width:calc(100% - 90px)}.scene.models.business .passage h2{font-size:17px}.scene.models.compute .legend{padding-left:8px}.spin-toggle{right:16px;top:66px}.scene.models.tweet-scene>.sticky{padding-inline:18px}.tweet-heading h2{font-size:30px}.spiral-image{width:88vw;height:88vw}}
 @media(prefers-reduced-motion:reduce){.spiral-image{animation:none!important}.spin-toggle{display:none}.scene.models .plot-wrap g{transition:none}}
+@media(prefers-reduced-motion:reduce){.business-sentence{transition:none}}
 @media print{.spiral-image{animation:none!important}.spin-toggle{display:none}.scene.models .passage [hidden]{display:block!important}}
 
 .scene.models .passage[hidden]{display:none}

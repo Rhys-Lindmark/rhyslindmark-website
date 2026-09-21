@@ -113,6 +113,7 @@
     } else
     if (kind === 'business') {
       const rows=data.business, left=small?24:70, width=W-left*2;
+      const sentences=[...scene.querySelectorAll('.business-sentence')];
       const top=H*.28, bh=Math.min(180,H*.32), segments=[];
       label(svg,left+width/2,top+bh+52,'REVENUE ALLOCATION · USD BILLIONS / GW');
       let total=0;
@@ -126,6 +127,12 @@
       legend(scene,rows);
       renderers.set(scene,p=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
+        const sentenceCount=stage===0?0:local<.25?1:local<.5?2:3;
+        sentences.forEach((sentence,i)=>{
+          const visible=reduce.matches||i<sentenceCount;
+          sentence.classList.toggle('is-visible',visible);
+          sentence.setAttribute('aria-hidden',String(!visible));
+        });
         // Let the second passage enter before focusing its three expense segments.
         const focus=stage===0||local<.25?-1:Math.min(2,Math.floor((local-.25)/.25));
         segments.forEach((g,i)=>g.style.opacity=reduce.matches||focus<0||i===focus?'1':'.45');
