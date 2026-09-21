@@ -922,8 +922,8 @@
     "axis": "Assumed training-run cost",
     "ticks": [[0, "$0M"], [400, "$400M"], [1000, "$1B"], [1500, "$1.5B"], [2000, "$2B"]],
     "rows": [
-      {"name": "GPT-4", "detail": "2023 RLHF", "base": 396, "rl": 4, "share": "\u22481% RL", "cost": "\u2248$4M", "note": "$400M total \u00b7 plausible 0.3\u20132%"},
-      {"name": "GPT-5.6", "detail": "2026 reasoning + agents", "base": 1500, "rl": 500, "share": "\u224825% RL", "cost": "\u2248$500M", "note": "$2B total \u00b7 plausible 10\u201340%"}
+      {"name": "GPT-4", "detail": "2023 RLHF", "base": 396, "rl": 4, "share": "\u22481% RL", "cost": "\u2248$4M"},
+      {"name": "GPT-5.6", "detail": "2026 reasoning + agents", "base": 1500, "rl": 500, "share": "\u224825% RL", "cost": "\u2248$500M"}
     ]
   }
 }

@@ -270,7 +270,7 @@
       });
     } else if (kind === 'rlshare') {
       // Native redraw of rest/4002.jpeg, for the same reason as above.
-      const cfg=data.rlShare, left=small?20:200, right=small?26:60, width=W-left-right;
+      const cfg=data.rlShare, left=small?20:200, right=small?105:130, width=W-left-right;
       const x=v=>left+v/2000*width, top=m.t+6, bottom=H-m.b;
       if(!small)verticalTitle(svg,(top+bottom)/2,'TRAINING REGIME');
       label(svg,left+width/2,H-10,cfg.axis);
@@ -283,28 +283,22 @@
         regimeLabel(svg,row,left,cy,bh,small);
         const base=node('rect',{x:left,y:cy-bh/2,width:0,height:bh,fill:'#5a5f66'},svg);
         const rl=node('rect',{x:left,y:cy-bh/2,width:0,height:bh,fill:'#ef8a5c'},svg);
-        // The GPT-4 sliver is ~0.2% of the axis, so its callout has to sit outside.
-        // The threshold scales with the plot: on a phone 80px of orange is still
-        // wide enough to caption from the inside, and outside would run off-canvas.
-        const inside=x(row.rl)-left>(small?55:90);
-        const share=label(svg,left,cy-3,row.share,inside?'middle':'start');share.classList.add('value');
-        const cost=label(svg,left,cy+15,row.cost,inside?'middle':'start');
-        // Right-aligning to a short bar end pushes this off the left edge on a phone.
-        const note=label(svg,left,cy+bh/2+20,row.note,small?'start':'end');
-        return {base,rl,share,cost,note,row,inside,bh,cy};
+        const share=label(svg,left,cy-3,row.share,'start');share.classList.add('value');
+        const cost=label(svg,left,cy+15,row.cost,'start');
+        return {base,rl,share,cost,row,bh,cy};
       });
       legend(scene,[{name:'Base / pretraining',color:'#5a5f66'},{name:'RL + trajectory post-training',color:'#ef8a5c'}]);
       renderers.set(scene,p=>{
         const t=reduce.matches?1:clamp(p/.7);
-        bars.forEach(({base,rl,share,cost,note,row,inside},i)=>{
+        bars.forEach(({base,rl,share,cost,row},i)=>{
           const local=clamp((t-i*.16)/.7), eased=local*local*(3-2*local);
           const split=x(row.base*eased), end=x((row.base+row.rl)*eased);
           base.setAttribute('width',Math.max(0,split-left));
           rl.setAttribute('x',split);rl.setAttribute('width',Math.max(0,end-split));
-          const tx=inside?(split+end)/2:end+10;
-          share.setAttribute('x',tx);cost.setAttribute('x',tx);note.setAttribute('x',small?left:end);
+          const tx=end+10;
+          share.setAttribute('x',tx);cost.setAttribute('x',tx);
           const fade=reduce.matches?1:clamp((local-.55)/.45);
-          share.style.opacity=fade;cost.style.opacity=fade;note.style.opacity=fade;
+          share.style.opacity=fade;cost.style.opacity=fade;
         });
       });
     } else if (kind === 'margins') {
