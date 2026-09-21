@@ -147,7 +147,7 @@
       [-100,-50,-20,0,20,50].forEach(v=>{node('line',{x1:left,x2:W-right,y1:y(v),y2:y(v),stroke:v===0?'#e6edf3':'#2a3a47'},svg);label(svg,left-8,y(v)+4,`${v}%`,'end');});
       [2000,2010,2020,2026].forEach(v=>label(svg,x(v),H-25,v));
       label(svg,left+width/2,H-5,'FISCAL YEAR');
-      verticalTitle(svg,(28+bottom)/2,'OPERATING MARGIN · EX-SBC (%) · SYMLOG');
+      verticalTitle(svg,(28+bottom)/2,'OPERATING MARGIN · EX-SBC (%, LOG)');
       const paths=[], defs=node('defs',{},svg);
       data.expansion.forEach((row,i)=>{
         const g=node('g',{},svg), focus=['Amazon','Uber','Anthropic est.'].includes(row.name);
