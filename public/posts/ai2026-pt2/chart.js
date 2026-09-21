@@ -323,7 +323,7 @@
       legend(scene,[{name:'Gross margin',color:'#43a9ff'},{name:'Operating margin, ex-SBC',color:'#ff914f'}]);
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0);
-        const focus=stage===1?'gross':stage===2?'operating':null;
+        const focus=stage===1||stage===2?'gross':stage===3?'operating':null;
         const progress=reduce.matches||stage>0?1:clamp(Number(scene.dataset.localProgress||0)/.8);
         bars.forEach(({bar,t,metric,value,company})=>{
           const current=value*progress;
@@ -334,7 +334,7 @@
           bar.style.opacity=opacity;t.style.opacity=progress>=1?opacity:'0';
         });
         scene.querySelectorAll('.legend span').forEach((el,i)=>{
-          el.style.opacity=reduce.matches||!focus||i===(stage===1?0:1)?'1':'.25';
+          el.style.opacity=reduce.matches||!focus||i===(stage<=2?0:1)?'1':'.25';
         });
       });
     } else if (kind === 'costs') {
