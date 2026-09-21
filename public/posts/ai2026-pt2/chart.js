@@ -364,7 +364,7 @@
     svg.hidden = false; svg.removeAttribute('hidden'); scene.querySelector('.fallback').hidden = true;
   }
   const slideEntries=[];
-  let continuation=false,nextSlide=19,slideLinksReady=false;
+  let continuation=false,nextSlide=20,slideLinksReady=false;
   for(const el of document.querySelector('#article').children){
     if(el.id==='sources')break;
     if(el.classList.contains('scene')){
@@ -375,7 +375,7 @@
         if(explicitId&&continuation&&el.dataset.consumeSlide==='true')nextSlide++;
         slideEntries.push({id,anchor,el,index,count:steps.length});
       });
-      if(el.id==='18')continuation=true;
+      if(el.id==='19')continuation=true;
     }else if(continuation&&el.matches('.body-copy,.article-visual,.article-embed,.article-heading')){
       slideEntries.push({id:String(nextSlide++),anchor:el.id,el,index:0,count:1});
     }
