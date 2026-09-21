@@ -66,7 +66,7 @@ window.drawContinuationChart = function(scene, data, reduced) {
       const cx=x(row.flops),cy=y(row.parameters),v=depth?row.toolSteps:row.rolloutTokens,r=Math.max(3,Math.sqrt(v/max)*maxR);
       const dot=n('circle',{cx,cy,r,fill:colors[row.group],'fill-opacity':.32,stroke:colors[row.group],'stroke-width':1.5});
       n('title',{},dot,`${row.name}: ≈${(row.parameters/1e9).toFixed(0)}B parameters; ≈${row.flops.toExponential(1)} FLOP; ${depth?'≈'+Math.round(v)+' steps':'≈'+(v/1e12).toFixed(1)+'T rollout tokens'}`);
-      marks.push({dot,r,cx});
+      marks.push({dot,r,cx,model:row.name});
       const width=row.name.length*(small?5.6:6.3),height=16;
       let best=null,bestScore=Infinity;
       for(let dy of [-r-12,r+20,-30,35,-50,55,-70,75])for(let dx of [0,-width*.55,width*.55]){
@@ -79,7 +79,7 @@ window.drawContinuationChart = function(scene, data, reduced) {
       occupied.push(best.rect);
       const lead=n('line',{x1:cx,y1:cy,x2:best.tx,y2:best.ty-5,stroke:colors[row.group],'stroke-opacity':.3});
       const name=text(best.tx,best.ty,row.name);name.classList.add('model-name');name.style.fontSize=small?'10px':'11px';
-      labels.push({name,lead,cx});
+      labels.push({name,lead,cx,model:row.name});
     });
     const legend=scene.querySelector('.legend');legend.replaceChildren();
     for(const [name,color] of Object.entries(colors)){const s=document.createElement('span');s.textContent=name;s.style.color=color;legend.append(s);}
@@ -93,10 +93,10 @@ window.drawContinuationChart = function(scene, data, reduced) {
     });
     return p=>{
       if(depth){const t=reduced()?1:clamp(p/.72);marks.forEach(({dot,r,cx})=>dot.setAttribute('r',r*clamp((t-(cx-m.l)/iw*.6)/.25)));labels.forEach(({name,lead,cx})=>{const a=clamp((t-(cx-m.l)/iw*.6)/.25);name.style.opacity=a;lead.style.opacity=a;});return;}
-      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reveal=reduced()?1:stage?1:clamp(local/.28),size=reduced()?1:stage?clamp(local/.42):0;
-      marks.forEach(({dot,r})=>dot.setAttribute('r',reveal*(4+(r-4)*size)));
-      labels.forEach(({name,lead})=>{name.style.opacity=reveal;lead.style.opacity=reveal;});
-      key.style.opacity=size;scaleMarks.forEach(mark=>mark.style.opacity=size);
+      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reveal=reduced()?1:stage?1:clamp(local/.28),size=reduced()?1:stage>=2?1:stage?clamp(local/.42):0,focus=reduced()?0:stage>=2?clamp(local/.35):0;
+      marks.forEach(({dot,r,model})=>{dot.setAttribute('r',reveal*(4+(r-4)*size));dot.style.opacity=1-(model==='GLM-5.2'||model==='GLM-5.3'?0:.86*focus);});
+      labels.forEach(({name,lead,model})=>{const opacity=reveal*(1-(model==='GLM-5.2'||model==='GLM-5.3'?0:.86*focus));name.style.opacity=opacity;lead.style.opacity=opacity;});
+      key.style.opacity=size*(1-.72*focus);scaleMarks.forEach(mark=>mark.style.opacity=size*(1-.72*focus));legend.style.opacity=1-.72*focus;
     };
   }
   const isChina=scene.id==='china-frontier',start=Date.parse(isChina?'2023-01-01':'2025-01-06'),end=Date.parse(isChina?'2026-01-01':'2026-07-06');
