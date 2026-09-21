@@ -1,13 +1,9 @@
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-.pt2-lede-one{min-height:0;padding-bottom:clamp(64px,12svh,130px)}
 .pt2-lede-one .lede-god{margin-top:2.4em}
-.lede-shoggoth{width:min(1200px,calc(100% - 48px));margin:clamp(42px,8svh,90px) auto}
-.lede-shoggoth img{display:block;width:100%;height:auto;max-height:82svh;object-fit:cover}
-.lede-models-copy{padding-top:clamp(18px,4svh,48px)}
-.lede-models-copy p{margin-bottom:.6em}
-.lede-models-copy p:nth-last-child(2){margin-top:2.2em}
+.pt2-models-lede{padding-bottom:clamp(40px,8svh,90px)}
+.pt2-models-lede p{margin-bottom:.6em}
+.pt2-models-lede p:nth-last-child(2){margin-top:2.2em}
 .pt2-lede-two{padding-top:clamp(40px,8svh,90px)}
-@media(max-width:760px){.lede-shoggoth{width:calc(100% - 32px);margin:42px auto}.lede-shoggoth img{min-height:48svh;object-fit:cover}.lede-models-copy{padding-top:20px}}
 .post-title{font:12px var(--mono);color:var(--muted)}
 .scene.models{height:300svh;--axis-inset:100px}
 .scene.models>.sticky{min-height:0;padding-top:76px;padding-bottom:24px}

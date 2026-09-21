@@ -54,12 +54,14 @@ const io=new IntersectionObserver(entries=>{
 },{threshold:1,rootMargin:'0px 0px -25% 0px'});
 io.observe(el);
 
-/* Jensen fades up across slide one, reaching half opacity as it ends. */
-const jensen=document.querySelector('[data-jensen]'),slideOne=document.querySelector('.lede-one');
-if(jensen&&slideOne&&!reduce.matches){
- // Take the file under whatever extension it was saved with; give up quietly if absent.
- const tries=['jensen.jpg','jensen.jpeg','jensen.png','jensen.webp'];let at=0;
- jensen.addEventListener('error',()=>{at++;at<tries.length?jensen.src='/posts/ai2026-pt1/'+tries[at]:jensen.remove();});
+/* The opening image fades up and away across slide one. */
+const apparition=document.querySelector('[data-lede-apparition]'),slideOne=document.querySelector('.lede-one');
+if(apparition&&slideOne&&!reduce.matches){
+ // Jensen may exist under any common extension; give up quietly if absent.
+ if(apparition.hasAttribute('data-jensen')){
+  const tries=['jensen.jpg','jensen.jpeg','jensen.png','jensen.webp'];let at=0;
+  apparition.addEventListener('error',()=>{at++;at<tries.length?apparition.src='/posts/ai2026-pt1/'+tries[at]:apparition.remove();});
+ }
  let jraf=0;
  const paintJensen=()=>{
   jraf=0;
@@ -73,7 +75,7 @@ if(jensen&&slideOne&&!reduce.matches){
   // eased out over the last third.
   const ease=v=>v*v*(3-2*v);
   const env=k<.3?ease(k/.3):k>.7?ease((1-k)/.3):1;
-  jensen.style.opacity=String(Math.max(0,env));
+  apparition.style.opacity=String(Math.max(0,env));
  };
  const queueJensen=()=>{if(!jraf)jraf=requestAnimationFrame(paintJensen);};
  addEventListener('scroll',queueJensen,{passive:true});
