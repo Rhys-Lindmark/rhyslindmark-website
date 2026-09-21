@@ -250,8 +250,8 @@
         const band=(bottom-top)/cfg.rows.length, cy=top+band*(i+.5), bh=Math.min(small?30:46,band*.5);
         regimeLabel(svg,row,left,cy,bh,small);
         const bar=node('rect',{x:left,y:cy-bh/2,width:0,height:bh,fill:row.color},svg);
-        // Wide bars caption themselves from the inside; short ones would be illegible there.
-        const inside=row.value>=50;
+        // Keep every estimate to the right of its bar for a consistent scan.
+        const inside=false;
         const est=label(svg,left,cy-3,'EST.',inside?'end':'start');
         const value=label(svg,left,cy+15,`${row.value} TB`,inside?'end':'start');value.classList.add('value');
         return {bar,est,value,row,inside};
