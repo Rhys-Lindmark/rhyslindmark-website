@@ -45,7 +45,7 @@ window.drawContinuationChart = function(scene, data, reduced) {
     const legend=scene.querySelector('.legend');legend.replaceChildren();
     [['Kaplan et al. (2020)','#d8e1e8','dashed'],['Our Approach','#39ffc1','solid']].forEach(([name,color,style])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);swatch.style.borderTopStyle=style;item.append(swatch,document.createTextNode(name));legend.append(item);});
     return ()=>{
-      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),first=reduced()?1:stage?1:clamp(local/.34),second=reduced()?1:stage?clamp(local/.34):0;
+      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),first=reduced()?1:stage?1:clamp(local/.34),second=reduced()?1:stage>=2?clamp(local/.34):0;
       kaplanReveal.setAttribute('width',iw*first);approachReveal.setAttribute('width',iw*second);
       kaplanMarks.forEach(({mark,name},i)=>{const opacity=clamp((first-.5-i*.1)/.22);mark.style.opacity=opacity;name.style.opacity=opacity;});
       chinchilla.style.opacity=second;chinchillaLabel.style.opacity=second;approach.style.opacity=second>0?'1':'0';
