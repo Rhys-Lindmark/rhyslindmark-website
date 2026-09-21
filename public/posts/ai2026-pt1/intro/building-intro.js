@@ -30,6 +30,9 @@ const introStyle=document.createElement('style');introStyle.textContent=`
 :host([full-title-slides]:not([preview])) .title-card{min-height:100svh;padding-inline:clamp(20px,5vw,80px)}
 :host([full-title-slides]:not([preview])) .title{width:100%;max-width:none}
 :host([full-title-slides]:not([preview])) .title::after{content:none}
+:host([lede-divider]:not([preview])) .title-card:last-child{position:relative}
+:host([lede-divider]:not([preview])) .title-card:last-child::after{content:"";position:absolute;left:50%;bottom:18svh;width:min(700px,calc(100% - 40px));height:1px;background:#2a3a47;transform:translateX(-50%)}
+@media(max-width:760px){:host([lede-divider]:not([preview])) .title-card:last-child::after{bottom:20svh;width:calc(100% - 32px)}}
 `;root.append(introStyle);
 // Each part supplies its own pair of title cards; part 1's copy is the default.
 const escapeHtml=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
