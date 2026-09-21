@@ -85,12 +85,19 @@ window.drawContinuationChart = function(scene, data, reduced) {
     for(const [name,color] of Object.entries(colors)){const s=document.createElement('span');s.textContent=name;s.style.color=color;legend.append(s);}
     const key=document.createElement('span');key.textContent=depth?'Bubble area: rewarded tool steps':'Bubble area: RL rollout tokens';legend.append(key);
     // A numeric scale makes bubble sizes comparable across the two slides.
+    const scaleMarks=[];
     [depth?10:1e12,depth?50:10e12,depth?150:50e12].forEach((v,i)=>{
       const r=Math.sqrt(v/max)*maxR,cx=right-(2-i)*(small?54:90)-maxR;
-      n('circle',{cx,cy:bottom-22-r,r,fill:'none',stroke:'#9aafbf','stroke-opacity':.6});
-      text(cx,bottom-7,depth?`${v}`:`${v/1e12}T`);
+      scaleMarks.push(n('circle',{cx,cy:bottom-22-r,r,fill:'none',stroke:'#9aafbf','stroke-opacity':.6}));
+      scaleMarks.push(text(cx,bottom-7,depth?`${v}`:`${v/1e12}T`));
     });
-    return p=>{const t=reduced()?1:clamp(p/.72);marks.forEach(({dot,r,cx})=>dot.setAttribute('r',r*clamp((t-(cx-m.l)/iw*.6)/.25)));labels.forEach(({name,lead,cx})=>{const a=clamp((t-(cx-m.l)/iw*.6)/.25);name.style.opacity=a;lead.style.opacity=a;});};
+    return p=>{
+      if(depth){const t=reduced()?1:clamp(p/.72);marks.forEach(({dot,r,cx})=>dot.setAttribute('r',r*clamp((t-(cx-m.l)/iw*.6)/.25)));labels.forEach(({name,lead,cx})=>{const a=clamp((t-(cx-m.l)/iw*.6)/.25);name.style.opacity=a;lead.style.opacity=a;});return;}
+      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reveal=reduced()?1:stage?1:clamp(local/.28),size=reduced()?1:stage?clamp(local/.42):0;
+      marks.forEach(({dot,r})=>dot.setAttribute('r',reveal*(4+(r-4)*size)));
+      labels.forEach(({name,lead})=>{name.style.opacity=reveal;lead.style.opacity=reveal;});
+      key.style.opacity=size;scaleMarks.forEach(mark=>mark.style.opacity=size);
+    };
   }
   const isChina=scene.id==='china-frontier',start=Date.parse(isChina?'2023-01-01':'2025-01-06'),end=Date.parse(isChina?'2026-01-01':'2026-07-06');
   const x=d=>m.l+(Date.parse(d)-start)/(end-start)*iw,y=v=>bottom-(v-(isChina?95:0))/(isChina?65:60)*ih;
