@@ -36,7 +36,7 @@ const introStyle=document.createElement('style');introStyle.textContent=`
 `;root.append(introStyle);
 // Each part supplies its own pair of title cards; part 1's copy is the default.
 const escapeHtml=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const titleOne=this.hasAttribute('title-one')?escapeHtml(this.getAttribute('title-one')):'Part I:<br>Chips in a data center';
+const titleOne=this.hasAttribute('title-one')?escapeHtml(this.getAttribute('title-one')).replace(/\n/g,'<br>'):'Part I:<br>Chips in a data center';
 const titleTwo=escapeHtml(this.getAttribute('title-two')||'Nvidia & The 100 GW Opportunity');
 root.querySelector('.pin').insertAdjacentHTML('beforeend',`<div class="titles"><div class="title-card"><h1 class="title title-one">${titleOne}</h1></div><div class="title-card"><p class="title title-two">${titleTwo}</p></div></div>`);
 const brains=this.getAttribute('focus-floor')==='brains';
