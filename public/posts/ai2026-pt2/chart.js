@@ -323,7 +323,7 @@
       legend(scene,[{name:'Gross margin',color:'#43a9ff'},{name:'Operating margin, ex-SBC',color:'#ff914f'}]);
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0);
-        const focus=stage===1||stage===2?'gross':stage===3?'operating':null;
+        const focus=stage===1||stage===2?'gross':stage>=3?'operating':null;
         const progress=reduce.matches||stage>0?1:clamp(Number(scene.dataset.localProgress||0)/.8);
         bars.forEach(({bar,t,metric,value,company})=>{
           const current=value*progress;
