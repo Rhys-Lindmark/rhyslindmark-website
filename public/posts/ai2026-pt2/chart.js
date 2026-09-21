@@ -362,7 +362,12 @@
     if(el.id==='sources')break;
     if(el.classList.contains('scene')){
       const steps=(el.dataset.steps||el.id).split(',');
-      steps.forEach((anchor,index)=>slideEntries.push({id:continuation?String(nextSlide++):anchor,anchor,el,index,count:steps.length}));
+      steps.forEach((anchor,index)=>{
+        const explicitId=el.dataset.slideId;
+        const id=explicitId||(continuation?String(nextSlide++):anchor);
+        if(explicitId&&continuation&&el.dataset.consumeSlide==='true')nextSlide++;
+        slideEntries.push({id,anchor,el,index,count:steps.length});
+      });
       if(el.id==='18')continuation=true;
     }else if(continuation&&el.matches('.body-copy,.article-visual,.article-embed,.article-heading')){
       slideEntries.push({id:String(nextSlide++),anchor:el.id,el,index:0,count:1});
@@ -408,7 +413,7 @@
   function request(){if(!frame)frame=requestAnimationFrame(update);}
   function followHash(){
     const hash=decodeURIComponent(location.hash.slice(1)),query=new URL(location.href).searchParams.get('slide');
-    const entry=hash?slideEntries.find(e=>e.anchor===hash):slideEntries.find(e=>e.id===(query==='17'?'18':query));
+    const entry=hash?slideEntries.find(e=>e.anchor===hash):slideEntries.find(e=>e.id===query);
     slideLinksReady=false;
     if(entry){
       const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;
