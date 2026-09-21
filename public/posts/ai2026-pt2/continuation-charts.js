@@ -56,13 +56,13 @@ window.drawContinuationChart = function(scene, data, reduced) {
   const colors={OpenAI:'#43a9ff',Anthropic:'#ffcc66',China:'#52d6a0',xAI:'#e985cf',DeepMind:'#ff914f'};
   const bubble=scene.id==='rl-rollouts'||scene.id==='trajectory-depth';
   if(bubble){
-    const x=v=>m.l+(Math.log10(v)-23.3)/(26.7-23.3)*iw,y=v=>bottom-(Math.log10(v)-10.6)/(12.7-10.6)*ih;
-    axes([[3e23,'3×10²³'],[1e25,'10²⁵'],[3e26,'3×10²⁶']],[[1e11,'100B'],[3e11,'300B'],[1e12,'1T'],[3e12,'3T']],x,y,'TRAINING COMPUTE · FLOP','TOTAL PARAMETERS');
+    const x=v=>m.l+(Math.log10(v)-23.3)/(27-23.3)*iw,y=v=>bottom-(Math.log10(v)-10.6)/(12.7-10.6)*ih;
+    axes([[3e23,'3×10²³'],[1e25,'10²⁵'],[3e26,'3×10²⁶'],[1e27,'10²⁷']],[[1e11,'100B'],[3e11,'300B'],[1e12,'1T'],[3e12,'3T']],x,y,'TRAINING COMPUTE · FLOP','TOTAL PARAMETERS');
     const depth=scene.id==='trajectory-depth',max=depth?150:50e12,maxR=Math.min(small?28:42,ih*.12);
     const marks=[],labels=[];
     // Greedy placement keeps every model name readable without changing its data position.
     const occupied=[];
-    [...data.models].sort((a,b)=>b.parameters-a.parameters).forEach((row,i)=>{
+    [...data.models].filter(row=>!depth||!row.rolloutsOnly).sort((a,b)=>b.parameters-a.parameters).forEach((row,i)=>{
       const cx=x(row.flops),cy=y(row.parameters),v=depth?row.toolSteps:row.rolloutTokens,r=Math.max(3,Math.sqrt(v/max)*maxR);
       const dot=n('circle',{cx,cy,r,fill:colors[row.group],'fill-opacity':.32,stroke:colors[row.group],'stroke-width':1.5});
       n('title',{},dot,`${row.name}: ≈${(row.parameters/1e9).toFixed(0)}B parameters; ≈${row.flops.toExponential(1)} FLOP; ${depth?'≈'+Math.round(v)+' steps':'≈'+(v/1e12).toFixed(1)+'T rollout tokens'}`);

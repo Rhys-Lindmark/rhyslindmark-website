@@ -146,6 +146,14 @@
       "group": "Anthropic"
     },
     {
+      "name": "Fable 5.1",
+      "flops": 2.8e+26,
+      "parameters": 2200000000000.0,
+      "rolloutTokens": 90000000000000.0,
+      "group": "Anthropic",
+      "rolloutsOnly": true
+    },
+    {
       "name": "Grok 3",
       "flops": 3.5e+26,
       "parameters": 3000000000000.0,
@@ -160,6 +168,14 @@
       "rolloutTokens": 50000000000000.0,
       "toolSteps": 150.0,
       "group": "xAI"
+    },
+    {
+      "name": "GPT-6 Astra",
+      "flops": 6.48e+26,
+      "parameters": 1300000000000.0,
+      "rolloutTokens": 120000000000000.0,
+      "group": "OpenAI",
+      "rolloutsOnly": true
     }
   ],
   "frontier": {
