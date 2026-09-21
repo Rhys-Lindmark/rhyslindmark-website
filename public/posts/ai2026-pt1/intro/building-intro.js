@@ -27,6 +27,9 @@ const introStyle=document.createElement('style');introStyle.textContent=`
  :host(:not([preview])) .title-card{min-height:52svh;padding:64px 16px}
 }
 @media(prefers-reduced-motion:reduce){:host(:not([preview])) .title-card{min-height:0}}
+:host([full-title-slides]:not([preview])) .title-card{min-height:100svh;padding-inline:clamp(20px,5vw,80px)}
+:host([full-title-slides]:not([preview])) .title{width:100%;max-width:none}
+:host([full-title-slides]:not([preview])) .title::after{content:none}
 `;root.append(introStyle);
 // Each part supplies its own pair of title cards; part 1's copy is the default.
 const escapeHtml=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
