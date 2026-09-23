@@ -6,7 +6,7 @@
 
   function codeText(row, tick) {
     let seed = (row + 7) * 113 + tick * 97;
-    return Array.from({length: 18}, () => {
+    return Array.from({length: 22}, () => {
       seed = (seed * 16807) % 2147483647;
       return alphabet[seed % alphabet.length];
     }).join('');
@@ -59,7 +59,7 @@
       codeRows.forEach((row, index) => row.classList.toggle('is-built', index < codeCount));
       scene.dataset.direction = stage === 0 ? 'forward' : stage === 1 ? 'back' : growthStep % 2 ? 'back' : 'forward';
       scene.querySelector('.loop-link-caption').textContent = stage === 0 ? 'WRITES' : stage === 1 ? 'TRAINS' : '↔';
-      scene.style.setProperty('--loop-speed', `${(stage === 2 ? 1.55 - local * .8 : 2.3).toFixed(2)}s`);
+      scene.style.setProperty('--loop-speed', `${(stage === 2 ? 1.55 - local * .55 : 1.8).toFixed(2)}s`);
       scene.style.setProperty('--human-opacity', done || stage === 2 && local > .9 ? clamp((local - .9) * 10) : 0);
     };
   };
