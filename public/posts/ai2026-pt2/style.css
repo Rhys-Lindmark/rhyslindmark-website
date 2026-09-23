@@ -98,6 +98,9 @@
 .body-copy{width:min(740px,calc(100% - 48px));margin:0 auto;padding:28px 0;color:#e6edf3;font-size:17px;line-height:1.55}
 .body-copy p{margin:0}.body-copy p+p{margin-top:1.4em}
 .body-copy a{color:inherit;text-decoration:underline;text-underline-offset:4px}
+.jev-demo{margin-top:32px}
+.jev-demo video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:contain;background:#f5f5f5;pointer-events:none}
+.jev-demo .jev-demo-caption{margin-top:8px;color:#9aafbf;font:11px/1.4 var(--mono)}
 .scene.models.chapter.prose-bridge{height:auto}
 .scene.models.chapter.prose-bridge>.sticky{position:relative!important;display:block;height:auto!important;min-height:0;padding:0;overflow:visible;background:transparent}
 .article-visual{width:min(1050px,calc(100% - 40px));margin:28px auto 70px}
