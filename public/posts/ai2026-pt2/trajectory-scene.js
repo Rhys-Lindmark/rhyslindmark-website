@@ -11,7 +11,7 @@
     .trajectory-frame{position:absolute;inset:0;margin:0;background:#070b10}
     .trajectory-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;display:block}
     .trajectory-ready .trajectory-base{clip-path:inset(0 var(--trajectory-cut,100%) 0 0);will-change:clip-path}
-    .trajectory-frame .trajectory-highlight{opacity:var(--trajectory-highlight,0);clip-path:inset(0 0 0 78%);will-change:opacity}
+    .trajectory-frame .trajectory-highlight{opacity:var(--trajectory-highlight,0);will-change:opacity}
     .all-mode .scene.trajectory-scene{height:auto}
     .all-mode .trajectory-scene>.sticky{position:relative;top:0;height:min(82svh,850px);min-height:560px}
     .all-mode .trajectory-base{clip-path:none}
