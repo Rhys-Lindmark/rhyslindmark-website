@@ -627,16 +627,24 @@
     ]
   },
   "labWorkforceGrowth": {
-    "note": "Illustrative Jan–Aug 2026 trajectory. August endpoint uses Anthropic's reported ~30,000 concurrent agents on one platform, assumes another ~30,000 at OpenAI, and implies 12,000 combined employees from the author's 5x ratio. OpenAI's published 3.14 agent-workdays per researcher-workday is a different measure, not agent headcount.",
+    "note": "Illustrative 2020–Aug 2026 trajectories, split by company. All employee counts and pre-August agent counts are estimates. August 2026 uses Anthropic's reported ~30,000 concurrent agents on one platform, assumes ~30,000 at OpenAI, and retains the author's illustrative 12,000 combined employees. OpenAI's reported agent-workdays are a different measure, not agent headcount. Rows: date, OpenAI people, OpenAI agents, Anthropic people, Anthropic agents.",
     "rows": [
-      ["2026-01-01", 8000, 3000],
-      ["2026-02-01", 8000, 5000],
-      ["2026-03-01", 9000, 9000],
-      ["2026-04-01", 9000, 15000],
-      ["2026-05-01", 10000, 23000],
-      ["2026-06-01", 10000, 34000],
-      ["2026-07-01", 11000, 46000],
-      ["2026-08-01", 12000, 60000]
+      ["2020-01-01", 100, 0, 0, 0],
+      ["2021-01-01", 180, 0, 0, 0],
+      ["2021-06-01", 210, 0, 30, 0],
+      ["2022-01-01", 300, 0, 60, 0],
+      ["2023-01-01", 700, 0, 220, 0],
+      ["2024-01-01", 1500, 50, 800, 35],
+      ["2025-01-01", 3000, 350, 1800, 300],
+      ["2025-12-01", 4500, 1000, 2700, 1200],
+      ["2026-01-01", 5000, 1000, 3000, 2000],
+      ["2026-02-01", 5000, 2000, 3000, 3000],
+      ["2026-03-01", 5500, 3500, 3500, 5500],
+      ["2026-04-01", 5500, 6000, 3500, 9000],
+      ["2026-05-01", 6000, 9000, 4000, 14000],
+      ["2026-06-01", 6000, 14000, 4000, 20000],
+      ["2026-07-01", 6500, 20000, 4500, 26000],
+      ["2026-08-01", 7000, 30000, 5000, 30000]
     ]
   }
 }

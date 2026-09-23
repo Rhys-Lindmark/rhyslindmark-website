@@ -80,27 +80,25 @@ window.drawContinuationChart = function(scene, data, reduced) {
   }
   if(scene.id==='lab-workforce-growth'){
     const rows=data.labWorkforceGrowth.rows,start=Date.parse(rows[0][0]),end=Date.parse(rows.at(-1)[0]);
-    const x=date=>m.l+(Date.parse(date)-start)/(end-start)*iw,y=value=>bottom-value/65000*ih;
-    axes([['2026-01-01','Jan'],['2026-03-01','Mar'],['2026-05-01','May'],['2026-07-01','Jul'],['2026-08-01','Aug']],
-      [[0,'0'],[15000,'15k'],[30000,'30k'],[45000,'45k'],[60000,'60k']],x,y,'2026','PEOPLE / CONCURRENT AGENTS');
+    const x=date=>m.l+(Date.parse(date)-start)/(end-start)*iw,y=value=>bottom-value/35000*ih;
+    axes([2020,2021,2022,2023,2024,2025,2026].map(year=>[`${year}-01-01`,String(year)]),
+      [[0,'0'],[10000,'10k'],[20000,'20k'],[30000,'30k']],x,y,'Year','People / agents');
     const series=[
-      {index:1,name:'Employees · implied',color:'#43a9ff'},
-      {index:2,name:'Agents · illustrative',color:'#39ffc1'}
+      {index:1,name:'OpenAI people',color:'#43a9ff',dash:'7 5'},
+      {index:2,name:'OpenAI agents',color:'#43a9ff'},
+      {index:3,name:'Anthropic people',color:'#ffcc66',dash:'7 5'},
+      {index:4,name:'Anthropic agents',color:'#ffcc66'}
     ];
-    series.forEach(({index,name,color})=>{
+    series.forEach(({index,name,color,dash})=>{
       const points=rows.map(row=>[x(row[0]),y(row[index])]);
       const d=points.map(([px,py],i)=>`${i?'L':'M'}${px},${py}`).join('');
-      if(index===2)n('path',{d:`${d}L${right},${bottom}L${m.l},${bottom}Z`,fill:color,'fill-opacity':.10});
-      const line=n('path',{d,fill:'none',stroke:color,'stroke-width':small?2.5:3.5,'stroke-linecap':'round','stroke-linejoin':'round'});
-      n('title',{},line,name);
+      const line=n('path',{d,fill:'none',stroke:color,'stroke-width':small?2.5:3.5,'stroke-dasharray':dash||'','stroke-linecap':'round','stroke-linejoin':'round'});
+      n('title',{},line,`${name} · illustrative`);
       const [endX,endY]=points.at(-1);
       n('circle',{cx:endX,cy:endY,r:small?5:6,fill:color,stroke:'#0b1015','stroke-width':2});
-      const labelY=small&&index===1?endY+55:endY-14;
-      const label=text(right-6,labelY,`${Math.round(rows.at(-1)[index]/1000)}k ${index===2?'agents':'employees'}`,'end');
-      label.style.fill=color;label.style.fontSize=small?'13px':'18px';label.style.fontWeight='700';
     });
     const legend=scene.querySelector('.legend');legend.replaceChildren();
-    series.forEach(({name,color})=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);item.append(swatch,document.createTextNode(name));legend.append(item);});
+    series.forEach(({name,color,dash})=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);if(dash)swatch.style.borderTopStyle='dashed';item.append(swatch,document.createTextNode(name));legend.append(item);});
     return ()=>{};
   }
   if(scene.id==='chinchilla'){
