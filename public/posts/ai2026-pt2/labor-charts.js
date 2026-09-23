@@ -48,33 +48,57 @@ function knowledgeWork(svg,scene,d,W,H,a){
  };
 }
 function machineTiers(svg,scene,d,W,H,a){
- const {make,text,title,grid,muted,clamp,ease}=a,small=W<620;
+ const {make,text,title,grid,muted,clamp,ease}=a,small=W<700;
  a.addLegend(scene,[]);
- const left=small?42:60,right=W-(small?75:155),top=28,bottom=H-58;
- const x=v=>left+(v-2022.92)/(2026.75-2022.92)*(right-left);
- const y=v=>bottom-(Math.log10(v)-1)/7*(bottom-top);
- [10,100,1000,10000,100000,1000000,10000000,100000000].forEach(v=>{
-  make('line',{x1:left,x2:right,y1:y(v),y2:y(v),stroke:grid},svg);
-  text(svg,left-7,y(v)+4,v>=1000000?`${v/1000000}M`:v>=1000?`${v/1000}K`:String(v),{'text-anchor':'end',class:'axis-tick'});
+ const left=small?53:69,right=W-(small?93:186),top=25,bottom=H-41;
+ const x=i=>left+i/(d.dates.length-1)*(right-left);
+ const y=v=>bottom-(Math.log10(Math.max(.1,v))+1)/9*(bottom-top);
+ // Major log ticks only: the physical series must fit on the same axis.
+ [.1,1,10,100,1000,10000,100000,1000000,10000000,100000000].forEach(v=>{
+  const yy=y(v);
+  make('line',{x1:left,x2:right,y1:yy,y2:yy,stroke:grid,'stroke-opacity':v===.1?0:.75},svg);
+  text(svg,left-9,yy+4,v>=1e6?`${v/1e6}M`:v>=1000?`${v/1000}K`:String(v),{'text-anchor':'end',class:'axis-tick'});
  });
- [2023,2024,2025,2026].forEach(v=>text(svg,x(v),bottom+22,String(v),{'text-anchor':'middle',class:'axis-tick'}));
+ [2,14,26,38].forEach((i,j)=>text(svg,x(i),bottom+23,String(2023+j),{'text-anchor':'middle',class:'axis-tick'}));
+ const ylabel=text(svg,13,(top+bottom)/2,'Workers',{'text-anchor':'middle',class:'workforce-axis-label'});
+ ylabel.setAttribute('transform',`rotate(-90 13 ${(top+bottom)/2})`);
+ const referenceMarks=d.references.map((r,i)=>{
+  const group=make('g',{},svg),yy=y(r.value);
+  make('line',{x1:left,x2:right,y1:yy,y2:yy,stroke:muted,'stroke-dasharray':'5 5','stroke-opacity':'.65'},group);
+  const label=small?(i?'U.S. knowledge · 62M':'Developers · 40M'):`${r.name} · ${Math.round(r.value/1e6)}M`;
+  text(group,right+7,yy+(i?-5:13),label,{class:'workforce-reference'});
+  title(group,`${r.name}: ${Math.round(r.value/1e6)} million`);
+  return group;
+ });
+ // Keep categories in the requested reveal order; direct labels avoid a legend.
+ const offsets=[2,28,8,-8,3,3];
+ const short=['Chatbots','Researchers','Knowledge','Coders','Drivers','Robots'];
  const marks=d.series.map((s,i)=>{
-  const points=s.points.map(([year,value])=>[x(year),y(value)]);
-  const path=make('path',{d:points.map(([xx,yy],j)=>`${j?'L':'M'}${xx},${yy}`).join(' '),fill:'none',stroke:s.color,'stroke-width':small?2.6:3.2,'stroke-linejoin':'round','stroke-linecap':'round',...(s.dashed?{'stroke-dasharray':'6 5'}:{})},svg);
-  const end=s.points.at(-1)[1],label=text(svg,right+7,y(end)+4,W<900?`${['Chat','Code','R&D','Drive','Robots'][i]} ${s.end}`:`${s.name} · ${s.end}`,{fill:s.color,class:'tier-endpoint'});
+  const points=s.values.map((v,j)=>[x(j),y(v)]);
+  const path=make('path',{d:points.map(([xx,yy],j)=>`${j?'L':'M'}${xx},${yy}`).join(' '),fill:'none',stroke:s.color,'stroke-width':small?2.5:3.1,'stroke-linejoin':'round','stroke-linecap':'round'},svg);
+  const end=s.values.at(-1),lastY=y(end);
+  const amount=end>=1e6?`${(end/1e6).toFixed(1)}M`:end>=1000?`${(end/1000).toFixed(0)}K`:`${Math.round(end)}`;
+  const label=text(svg,right+7,lastY+offsets[i],`${small?short[i]:s.name} · ${amount}`,{class:'tier-endpoint',fill:s.color});
   label.style.fill=s.color;
-  const dot=make('circle',{cx:right,cy:y(end),r:small?3:4,fill:s.color},svg);
-  title(path,`${s.name}: ${s.points[0][1].toLocaleString('en-US')} FTE-equivalents in November 2022 to ${end.toLocaleString('en-US')} in September 2026`);
-  // A clip reveals each path by date, so dashed robotics series keep their dash pattern.
-  const clipId=`tier-reveal-${++sequence}`,defs=make('defs',{},svg),clip=make('clipPath',{id:clipId},defs),rect=make('rect',{x:left-3,y:top-4,width:0,height:bottom-top+8},clip);
+  const dot=make('circle',{cx:right,cy:lastY,r:small?3:4,fill:s.color},svg);
+  title(path,`${s.name}: ${Math.round(end).toLocaleString('en-US')} paid-work-equivalent task-years per year in September 2026`);
+  const clipId=`tier-reveal-${++sequence}`,defs=make('defs',{},svg),clip=make('clipPath',{id:clipId},defs);
+  const rect=make('rect',{x:left-3,y:top-4,width:0,height:bottom-top+8},clip);
   path.setAttribute('clip-path',`url(#${clipId})`);
   return {rect,label,dot};
  });
- return state=>marks.forEach((m,i)=>{
-  const p=state.reduced?1:state.stage>i?1:state.stage<i?0:ease(clamp(state.local*1.25));
-  m.rect.setAttribute('width',(right-left+6)*p);
-  m.label.style.opacity=m.dot.style.opacity=p>.96?'1':'0';
- });
+ return state=>{
+  marks.forEach((m,i)=>{
+   const step=i<4?i:i+2;
+   const p=state.reduced?1:state.stage>step?1:state.stage<step?0:ease(clamp(state.local*1.15));
+   m.rect.setAttribute('width',(right-left+6)*p);
+   m.label.style.opacity=m.dot.style.opacity=p>.96?'1':'0';
+  });
+  referenceMarks.forEach((g,i)=>{
+   const step=4+i,p=state.reduced?1:state.stage>step?1:state.stage<step?0:ease(clamp(state.local*1.5));
+   g.style.opacity=String(p);
+  });
+ };
 }
 function computeModels(svg,scene,d,W,H,a){
  const {make,text,title,grid,muted,colors,clamp,ease}=a,small=W<620;

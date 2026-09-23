@@ -158,15 +158,16 @@ blockquote.pullquote{border-left:2px solid #526777;padding:28px 32px;margin-bloc
 .tweet-panel iframe,
 .article-embed iframe{display:block;border:0;border-radius:16px;clip-path:inset(0 round 16px);background:#15202b}
 
-/* The three labor-market charts share Part 2's pinned scene and passage layout. */
-#machine-tiers.scene{height:600svh}
-#knowledge-work.scene{height:280svh}
+/* Workforce stages reveal one series or benchmark per passage. */
+#machine-tiers.scene{height:900svh}
 #compute-models.scene{height:400svh}
-.all-mode #machine-tiers.scene,.all-mode #knowledge-work.scene,.all-mode #compute-models.scene{height:auto}
+.all-mode #machine-tiers.scene,.all-mode #compute-models.scene{height:auto}
 .scene.labor-graph .figure-heading h3{font:14px/1.35 var(--mono);color:#e6edf3}
 .scene.labor-graph .legend:empty{display:none}
 .scene.labor-graph svg .knowledge-reference,.scene.labor-graph svg .compute-reference,.scene.labor-graph svg .compute-milestone{fill:#91a6b5;font-size:10px}
 .scene.labor-graph svg .knowledge-endpoint,.scene.labor-graph svg .tier-endpoint,.scene.labor-graph svg .compute-endpoint{font-size:12px;font-weight:600;paint-order:stroke;stroke:#080d12;stroke-width:3px}
 .scene.labor-graph svg .knowledge-endpoint,.scene.labor-graph svg .compute-gap-label{fill:#ff914f}
 .scene.labor-graph svg .compute-gap-label{font-size:24px;font-weight:700;paint-order:stroke;stroke:#080d12;stroke-width:3px}
+.scene.labor-graph svg .workforce-axis-label{fill:#d5e1e8;font:12px var(--mono)}
+.scene.labor-graph svg .workforce-reference{fill:#9dafbb;font:10px var(--mono);paint-order:stroke;stroke:#080d12;stroke-width:3px}
 @media(max-width:760px){.scene.labor-graph .figure-heading h3{font-size:11px}.scene.labor-graph svg .knowledge-reference,.scene.labor-graph svg .compute-reference,.scene.labor-graph svg .compute-milestone{font-size:9px}.scene.labor-graph svg .knowledge-endpoint,.scene.labor-graph svg .tier-endpoint,.scene.labor-graph svg .compute-endpoint{font-size:10px}.scene.labor-graph svg .compute-gap-label{font-size:16px}}

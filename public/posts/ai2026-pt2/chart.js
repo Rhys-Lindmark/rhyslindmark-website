@@ -429,7 +429,9 @@
       const steps=(el.dataset.steps||el.id).split(',');
       steps.forEach((anchor,index)=>{
         const explicitId=el.dataset.slideId;
-        const id=el.dataset.slideIds?.split(',')[index]||explicitId||(continuation?String(nextSlide++):anchor);
+        const stepId=el.dataset.slideIds?.split(',')[index];
+        const id=stepId||explicitId||(continuation?String(nextSlide++):anchor);
+        if(stepId&&continuation&&/^\d+$/.test(stepId))nextSlide=Math.max(nextSlide,Number(stepId)+1);
         if(explicitId&&continuation&&el.dataset.consumeSlide==='true')nextSlide++;
         slideEntries.push({id,anchor,el,index,count:steps.length});
       });
@@ -506,6 +508,7 @@
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const laborResponse=await fetch('/posts/ai2026-pt2/labor-charts.json?v=1');if(!laborResponse.ok)throw Error('Labor chart data unavailable');data.labor=await laborResponse.json();
+    const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor['machine-tiers']={title:workforceData.title,note:workforceData.note,data:workforceData};
     document.body.classList.toggle('all-mode',reduce.matches);
     for(const scene of scenes){draw(scene);const plot=scene.querySelector('.plot-wrap');if(plot)new ResizeObserver(()=>{draw(scene);request();}).observe(plot);}
     reduce.addEventListener('change',()=>{document.body.classList.toggle('all-mode',reduce.matches);scenes.forEach(draw);request();});
