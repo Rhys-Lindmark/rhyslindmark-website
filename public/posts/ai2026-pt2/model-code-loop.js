@@ -58,8 +58,13 @@
         y: row.offsetTop + node.offsetTop + node.offsetHeight / 2
       })));
       const connections = [];
-      for (let row = 0; row < centers.length - 1; row++) {
-        edgeMappings[row].forEach((target, source) => connections.push([centers[row][source], centers[row + 1][target]]));
+      for (let base = 0; base < centers.length; base += 3) {
+        const groupSize = Math.min(3, centers.length - base);
+        for (let column = 0; column < 2; column++) {
+          edgeMappings[base / 3][column].slice(0, groupSize).forEach((target, source) => {
+            connections.push([centers[base + source][column], centers[base + target % groupSize][column + 1]]);
+          });
+        }
       }
       edgeLayer.replaceChildren(...connections.map(([from, to]) => {
         const edge = document.createElement('i');
@@ -73,7 +78,7 @@
       edgeSize = `${model.clientWidth}x${model.clientHeight}x${visibleModelCount}`;
     };
     const trainModel = () => {
-      edgeMappings = Array.from({length: rows - 1}, shuffle);
+      edgeMappings = Array.from({length: rows / 3}, () => [shuffle(), shuffle()]);
       paintEdges();
     };
     let tick = 0;
