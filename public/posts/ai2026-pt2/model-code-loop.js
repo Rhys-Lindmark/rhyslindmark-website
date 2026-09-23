@@ -54,7 +54,7 @@
       const done = reducedMotion();
       const growthStep = stage === 2 ? Math.min(22, Math.floor(local * 23)) : 0;
       const modelCount = done ? rows : stage === 0 ? 1 : stage === 1 ? 3 : Math.min(rows, 3 + Math.floor(growthStep / 2));
-      const codeCount = done ? rows : stage === 0 ? 1 : stage === 1 ? 2 : Math.min(rows, 2 + Math.ceil(growthStep / 2));
+      const codeCount = done ? rows : stage < 2 ? 2 : Math.min(rows, 2 + Math.ceil(growthStep / 2));
       modelRows.forEach((row, index) => row.classList.toggle('is-built', index < modelCount));
       codeRows.forEach((row, index) => row.classList.toggle('is-built', index < codeCount));
       scene.dataset.direction = stage === 0 ? 'forward' : stage === 1 ? 'back' : growthStep % 2 ? 'back' : 'forward';
