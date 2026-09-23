@@ -169,6 +169,7 @@
         const shown=reduce.matches?marks.length:stage===1?Math.floor(clamp(local/.9)*marks.length):0;
         marks.forEach((g,i)=>g.style.opacity=i<shown?'1':'0');
       });
+      renderers.get(scene)();
     } else
     if (kind === 'business') {
       const rows=data.business, left=small?24:70, width=W-left*2;
