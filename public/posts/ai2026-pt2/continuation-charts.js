@@ -64,8 +64,6 @@ window.drawContinuationChart = function(scene, data, reduced) {
     n('path',{d:`${line}L${right},${bottom}L${m.l},${bottom}Z`,fill:'#43a9ff','fill-opacity':.13},plot);
     const trace=n('path',{d:line,fill:'none',stroke:'#43a9ff','stroke-width':small?2.5:3.5,'stroke-linecap':'round','stroke-linejoin':'round'},plot);
     n('title',{},trace,'Median researcher coding-agent usage, annualized from OpenAI’s daily API-price estimates');
-    const [endX,endY]=points.at(-1);
-    n('circle',{cx:endX,cy:endY,r:small?5:6,fill:'#39ffc1',stroke:'#0b1015','stroke-width':2},plot);
     const legend=scene.querySelector('.legend');legend.replaceChildren();
     const item=document.createElement('span'),swatch=document.createElement('i');
     swatch.style.setProperty('--color','#43a9ff');item.append(swatch,document.createTextNode('Median researcher · 365-day run rate'));legend.append(item);
