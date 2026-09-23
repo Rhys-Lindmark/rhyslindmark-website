@@ -1,6 +1,6 @@
 .scene.model-code-loop{height:1040svh;--heading-color:#39ffc1}
 .scene.model-code-loop>.sticky{padding-bottom:16px}
-.loop-visual{position:relative;flex:1;min-height:0;width:100%;overflow:hidden;border:1px solid #28404b;border-radius:5px;background:radial-gradient(circle at 50% 53%,#14343a 0,#0c1a22 34%,#080d13 72%)}
+.loop-visual{position:relative;flex:1;min-height:0;width:100%;overflow:hidden;border:0;border-radius:0;background:radial-gradient(circle at 50% 53%,#14343a 0,#0c1a22 34%,#080d13 72%)}
 .loop-frame{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s ease}
 .model-code-loop[data-stage="0"] .loop-frame-young,.model-code-loop[data-stage="1"] .loop-frame-grown,.model-code-loop[data-stage="2"] .loop-frame-forest{opacity:1;visibility:visible}
 .loop-frame-young,.loop-frame-grown{display:grid;grid-template-columns:minmax(0,1fr) minmax(70px,14%) minmax(0,1fr);align-items:center;gap:2%;padding:4% 7%}
@@ -55,8 +55,10 @@
 .loop-redwood-art img{position:relative;display:block;width:100%;height:auto;max-width:none}
 .loop-redwood-art img+img{margin-top:-6.25%;-webkit-mask-image:linear-gradient(to bottom,transparent,#000 9.375%);mask-image:linear-gradient(to bottom,transparent,#000 9.375%)}
 .model-code-loop[data-stage="2"] .loop-growth{inset:0 8% 5%}
-body:not(.all-mode) .scene.model-code-loop[data-stage="2"]>.sticky{padding:0}
-body:not(.all-mode) .scene.model-code-loop[data-stage="2"] .loop-visual{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:0}
+body:not(.all-mode) .scene.model-code-loop>.sticky{padding:0}
+body:not(.all-mode) .scene.model-code-loop .loop-visual{position:absolute;inset:0;width:100%;height:100%}
+.scene.model-code-loop .passage{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;max-width:none;max-height:none;overflow:visible}
+body:not(.all-mode) .scene.model-code-loop:not(.chapter):not(.statement):not(.fulltext) .passage{left:8%;width:84%;transform:translateY(var(--card-shift,100svh))}
 .model-code-loop[data-stage="2"] .loop-stack{gap:4px}
 .model-code-loop[data-stage="2"] .loop-model-row,.model-code-loop[data-stage="2"] .loop-code-row{height:calc(5.55556% - 3.77778px);min-height:0}
 .model-code-loop[data-stage="2"] .loop-link{opacity:0}
