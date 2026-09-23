@@ -36,6 +36,49 @@
       code.append(codeRow);
       codeRows.push(codeRow);
     }
+    const edgeLayer = document.createElement('div');
+    edgeLayer.className = 'loop-edge-layer';
+    model.prepend(edgeLayer);
+    let edgeSignature = '';
+    let edgeMappings = null;
+    let edgeSize = '';
+    const shuffle = () => {
+      const order = [0, 1, 2];
+      for (let index = 2; index > 0; index--) {
+        const swap = Math.floor(Math.random() * (index + 1));
+        [order[index], order[swap]] = [order[swap], order[index]];
+      }
+      return order;
+    };
+    const paintEdges = () => {
+      if (!edgeMappings) return;
+      const centers = modelRows.slice(0, 3).map(row => [...row.children].map(node => ({
+        x: row.offsetLeft + node.offsetLeft + node.offsetWidth / 2,
+        y: row.offsetTop + node.offsetTop + node.offsetHeight / 2
+      })));
+      const connections = [];
+      edgeMappings[0].forEach((target, source) => connections.push([centers[source][0], centers[target][1]]));
+      edgeMappings[1].forEach((target, source) => connections.push([centers[source][1], centers[target][2]]));
+      edgeLayer.replaceChildren(...connections.map(([from, to]) => {
+        const edge = document.createElement('i');
+        edge.className = 'loop-edge';
+        edge.style.left = `${from.x}px`;
+        edge.style.top = `${from.y}px`;
+        edge.style.width = `${Math.hypot(to.x - from.x, to.y - from.y)}px`;
+        edge.style.transform = `rotate(${Math.atan2(to.y - from.y, to.x - from.x)}rad)`;
+        return edge;
+      }));
+      edgeSize = `${model.clientWidth}x${model.clientHeight}`;
+    };
+    const trainModel = () => {
+      let next;
+      do {
+        next = [shuffle(), shuffle()];
+      } while (next.map(order => order.join('')).join('-') === edgeSignature);
+      edgeMappings = next;
+      edgeSignature = next.map(order => order.join('')).join('-');
+      paintEdges();
+    };
     let tick = 0;
     const changeCode = () => {
       if (reducedMotion()) return;
@@ -43,11 +86,13 @@
       codeRows.forEach((line, row) => {
         if (line.classList.contains('is-built')) line.textContent = codeText(row, tick);
       });
+      if (scene.dataset.stage === '1') trainModel();
     };
     const zap = scene.querySelector('.loop-zap');
     if (scene._loopChangeCode) zap.removeEventListener('animationiteration', scene._loopChangeCode);
     zap.addEventListener('animationiteration', changeCode);
     scene._loopChangeCode = changeCode;
+    let previousStage = -1;
     return () => {
       const stage = Number(scene.dataset.stage || 0);
       const local = clamp(Number(scene.dataset.localProgress || 0));
@@ -61,6 +106,11 @@
       scene.querySelector('.loop-link-caption').textContent = stage === 0 ? 'WRITES' : stage === 1 ? 'TRAINS' : '↔';
       scene.style.setProperty('--loop-speed', `${(stage === 2 ? 1.55 - local * .55 : 1.8).toFixed(2)}s`);
       scene.style.setProperty('--human-opacity', done || stage === 2 && local > .9 ? clamp((local - .9) * 10) : 0);
+      if (stage === 1 && !done) {
+        if (previousStage !== 1) trainModel();
+        else if (`${model.clientWidth}x${model.clientHeight}` !== edgeSize) paintEdges();
+      }
+      previousStage = stage;
     };
   };
 })();
