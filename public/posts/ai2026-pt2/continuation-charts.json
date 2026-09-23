@@ -150,8 +150,8 @@
       "flops": 2.8e+26,
       "parameters": 2200000000000.0,
       "rolloutTokens": 90000000000000.0,
-      "group": "Anthropic",
-      "rolloutsOnly": true
+      "toolSteps": 180.0,
+      "group": "Anthropic"
     },
     {
       "name": "Grok 3",
@@ -174,8 +174,8 @@
       "flops": 6.48e+26,
       "parameters": 1300000000000.0,
       "rolloutTokens": 120000000000000.0,
-      "group": "OpenAI",
-      "rolloutsOnly": true
+      "toolSteps": 170.0,
+      "group": "OpenAI"
     }
   ],
   "frontier": {
@@ -593,5 +593,50 @@
       "2026-07-06",
       55.34
     ]
-  ]
+  ],
+  "rdAutomation": {
+    "note": "Approximate monthly shares digitized from Anthropic's R&D Automation Index chart. AL4 values follow the labels in the source image.",
+    "rows": [
+      ["Aug 2025", 6, 39, 51, 4, 0],
+      ["Sep", 5, 36, 54, 5, 0],
+      ["Oct", 3, 30, 60, 7, 0],
+      ["Nov", 2, 18, 64, 16, 0],
+      ["Dec", 1, 11, 65, 23, 0],
+      ["Jan 2026", 1, 9, 62, 28, 0],
+      ["Feb", 1, 6, 57, 36, 0],
+      ["Mar", 1, 2, 42, 54, 1],
+      ["Apr", 1, 1, 33, 62, 3],
+      ["May", 1, 0, 12, 75, 12],
+      ["Jun", 1, 0, 10, 75, 14],
+      ["Jul", 1, 1, 6, 70, 22],
+      ["Aug 2026", 1, 1, 4, 68, 26]
+    ]
+  },
+  "openaiResearcherUsage": {
+    "note": "Approximate weekly daily median API-price-equivalent USD per researcher digitized from OpenAI's chart. Annualized in the renderer using 365 days; this is a run rate, not actual billed spend.",
+    "annualizationDays": 365,
+    "rows": [
+      ["2026-01-04", 0], ["2026-01-11", 0], ["2026-01-18", 0], ["2026-01-25", 1],
+      ["2026-02-01", 1], ["2026-02-08", 2], ["2026-02-15", 2], ["2026-02-22", 1],
+      ["2026-03-01", 6], ["2026-03-08", 10], ["2026-03-15", 10], ["2026-03-22", 13], ["2026-03-29", 14],
+      ["2026-04-12", 29], ["2026-04-19", 42], ["2026-04-26", 45],
+      ["2026-05-03", 66], ["2026-05-10", 82], ["2026-05-17", 80], ["2026-05-24", 101], ["2026-05-31", 137],
+      ["2026-06-07", 148], ["2026-06-14", 161], ["2026-06-21", 156], ["2026-06-28", 151],
+      ["2026-07-12", 163], ["2026-07-19", 236], ["2026-07-26", 304],
+      ["2026-08-02", 377], ["2026-08-09", 434], ["2026-08-15", 601]
+    ]
+  },
+  "labWorkforceGrowth": {
+    "note": "Illustrative Jan–Aug 2026 trajectory. August endpoint uses Anthropic's reported ~30,000 concurrent agents on one platform, assumes another ~30,000 at OpenAI, and implies 12,000 combined employees from the author's 5x ratio. OpenAI's published 3.14 agent-workdays per researcher-workday is a different measure, not agent headcount.",
+    "rows": [
+      ["2026-01-01", 8000, 3000],
+      ["2026-02-01", 8000, 5000],
+      ["2026-03-01", 9000, 9000],
+      ["2026-04-01", 9000, 15000],
+      ["2026-05-01", 10000, 23000],
+      ["2026-06-01", 10000, 34000],
+      ["2026-07-01", 11000, 46000],
+      ["2026-08-01", 12000, 60000]
+    ]
+  }
 }

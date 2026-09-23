@@ -14,6 +14,80 @@ window.drawContinuationChart = function(scene, data, reduced) {
     text((right+m.l)/2,H-12,xlabel);
     n('text',{x:17,y:(m.t+bottom)/2,transform:`rotate(-90 17 ${(m.t+bottom)/2})`,'text-anchor':'middle'},svg,ylabel);
   }
+  if(scene.id==='anthropic-rd-automation'){
+    const rows=data.rdAutomation.rows,cell=iw/rows.length,edge=i=>m.l+i*cell,y=v=>bottom-v/100*ih;
+    const bands=[
+      {index:4,name:'AL4 · AI leads',color:'#39ffc1'},
+      {index:3,name:'AL3 · AI collaborates',color:'#2d9bc1'},
+      {index:2,name:'AL2 · AI assists',color:'#345b72'},
+      {index:1,name:'AL1 · Minimal AI',color:'#243b4d'},
+      {index:0,name:'AL0 · No AI',color:'#152631'}
+    ];
+    [0,25,50,75,100].forEach(v=>{n('line',{x1:m.l,x2:right,y1:y(v),y2:y(v),stroke:'#2a3a47'});text(m.l-10,y(v)+4,`${v}%`,'end');});
+    bands.forEach(({index,color,name})=>{
+      const lower=row=>row.slice(index+2).reduce((sum,value)=>sum+value,0),upper=row=>lower(row)+row[index+1];
+      let d=`M${edge(0)},${y(upper(rows[0]))}`;
+      rows.forEach((row,i)=>{d+=`H${edge(i+1)}`;if(i<rows.length-1)d+=`V${y(upper(rows[i+1]))}`;});
+      d+=`V${y(lower(rows.at(-1)))}`;
+      for(let i=rows.length-1;i>=0;i--){d+=`H${edge(i)}`;if(i)d+=`V${y(lower(rows[i-1]))}`;}
+      const area=n('path',{d:d+'Z',fill:color,stroke:'#0b1015','stroke-width':1});
+      n('title',{},area,name);
+    });
+    const ticks=small?[0,3,5,7,9,12]:[0,2,4,6,8,10,12];
+    ticks.forEach(i=>{const x=edge(i)+cell/2;n('line',{x1:x,x2:x,y1:bottom,y2:bottom+6,stroke:'#607888'});const label=text(x,bottom+25,rows[i][0]);label.style.fontSize=small?'9px':'11px';});
+    const last=rows.at(-1),x=edge(rows.length-1)+cell/2,cy=y(last[5]);
+    n('circle',{cx:x,cy,r:small?4:5,fill:'#39ffc1',stroke:'#0b1015','stroke-width':2});
+    const value=text(x,cy-14,'26%');value.style.fill='#39ffc1';value.style.fontWeight='700';value.style.fontSize=small?'15px':'20px';
+    const legend=scene.querySelector('.legend');legend.replaceChildren();
+    bands.slice().reverse().forEach(({name,color})=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);swatch.style.borderTopWidth='8px';item.append(swatch,document.createTextNode(name));legend.append(item);});
+    return ()=>{};
+  }
+  if(scene.id==='openai-researcher-usage'){
+    const {rows,annualizationDays}=data.openaiResearcherUsage;
+    const start=Date.parse(rows[0][0]),end=Date.parse(rows.at(-1)[0]);
+    const x=date=>m.l+(Date.parse(date)-start)/(end-start)*iw;
+    const y=annual=>bottom-annual/250000*ih;
+    axes([['2026-01-04','Jan'],['2026-03-01','Mar'],['2026-05-03','May'],['2026-07-12','Jul'],['2026-08-15','Aug']],
+      [[0,'$0'],[50000,'$50k'],[100000,'$100k'],[150000,'$150k'],[200000,'$200k'],[250000,'$250k']],x,y,'2026','ANNUALIZED API-PRICE USD');
+    const points=rows.map(([date,daily])=>[x(date),y(daily*annualizationDays)]);
+    const line=points.map(([px,py],i)=>`${i?'L':'M'}${px},${py}`).join('');
+    n('path',{d:`${line}L${right},${bottom}L${m.l},${bottom}Z`,fill:'#43a9ff','fill-opacity':.13});
+    const trace=n('path',{d:line,fill:'none',stroke:'#43a9ff','stroke-width':small?2.5:3.5,'stroke-linecap':'round','stroke-linejoin':'round'});
+    n('title',{},trace,'Median researcher coding-agent usage, annualized from OpenAI’s daily API-price estimates');
+    const [endX,endY]=points.at(-1);
+    n('circle',{cx:endX,cy:endY,r:small?5:6,fill:'#39ffc1',stroke:'#0b1015','stroke-width':2});
+    const endLabel=text(right-6,endY-16,`$${Math.round(rows.at(-1)[1]*annualizationDays/1000)}k / yr`,'end');
+    endLabel.style.fill='#39ffc1';endLabel.style.fontSize=small?'15px':'20px';endLabel.style.fontWeight='700';
+    const legend=scene.querySelector('.legend');legend.replaceChildren();
+    const item=document.createElement('span'),swatch=document.createElement('i');
+    swatch.style.setProperty('--color','#43a9ff');item.append(swatch,document.createTextNode('Median researcher · 365-day run rate'));legend.append(item);
+    return ()=>{};
+  }
+  if(scene.id==='lab-workforce-growth'){
+    const rows=data.labWorkforceGrowth.rows,start=Date.parse(rows[0][0]),end=Date.parse(rows.at(-1)[0]);
+    const x=date=>m.l+(Date.parse(date)-start)/(end-start)*iw,y=value=>bottom-value/65000*ih;
+    axes([['2026-01-01','Jan'],['2026-03-01','Mar'],['2026-05-01','May'],['2026-07-01','Jul'],['2026-08-01','Aug']],
+      [[0,'0'],[15000,'15k'],[30000,'30k'],[45000,'45k'],[60000,'60k']],x,y,'2026','PEOPLE / CONCURRENT AGENTS');
+    const series=[
+      {index:1,name:'Employees · implied',color:'#43a9ff'},
+      {index:2,name:'Agents · illustrative',color:'#39ffc1'}
+    ];
+    series.forEach(({index,name,color})=>{
+      const points=rows.map(row=>[x(row[0]),y(row[index])]);
+      const d=points.map(([px,py],i)=>`${i?'L':'M'}${px},${py}`).join('');
+      if(index===2)n('path',{d:`${d}L${right},${bottom}L${m.l},${bottom}Z`,fill:color,'fill-opacity':.10});
+      const line=n('path',{d,fill:'none',stroke:color,'stroke-width':small?2.5:3.5,'stroke-linecap':'round','stroke-linejoin':'round'});
+      n('title',{},line,name);
+      const [endX,endY]=points.at(-1);
+      n('circle',{cx:endX,cy:endY,r:small?5:6,fill:color,stroke:'#0b1015','stroke-width':2});
+      const labelY=small&&index===1?endY+55:endY-14;
+      const label=text(right-6,labelY,`${Math.round(rows.at(-1)[index]/1000)}k ${index===2?'agents':'employees'}`,'end');
+      label.style.fill=color;label.style.fontSize=small?'13px':'18px';label.style.fontWeight='700';
+    });
+    const legend=scene.querySelector('.legend');legend.replaceChildren();
+    series.forEach(({name,color})=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);item.append(swatch,document.createTextNode(name));legend.append(item);});
+    return ()=>{};
+  }
   if(scene.id==='chinchilla'){
     const x=v=>m.l+(Math.log10(v)-17)/8*iw,y=v=>bottom-(Math.log10(v)-7)/5*ih;
     axes([[1e17,'10¹⁷'],[1e19,'10¹⁹'],[1e21,'10²¹'],[1e23,'10²³'],[1e25,'10²⁵']],[[1e7,'10M'],[1e8,'100M'],[1e9,'1B'],[1e10,'10B'],[1e11,'100B'],[1e12,'1T']],x,y,'TRAINING COMPUTE · FLOP','MODEL PARAMETERS');
@@ -45,7 +119,9 @@ window.drawContinuationChart = function(scene, data, reduced) {
     const legend=scene.querySelector('.legend');legend.replaceChildren();
     [['Kaplan et al. (2020)','#d8e1e8','dashed'],['Our Approach','#39ffc1','solid']].forEach(([name,color,style])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);swatch.style.borderTopStyle=style;item.append(swatch,document.createTextNode(name));legend.append(item);});
     return ()=>{
-      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),first=reduced()?1:stage?1:clamp(local/.34),second=reduced()?1:stage>=2?clamp(local/.34):0;
+      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
+      const first=reduced()?1:stage===0?0:stage===1?clamp(local/.8):1;
+      const second=reduced()?1:stage===2?clamp(local/.8):0;
       kaplanReveal.setAttribute('width',iw*first);approachReveal.setAttribute('width',iw*second);
       kaplanMarks.forEach(({mark,name},i)=>{const opacity=clamp((first-.5-i*.1)/.22);mark.style.opacity=opacity;name.style.opacity=opacity;});
       chinchilla.style.opacity=second;chinchillaLabel.style.opacity=second;approach.style.opacity=second>0?'1':'0';
@@ -56,8 +132,8 @@ window.drawContinuationChart = function(scene, data, reduced) {
   const colors={OpenAI:'#43a9ff',Anthropic:'#ffcc66',China:'#52d6a0',xAI:'#e985cf',DeepMind:'#ff914f'};
   const bubble=scene.id==='rl-rollouts'||scene.id==='trajectory-depth';
   if(bubble){
-    const x=v=>m.l+(Math.log10(v)-23.3)/(27-23.3)*iw,y=v=>bottom-(Math.log10(v)-10.6)/(12.7-10.6)*ih;
-    axes([[3e23,'3×10²³'],[1e25,'10²⁵'],[3e26,'3×10²⁶'],[1e27,'10²⁷']],[[1e11,'100B'],[3e11,'300B'],[1e12,'1T'],[3e12,'3T']],x,y,'TRAINING COMPUTE · FLOP','TOTAL PARAMETERS');
+    const x=v=>m.l+(Math.log10(v)-23)/(27-23)*iw,y=v=>bottom-(Math.log10(v)-10.6)/(12.7-10.6)*ih;
+    axes([[1e23,'10²³'],[1e24,'10²⁴'],[1e25,'10²⁵'],[1e26,'10²⁶'],[1e27,'10²⁷']],[[1e11,'100B'],[3e11,'300B'],[1e12,'1T'],[3e12,'3T']],x,y,'TRAINING COMPUTE · FLOP','TOTAL PARAMETERS');
     const depth=scene.id==='trajectory-depth',max=depth?150:50e12,maxR=Math.min(small?28:42,ih*.12);
     const marks=[],labels=[];
     // Greedy placement keeps every model name readable without changing its data position.

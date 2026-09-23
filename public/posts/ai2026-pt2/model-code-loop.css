@@ -1,0 +1,48 @@
+.scene.model-code-loop{height:540svh;--heading-color:#39ffc1}
+.scene.model-code-loop>.sticky{padding-bottom:16px}
+.loop-visual{position:relative;flex:1;min-height:0;width:100%;overflow:hidden;border:1px solid #28404b;border-radius:5px;background:radial-gradient(circle at 50% 53%,#14343a 0,#0c1a22 34%,#080d13 72%)}
+.loop-frame{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .45s ease,visibility .45s ease}
+.model-code-loop[data-stage="0"] .loop-frame-young,.model-code-loop[data-stage="1"] .loop-frame-grown,.model-code-loop[data-stage="2"] .loop-frame-forest{opacity:1;visibility:visible}
+.loop-frame-young,.loop-frame-grown{display:grid;grid-template-columns:minmax(0,1fr) minmax(70px,14%) minmax(0,1fr);align-items:center;gap:2%;padding:4% 7%}
+.loop-subject{height:100%;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;filter:drop-shadow(0 0 26px #39ffc133)}
+.loop-subject img{display:block;width:100%;height:calc(100% - 36px);object-fit:contain;object-position:center bottom}
+.loop-subject>span,.loop-code>strong,.loop-forest-labels span{font:700 clamp(12px,1.3vw,17px)/1 var(--mono);letter-spacing:.22em;color:#9ef6e5;text-shadow:0 0 18px #39ffc155}
+.loop-subject>span{height:26px}
+.loop-frame-grown .loop-subject>span{color:#9ad6ff;text-shadow:0 0 18px #43a9ff66}
+.loop-code{align-self:center;min-width:0;padding:clamp(12px,2vw,30px);border:1px solid #2f6472;border-radius:7px;background:#0b1724ee;box-shadow:0 20px 80px #0009,0 0 40px #43a9ff1c;transform:translateY(0)}
+.loop-code pre{overflow:hidden;margin:0 0 24px;font:clamp(10px,1.1vw,16px)/1.9 var(--mono);color:#8bd5ff}
+.loop-code code span{display:block;white-space:pre}
+.loop-frame-young .loop-code code{display:block;clip-path:inset(0 calc(100% - var(--code-reveal,0%)) 0 0)}
+.loop-frame-grown .loop-code{border-color:#3a8b85;box-shadow:0 20px 80px #0009,0 0 50px #39ffc11c}
+.loop-frame-grown .loop-code pre{color:#91eacf}
+.loop-transfer{position:relative;display:flex;align-items:center;justify-content:center;height:100%;min-width:0;color:#39ffc1}
+.loop-transfer::before{content:"";position:absolute;left:-8%;right:-8%;top:50%;height:2px;background:linear-gradient(90deg,transparent,#39ffc1,transparent);box-shadow:0 0 14px #39ffc1}
+.loop-transfer>span{position:absolute;top:calc(50% - 38px);font:11px var(--mono);letter-spacing:.14em;color:#b7c8d4}
+.loop-transfer i{position:absolute;top:calc(50% - 4px);left:0;width:8px;height:8px;border-radius:50%;background:#d4fff4;box-shadow:0 0 18px #39ffc1;animation:loop-travel var(--transfer-duration,2.2s) linear infinite}
+.loop-transfer i:nth-of-type(2){animation-delay:calc(var(--transfer-duration,2.2s) / -3)}
+.loop-transfer i:nth-of-type(3){animation-delay:calc(var(--transfer-duration,2.2s) * -2 / 3)}
+.loop-transfer b{position:absolute;right:-10px;top:calc(50% - 25px);font:38px/1 var(--mono);font-weight:400;text-shadow:0 0 14px #39ffc1}
+.loop-transfer-back{color:#43a9ff}
+.loop-transfer-back::before{background:linear-gradient(90deg,transparent,#43a9ff,transparent);box-shadow:0 0 14px #43a9ff}
+.loop-transfer-back i{background:#d9efff;box-shadow:0 0 18px #43a9ff}
+.loop-transfer-back b{text-shadow:0 0 14px #43a9ff}
+@keyframes loop-travel{from{left:0;opacity:0}12%{opacity:1}88%{opacity:1}to{left:100%;opacity:0}}
+.loop-frame-forest{background:#080a10}
+.loop-frame-forest picture{display:block;width:100%;height:100%}
+.loop-redwoods{display:block;width:100%;height:100%;object-fit:cover;object-position:center bottom;transform:scale(var(--forest-scale,.73));transform-origin:center bottom;filter:brightness(calc(.65 + var(--forest-progress,0) * .4));will-change:transform}
+.loop-frame-forest::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#080a1088,transparent 30%,transparent 70%,#080a1066);pointer-events:none}
+.loop-orbit{position:absolute;z-index:1;left:50%;top:43%;width:clamp(112px,16vw,240px);aspect-ratio:1;border:2px dashed #a8fff7;border-radius:50%;display:grid;place-items:center;transform:translate(-50%,-50%) rotate(0deg);animation:loop-spin var(--orbit-duration,3s) linear infinite;box-shadow:0 0 30px #39ffc144,inset 0 0 30px #43a9ff44;opacity:calc(.35 + var(--forest-progress,0) * .65)}
+.loop-orbit::before,.loop-orbit::after{content:"➜";position:absolute;left:50%;font:clamp(18px,2vw,30px)/1 var(--mono);color:#b3fff1;text-shadow:0 0 15px #39ffc1}
+.loop-orbit::before{top:-17px}.loop-orbit::after{bottom:-17px;transform:rotate(180deg)}
+.loop-orbit span{font:700 clamp(11px,1.3vw,17px)/1.45 var(--mono);letter-spacing:.13em;text-align:center;color:#ecfffb;animation:loop-counterspin var(--orbit-duration,3s) linear infinite;text-shadow:0 0 18px #000}
+@keyframes loop-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes loop-counterspin{to{transform:rotate(-360deg)}}
+.loop-forest-labels{position:absolute;z-index:1;bottom:10%;left:8%;right:8%;display:flex;justify-content:space-between;pointer-events:none}
+.loop-forest-labels span:last-child{color:#9ad6ff;text-shadow:0 0 18px #43a9ff66}
+.all-mode .scene.model-code-loop{height:auto}
+.all-mode .scene.model-code-loop>.sticky{min-height:760px}
+.all-mode .loop-visual{min-height:540px}
+@media(max-width:760px){.scene.model-code-loop{height:490svh}.scene.model-code-loop>.sticky{padding-inline:8px}.loop-frame-young,.loop-frame-grown{grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr);gap:4px;padding:4% 4%}.loop-code{padding:8px}.loop-code pre{font-size:clamp(5px,1.65vw,9px);line-height:1.7;margin-bottom:10px}.loop-code>strong,.loop-subject>span,.loop-forest-labels span{font-size:10px}.loop-transfer>span{font-size:7px;top:calc(50% - 24px)}.loop-transfer b{font-size:23px;right:-5px;top:calc(50% - 17px)}.loop-transfer i{width:5px;height:5px}.loop-redwoods{object-position:center bottom}.loop-orbit{top:40%;width:100px}.loop-orbit span{font-size:9px}.loop-forest-labels{bottom:8%;left:5%;right:5%}.all-mode .loop-visual{min-height:390px}}
+@media(max-width:760px){body:not(.all-mode) .loop-frame-young,body:not(.all-mode) .loop-frame-grown{align-items:end}body:not(.all-mode) .loop-subject,body:not(.all-mode) .loop-transfer{height:48%}body:not(.all-mode) .loop-code{align-self:end;margin-bottom:24%}}
+@media(prefers-reduced-motion:reduce){.loop-frame,.loop-redwoods{transition:none;animation:none}.loop-transfer i,.loop-orbit,.loop-orbit span{animation:none!important}}
+@media print{.scene.model-code-loop{height:auto!important}.scene.model-code-loop>.sticky{height:auto!important}.loop-visual{height:500px;flex:none}.loop-frame-forest{opacity:1;visibility:visible}.loop-frame-young,.loop-frame-grown{opacity:0;visibility:hidden}}

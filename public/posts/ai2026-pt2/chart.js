@@ -23,6 +23,57 @@
       el.style.setProperty('--color', row.color); el.append(marker, document.createTextNode(row.name)); target.append(el);
     });
   }
+  function revenueAt(row, year) {
+    const points=row.points;
+    if(year<points[0][0]||year>points.at(-1)[0])return null;
+    const right=points.findIndex(point=>point[0]>=year);
+    if(right<=0)return points[0][1];
+    const [x0,y0]=points[right-1],[x1,y1]=points[right],t=(year-x0)/(x1-x0);
+    return 10**(Math.log10(y0)+(Math.log10(y1)-Math.log10(y0))*t);
+  }
+  function revenueDate(year) {
+    const date=new Date(Date.UTC(Math.floor(year),Math.min(11,Math.round((year%1)*12)),1));
+    return new Intl.DateTimeFormat('en',{month:'short',year:'numeric',timeZone:'UTC'}).format(date);
+  }
+  function revenueValue(value) {
+    if(value<1)return `$${Math.round(value*1000)}M`;
+    return `$${value<10?value.toFixed(1):Math.round(value)}B`;
+  }
+  function revenueHover(scene,svg,rows,{W,H,m,iw,ih,x,y}) {
+    const wrap=scene.querySelector('.plot-wrap'),start=Math.min(...rows.map(row=>row.points[0][0])),end=Math.max(...rows.map(row=>row.points.at(-1)[0]));
+    const hover=node('g',{class:'chart-hover-marks'},svg),rule=node('line',{class:'chart-hover-rule',y1:m.t,y2:m.t+ih},hover);
+    const dots=rows.map(row=>node('circle',{r:5,fill:row.color,stroke:'#0b1015','stroke-width':2},hover));
+    const hit=node('rect',{class:'chart-hover-hit',x:m.l,y:m.t,width:iw,height:ih,fill:'transparent',tabindex:0,role:'slider','aria-label':'Explore annualized revenue by date','aria-valuemin':String(start),'aria-valuemax':String(end)},svg);
+    const tip=document.createElement('div'),date=document.createElement('div'),list=document.createElement('div');
+    tip.className='chart-hover-tooltip';tip.hidden=true;tip.setAttribute('aria-live','polite');date.className='chart-hover-date';list.className='chart-hover-list';tip.append(date,list);wrap.append(tip);
+    const tipRows=rows.map(row=>{
+      const item=document.createElement('div'),swatch=document.createElement('i'),name=document.createElement('span'),value=document.createElement('strong');
+      swatch.style.setProperty('--color',row.color);name.textContent=row.name;item.append(swatch,name,value);list.append(item);return {item,value};
+    });
+    let current=end,focused=false;
+    function show(year) {
+      current=Math.max(start,Math.min(end,year));
+      const xx=x(current),visible=[];rule.setAttribute('x1',xx);rule.setAttribute('x2',xx);
+      rows.forEach((row,i)=>{
+        const value=revenueAt(row,current),shown=value!==null;
+        dots[i].style.display=shown?'':'none';tipRows[i].item.hidden=!shown;
+        if(shown){dots[i].setAttribute('cx',xx);dots[i].setAttribute('cy',y(value));tipRows[i].value.textContent=revenueValue(value);visible.push(`${row.name} ${revenueValue(value)}`);}
+      });
+      hover.style.display='';tip.hidden=false;date.textContent=revenueDate(current);
+      const cssX=xx/W*wrap.clientWidth,flip=cssX+tip.offsetWidth+12>wrap.clientWidth;
+      tip.style.left=`${cssX}px`;tip.classList.toggle('flip',flip);
+      hit.setAttribute('aria-valuenow',current.toFixed(3));hit.setAttribute('aria-valuetext',`${revenueDate(current)}: ${visible.join(', ')}`);
+    }
+    function hide(){if(!focused){hover.style.display='none';tip.hidden=true;}}
+    function point(event){const box=svg.getBoundingClientRect(),xx=(event.clientX-box.left)/box.width*W;show(2023+(xx-m.l)/iw*4);}
+    function key(event){
+      if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+      event.preventDefault();show(event.key==='Home'?start:event.key==='End'?end:current+(event.key==='ArrowLeft'?-1:1)/12);
+    }
+    hover.style.display='none';hit.addEventListener('pointermove',point);hit.addEventListener('pointerdown',point);hit.addEventListener('pointerleave',hide);
+    hit.addEventListener('focus',()=>{focused=true;show(current);});hit.addEventListener('blur',()=>{focused=false;hide();});hit.addEventListener('keydown',key);
+    svg._hoverCleanup=()=>tip.remove();
+  }
   function regimeLabel(svg, row, left, cy, bh, small) {
     // "GPT-4-era foundation" overruns any sane left gutter on a phone, so the
     // name and its qualifier stack above the bar at narrow widths instead.
@@ -33,6 +84,10 @@
   }
   function draw(scene) {
     const kind = scene.dataset.kind, svg = scene.querySelector('svg');
+    if (kind === 'model-code-loop') {
+      renderers.set(scene, window.drawModelCodeLoop(scene, () => reduce.matches));
+      return;
+    }
     if (!svg) return;
     if (kind === 'native-continuation') {
       renderers.set(scene,window.drawContinuationChart(scene,data.continuation,()=>reduce.matches));return;
@@ -89,7 +144,7 @@
     const W = Math.max(280, box.width), H = Math.max(220, box.height), small = W < 600;
     const m = {l: small ? 78 : 100, r: small ? 18 : 45, t: 28, b: 55};
     const iw = W-m.l-m.r, ih = H-m.t-m.b;
-    svg.replaceChildren(); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg._hoverCleanup?.(); svg._hoverCleanup=null; svg.replaceChildren(); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     node('title', {}, svg, svg.getAttribute('aria-label'));
     if(kind==='metr') {
       const left=small?75:100,right=small?25:70,top=35,bottom=H-55;
@@ -109,7 +164,11 @@
         if(names[r.name]&&(!small||[0,3,9,25].includes(i))){const end=i===data.metr.rows.length-1;label(g,xx+(end?-10:9),yy-10,names[r.name],end?'end':'start');}
         marks.push(g);
       });
-      renderers.set(scene,p=>marks.forEach((g,i)=>g.style.opacity=reduce.matches||i/(marks.length-1)<=clamp(p/.7)?'1':'.06'));
+      renderers.set(scene,()=>{
+        const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
+        const shown=reduce.matches?marks.length:stage===1?Math.floor(clamp(local/.9)*marks.length):0;
+        marks.forEach((g,i)=>g.style.opacity=i<shown?'1':'0');
+      });
     } else
     if (kind === 'business') {
       const rows=data.business, left=small?24:70, width=W-left*2;
@@ -127,14 +186,14 @@
       legend(scene,rows);
       renderers.set(scene,p=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
-        const sentenceCount=stage===0?0:local<.25?1:local<.5?2:3;
+        const sentenceCount=stage===0?0:stage===2?3:local<.25?1:local<.5?2:3;
         sentences.forEach((sentence,i)=>{
           const visible=reduce.matches||i<sentenceCount;
           sentence.classList.toggle('is-visible',visible);
           sentence.setAttribute('aria-hidden',String(!visible));
         });
         // Let the second passage enter before focusing its three expense segments.
-        const focus=stage===0||local<.25?-1:Math.min(2,Math.floor((local-.25)/.25));
+        const focus=stage===2?3:stage===0||local<.25?-1:Math.min(2,Math.floor((local-.25)/.25));
         segments.forEach((g,i)=>g.style.opacity=reduce.matches||focus<0||i===focus?'1':'.45');
         scene.querySelectorAll('.legend span').forEach((el,i)=>{
           el.style.opacity=reduce.matches||focus<0||i===focus?'1':'.45';
@@ -223,6 +282,7 @@
         }
         series.push({group,path,tip,ai,length:path.getTotalLength()});
       }
+      if(revenue)revenueHover(scene,svg,data.revenue,{W,H,m,iw,ih,x,y});
       legend(scene,data[kind]);
       renderers.set(scene,p=>{
         if(revenue){rect.setAttribute('width',(iw+6)*(reduce.matches?1:clamp(p/.78)));return;}
@@ -365,12 +425,12 @@
       const steps=(el.dataset.steps||el.id).split(',');
       steps.forEach((anchor,index)=>{
         const explicitId=el.dataset.slideId;
-        const id=explicitId||(continuation?String(nextSlide++):anchor);
+        const id=el.dataset.slideIds?.split(',')[index]||explicitId||(continuation?String(nextSlide++):anchor);
         if(explicitId&&continuation&&el.dataset.consumeSlide==='true')nextSlide++;
         slideEntries.push({id,anchor,el,index,count:steps.length});
       });
       if(el.id==='19')continuation=true;
-    }else if(continuation&&el.matches('.body-copy,.article-visual,.article-embed,.article-heading')){
+    }else if(continuation&&!el.hasAttribute('data-no-slide')&&el.matches('.body-copy,.article-visual,.article-embed,.article-heading')){
       slideEntries.push({id:String(nextSlide++),anchor:el.id,el,index:0,count:1});
     }
   }
@@ -427,7 +487,7 @@
   try {
     const response=await fetch('/posts/ai2026-pt2/charts.json?v=native-bars');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
-    const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=astra-fable-51');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
+    const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=astra-fable-depth-1-rd-automation-openai-annual-workforce');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     document.body.classList.toggle('all-mode',reduce.matches);
     for(const scene of scenes){draw(scene);const plot=scene.querySelector('.plot-wrap');if(plot)new ResizeObserver(()=>{draw(scene);request();}).observe(plot);}
     reduce.addEventListener('change',()=>{document.body.classList.toggle('all-mode',reduce.matches);scenes.forEach(draw);request();});
