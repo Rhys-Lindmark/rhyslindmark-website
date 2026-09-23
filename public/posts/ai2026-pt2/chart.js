@@ -92,6 +92,9 @@
     if (kind === 'native-continuation') {
       renderers.set(scene,window.drawContinuationChart(scene,data.continuation,()=>reduce.matches));return;
     }
+    if (kind === 'native-labor') {
+      renderers.set(scene,window.drawLaborChart(scene,data.labor,()=>reduce.matches));return;
+    }
     if (kind === 'frontier') {
       const box=scene.querySelector('.plot-wrap').getBoundingClientRect();
       const W=Math.max(280,box.width),H=Math.max(300,box.height),cx=W/2,cy=H*.51;
@@ -489,6 +492,7 @@
     const response=await fetch('/posts/ai2026-pt2/charts.json?v=native-bars');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
+    const laborResponse=await fetch('/posts/ai2026-pt2/labor-charts.json?v=1');if(!laborResponse.ok)throw Error('Labor chart data unavailable');data.labor=await laborResponse.json();
     document.body.classList.toggle('all-mode',reduce.matches);
     for(const scene of scenes){draw(scene);const plot=scene.querySelector('.plot-wrap');if(plot)new ResizeObserver(()=>{draw(scene);request();}).observe(plot);}
     reduce.addEventListener('change',()=>{document.body.classList.toggle('all-mode',reduce.matches);scenes.forEach(draw);request();});

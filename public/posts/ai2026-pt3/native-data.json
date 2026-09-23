@@ -2657,47 +2657,6 @@
       "year": 2023
     }
   },
-  "compute-models": {
-    "kind": "computeModels",
-    "title": "Compute scaled. Models switched on.",
-    "source": "https://claude.ai/artifact/YLjWVddUoT5AN62PQrJMeN",
-    "note": "Human-years of task work per year on a logarithmic scale; one human-year is 1,800 task-hours. November 2022 and September 2026 endpoints come from the source artifact; intermediate values are sampled from its plotted curves. The chips-only counterfactual extrapolates the November 2022 starting value, so the 68x gap is sensitive to that assumption. Blended token price is $2.50 per million tokens.",
-    "data": {
-      "chipsOnly": [[2022.92, 13000], [2023.24, 16900], [2023.58, 27141], [2023.92, 43991], [2024.25, 71301], [2024.58, 111404], [2024.92, 169859], [2025.25, 257406], [2025.58, 371460], [2025.92, 518325], [2026.25, 678291], [2026.58, 812334], [2026.75, 834000]],
-      "actual": [[2022.92, 13000], [2023.24, 148939], [2023.58, 436783], [2023.92, 609475], [2024.25, 952272], [2024.58, 1510788], [2024.92, 2509329], [2025.25, 4540249], [2025.58, 8366935], [2025.92, 13644441], [2026.25, 22871362], [2026.58, 50323393], [2026.75, 57000000]],
-      "references": [{"label": "Top 34 white-collar jobs", "value": 34500000}, {"label": "US labor force", "value": 165000000}],
-      "milestones": [{"label": "o1", "year": 2024.75}, {"label": "Opus 4.5", "year": 2025.92}, {"label": "Astra", "year": 2026.68}]
-    }
-  },
-  "knowledge-work": {
-    "kind": "knowledgeWork",
-    "title": "Human vs AI knowledge work",
-    "source": "https://claude.ai/artifact/G5fjhGNo6RkRr942wu6KP6",
-    "note": "AI cognitive task-hours expressed as full-time equivalents, not jobs. Source artifact uses a blended $2.50 per million tokens; its 2023–2026 curve is visually transcribed. At $10 per million tokens the artifact estimates 20M FTE rather than 57M. Reference lines are US employment denominators.",
-    "data": {
-      "points": [[2022.92, 0], [2023.25, 0.2], [2023.75, 0.8], [2024.25, 1.5], [2024.75, 3.1], [2025.25, 6.2], [2025.58, 9.6], [2025.92, 13.5], [2026.08, 16.9], [2026.25, 22.9], [2026.42, 34.8], [2026.58, 50.4], [2026.75, 57]],
-      "references": [
-        {"label": "Top 34 white-collar occupations", "value": 34.5},
-        {"label": "US knowledge workforce, broad", "value": 62},
-        {"label": "All US employment", "value": 165}
-      ]
-    }
-  },
-  "machine-tiers": {
-    "kind": "machineTiers",
-    "title": "What the AI FTEs are doing",
-    "source": "https://claude.ai/artifact/UGZRYKhUS6z3qvF8J2FRYH",
-    "note": "Unstacked logarithmic scale. November 2022 and September 2026 endpoints come from the source artifact; intermediate points visually approximate its trajectories. FTE-equivalents are estimated task-hours, not workers or jobs. The source flags its 30.5M coder estimate as exceeding the plausible global developer-hour ceiling.",
-    "data": {
-      "series": [
-        {"name": "Chatbots", "end": "7.7M", "color": "#43a9ff", "points": [[2022.92, 3000], [2023.25, 40000], [2023.75, 300000], [2024.25, 1000000], [2024.75, 2200000], [2025.25, 3800000], [2025.75, 5200000], [2026.25, 6500000], [2026.75, 7700000]]},
-        {"name": "Coders", "end": "30.5M", "color": "#ff914f", "points": [[2022.92, 1000], [2023.25, 6000], [2023.75, 30000], [2024.25, 120000], [2024.75, 500000], [2025.25, 1800000], [2025.75, 6000000], [2025.92, 11500000], [2026.25, 18000000], [2026.75, 30500000]]},
-        {"name": "Researchers", "end": "18.7M", "color": "#39ffc1", "points": [[2022.92, 8000], [2023.25, 30000], [2023.75, 120000], [2024.25, 450000], [2024.75, 1300000], [2025.25, 3500000], [2025.75, 8500000], [2025.92, 10500000], [2026.25, 14000000], [2026.75, 18700000]]},
-        {"name": "Autonomous driving", "end": "13K", "color": "#f1cf65", "dashed": true, "points": [[2022.92, 189], [2023.25, 260], [2023.75, 450], [2024.25, 850], [2024.75, 1600], [2025.25, 3100], [2025.75, 6000], [2026.25, 9500], [2026.75, 13000]]},
-        {"name": "Humanoid robots", "end": "7K", "color": "#bda1ff", "dashed": true, "points": [[2022.92, 29], [2023.25, 45], [2023.75, 85], [2024.25, 180], [2024.75, 430], [2025.25, 1100], [2025.75, 2700], [2026.25, 4800], [2026.75, 7000]]}
-      ]
-    }
-  },
   "app-revenue": {
     "kind": "bars",
     "title": "AI beyond software development",
