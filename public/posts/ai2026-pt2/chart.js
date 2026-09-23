@@ -492,7 +492,8 @@
   function request(){if(!frame)frame=requestAnimationFrame(update);}
   function followHash(){
     const hash=decodeURIComponent(location.hash.slice(1)),query=new URL(location.href).searchParams.get('slide');
-    const entry=hash?slideEntries.find(e=>e.anchor===hash):slideEntries.find(e=>e.id===query||e.anchor===query);
+    const requested=query==='59'?'60':query;
+    const entry=hash?slideEntries.find(e=>e.anchor===hash):slideEntries.find(e=>e.id===requested||e.anchor===requested);
     slideLinksReady=false;
     if(entry){
       const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;
@@ -501,14 +502,17 @@
       window.scrollTo({top:scrollY+entry.el.getBoundingClientRect().top+travel*progress,behavior:'instant'});
       setSlideAddress(entry.id);
     }else if(hash){document.getElementById(hash)?.scrollIntoView({behavior:'instant'});}
+    else if(['compute-chips','compute-actual','compute-gap'].includes(query)){
+      document.getElementById('text-5444')?.scrollIntoView({behavior:'instant'});
+      setSlideAddress('73');
+    }
     slideLinksReady=true;request();
   }
   try {
     const response=await fetch('/posts/ai2026-pt2/charts.json?v=native-bars');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
-    const laborResponse=await fetch('/posts/ai2026-pt2/labor-charts.json?v=1');if(!laborResponse.ok)throw Error('Labor chart data unavailable');data.labor=await laborResponse.json();
-    const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor['machine-tiers']={title:workforceData.title,note:workforceData.note,data:workforceData};
+    const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};
     document.body.classList.toggle('all-mode',reduce.matches);
     for(const scene of scenes){draw(scene);const plot=scene.querySelector('.plot-wrap');if(plot)new ResizeObserver(()=>{draw(scene);request();}).observe(plot);}
     reduce.addEventListener('change',()=>{document.body.classList.toggle('all-mode',reduce.matches);scenes.forEach(draw);request();});
