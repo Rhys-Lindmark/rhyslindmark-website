@@ -16,7 +16,7 @@
     const model = scene.querySelector('.loop-model-stack');
     const code = scene.querySelector('.loop-code-stack');
     const redwoodFrame = scene.querySelector('.loop-redwood-reveal');
-    const redwoodImage = redwoodFrame.querySelector('img');
+    const redwoodArt = redwoodFrame.querySelector('.loop-redwood-art');
     if (!model || !code) return () => {};
     scene.classList.remove('loop-ready');
     model.replaceChildren();
@@ -115,7 +115,7 @@
       const redwood = done ? 1 : stage === 2 ? clamp((local - .16) / .12) : 0;
       const pan = stage === 2 ? clamp((local - .28) / .6) : 0;
       const linger = stage === 2 ? clamp((local - .88) / .12) : 0;
-      const imageTravel = Math.max(0, redwoodImage.offsetHeight - redwoodFrame.clientHeight);
+      const imageTravel = Math.max(0, redwoodArt.offsetHeight - redwoodFrame.clientHeight);
       scene.style.setProperty('--redwood-opacity', redwood.toFixed(3));
       scene.style.setProperty('--redwood-pan', `${(imageTravel * (1 - pan)).toFixed(1)}px`);
       scene.style.setProperty('--tower-opacity', (1 - redwood).toFixed(3));
