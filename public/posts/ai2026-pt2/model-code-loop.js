@@ -117,7 +117,7 @@
       const linger = stage === 2 ? clamp((local - .88) / .12) : 0;
       const imageTravel = Math.max(0, redwoodImage.offsetHeight - redwoodFrame.clientHeight);
       scene.style.setProperty('--redwood-opacity', redwood.toFixed(3));
-      scene.style.setProperty('--redwood-pan', `${(imageTravel * pan).toFixed(1)}px`);
+      scene.style.setProperty('--redwood-pan', `${(imageTravel * (1 - pan)).toFixed(1)}px`);
       scene.style.setProperty('--tower-opacity', (1 - redwood).toFixed(3));
       scene.style.setProperty('--tower-scale', (1 - redwood * .06).toFixed(3));
       scene.style.setProperty('--redwood-scale', (1 + linger * .02).toFixed(3));
