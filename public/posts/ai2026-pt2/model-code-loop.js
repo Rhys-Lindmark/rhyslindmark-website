@@ -16,6 +16,7 @@
     const model = scene.querySelector('.loop-model-stack');
     const code = scene.querySelector('.loop-code-stack');
     if (!model || !code) return () => {};
+    scene.classList.remove('loop-ready');
     model.replaceChildren();
     code.replaceChildren();
     const modelRows = [];
@@ -38,7 +39,7 @@
     }
     const edgeLayer = document.createElement('div');
     edgeLayer.className = 'loop-edge-layer';
-    model.prepend(edgeLayer);
+    model.append(edgeLayer);
     let edgeSignature = '';
     let edgeMappings = null;
     let edgeSize = '';
@@ -115,6 +116,7 @@
         else if (`${model.clientWidth}x${model.clientHeight}` !== edgeSize) paintEdges();
       }
       previousStage = stage;
+      scene.classList.add('loop-ready');
     };
   };
 })();
