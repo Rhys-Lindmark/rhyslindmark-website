@@ -79,24 +79,49 @@ window.drawContinuationChart = function(scene, data, reduced) {
     const rows=data.labWorkforceGrowth.rows,start=Date.parse(rows[0][0]),end=Date.parse(rows.at(-1)[0]);
     const x=date=>m.l+(Date.parse(date)-start)/(end-start)*iw,y=value=>bottom-value/35000*ih;
     axes([2020,2021,2022,2023,2024,2025,2026].map(year=>[`${year}-01-01`,String(year)]),
-      [[0,'0'],[10000,'10k'],[20000,'20k'],[30000,'30k']],x,y,'Year','People / agents');
+      [[0,'0'],[10000,'10k'],[20000,'20k'],[30000,'30k']],x,y,'Year','Workers');
     const series=[
-      {index:1,name:'OpenAI people',color:'#43a9ff',dash:'7 5'},
-      {index:2,name:'OpenAI agents',color:'#43a9ff'},
-      {index:3,name:'Anthropic people',color:'#ffcc66',dash:'7 5'},
-      {index:4,name:'Anthropic agents',color:'#ffcc66'}
+      {index:1,name:'OpenAI employees',color:'#43a9ff',dash:'7 5'},
+      {index:3,name:'Anthropic employees',color:'#ffcc66',dash:'7 5'},
+      {index:2,name:'OpenAI agents',color:'#43a9ff',agent:true},
+      {index:4,name:'Anthropic agents',color:'#ffcc66',agent:true}
     ];
-    series.forEach(({index,name,color,dash})=>{
-      const points=rows.map(row=>[x(row[0]),y(row[index])]);
-      const d=points.map(([px,py],i)=>`${i?'L':'M'}${px},${py}`).join('');
-      const line=n('path',{d,fill:'none',stroke:color,'stroke-width':small?2.5:3.5,'stroke-dasharray':dash||'','stroke-linecap':'round','stroke-linejoin':'round'});
+    const legend=scene.querySelector('.legend');legend.replaceChildren();
+    const marks=series.map(({index,name,color,dash,agent})=>{
+      let points=rows.map(row=>[x(row[0]),y(row[index])]);
+      if(agent)points=points.slice(Math.max(0,rows.findIndex(row=>row[index]>0)-1));
+      const line=n('path',{d:'',fill:'none',stroke:color,'stroke-width':small?2.5:3.5,'stroke-dasharray':dash||'','stroke-linecap':'round','stroke-linejoin':'round'});
       n('title',{},line,`${name} · illustrative`);
       const [endX,endY]=points.at(-1);
-      n('circle',{cx:endX,cy:endY,r:small?5:6,fill:color,stroke:'#0b1015','stroke-width':2});
+      const dot=n('circle',{cx:endX,cy:endY,r:small?5:6,fill:color,stroke:'#0b1015','stroke-width':2});
+      const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);if(dash)swatch.style.borderTopStyle='dashed';item.append(swatch,document.createTextNode(name));legend.append(item);
+      return {points,line,dot,item,agent};
     });
-    const legend=scene.querySelector('.legend');legend.replaceChildren();
-    series.forEach(({name,color,dash})=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);if(dash)swatch.style.borderTopStyle='dashed';item.append(swatch,document.createTextNode(name));legend.append(item);});
-    return ()=>{};
+    function revealedPath(points,progress,byPoint){
+      if(progress<=0)return '';
+      const position=progress*(points.length-1),index=Math.floor(position);
+      const target=byPoint?points[index][0]+(points[Math.min(index+1,points.length-1)][0]-points[index][0])*(position-index):points[0][0]+progress*(points.at(-1)[0]-points[0][0]);
+      let d=`M${points[0][0]},${points[0][1]}`;
+      for(let i=1;i<points.length;i++){
+        const [px,py]=points[i],[prevX,prevY]=points[i-1];
+        if(px<=target){d+=`L${px},${py}`;continue;}
+        const fraction=(target-prevX)/(px-prevX);
+        if(fraction>0)d+=`L${prevX+(px-prevX)*fraction},${prevY+(py-prevY)*fraction}`;
+        break;
+      }
+      return d;
+    }
+    const render=p=>{
+      const employees=reduced()?1:clamp(p/.46),agents=reduced()?1:clamp((p-.5)/.46);
+      marks.forEach(({points,line,dot,item,agent})=>{
+        const progress=agent?agents:employees;
+        line.setAttribute('d',revealedPath(points,progress,agent));
+        dot.style.opacity=progress>=1?'1':'0';
+        item.style.opacity=progress>0?'1':'.25';
+      });
+    };
+    render(0);
+    return render;
   }
   if(scene.id==='chinchilla'){
     const x=v=>m.l+(Math.log10(v)-17)/8*iw,y=v=>bottom-(Math.log10(v)-7)/5*ih;
