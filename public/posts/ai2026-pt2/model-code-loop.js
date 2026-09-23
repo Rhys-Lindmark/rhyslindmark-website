@@ -2,7 +2,7 @@
   'use strict';
   const clamp = value => Math.max(0, Math.min(1, value));
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  const rows = 14;
+  const rows = 18;
 
   function codeText(row, tick) {
     let seed = (row + 7) * 113 + tick * 97;
@@ -97,15 +97,19 @@
       const stage = Number(scene.dataset.stage || 0);
       const local = clamp(Number(scene.dataset.localProgress || 0));
       const done = reducedMotion();
-      const growthStep = stage === 2 ? Math.min(22, Math.floor(local * 23)) : 0;
+      const growth = stage === 2 ? clamp(local / .55) : 0;
+      const growthStep = stage === 2 ? Math.min(31, Math.floor(growth * 31)) : 0;
       const modelCount = done ? rows : stage === 0 ? 1 : stage === 1 ? 3 : Math.min(rows, 3 + Math.floor(growthStep / 2));
       const codeCount = done ? rows : stage < 2 ? 2 : Math.min(rows, 2 + Math.ceil(growthStep / 2));
       modelRows.forEach((row, index) => row.classList.toggle('is-built', index < modelCount));
       codeRows.forEach((row, index) => row.classList.toggle('is-built', index < codeCount));
-      scene.dataset.direction = stage === 0 ? 'forward' : stage === 1 ? 'back' : growthStep % 2 ? 'back' : 'forward';
+      scene.dataset.direction = stage === 0 ? 'forward' : stage === 1 ? 'back' : 'still';
       scene.querySelector('.loop-link-caption').textContent = stage === 0 ? 'WRITES' : stage === 1 ? 'TRAINS' : '↔';
       scene.style.setProperty('--loop-speed', `${(stage === 2 ? 1.55 - local * .55 : 1.8).toFixed(2)}s`);
-      scene.style.setProperty('--human-opacity', done || stage === 2 && local > .9 ? clamp((local - .9) * 10) : 0);
+      const redwood = done ? 1 : stage === 2 ? clamp((local - .55) / .18) : 0;
+      scene.style.setProperty('--redwood-opacity', redwood.toFixed(3));
+      scene.style.setProperty('--tower-opacity', (1 - redwood).toFixed(3));
+      scene.style.setProperty('--human-opacity', stage === 2 && !done ? (clamp((local - .42) / .1) * (1 - redwood)).toFixed(3) : 0);
       if (stage === 1 && !done) {
         if (previousStage !== 1) trainModel();
         else if (`${model.clientWidth}x${model.clientHeight}` !== edgeSize) paintEdges();

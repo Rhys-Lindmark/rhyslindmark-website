@@ -49,7 +49,13 @@
 
 /* The RSI loop keeps its model and code in the same positions through all three passages. */
 .loop-visual{background:radial-gradient(ellipse at 50% 65%,#102930 0,#0b1921 38%,#080d13 76%)}
-.loop-growth{position:absolute;inset:5% 8% 7%;display:grid;grid-template-columns:minmax(0,1fr) minmax(40px,17%) minmax(0,1fr);gap:3%;align-items:end}
+.loop-growth{position:absolute;inset:5% 8% 7%;display:grid;grid-template-columns:minmax(0,1fr) minmax(40px,17%) minmax(0,1fr);gap:3%;align-items:end;opacity:var(--tower-opacity,1)}
+.loop-redwood-reveal{position:absolute;z-index:2;inset:0;display:block;opacity:var(--redwood-opacity,0);pointer-events:none}
+.loop-redwood-reveal img{display:block;width:100%;height:100%;object-fit:cover;object-position:center bottom}
+.model-code-loop[data-stage="2"] .loop-growth{inset:0 8% 5%}
+.model-code-loop[data-stage="2"] .loop-stack{gap:4px}
+.model-code-loop[data-stage="2"] .loop-model-row,.model-code-loop[data-stage="2"] .loop-code-row{height:calc(5.55556% - 3.77778px);min-height:0}
+.model-code-loop[data-stage="2"] .loop-link{opacity:0}
 .loop-tower{height:100%;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
 .loop-stack{width:min(100%,270px);height:calc(100% - 35px);display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start;gap:clamp(3px,.65vh,8px);overflow:hidden}
 .loop-model-stack{position:relative}
@@ -70,6 +76,7 @@
 .loop-model-row:first-child .loop-node:nth-child(2){animation-name:loop-node-two}
 .loop-model-row:first-child .loop-node:nth-child(3){animation-name:loop-node-three}
 .model-code-loop[data-direction="back"] .loop-model-row:first-child .loop-node{animation:none}
+.model-code-loop[data-stage="2"] .loop-model-row:first-child .loop-node{animation:none}
 .loop-code-row{width:100%;align-items:center;justify-content:center;text-align:center;white-space:nowrap;overflow:hidden;font:clamp(8px,1.15vw,15px)/1 var(--mono);letter-spacing:.12em;color:#8bd5ff;text-shadow:0 0 13px #43a9ff88}
 .model-code-loop[data-stage="1"] .loop-code-row.is-built{animation:loop-code-fire var(--loop-speed,1.8s) ease-in-out infinite}
 .loop-link{position:relative;align-self:end;height:calc(100% - 30px);display:flex;align-items:flex-end;justify-content:center;padding-bottom:clamp(7px,1.6vh,16px)}
@@ -77,8 +84,8 @@
 .loop-link-caption{position:absolute;bottom:0;width:100%;height:30px;text-align:center;font:700 clamp(12px,1.2vw,17px)/30px var(--mono);letter-spacing:.22em;color:#a7e7ea}
 .loop-zap{position:absolute;z-index:2;bottom:calc(30px + clamp(2px,1vh,8px));left:0;width:clamp(9px,1.2vw,15px);height:clamp(9px,1.2vw,15px);border-radius:50%;background:#d9fff2;box-shadow:0 0 8px 3px #39ffc1,0 0 22px 8px #39ffc188;animation:loop-zap-forward var(--loop-speed,1.8s) linear infinite}
 .model-code-loop[data-direction="back"] .loop-zap{animation-name:loop-zap-back}
-.loop-human{position:absolute;z-index:3;left:50%;bottom:0;width:35px;height:87px;transform:translateX(-50%);opacity:var(--human-opacity,0);filter:drop-shadow(0 0 8px #000);pointer-events:none}
-.loop-human i{position:absolute;display:block;background:#020409}
+.loop-human{position:absolute;z-index:3;left:50%;bottom:0;width:35px;height:87px;transform:translateX(-50%);opacity:var(--human-opacity,0);filter:drop-shadow(0 0 8px #f4ffffaa);pointer-events:none}
+.loop-human i{position:absolute;display:block;background:#f4ffff}
 .loop-human-head{top:1px;left:10px;width:15px;height:17px;border-radius:50%}
 .loop-human-body{top:18px;left:7px;width:21px;height:41px;border-radius:8px 8px 4px 4px}
 .loop-human-leg{top:52px;width:9px;height:35px;border-radius:3px}
@@ -91,6 +98,6 @@
 @keyframes loop-node-three{0%,36%,53%,100%{background:#38c88e;box-shadow:0 0 10px #39ffc1aa}44%{background:#e0fff0;box-shadow:0 0 13px 5px #39ffc1}}
 @keyframes loop-zap-forward{0%,55%{left:0;opacity:0;box-shadow:0 0 8px 3px #39ffc1}58%{opacity:1}96%{left:100%;opacity:1;box-shadow:0 0 8px 3px #43a9ff}100%{left:100%;opacity:0}}
 @keyframes loop-zap-back{0%,55%{left:100%;opacity:0;box-shadow:0 0 8px 3px #43a9ff}58%{opacity:1}96%{left:0;opacity:1;box-shadow:0 0 8px 3px #39ffc1}100%{left:0;opacity:0}}
-@media(max-width:760px){.loop-growth{inset:7% 4% 8%;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);gap:3px}.loop-stack{height:calc(100% - 28px)}.loop-label{height:24px;line-height:24px;font-size:10px}.loop-model-row,.loop-code-row{height:clamp(13px,2.7vh,21px)}.loop-model-row{padding:0 2px}.loop-model-row::before{left:8px;right:8px}.loop-code-row{font-size:clamp(5px,1.55vw,9px);letter-spacing:0}.loop-link{height:calc(100% - 24px)}.loop-link-caption{height:24px;line-height:24px;font-size:10px}.loop-link::before{bottom:calc(24px + clamp(6px,1.35vh,10px))}.loop-zap{bottom:calc(24px + clamp(1px,.7vh,5px))}.loop-human{height:60px;transform:translateX(-50%) scale(.7);transform-origin:bottom center}}
+@media(max-width:760px){.loop-growth{inset:7% 4% 8%;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);gap:3px}.model-code-loop[data-stage="2"] .loop-growth{inset:0 4% 5%}.loop-stack{height:calc(100% - 28px)}.loop-label{height:24px;line-height:24px;font-size:10px}.loop-model-row,.loop-code-row{height:clamp(13px,2.7vh,21px)}.loop-model-row{padding:0 2px}.loop-model-row::before{left:8px;right:8px}.loop-code-row{font-size:clamp(5px,1.55vw,9px);letter-spacing:0}.loop-link{height:calc(100% - 24px)}.loop-link-caption{height:24px;line-height:24px;font-size:10px}.loop-link::before{bottom:calc(24px + clamp(6px,1.35vh,10px))}.loop-zap{bottom:calc(24px + clamp(1px,.7vh,5px))}.loop-human{height:60px;transform:translateX(-50%) scale(.7);transform-origin:bottom center}}
 @media(prefers-reduced-motion:reduce){.loop-model-row.is-built,.loop-code-row.is-built,.loop-model-row:first-child .loop-node,.loop-zap,.loop-edge{animation:none!important}.loop-zap{left:50%;opacity:1}}
-@media print{.loop-growth{inset:5% 8% 7%}.loop-model-row,.loop-code-row{display:flex;opacity:1;animation:none!important}.loop-human{opacity:1}}
+@media print{.loop-growth{inset:5% 8% 7%}.loop-model-row,.loop-code-row{display:flex;opacity:1;animation:none!important}.loop-redwood-reveal{opacity:1}.loop-human{opacity:0}}
