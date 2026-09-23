@@ -460,8 +460,10 @@
       const sticky=scene.querySelector('.sticky');
       const p=reduce.matches?1:clamp(-scene.getBoundingClientRect().top/Math.max(1,scene.offsetHeight-sticky.offsetHeight));
       const steps=(scene.dataset.steps||scene.id).split(',');
-      const stage=Math.min(steps.length-1,Math.floor(p*steps.length));
-      const local=reduce.matches?1:Math.min(1,p*steps.length-stage);
+      const forestLoop=scene.dataset.kind==='model-code-loop';
+      const scaled=p*(forestLoop?6:steps.length);
+      const stage=forestLoop?(scaled<1?0:scaled<2?1:2):Math.min(steps.length-1,Math.floor(scaled));
+      const local=reduce.matches?1:Math.min(1,forestLoop&&stage===2?(scaled-2)/4:scaled-stage);
       scene.dataset.stage=stage;scene.dataset.localProgress=local;
       scene.querySelectorAll('[data-passage]').forEach(el=>el.hidden=!reduce.matches&&el.dataset.passage!==steps[stage]);
       renderers.get(scene)?.(p);
@@ -482,7 +484,8 @@
     slideLinksReady=false;
     if(entry){
       const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;
-      const progress=reduce.matches?0:(entry.index+.4)/entry.count;
+      const progress=reduce.matches?0:entry.el.dataset.kind==='model-code-loop'?
+        (entry.index===2?2+4*.28:entry.index+.4)/6:(entry.index+.4)/entry.count;
       window.scrollTo({top:scrollY+entry.el.getBoundingClientRect().top+travel*progress,behavior:'instant'});
       setSlideAddress(entry.id);
     }else if(hash){document.getElementById(hash)?.scrollIntoView({behavior:'instant'});}

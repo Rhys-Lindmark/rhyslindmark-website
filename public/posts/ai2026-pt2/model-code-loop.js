@@ -15,6 +15,8 @@
   window.drawModelCodeLoop = (scene, reducedMotion) => {
     const model = scene.querySelector('.loop-model-stack');
     const code = scene.querySelector('.loop-code-stack');
+    const redwoodFrame = scene.querySelector('.loop-redwood-reveal');
+    const redwoodImage = redwoodFrame.querySelector('img');
     if (!model || !code) return () => {};
     scene.classList.remove('loop-ready');
     model.replaceChildren();
@@ -99,7 +101,7 @@
       const stage = Number(scene.dataset.stage || 0);
       const local = clamp(Number(scene.dataset.localProgress || 0));
       const done = reducedMotion();
-      const growth = stage === 2 ? clamp(local / .45) : 0;
+      const growth = stage === 2 ? clamp(local / .16) : 0;
       const growthStep = stage === 2 ? Math.min(31, Math.floor(growth * 31)) : 0;
       const modelCount = done ? rows : stage === 0 ? 1 : stage === 1 ? 3 : Math.min(rows, 3 + Math.floor(growthStep / 2));
       const codeCount = done ? rows : stage < 2 ? 2 : Math.min(rows, 2 + Math.ceil(growthStep / 2));
@@ -110,12 +112,15 @@
       scene.dataset.direction = stage === 0 ? 'forward' : stage === 1 ? 'back' : 'still';
       scene.querySelector('.loop-link-caption').textContent = stage === 0 ? 'WRITES' : stage === 1 ? 'TRAINS' : '↔';
       scene.style.setProperty('--loop-speed', `${(stage === 2 ? 1.55 - local * .55 : 1.8).toFixed(2)}s`);
-      const redwood = done ? 1 : stage === 2 ? clamp((local - .45) / .33) : 0;
-      const linger = stage === 2 ? clamp((local - .78) / .22) : 0;
+      const redwood = done ? 1 : stage === 2 ? clamp((local - .16) / .12) : 0;
+      const pan = stage === 2 ? clamp((local - .28) / .6) : 0;
+      const linger = stage === 2 ? clamp((local - .88) / .12) : 0;
+      const imageTravel = Math.max(0, redwoodImage.offsetHeight - redwoodFrame.clientHeight);
       scene.style.setProperty('--redwood-opacity', redwood.toFixed(3));
+      scene.style.setProperty('--redwood-pan', `${(imageTravel * pan).toFixed(1)}px`);
       scene.style.setProperty('--tower-opacity', (1 - redwood).toFixed(3));
       scene.style.setProperty('--tower-scale', (1 - redwood * .06).toFixed(3));
-      scene.style.setProperty('--redwood-scale', (1 + linger * .035).toFixed(3));
+      scene.style.setProperty('--redwood-scale', (1 + linger * .02).toFixed(3));
       if (stage >= 1 && !done) {
         if (!edgeMappings || previousStage === 0) trainModel();
         else if (modelCountChanged || `${model.clientWidth}x${model.clientHeight}x${visibleModelCount}` !== edgeSize) paintEdges();
