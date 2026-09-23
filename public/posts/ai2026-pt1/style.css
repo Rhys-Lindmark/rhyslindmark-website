@@ -150,7 +150,7 @@ html,body,#article,.scene{background-color:var(--bg)}
 .building-return ai-building-intro{display:block;min-height:0;width:min(100%,calc((100svh - 230px)*1.5));margin:auto}
 .all-mode .scene.building-return{height:auto}.all-mode .scene.building-return .sticky{position:relative;top:0;height:auto;min-height:100svh}
 .article-signoff{max-width:700px;margin:0 auto;padding:clamp(72px,12svh,130px) 24px clamp(54px,9svh,96px);color:#fff}
-.article-signoff p{margin:0 0 .45em;font-size:clamp(20px,2vw,28px);line-height:1.45;letter-spacing:-.015em}
+.article-signoff p{margin:0 0 .45em;font-size:17px;line-height:1.55;font-weight:400;letter-spacing:0}
 .article-signoff p:first-child{margin-bottom:1.25em}
 .article-signoff a{text-decoration-thickness:1px;text-underline-offset:.18em}
 
