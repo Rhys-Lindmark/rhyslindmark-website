@@ -159,7 +159,7 @@ blockquote.pullquote{border-left:2px solid #526777;padding:28px 32px;margin-bloc
 .article-embed iframe{display:block;border:0;border-radius:16px;clip-path:inset(0 round 16px);background:#15202b}
 
 /* Workforce stages reveal one series or benchmark per passage. */
-#machine-tiers.scene{height:900svh}
+#machine-tiers.scene{height:800svh}
 .all-mode #machine-tiers.scene{height:auto}
 .scene.labor-graph .figure-heading h3{font:14px/1.35 var(--mono);color:#e6edf3}
 .scene.labor-graph .legend:empty{display:none}

@@ -53,7 +53,7 @@ function machineTiers(svg,scene,d,W,H,a){
  });
  return state=>{
   marks.forEach((m,i)=>{
-   const step=i<4?i:i+2;
+   const step=i<4?i:6;
    const p=state.reduced?1:state.stage>step?1:state.stage<step?0:ease(clamp(state.local*1.15));
    m.rect.setAttribute('width',(right-left+6)*p);
    m.label.style.opacity=m.dot.style.opacity=p>.96?'1':'0';

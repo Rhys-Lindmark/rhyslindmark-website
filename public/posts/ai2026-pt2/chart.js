@@ -492,7 +492,7 @@
   function request(){if(!frame)frame=requestAnimationFrame(update);}
   function followHash(){
     const hash=decodeURIComponent(location.hash.slice(1)),query=new URL(location.href).searchParams.get('slide');
-    const requested=query==='59'?'60':query;
+    const requested=query==='59'?'60':query==='machine-robots'?'73':query;
     const entry=hash?slideEntries.find(e=>e.anchor===hash):slideEntries.find(e=>e.id===requested||e.anchor===requested);
     slideLinksReady=false;
     if(entry){
@@ -504,7 +504,7 @@
     }else if(hash){document.getElementById(hash)?.scrollIntoView({behavior:'instant'});}
     else if(['compute-chips','compute-actual','compute-gap'].includes(query)){
       document.getElementById('text-5444')?.scrollIntoView({behavior:'instant'});
-      setSlideAddress('73');
+      setSlideAddress('74');
     }
     slideLinksReady=true;request();
   }
