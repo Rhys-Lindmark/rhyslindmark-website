@@ -127,6 +127,11 @@ blockquote.pullquote{border-left:2px solid #526777;padding:28px 32px;margin-bloc
 .all-mode .scene.models.source-graph{height:auto}
 .all-mode .source-chart{height:70svh;flex:none}
 .closing-copy{padding-block:60px 90px;font-size:17px;color:#fff}
+#closing-building.scene{height:180svh}
+#closing-building .sticky{background:#070b10}
+#closing-building ai-building-intro{width:min(100%,calc((100svh - 120px)*1.5))}
+.all-mode #closing-building.scene{height:auto}
+@media(max-width:760px){#closing-building ai-building-intro{width:100%}}
 @media(max-width:760px){.body-copy{padding:24px 0;font-size:15px;line-height:24px}.source-graph .passage{width:calc(100% - 80px)}.source-graph .passage h2{font-size:15px;line-height:24px}.scene.models.source-graph>.sticky{padding-inline:8px}.source-chart{min-height:260px}.article-visual{width:calc(100% - 24px)}}
 @media(max-width:760px){body:not(.all-mode) #anthropic-rd-automation .passage{width:min(260px,calc(100% - 112px))}}
 @media print{.body-copy{padding:20px 0}.scene.models.source-graph{height:auto!important}.source-chart{height:500px;flex:none}.source-reveal{width:100%}.article-heading{min-height:0}.article-embed{break-inside:avoid}}
