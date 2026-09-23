@@ -58,19 +58,25 @@ window.drawContinuationChart = function(scene, data, reduced) {
     const y=annual=>bottom-annual/250000*ih;
     axes([['2026-01-04','Jan'],['2026-03-01','Mar'],['2026-05-03','May'],['2026-07-12','Jul'],['2026-08-15','Aug']],
       [[0,'$0'],[50000,'$50k'],[100000,'$100k'],[150000,'$150k'],[200000,'$200k'],[250000,'$250k']],x,y,'2026','ANNUALIZED API-PRICE USD');
+    const clip=n('clipPath',{id:'openai-usage-reveal'}),reveal=n('rect',{x:m.l,y:m.t,width:0,height:ih},clip);
+    const plot=n('g',{'clip-path':'url(#openai-usage-reveal)'});
     const points=rows.map(([date,daily])=>[x(date),y(daily*annualizationDays)]);
     const line=points.map(([px,py],i)=>`${i?'L':'M'}${px},${py}`).join('');
-    n('path',{d:`${line}L${right},${bottom}L${m.l},${bottom}Z`,fill:'#43a9ff','fill-opacity':.13});
-    const trace=n('path',{d:line,fill:'none',stroke:'#43a9ff','stroke-width':small?2.5:3.5,'stroke-linecap':'round','stroke-linejoin':'round'});
+    n('path',{d:`${line}L${right},${bottom}L${m.l},${bottom}Z`,fill:'#43a9ff','fill-opacity':.13},plot);
+    const trace=n('path',{d:line,fill:'none',stroke:'#43a9ff','stroke-width':small?2.5:3.5,'stroke-linecap':'round','stroke-linejoin':'round'},plot);
     n('title',{},trace,'Median researcher coding-agent usage, annualized from OpenAI’s daily API-price estimates');
     const [endX,endY]=points.at(-1);
-    n('circle',{cx:endX,cy:endY,r:small?5:6,fill:'#39ffc1',stroke:'#0b1015','stroke-width':2});
-    const endLabel=text(right-6,endY-16,`$${Math.round(rows.at(-1)[1]*annualizationDays/1000)}k / yr`,'end');
-    endLabel.style.fill='#39ffc1';endLabel.style.fontSize=small?'15px':'20px';endLabel.style.fontWeight='700';
+    n('circle',{cx:endX,cy:endY,r:small?5:6,fill:'#39ffc1',stroke:'#0b1015','stroke-width':2},plot);
     const legend=scene.querySelector('.legend');legend.replaceChildren();
     const item=document.createElement('span'),swatch=document.createElement('i');
     swatch.style.setProperty('--color','#43a9ff');item.append(swatch,document.createTextNode('Median researcher · 365-day run rate'));legend.append(item);
-    return ()=>{};
+    const render=()=>{
+      const progress=reduced()?1:clamp(Number(scene.dataset.localProgress||0)/.85);
+      reveal.setAttribute('width',iw*progress);
+      legend.style.opacity=progress;
+    };
+    render();
+    return render;
   }
   if(scene.id==='lab-workforce-growth'){
     const rows=data.labWorkforceGrowth.rows,start=Date.parse(rows[0][0]),end=Date.parse(rows.at(-1)[0]);
