@@ -24,23 +24,32 @@ window.drawContinuationChart = function(scene, data, reduced) {
       {index:0,name:'AL0 · No AI',color:'#152631'}
     ];
     [0,25,50,75,100].forEach(v=>{n('line',{x1:m.l,x2:right,y1:y(v),y2:y(v),stroke:'#2a3a47'});text(m.l-10,y(v)+4,`${v}%`,'end');});
+    const clip=n('clipPath',{id:'anthropic-rd-reveal'}),reveal=n('rect',{x:m.l,y:m.t,width:0,height:ih},clip);
+    const plot=n('g',{'clip-path':'url(#anthropic-rd-reveal)'});
     bands.forEach(({index,color,name})=>{
       const lower=row=>row.slice(index+2).reduce((sum,value)=>sum+value,0),upper=row=>lower(row)+row[index+1];
       let d=`M${edge(0)},${y(upper(rows[0]))}`;
       rows.forEach((row,i)=>{d+=`H${edge(i+1)}`;if(i<rows.length-1)d+=`V${y(upper(rows[i+1]))}`;});
       d+=`V${y(lower(rows.at(-1)))}`;
       for(let i=rows.length-1;i>=0;i--){d+=`H${edge(i)}`;if(i)d+=`V${y(lower(rows[i-1]))}`;}
-      const area=n('path',{d:d+'Z',fill:color,stroke:'#0b1015','stroke-width':1});
+      const area=n('path',{d:d+'Z',fill:color,stroke:'#0b1015','stroke-width':1},plot);
       n('title',{},area,name);
     });
     const ticks=small?[0,3,5,7,9,12]:[0,2,4,6,8,10,12];
     ticks.forEach(i=>{const x=edge(i)+cell/2;n('line',{x1:x,x2:x,y1:bottom,y2:bottom+6,stroke:'#607888'});const label=text(x,bottom+25,rows[i][0]);label.style.fontSize=small?'9px':'11px';});
     const last=rows.at(-1),x=edge(rows.length-1)+cell/2,cy=y(last[5]);
-    n('circle',{cx:x,cy,r:small?4:5,fill:'#39ffc1',stroke:'#0b1015','stroke-width':2});
-    const value=text(x,cy-14,'26%');value.style.fill='#39ffc1';value.style.fontWeight='700';value.style.fontSize=small?'15px':'20px';
+    n('circle',{cx:x,cy,r:small?4:5,fill:'#39ffc1',stroke:'#0b1015','stroke-width':2},plot);
+    const value=text(x,cy-14,'26%','middle',plot);value.style.fill='#39ffc1';value.style.fontWeight='700';value.style.fontSize=small?'15px':'20px';
     const legend=scene.querySelector('.legend');legend.replaceChildren();
     bands.slice().reverse().forEach(({name,color})=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);swatch.style.borderTopWidth='8px';item.append(swatch,document.createTextNode(name));legend.append(item);});
-    return ()=>{};
+    const render=()=>{
+      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
+      const progress=reduced()?1:stage===1?clamp(local/.85):0;
+      reveal.setAttribute('width',iw*progress);
+      legend.style.opacity=progress;
+    };
+    render();
+    return render;
   }
   if(scene.id==='openai-researcher-usage'){
     const {rows,annualizationDays}=data.openaiResearcherUsage;

@@ -475,7 +475,7 @@
   function request(){if(!frame)frame=requestAnimationFrame(update);}
   function followHash(){
     const hash=decodeURIComponent(location.hash.slice(1)),query=new URL(location.href).searchParams.get('slide');
-    const entry=hash?slideEntries.find(e=>e.anchor===hash):slideEntries.find(e=>e.id===query);
+    const entry=hash?slideEntries.find(e=>e.anchor===hash):slideEntries.find(e=>e.id===query||e.anchor===query);
     slideLinksReady=false;
     if(entry){
       const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;
