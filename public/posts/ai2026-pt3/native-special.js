@@ -133,5 +133,69 @@ function simulation(svg,scene,d,W,H,a){
   }else renders.forEach(render=>render(state));
  };
 }
-window.NativeSpecial={table,pairedDots,simulation};
+function knowledgeWork(svg,scene,d,W,H,a){
+ const {make,text,title,grid,muted,colors,clamp}=a,small=W<620;
+ a.addLegend(scene,[]);
+ const left=small?40:55,right=W-(small?16:190),top=24,bottom=H-(small?58:64);
+ const x=v=>left+(v-2022.92)/(2026.75-2022.92)*(right-left);
+ const y=v=>bottom-v/180*(bottom-top);
+ [0,30,60,90,120,150,180].forEach(v=>{
+  make('line',{x1:left,x2:right,y1:y(v),y2:y(v),stroke:grid},svg);
+  text(svg,left-8,y(v)+4,v?`${v}M`:'0',{'text-anchor':'end',class:'axis-tick'});
+ });
+ [2023,2024,2025,2026].forEach(v=>text(svg,x(v),bottom+23,String(v),{'text-anchor':'middle',class:'axis-tick'}));
+ const references=d.references.map((r,i)=>{
+  const group=make('g',{},svg),yy=y(r.value);
+  make('line',{x1:left,x2:right,y1:yy,y2:yy,stroke:muted,'stroke-dasharray':'5 5','stroke-opacity':'.65'},group);
+  text(group,small?right-4:right+9,yy-6,small?`${r.value}M`:`${r.label} · ${r.value}M`,{'text-anchor':small?'end':'start',class:'knowledge-reference'});
+  title(group,`${r.label}: ${r.value} million employees`);
+  return group;
+ });
+ const points=d.points.map(([year,m])=>[x(year),y(m)]);
+ const clipId=`knowledge-work-reveal-${++sequence}`,defs=make('defs',{},svg),clip=make('clipPath',{id:clipId},defs);
+ const reveal=make('rect',{x:left,y:top,width:0,height:bottom-top},clip);
+ const area=make('path',{d:`M${left},${bottom} ${points.map(([xx,yy])=>`L${xx},${yy}`).join(' ')} L${right},${bottom} Z`,fill:colors[1],'fill-opacity':'.11','clip-path':`url(#${clipId})`},svg);
+ const curve=make('path',{d:points.map(([xx,yy],i)=>`${i?'L':'M'}${xx},${yy}`).join(' '),fill:'none',stroke:colors[1],'stroke-width':small?3:4,'stroke-linecap':'round','stroke-linejoin':'round'},svg);
+ const dot=make('circle',{cx:right,cy:y(57),r:small?4:5,fill:colors[1]},svg);
+ const label=text(svg,small?right-5:right-5,y(57)-13,small?'57M FTE':'AI knowledge work · 57M FTE',{'text-anchor':'end',class:'knowledge-endpoint'});
+ title(curve,'AI cognitive task-hours: 57 million full-time equivalents by September 2026');
+ const length=curve.getTotalLength();curve.style.strokeDasharray=String(length);
+ return state=>{
+  const p=state.reduced?1:a.progress(state);
+  curve.style.strokeDashoffset=String(length*(1-p));
+  reveal.setAttribute('width',(right-left)*p);
+  dot.style.opacity=label.style.opacity=p>.95?'1':'0';
+  references.forEach((g,i)=>g.style.opacity=String(clamp((p-.1-i*.12)*4)));
+ };
+}
+function machineTiers(svg,scene,d,W,H,a){
+ const {make,text,title,grid,muted,clamp,ease}=a,small=W<620;
+ a.addLegend(scene,[]);
+ const left=small?42:60,right=W-(small?75:155),top=28,bottom=H-58;
+ const x=v=>left+(v-2022.92)/(2026.75-2022.92)*(right-left);
+ const y=v=>bottom-(Math.log10(v)-1)/7*(bottom-top);
+ [10,100,1000,10000,100000,1000000,10000000,100000000].forEach(v=>{
+  make('line',{x1:left,x2:right,y1:y(v),y2:y(v),stroke:grid},svg);
+  text(svg,left-7,y(v)+4,v>=1000000?`${v/1000000}M`:v>=1000?`${v/1000}K`:String(v),{'text-anchor':'end',class:'axis-tick'});
+ });
+ [2023,2024,2025,2026].forEach(v=>text(svg,x(v),bottom+22,String(v),{'text-anchor':'middle',class:'axis-tick'}));
+ const marks=d.series.map((s,i)=>{
+  const points=s.points.map(([year,value])=>[x(year),y(value)]);
+  const path=make('path',{d:points.map(([xx,yy],j)=>`${j?'L':'M'}${xx},${yy}`).join(' '),fill:'none',stroke:s.color,'stroke-width':small?2.6:3.2,'stroke-linejoin':'round','stroke-linecap':'round',...(s.dashed?{'stroke-dasharray':'6 5'}:{})},svg);
+  const end=s.points.at(-1)[1],label=text(svg,right+7,y(end)+4,small?`${['Chat','Code','R&D','Drive','Robots'][i]} ${s.end}`:`${s.name} · ${s.end}`,{fill:s.color,class:'tier-endpoint'});
+  label.style.fill=s.color;
+  const dot=make('circle',{cx:right,cy:y(end),r:small?3:4,fill:s.color},svg);
+  title(path,`${s.name}: ${s.points[0][1].toLocaleString('en-US')} FTE-equivalents in November 2022 to ${end.toLocaleString('en-US')} in September 2026`);
+  // A clip reveals each path by date, so dashed robotics series keep their dash pattern.
+  const clipId=`tier-reveal-${++sequence}`,defs=make('defs',{},svg),clip=make('clipPath',{id:clipId},defs),rect=make('rect',{x:left-3,y:top-4,width:0,height:bottom-top+8},clip);
+  path.setAttribute('clip-path',`url(#${clipId})`);
+  return {rect,label,dot};
+ });
+ return state=>marks.forEach((m,i)=>{
+  const p=state.reduced?1:state.stage>i?1:state.stage<i?0:ease(clamp(state.local*1.25));
+  m.rect.setAttribute('width',(right-left+6)*p);
+  m.label.style.opacity=m.dot.style.opacity=p>.96?'1':'0';
+ });
+}
+window.NativeSpecial={table,pairedDots,simulation,knowledgeWork,machineTiers};
 })();

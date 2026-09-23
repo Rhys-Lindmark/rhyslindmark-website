@@ -81,6 +81,9 @@ ai-building-intro{--intro-top:58px}
 .native-plot svg .card-caption{font-size:10px;fill:#91a6b5}
 .native-plot svg .network-label{font-size:14px;fill:#e6edf3}
 .native-plot svg .network-core{fill:#0b1015;font-size:11px}
+.native-plot svg .knowledge-reference{fill:#a5bdca;font-size:11px}
+.native-plot svg .knowledge-endpoint{fill:#ff914f;font-size:14px;font-weight:600;paint-order:stroke;stroke:#080d12;stroke-width:3px}
+.native-plot svg .tier-endpoint{font-size:12px;font-weight:600;paint-order:stroke;stroke:#080d12;stroke-width:3px}
 .native-legend{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:center;flex:none;min-height:16px;padding-bottom:8px;font:11px/1.4 var(--mono);color:#a5bdca}
 .native-legend[hidden]{display:none}.native-legend span{display:inline-flex;align-items:center;gap:7px}.native-legend i{display:block;width:12px;height:3px;flex:none}
 #article .scene.agents figcaption{position:absolute;bottom:16px;left:24px;border:0;padding:0;text-align:left;font:10px/1.4 var(--mono);opacity:.7;z-index:4}
@@ -96,6 +99,9 @@ ai-building-intro{--intro-top:58px}
  .native-plot svg .point-label{font-size:8px}
  .native-plot svg .card-label{font-size:11px}.native-plot svg .card-body{font-size:10px}.native-plot svg .card-caption{font-size:8px}
  .native-plot svg .large-value{font-size:12px}
+ .native-plot svg .knowledge-reference{font-size:10px}
+ .native-plot svg .knowledge-endpoint{font-size:11px}
+ .native-plot svg .tier-endpoint{font-size:10px}
  .native-legend{font-size:9px;gap:5px 12px;padding-bottom:4px}
  #article .scene.agents figcaption{left:12px;bottom:12px;font-size:9px}
  .all-mode #white-collar .native-plot{height:1850px}
