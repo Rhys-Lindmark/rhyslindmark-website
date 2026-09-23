@@ -469,7 +469,17 @@
       renderers.get(scene)?.(p);
       const card=scene.querySelector('.passage');
       if(card&&scene.dataset.kind==='spiral')card.hidden=!reduce.matches&&stage===0;
-      if(card)card.style.setProperty('--card-shift',`${reduce.matches?0:sticky.offsetHeight-(sticky.offsetHeight+card.offsetHeight)*local}px`);
+      if(card){
+        if(forestLoop&&stage===2&&!reduce.matches){
+          const exit=clamp(local/.28);
+          const start=sticky.offsetHeight*.55;
+          card.style.setProperty('--card-shift',`${start-(start+card.offsetHeight+24)*exit}px`);
+          card.style.setProperty('--card-opacity',`${1-clamp((local-.16)/.12)}`);
+        }else{
+          card.style.setProperty('--card-shift',`${reduce.matches?0:sticky.offsetHeight-(sticky.offsetHeight+card.offsetHeight)*local}px`);
+          card.style.removeProperty('--card-opacity');
+        }
+      }
       const track=scene.querySelector('.track span');if(track)track.style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(3);
       if(scene.dataset.kind==='spiral'){
         const rect=scene.getBoundingClientRect();scene.classList.toggle('is-visible',rect.top<innerHeight&&rect.bottom>0);
