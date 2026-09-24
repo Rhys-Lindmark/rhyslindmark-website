@@ -109,7 +109,7 @@ function cards(svg,scene,d,W,H){addLegend(scene,[]);const small=W<620,cols=2,gap
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
 const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
 try{
-const response=await fetch('/posts/ai2026-pt3/native-data.json?v=horse-tractor-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
+const response=await fetch('/posts/ai2026-pt3/native-data.json?v=tfp-palette-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
 for(const scene of document.querySelectorAll('.scene[data-native]')){
  const spec=data[scene.id];if(!spec)throw Error(`Missing chart specification: ${scene.id}`);
  const plot=scene.querySelector('.native-plot'),svg=plot.querySelector('svg');let render;
