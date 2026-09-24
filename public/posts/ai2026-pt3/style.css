@@ -27,7 +27,7 @@ body:not(.all-mode) #article .scene.agents .passage{position:absolute;top:0;left
 #claude-usage .card-copy[data-slide="4"] p+p{margin-top:1em}
 #claude-usage .card-copy[data-slide="5"] p+p{margin-top:1em}
 #omarchy .card-copy[data-slide="10"] p+p{margin-top:1em}
-#code-future .card-copy[data-slide="22"] p+p{margin-top:1em}
+#code-future .card-copy:is([data-slide="22"],[data-slide="23"]) p+p{margin-top:1em}
 body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px);line-height:1.4}
 .card-copy[hidden]{display:none}
 .scene.agents .track{flex:none}
