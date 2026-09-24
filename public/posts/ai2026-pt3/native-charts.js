@@ -35,12 +35,18 @@ function experienceCurves(svg,scene,d,W,H){
  const order=[1,0,2,3],firstStage=[1,0,4,4];
  addLegend(scene,order.map(i=>({...d.series[i],color:d.series[i].color||colors[i%colors.length]})));
  const legend=[...scene.querySelectorAll('.native-legend span')],a=frame(svg,W,H,d.x,d.y);
+ const defs=make('defs',{},svg);
  const groups=d.series.map((series,i)=>{
-  const color=series.color||colors[i%colors.length],g=make('g',{},svg);
-  g.style.transition='opacity .4s ease';
+  const color=series.color||colors[i%colors.length],clipId=`${scene.id}-reveal-${i}`;
+  const startX=a.x(i===3?d.series[2].points[0][0]:series.points[0][0])-4;
+  const endPoints=i===2?d.series[3].points:series.points;
+  const span=a.x(endPoints[endPoints.length-1][0])+4-startX;
+  const clip=make('clipPath',{id:clipId,clipPathUnits:'userSpaceOnUse'},defs);
+  const window=make('rect',{x:startX,y:a.top-4,width:0,height:a.height+8},clip);
+  const g=make('g',{'clip-path':`url(#${clipId})`},svg);
   make('path',{d:linePath(series.points,a.x,a.y),fill:'none',stroke:color,'stroke-width':W<620?2.5:3.5,'stroke-dasharray':series.dashed?'6 5':''},g);
   series.points.forEach(([x,y])=>{const dot=make('circle',{cx:a.x(x),cy:a.y(y),r:2.5,fill:color},g);title(dot,`${series.name}: ${format(x,d.x.format)}, ${format(y,d.y.format)}`)});
-  return g;
+  return {g,window,span};
  });
  const notes=(d.annotations||[]).map(note=>{
   const g=make('g',{},svg),index=note.label.startsWith('Solar')?1:note.label.startsWith('Cars')?0:2;
@@ -49,9 +55,10 @@ function experienceCurves(svg,scene,d,W,H){
   return {g,index};
  });
  return state=>{
-  const stage=state.reduced?2:state.stage;
-  groups.forEach((g,i)=>{const visible=stage>=firstStage[i];g.style.opacity=visible?'1':'0';g.style.pointerEvents=visible?'auto':'none'});
-  notes.forEach(({g,index})=>{g.style.opacity=stage>=firstStage[index]?'1':'0'});
+  const stage=state.reduced?Infinity:state.stage;
+  const reveal=i=>state.reduced||stage>firstStage[i]?1:stage===firstStage[i]?clamp(state.local):0;
+  groups.forEach(({g,window,span},i)=>{const amount=reveal(i);window.setAttribute('width',span*amount);g.style.pointerEvents=amount?'auto':'none'});
+  notes.forEach(({g,index})=>{g.style.opacity=reveal(index)>.85?'1':'0'});
   legend.forEach((item,j)=>{item.style.visibility=stage>=firstStage[order[j]]?'visible':'hidden'});
  };
 }
