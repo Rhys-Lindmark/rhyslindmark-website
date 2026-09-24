@@ -64,7 +64,6 @@ ai-building-intro{--intro-top:58px}
 @media(min-width:761px){
  body:not(.all-mode) #article .scene.agents .passage{left:calc(var(--card-gutter) + var(--axis-inset));width:min(clamp(300px,30vw,430px),calc(100% - var(--card-gutter) - var(--card-gutter) - var(--axis-inset)));max-width:430px;padding:28px;transform:translateY(var(--card-shift,100svh));border-radius:4px}
  body:not(.all-mode) #article #claude-usage[data-stage="1"] .passage{left:calc(var(--card-gutter) + var(--axis-inset) + 110px)}
- body:not(.all-mode) #article #ai-economy .passage{left:auto;right:calc(var(--card-gutter) + 28px)}
  body:not(.all-mode) #article #claude-usage>.sticky{padding-left:4px;padding-right:4px}
 }
 .usage-chart{flex:1;min-height:0;width:100%}

@@ -136,7 +136,10 @@ function surplus(svg,scene,d,W,H){
   make('line',{x1:X(q),x2:X(q),y1:Y(p),y2:bottom,stroke:'#e6edf3','stroke-dasharray':'6 6','stroke-opacity':'.55'},group);
   make('circle',{cx:X(q),cy:Y(p),r:small?5:7,fill:'#e6edf3'},group);
   text(group,left+8,Y(p)-10,caption,{class:'annotation',fill:'#e6edf3'});
-  text(group,X(q*.48),Y(i===0?(demand(0)+p)/2:(supply(0)+p)/2),name,{'text-anchor':'middle',class:'surplus-label',fill:color});
+  const labelU=q*(i===0?.68:.85);
+  const upper=i===0?demand(labelU):p;
+  const lower=i===0?p:supply(labelU);
+  text(group,X(labelU),Y((upper+lower)/2),name,{'text-anchor':'middle',class:'surplus-label',fill:color});
   title(group,`${name}: illustrative supply and demand equilibrium, not measured data`);
   return group;
  });
