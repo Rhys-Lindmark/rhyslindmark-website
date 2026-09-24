@@ -10,19 +10,18 @@
   const svg=document.createElementNS(svgNS,'svg');
   svg.setAttribute('viewBox','0 0 1100 720');
   svg.setAttribute('role','img');
-  svg.setAttribute('aria-labelledby','rd-title rd-desc');
+  svg.setAttribute('aria-label','Price declines over cumulative R&D');
+  svg.setAttribute('aria-describedby','rd-desc');
   const add=(parent,tag,attrs={},value)=>{
     const el=document.createElementNS(svgNS,tag);
     for (const [key,val] of Object.entries(attrs)) el.setAttribute(key,val);
     if (value!==undefined) el.textContent=value;
     parent.append(el);return el;
   };
-  add(svg,'title',{id:'rd-title'},'Price declines over cumulative R&D');
-  add(svg,'desc',{id:'rd-desc'},'The price of electricity, lithium batteries, LLM inference, DNA sequencing, and compute versus the growth in estimated R&D stock for each technology. Both axes are logarithmic and all series start at one. Their descriptive slopes are 0.5, 1.2, 2.7, 5.9, and 4.1 respectively.');
-  const left=135,right=1010,top=86,bottom=598;
+  add(svg,'desc',{id:'rd-desc'},'The price of electricity, lithium-ion batteries, DNA sequencing, compute, and LLM inference versus estimated R&D stock. Both axes are logarithmic and all series start at one. This descriptive comparison does not isolate R&D from scale or learning effects.');
+  const left=105,right=1040,top=28,bottom=620;
   const x=value=>left+Math.log10(Math.max(value,1))/4.08*(right-left);
   const y=value=>top+Math.log10(Math.max(value,1))/12*(bottom-top);
-  add(svg,'text',{x:left,y:40,class:'rd-heading'},'Price declines over cumulative R&D');
   for (const [power,label] of [[0,'Starting price'],[1,'10×'],[2,'100×'],[3,'1,000×'],[6,'1 million×'],[9,'1 billion×'],[12,'1 trillion×']]) {
     const yy=y(10**power);
     add(svg,'line',{x1:left,x2:right,y1:yy,y2:yy,class:'rd-grid'});
@@ -33,11 +32,13 @@
     add(svg,'line',{x1:xx,x2:xx,y1:top,y2:bottom,class:'rd-grid rd-grid-vertical'});
     add(svg,'text',{x:xx,y:bottom+26,'text-anchor':'middle',class:'rd-tick'},label);
   }
-  add(svg,'text',{x:(left+right)/2,y:bottom+64,'text-anchor':'middle',class:'rd-axis-title'},'Cumulative R&D stock, relative to start');
-  add(svg,'text',{x:22,y:(top+bottom)/2,transform:`rotate(-90 22 ${(top+bottom)/2})`,'text-anchor':'middle',class:'rd-axis-title'},'Relative cost decrease');
-  const positions={electricity:[890,202],battery:[700,232],llm:[706,450],dna:[400,421],compute:[825,558]};
+  add(svg,'text',{x:(left+right)/2,y:bottom+49,'text-anchor':'middle',class:'rd-axis-title'},'Cumulative R&D stock, relative to start');
+  add(svg,'text',{x:20,y:(top+bottom)/2,transform:`rotate(-90 20 ${(top+bottom)/2})`,'text-anchor':'middle',class:'rd-axis-title'},'Relative cost decrease');
+  const orderedSeries=['electricity','battery','dna','compute','llm'].map(id=>series.find(s=>s.id===id));
+  const legend=document.createElement('div');
+  legend.className='rd-legend';
   const marks=[];
-  for (const s of series) {
+  for (const s of orderedSeries) {
     const g=add(svg,'g',{'data-series':s.id,class:'rd-series'});
     const pts=s.points;
     let d='';
@@ -48,18 +49,19 @@
     const path=add(g,'path',{d,fill:'none',stroke:colors[s.id],'stroke-width':4,'stroke-linejoin':'round','stroke-linecap':'round'});
     const length=path.getTotalLength();
     path.style.strokeDasharray=String(length);
-    const [lx,ly]=positions[s.id];
     const [ex,ey]=pts.at(-1);
-    const leader=add(g,'line',{x1:x(ex),y1:y(ey),x2:lx-10,y2:ly-7,stroke:colors[s.id],'stroke-opacity':'.6','stroke-width':1.5});
-    const label=add(g,'text',{x:lx,y:ly,style:`fill:${colors[s.id]}`,class:'rd-series-label'},s.label);
-    const slope=add(g,'text',{x:lx,y:ly+23,class:'rd-series-slope'},`slope ${s.slope}`);
     add(path,'title',{},`${s.label}: ${ex.toFixed(1)}× R&D stock, ${ey.toLocaleString('en-US',{maximumFractionDigits:0})}× cheaper; descriptive slope ${s.slope}`);
-    marks.push({path,length,leader,label,slope});
+    const item=document.createElement('span');
+    const swatch=document.createElement('i');
+    swatch.style.background=colors[s.id];
+    item.append(swatch,document.createTextNode(s.id==='battery'?'Lithium-ion batteries':s.label));
+    legend.append(item);
+    marks.push({path,length,item});
   }
-  container.append(svg);
-  const caption=document.createElement('div');
+  container.append(svg,legend);
+  const caption=document.createElement('figcaption');
   caption.className='rd-caption';
-  caption.innerHTML='<span>Descriptive R&D stock model; the relationship does not isolate R&D from scale and learning effects.</span><a href="https://github.com/karthiktadepalli1/rd-price-declines">Data and method · Karthik Tadepalli</a>';
+  caption.innerHTML='Source: <a href="https://epoch.ai/publications/the-plunging-price-of-thought">Epoch AI</a> · <a href="https://github.com/karthiktadepalli1/rd-price-declines">Karthik Tadepalli</a>';
   container.append(caption);
   const clamp=n=>Math.max(0,Math.min(1,n));
   const update=({stage=0,local=0,reduced=false}={})=>{
@@ -68,7 +70,7 @@
       const amount=reduced?1:active?clamp((local-i*.17)/.2):0;
       mark.path.style.strokeDashoffset=String(mark.length*(1-amount));
       const visible=amount>.95;
-      for (const el of [mark.leader,mark.label,mark.slope]) el.style.opacity=visible?'1':'0';
+      mark.item.style.opacity=visible?'1':'0';
     });
   };
   scene.addEventListener('chart-progress',event=>update(event.detail));

@@ -171,19 +171,18 @@ body:not(.all-mode) #experience-curves[data-stage="4"] .native-legend,body:not(.
 body:not(.all-mode) #experience-curves[data-stage="4"] .epoch-plot{display:flex}
 .all-mode #experience-curves .epoch-plot{display:flex;min-height:600px;margin-top:30px}
 .rd-plot{display:none;flex:1;min-height:0;width:100%;flex-direction:column}
-.rd-plot svg{display:block;width:100%;height:100%;min-height:0}
-.rd-plot svg text{font-family:var(--mono);fill:#a5bdca}
-.rd-plot svg .rd-heading{font-size:22px;font-weight:650;fill:#e6edf3}
+.rd-plot svg{display:block;flex:1;width:100%;height:auto;min-height:0}
+.rd-plot svg text{font:12px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#a5bdca}
 .rd-plot svg .rd-grid{stroke:#2a3a47;stroke-width:1}
 .rd-plot svg .rd-grid-vertical{stroke-dasharray:3 6}
-.rd-plot svg .rd-tick{font-size:14px}
-.rd-plot svg .rd-axis-title{font-size:16px;fill:#d1dce5}
-.rd-plot svg .rd-series-label{font-size:19px;font-weight:650;paint-order:stroke;stroke:#0b1015;stroke-width:3px}
-.rd-plot svg .rd-series-slope{font-size:15px;paint-order:stroke;stroke:#0b1015;stroke-width:3px}
-.rd-plot svg .rd-series-label,.rd-plot svg .rd-series-slope,.rd-plot svg .rd-series line{transition:opacity .15s ease}
-.rd-caption{display:flex;justify-content:space-between;gap:10px;font:11px/1.4 var(--mono);color:#a5bdca}
-.rd-caption a{color:#8bdeec;white-space:nowrap}
-body:not(.all-mode) #experience-curves[data-stage="5"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="5"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="5"] figcaption{display:none}
+.rd-plot svg .rd-tick,.rd-plot svg .rd-axis-title{font-size:12px}
+.rd-legend{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;padding:10px 0 4px;font:12px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#a5bdca}
+.rd-legend span{display:inline-flex;align-items:center;gap:7px;transition:opacity .15s ease}
+.rd-legend i{display:block;width:20px;height:4px;flex:none}
+.rd-caption{font:11px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#a5bdca;text-align:left!important}
+.rd-caption a{color:#a5bdca;text-decoration:none}
+.rd-caption a:hover{text-decoration:underline}
+body:not(.all-mode) #experience-curves[data-stage="5"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="5"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="5"] figure>figcaption{display:none}
 body:not(.all-mode) #experience-curves[data-stage="5"] .rd-plot{display:flex}
 .all-mode #experience-curves .rd-plot{display:flex;min-height:600px;margin-top:30px}
 .experience-reestimate{display:none;flex:1;min-height:0;width:100%;flex-direction:column}
@@ -202,7 +201,7 @@ body:not(.all-mode) #experience-curves[data-stage="5"] .rd-plot{display:flex}
 body:not(.all-mode) #experience-curves:is([data-stage="2"],[data-stage="3"]) .native-legend,body:not(.all-mode) #experience-curves:is([data-stage="2"],[data-stage="3"]) .native-plot,body:not(.all-mode) #experience-curves:is([data-stage="2"],[data-stage="3"]) figure>figcaption{display:none}
 body:not(.all-mode) #experience-curves:is([data-stage="2"],[data-stage="3"]) .experience-reestimate{display:flex}
 .all-mode #experience-curves .experience-reestimate{display:flex;min-height:600px;margin-top:30px}
-@media(max-width:760px){.rd-plot svg .rd-heading{font-size:25px}.rd-plot svg .rd-tick{font-size:15px}.rd-caption{font-size:9px;flex-wrap:wrap}}
+@media(max-width:760px){.rd-plot svg .rd-tick,.rd-plot svg .rd-axis-title{font-size:10px}.rd-legend{font-size:9px;gap:5px 12px}.rd-caption{font-size:9px}}
 @media(max-width:760px){.epoch-plot svg .epoch-heading{font-size:25px}.epoch-plot svg .epoch-tick{font-size:15px}.epoch-plot svg .epoch-note{font-size:15px}.epoch-caption{font-size:9px;gap:4px 10px}}
 @media(min-width:761px){body:not(.all-mode) #article .scene.agents[data-native]>.sticky{padding-left:4px;padding-right:4px}}
 .all-mode .native-plot{height:720px;flex:none}
