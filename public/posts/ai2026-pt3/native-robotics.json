@@ -1148,7 +1148,7 @@
     "kind": "bars",
     "title": "Millions of real miles, billions simulated",
     "source": "https://substack-post-media.s3.amazonaws.com/public/images/0cde022d-37c6-466e-afe5-ee9e088dcd45_3313x2028.png",
-    "note": "Exact displayed figures from supplied image. Native chart uses an explicitly logarithmic axis to preserve the 1M\u2013~10B range without the original artificial scale break. The source gives simulated driving as an approximate average, not a Waymo-specific total.",
+    "note": "Exact displayed figures from the supplied image. The logarithmic axis preserves the 1M to 10B range. The 10B simulated-driving estimate is approximate and is not a Waymo-specific total.",
     "data": {
       "orientation": "horizontal",
       "stacked": false,
@@ -1159,54 +1159,6 @@
       ],
       "rows": [
         {
-          "label": "Tesla",
-          "values": [
-            70000000.0
-          ],
-          "group": "Real",
-          "valueLabel": "70M"
-        },
-        {
-          "label": "Baidu Apollo",
-          "values": [
-            20000000.0
-          ],
-          "group": "Real",
-          "valueLabel": "20M"
-        },
-        {
-          "label": "WeRide",
-          "values": [
-            15000000.0
-          ],
-          "group": "Real",
-          "valueLabel": "15M"
-        },
-        {
-          "label": "Pony.ai",
-          "values": [
-            13000000.0
-          ],
-          "group": "Real",
-          "valueLabel": "13M"
-        },
-        {
-          "label": "Wayve (UK)",
-          "values": [
-            10000000.0
-          ],
-          "group": "Real",
-          "valueLabel": "10M"
-        },
-        {
-          "label": "Cruise",
-          "values": [
-            4000000.0
-          ],
-          "group": "Real",
-          "valueLabel": "4M"
-        },
-        {
           "label": "Waymo",
           "values": [
             25000000.0
@@ -1215,7 +1167,7 @@
           "valueLabel": "25M"
         },
         {
-          "label": "Waymo \u00b7 new city",
+          "label": "Waymo new city",
           "values": [
             1000000.0
           ],
@@ -1223,12 +1175,12 @@
           "valueLabel": "1M"
         },
         {
-          "label": "Simulated driving (average)",
+          "label": "Simulated driving",
           "values": [
             10000000000.0
           ],
           "group": "Simulation",
-          "valueLabel": "~10B"
+          "valueLabel": "10B"
         }
       ],
       "value": {
