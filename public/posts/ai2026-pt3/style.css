@@ -156,6 +156,9 @@ body:not(.all-mode) #ai-economy[data-surplus="consumer"] .native-legend span:nth
 .epoch-plot svg .epoch-tick{font-size:14px}
 .epoch-plot svg .epoch-ai-label{font-size:21px;font-weight:600;fill:#7dcfff}
 .epoch-plot svg .epoch-note{font-size:13px}
+.epoch-plot svg .epoch-axis-title{font-size:17px;fill:#d1dce5}
+.epoch-plot svg .epoch-series-label{font-size:19px;font-weight:600;paint-order:stroke;stroke:#0b1015;stroke-width:3px}
+.epoch-plot svg .epoch-series-dates{font-size:16px;paint-order:stroke;stroke:#0b1015;stroke-width:3px}
 .epoch-caption{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;font:11px/1.4 var(--mono);color:#a5bdca}
 .epoch-caption a{margin-left:auto;color:#8bdeec}
 .epoch-key{display:inline-flex;align-items:center;gap:6px}
