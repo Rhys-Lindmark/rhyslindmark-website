@@ -94,6 +94,10 @@ ai-building-intro{--intro-top:58px}
 .native-plot svg .network-core{fill:#0b1015;font-size:11px}
 .native-legend{display:flex;flex-wrap:wrap;order:1;gap:6px 20px;justify-content:flex-start;flex:none;min-height:16px;padding:8px 0 8px calc(var(--axis-inset,96px) - 16px);font:11px/1.4 var(--mono);color:#a5bdca}
 .native-legend[hidden]{display:none}.native-legend span{display:inline-flex;align-items:center;gap:7px}.native-legend i{display:block;width:12px;height:3px;flex:none}
+#coding-spend .native-plot svg path[stroke="#43a9ff"]{stroke:#70c4ff;stroke-width:5;filter:drop-shadow(0 0 5px #43a9ff88)}
+#coding-spend .native-plot svg circle[fill="#43a9ff"]{fill:#70c4ff;r:4px}
+#coding-spend .native-legend span:first-child{color:#eaf7ff;font-weight:700;background:#43a9ff24;border:1px solid #43a9ff77;border-radius:4px;padding:4px 8px}
+#coding-spend .native-legend span:first-child i{width:18px;height:4px;background:#70c4ff!important}
 #article .scene.agents figcaption{position:static;order:2;align-self:stretch;border-top:1px solid var(--line);padding:8px 0 0;text-align:left;font:10px/1.4 var(--mono);opacity:.7}
 #article .scene.agents figcaption:hover{opacity:1}
 @media(min-width:761px){body:not(.all-mode) #article .scene.agents[data-native]>.sticky{padding-left:4px;padding-right:4px}}
