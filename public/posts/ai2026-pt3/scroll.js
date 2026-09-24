@@ -61,8 +61,7 @@
       const sticky = entry.scene?.querySelector('.sticky');
       const travel = sticky && !reduced.matches ? Math.max(0, entry.scene.offsetHeight - sticky.offsetHeight) : 0;
       // Land with the requested text box visible, not below the graph.
-      const inset = travel ? 0 : document.querySelector('header').offsetHeight;
-      scrollTo({top:scrollY + target.getBoundingClientRect().top - inset + travel * (entry.index + .45) / entry.count, behavior:'instant'});
+      scrollTo({top:scrollY + target.getBoundingClientRect().top + travel * (entry.index + .45) / entry.count, behavior:'instant'});
       setAddress(entry.id);
     } else if (hashTarget) {
       hashTarget.scrollIntoView({behavior:'instant'});
