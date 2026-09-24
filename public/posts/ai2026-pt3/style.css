@@ -63,6 +63,11 @@ body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px)
 .generalist-video video{display:block;width:100%;height:auto;max-height:76svh;object-fit:contain;border-radius:14px;background:#05080d}
 .generalist-video figcaption{margin-top:10px;color:#9db5c6;font:11px var(--mono)}
 .generalist-video figcaption a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.mildenhall-video{display:flex;flex-direction:column;align-items:center;width:min(700px,calc(100% - 40px))}
+.mildenhall-video video{display:block;height:min(78svh,780px);width:auto;max-width:100%;aspect-ratio:1080/1216;object-fit:contain;border-radius:14px;background:#05080d}
+.mildenhall-video figcaption{margin-top:10px;color:#9db5c6;font:11px var(--mono)}
+.mildenhall-video figcaption a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+
 
 
 .domain-benchmarks .domain-benchmark-chart{gap:0;width:min(920px,100%);margin:0 auto}

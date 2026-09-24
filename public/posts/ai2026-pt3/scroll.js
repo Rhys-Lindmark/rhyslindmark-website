@@ -3,26 +3,25 @@
   const scenes = [...document.querySelectorAll('.scene.agents')];
   const legacySlides = { '13b':'14', '15b':'17', '16b':'19', '21b':'25', '21c':'26', '21d':'27', '36a':'43', '37a':'45', '37b':'46', '51':'52', '53':'54', '57a':'58', '57b':'59', '57c':'60', '57d':'61', '57e':'62', '57f':'63', '57g':'64', '57h':'65' };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const generalistVideo = document.querySelector('.generalist-video video');
-  if (generalistVideo) {
+  for (const video of document.querySelectorAll('.generalist-video video, .mildenhall-video video')) {
     let loaded = false, inView = false;
-    generalistVideo.muted = true;
-    generalistVideo.defaultMuted = true;
+    video.muted = true;
+    video.defaultMuted = true;
     const load = () => {
       if (loaded) return;
       loaded = true;
-      const source = generalistVideo.querySelector('source');
+      const source = video.querySelector('source');
       source.src = source.dataset.src;
-      generalistVideo.preload = 'auto';
-      generalistVideo.load();
+      video.preload = 'auto';
+      video.load();
     };
     const sync = () => {
-      if (!inView || document.hidden || reduced.matches) { generalistVideo.pause(); return; }
+      if (!inView || document.hidden || reduced.matches) { video.pause(); return; }
       load();
-      generalistVideo.play().catch(() => {});
+      video.play().catch(() => {});
     };
-    new IntersectionObserver(entries => { if (entries.some(entry => entry.isIntersecting)) load(); }, {rootMargin:'500px'}).observe(generalistVideo);
-    new IntersectionObserver(entries => { inView = entries.some(entry => entry.isIntersecting); sync(); }, {threshold:.2}).observe(generalistVideo);
+    new IntersectionObserver(entries => { if (entries.some(entry => entry.isIntersecting)) load(); }, {rootMargin:'500px'}).observe(video);
+    new IntersectionObserver(entries => { inView = entries.some(entry => entry.isIntersecting); sync(); }, {threshold:.2}).observe(video);
     document.addEventListener('visibilitychange', sync);
     reduced.addEventListener('change', sync);
   }
