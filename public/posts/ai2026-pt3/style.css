@@ -121,6 +121,17 @@ body:not(.all-mode) #productivity[data-stage="2"] .native-plot svg > g:is([data-
 body:not(.all-mode) #productivity[data-stage="2"] .native-plot svg > path{opacity:.25}
 body:not(.all-mode) #tfp .native-plot svg :is(rect,.value-label),body:not(.all-mode) #tfp .native-legend{transition:opacity .45s ease}
 body:not(.all-mode) #tfp[data-stage="0"] .native-plot svg :is(rect,.value-label),body:not(.all-mode) #tfp[data-stage="0"] .native-legend{opacity:0!important}
+#tfp .native-plot svg rect[data-series],#tfp .native-legend span,#tfp .tfp-focus-word{transition:opacity .35s ease,filter .35s ease,color .35s ease}
+body:not(.all-mode) #tfp[data-stage="2"] .native-plot svg rect[data-series],body:not(.all-mode) #tfp[data-stage="2"] .native-legend span{opacity:.18}
+body:not(.all-mode) #tfp[data-stage="2"] .native-plot svg .value-label{opacity:.35!important}
+body:not(.all-mode) #tfp[data-focus="Electricity"] :is(rect,span)[data-series="Electricity"],body:not(.all-mode) #tfp[data-focus="Cars"] :is(rect,span)[data-series="Cars"],body:not(.all-mode) #tfp[data-focus="Computers"] :is(rect,span)[data-series="Computers"]{opacity:1!important}
+body:not(.all-mode) #tfp[data-focus="Electricity"] rect[data-series="Electricity"]{filter:drop-shadow(0 0 8px #f1cf65)}
+body:not(.all-mode) #tfp[data-focus="Cars"] rect[data-series="Cars"]{filter:drop-shadow(0 0 8px #ff914f)}
+body:not(.all-mode) #tfp[data-focus="Computers"] rect[data-series="Computers"]{filter:drop-shadow(0 0 8px #43a9ff)}
+#tfp .tfp-focus-word{opacity:.5}
+#tfp[data-focus="Electricity"] .tfp-focus-word[data-series="Electricity"]{opacity:1;color:#f1cf65}
+#tfp[data-focus="Cars"] .tfp-focus-word[data-series="Cars"]{opacity:1;color:#ff914f}
+#tfp[data-focus="Computers"] .tfp-focus-word[data-series="Computers"]{opacity:1;color:#43a9ff}
 @media(max-width:760px){.scene.agents[data-native] .native-plot svg path[fill="none"][stroke-width="2.5"],#sim-to-real .native-plot svg path[fill="none"][stroke-width="2"]{stroke-width:2.5}.scene.agents:is(#code-history,#code-future) .native-plot svg path[stroke-width="1.3"]{stroke-width:1.8}.scene.agents:is(#code-history,#code-future) .native-plot svg path[fill="none"][stroke-width="1.2"]{stroke-width:2.5}}
 #coding-spend .native-plot svg path[stroke="#43a9ff"]{stroke:#7dcfff}
 #coding-spend .native-plot svg circle[fill="#43a9ff"]{fill:#7dcfff;r:3px}
