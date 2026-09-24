@@ -148,11 +148,11 @@ function surplus(svg,scene,d,W,H){
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
 const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,surplus,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
 try{
-const response=await fetch('/posts/ai2026-pt3/native-data.json?v=slide37-shared-curve-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
+const response=await fetch('/posts/ai2026-pt3/native-data.json?v=wage-pool-colors-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
 for(const scene of document.querySelectorAll('.scene[data-native]')){
  const spec=data[scene.id];if(!spec)throw Error(`Missing chart specification: ${scene.id}`);
  const plot=scene.querySelector('.native-plot'),svg=plot.querySelector('svg');let render;
- const draw=()=>{const {width,height}=plot.getBoundingClientRect();if(!width||!height)return;svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${width} ${height}`);title(svg,spec.title||scene.getAttribute('aria-label'));make('desc',{},svg,spec.note||'');const kind=scene.id==='sim-to-real'?'simulation':spec.kind;render=renderers[kind](svg,scene,spec.data,width,height);scene.dataset.nativeReady='true';render(stateOf(scene));};
+ const draw=()=>{const {width,height}=plot.getBoundingClientRect();if(!width||!height)return;svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${width} ${height}`);title(svg,spec.title||scene.getAttribute('aria-label'));make('desc',{},svg,spec.note||'');const kind=scene.id==='sim-to-real'?'simulation':spec.kind;const chartData=spec.dataRef?data[spec.dataRef]?.data:spec.data;if(!chartData)throw Error(`Missing chart data: ${scene.id}`);render=renderers[kind](svg,scene,chartData,width,height);scene.dataset.nativeReady='true';render(stateOf(scene));};
  draw();new ResizeObserver(draw).observe(plot);scene.addEventListener('chart-progress',event=>render?.({...stateOf(scene),...event.detail}));
 }
 document.documentElement.dataset.chartsReady='true';
