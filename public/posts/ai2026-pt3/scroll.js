@@ -3,7 +3,20 @@
   const scenes = [...document.querySelectorAll('.scene.agents')];
   const legacySlides = { '13b':'14', '15b':'17', '16b':'19', '21b':'25', '21c':'26', '21d':'27', '36a':'43', '37a':'45', '37b':'46', '51':'52', '53':'54', '57a':'58', '57b':'59', '57c':'60', '57d':'61', '57e':'62', '57f':'63', '57g':'64', '57h':'65' };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  for (const video of document.querySelectorAll('.generalist-video video, .mildenhall-video video')) {
+  const simScatter = document.querySelector('#sim-to-real');
+  if (simScatter) {
+    const points = [...simScatter.querySelectorAll('[data-sim-y]')];
+    simScatter.addEventListener('chart-progress', ({detail:{stage,local,reduced}}) => {
+      const progress = reduced ? 1 : stage === 0 ? 0 : Math.min(1, local / .35);
+      const eased = progress * progress * (3 - 2 * progress);
+      for (const point of points) {
+        const baseline = point.tagName.toLowerCase() === 'circle' ? 543.33 : 537.50;
+        point.setAttribute(point.tagName.toLowerCase() === 'circle' ? 'cy' : 'y', (baseline + (Number(point.dataset.simY) - baseline) * eased).toFixed(2));
+      }
+      simScatter.style.setProperty('--sim-correlation-opacity', eased.toFixed(3));
+    });
+  }
+  for (const video of document.querySelectorAll('.generalist-video video, .mildenhall-video video, .uma-science video')) {
     let loaded = false, inView = false;
     video.muted = true;
     video.defaultMuted = true;

@@ -67,6 +67,9 @@ body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px)
 .mildenhall-video video{display:block;height:min(78svh,780px);width:auto;max-width:100%;aspect-ratio:1080/1216;object-fit:contain;border-radius:14px;background:#05080d}
 .mildenhall-video figcaption{margin-top:10px;color:#9db5c6;font:11px var(--mono)}
 .mildenhall-video figcaption a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.uma-science figure{align-items:center;justify-content:center}
+.uma-science video{display:block;width:min(1100px,100%);max-height:76svh;aspect-ratio:16/9;object-fit:contain;border-radius:14px;background:#05080d}
+.uma-science figcaption a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 
 
 
@@ -150,6 +153,14 @@ ai-building-intro{--intro-top:58px}
 .scene.agents figure{position:static;gap:12px}
 .native-plot{flex:1;width:100%;min-height:0}
 .native-plot svg{display:block;width:100%;height:100%;overflow:visible}
+#sim-to-real .sim-equality{opacity:var(--sim-correlation-opacity,0)}
+#sim-to-real .native-plot svg .axis-label{font-size:15px}
+#sim-to-real .native-plot svg .axis-tick{font-size:13px}
+body:not(.all-mode) #article #sim-to-real>.sticky{padding:58px 18px 20px}
+body:not(.all-mode) #sim-to-real figure{width:100%;height:100%}
+body:not(.all-mode) #sim-to-real .native-plot{flex:1;min-height:0}
+.all-mode #sim-to-real .sim-equality{opacity:1}
+@media(max-width:760px){body:not(.all-mode) #article #sim-to-real>.sticky{padding:72px 8px 16px}#sim-to-real .native-plot svg .axis-label{font-size:15px}#sim-to-real .native-plot svg .axis-tick{font-size:14px}}
 #app-revenue .native-plot{position:relative}
 #app-revenue .app-revenue-icons{position:absolute;left:70px;right:20px;bottom:28px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:center;pointer-events:none}
 #app-revenue .logo-group{display:flex;align-items:center;justify-content:center;gap:4px;min-width:0}
