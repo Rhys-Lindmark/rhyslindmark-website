@@ -106,10 +106,39 @@ function farmMechanization(svg,scene,d,W,H){
  return s=>reveal.set(progress(s));
 }
 function cards(svg,scene,d,W,H){addLegend(scene,[]);const small=W<620,cols=2,gap=small?10:18,pad=small?12:20,cw=(W-gap)/2,rh=(H-gap*2)/3,groups=[];d.cards.forEach((c,i)=>{const col=i<2?i:i%2===0?0:1;const row=i<2?0:Math.floor((i-2)/2)+1;const xx=col*(cw+gap),yy=row*(rh+gap),g=make('g',{},svg);groups.push(g);make('rect',{x:xx,y:yy,width:cw,height:rh,rx:4,fill:col?'#18212b':'#10242b',stroke:grid},g);wrapLabel(g,c.label,xx+pad,yy+pad+10,small?20:35,{class:'card-label'});const body=c.description;wrapLabel(g,body,xx+pad,yy+pad+(small?42:42),Math.floor((cw-pad*2)/(small?5.5:6.7)),{class:'card-body'});if(c.value)text(g,xx+pad,yy+rh-35,c.value,{class:'large-value',fill:colors[col]});wrapLabel(g,c.measurement,xx+pad,yy+rh-17,small?26:45,{class:'card-caption'});title(g,[c.label,c.description,c.examples?.join('; '),c.period,c.value,c.measurement,c.citation].filter(Boolean).join(' · '))});return s=>groups.forEach((g,i)=>g.style.opacity=s.reduced?'1':String(clamp(progress(s)*6-i)))}
+function surplus(svg,scene,d,W,H){
+ const small=W<620,left=small?52:78,right=W-(small?26:48),top=small?26:36,bottom=H-(small?66:70),width=right-left,height=bottom-top;
+ const X=u=>left+width*u,Y=v=>top+height*v;
+ const demand=u=>.12+.72*u,low=u=>.89-.11*u,high=u=>.95-.85*u;
+ const scenarios=[{supply:low,q:.77/.83,color:'#39ffc1',name:'Consumer surplus',caption:'LOW PRICE'},{supply:high,q:.83/1.57,color:'#ff914f',name:'Producer surplus',caption:'HIGHER PRICE'}];
+ addLegend(scene,[{name:'Consumer surplus',color:'#39ffc1'},{name:'Producer surplus',color:'#ff914f'}]);
+ for(const v of [.25,.5,.75])make('line',{x1:left,x2:right,y1:Y(v),y2:Y(v),stroke:grid},svg);
+ make('path',{d:`M${left} ${top}V${bottom}H${right}`,fill:'none',stroke:'#91a6b5','stroke-width':2},svg);
+ text(svg,left-14,top+10,'Price',{'text-anchor':'end',class:'axis-label'});
+ text(svg,right,bottom+28,'Quantity',{'text-anchor':'end',class:'axis-label'});
+ const demandLine=make('path',{d:`M${X(0)} ${Y(demand(0))}L${X(1)} ${Y(demand(1))}`,fill:'none',stroke:'#7dcfff','stroke-width':small?3:4},svg);
+ text(svg,X(.18),Y(demand(.18))-13,'Demand',{'text-anchor':'middle',class:'annotation'});
+ const groups=scenarios.map(({supply,q,color,name,caption},i)=>{
+  const group=make('g',{},svg),p=demand(q),shade=make('g',{},group);
+  make('path',{d:`M${X(0)} ${Y(demand(0))} L${X(q)} ${Y(p)} L${X(0)} ${Y(p)} Z`,fill:'#39ffc1','fill-opacity':i===0?.46:.13},shade);
+  make('path',{d:`M${X(0)} ${Y(supply(0))} L${X(q)} ${Y(p)} L${X(0)} ${Y(p)} Z`,fill:'#ff914f','fill-opacity':i===1?.62:.13},shade);
+  make('path',{d:`M${X(0)} ${Y(supply(0))}L${X(1)} ${Y(supply(1))}`,fill:'none',stroke:'#f1cf65','stroke-width':small?3:4},group);
+  const supplyLabelX=i===0?.28:.78;
+  text(group,X(supplyLabelX),Y(supply(supplyLabelX))-12,'Supply',{'text-anchor':'middle',class:'annotation'});
+  make('line',{x1:left,x2:X(q),y1:Y(p),y2:Y(p),stroke:'#e6edf3','stroke-dasharray':'6 6','stroke-opacity':'.75'},group);
+  make('line',{x1:X(q),x2:X(q),y1:Y(p),y2:bottom,stroke:'#e6edf3','stroke-dasharray':'6 6','stroke-opacity':'.55'},group);
+  make('circle',{cx:X(q),cy:Y(p),r:small?5:7,fill:'#e6edf3'},group);
+  text(group,left+8,Y(p)-10,caption,{class:'annotation',fill:'#e6edf3'});
+  text(group,X(q*.48),Y(i===0?(demand(0)+p)/2:(supply(0)+p)/2),name,{'text-anchor':'middle',class:'surplus-label',fill:color});
+  title(group,`${name}: illustrative supply and demand equilibrium, not measured data`);
+  return group;
+ });
+ return s=>{const stage=s.reduced?2:s.stage;demandLine.style.opacity=stage?'1':'.4';groups.forEach((g,i)=>{g.style.opacity=stage===i+1?'1':'0';g.style.visibility=stage===i+1?'visible':'hidden'});scene.dataset.surplus=stage===1?'consumer':stage===2?'producer':''};
+}
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
-const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
+const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,surplus,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
 try{
-const response=await fetch('/posts/ai2026-pt3/native-data.json?v=tfp-focus-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
+const response=await fetch('/posts/ai2026-pt3/native-data.json?v=surplus-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
 for(const scene of document.querySelectorAll('.scene[data-native]')){
  const spec=data[scene.id];if(!spec)throw Error(`Missing chart specification: ${scene.id}`);
  const plot=scene.querySelector('.native-plot'),svg=plot.querySelector('svg');let render;

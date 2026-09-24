@@ -2631,72 +2631,11 @@
     }
   },
   "ai-economy": {
-    "kind": "cards",
-    "title": "AI in the productivity statistics",
-    "source": "https://intelligence.exponentialview.co/assets/ev-state-of-ai-economy-2026.pdf",
-    "sourceImage": "ai-economy.png",
-    "note": "Six source panels faithfully transcribed: two AI impact categories and four historical examples. Values are the source\u2019s claims, not independently verified estimates.",
-    "data": {
-      "cards": [
-        {
-          "label": "Consumer surplus",
-          "group": "AI impacts",
-          "description": "Value reaches people at a near-zero price; GDP under-represents consumer benefit.",
-          "examples": [
-            "Free replacement of software and service purchases",
-            "Learning, leisure and convenience"
-          ],
-          "measurement": "Little is sold; benefits may escape GDP"
-        },
-        {
-          "label": "Producer surplus",
-          "group": "AI impacts",
-          "description": "Value embedded in sold goods and services is transacted and recorded in GDP.",
-          "examples": [
-            "AI-enabled features that drive revenue",
-            "Faster valuable releases",
-            "Service firm margins"
-          ],
-          "measurement": "More is recorded in GDP"
-        },
-        {
-          "label": "Electric lighting",
-          "group": "Consumer surplus",
-          "period": "1880\u20131920",
-          "description": "Light became ~99.97% cheaper; an hour\u2019s wage buys ~40,000\u00d7 more. Prices did not record this gain.",
-          "value": "\u2248 $0",
-          "measurement": "Direct GDP impact",
-          "citation": "Nordhaus (1996)"
-        },
-        {
-          "label": "Free digital goods",
-          "group": "Consumer surplus",
-          "period": "2000\u20132020",
-          "description": "Free search, encyclopaedias and maps displaced paid services; search alone was worth ~$17.5k/yr/person.",
-          "value": "\u2248 $0",
-          "measurement": "Direct GDP impact",
-          "citation": "Brynjolfsson et al. (2019)"
-        },
-        {
-          "label": "Steam",
-          "group": "Producer surplus",
-          "period": "1850\u20131870",
-          "description": "Mechanized factories and railways let one worker produce and move far more to market.",
-          "value": "+0.4",
-          "measurement": "pp/yr GDP",
-          "citation": "Crafts (2004)"
-        },
-        {
-          "label": "Automation",
-          "group": "Producer surplus",
-          "period": "1980\u20132000",
-          "description": "Programmable machine tools cut labor in every unit, raising output per worker.",
-          "value": "+0.37",
-          "measurement": "pp/yr GDP",
-          "citation": "Graetz & Michaels (2018)"
-        }
-      ]
-    }
+    "kind": "surplus",
+    "title": "Where the value goes",
+    "source": "https://commons.wikimedia.org/wiki/File:Economic-surpluses.svg",
+    "note": "Conceptual supply-and-demand diagram adapted from SilverStar\u2019s Economic-surpluses.svg. Low-price and higher-price curves are illustrative, not measured markets. Consumer surplus is the area under demand and above price; producer surplus is the area above supply and below price.",
+    "data": {}
   },
   "white-collar": {
     "kind": "table",
