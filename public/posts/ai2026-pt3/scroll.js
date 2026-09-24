@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const scenes = [...document.querySelectorAll('.scene.agents')];
+  const legacySlides = { '13b':'14', '15b':'17', '16b':'19', '21b':'25', '21c':'26', '21d':'27', '36a':'43', '37a':'45', '37b':'46' };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const entries = [...document.querySelectorAll('#article [data-slide]')].map(el => {
     const scene = el.closest('.scene.agents');
@@ -52,7 +53,8 @@
     let hash;
     try { hash = decodeURIComponent(location.hash.slice(1)); } catch { hash = ''; }
     const hashTarget = hash ? document.getElementById(hash) : null;
-    const id = new URL(location.href).searchParams.get('slide');
+    const requested = new URL(location.href).searchParams.get('slide');
+    const id = legacySlides[requested] || requested;
     const entry = hashTarget
       ? entries.find(e => e.el === hashTarget || e.scene === hashTarget)
       : !hash && entries.find(e => e.id === id);

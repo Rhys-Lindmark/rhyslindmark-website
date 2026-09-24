@@ -732,12 +732,12 @@
     "kind": "farmMechanization",
     "title": "Horses gave way to tractors",
     "source": "https://www.cambridge.org/core/journals/journal-of-economic-history/article/abs/unpacking-the-agricultural-black-box-the-rise-and-fall-of-american-farm-productivity-growth/6B12A75BB1FD611628A9FC9C08B90056",
-    "note": "Approximate visual read-offs from the supplied figure, not the paper’s underlying data. Equine stock uses the left axis (0–30 million); tractors and combines use the right axis (0–6 million).",
+    "note": "Approximate visual read-offs from the supplied figure, not the paper’s underlying data. Horses use the 0–30 million scale; tractors use the 0–6 million scale.",
     "approximate": true,
     "data": {
       "series": [
         {
-          "name": "Equine stock · left axis",
+          "name": "Horses",
           "color": "#43a9ff",
           "points": [
             [
@@ -851,7 +851,7 @@
           ]
         },
         {
-          "name": "Tractors · right axis",
+          "name": "Tractors",
           "color": "#ff914f",
           "points": [
             [
@@ -941,64 +941,6 @@
             [
               2012,
               3.7
-            ]
-          ]
-        },
-        {
-          "name": "Combines · right axis",
-          "color": "#39ffc1",
-          "points": [
-            [
-              1910,
-              0
-            ],
-            [
-              1920,
-              0.01
-            ],
-            [
-              1930,
-              0.04
-            ],
-            [
-              1940,
-              0.15
-            ],
-            [
-              1945,
-              0.3
-            ],
-            [
-              1950,
-              0.55
-            ],
-            [
-              1955,
-              0.95
-            ],
-            [
-              1960,
-              1.05
-            ],
-            [
-              1970,
-              0.85
-            ],
-            [
-              1980,
-              0.55
-            ],
-            [
-              1990,
-              0.65
-            ],
-            [
-              2000,
-              0.45
-            ],
-            [
-              2012,
-              0.35
             ]
           ]
         }

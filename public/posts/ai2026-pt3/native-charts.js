@@ -95,13 +95,13 @@ function farmMechanization(svg,scene,d,W,H){
   text(svg,x(year),bottom+21,String(year),{'text-anchor':'middle',class:'axis-tick'});
  }
  text(svg,(left+right)/2,H-9,'YEAR',{'text-anchor':'middle',class:'axis-label'});
- text(svg,13,(top+bottom)/2,'EQUINE STOCK · MILLIONS',{transform:`rotate(-90 13 ${(top+bottom)/2})`,'text-anchor':'middle',class:'axis-label'});
- text(svg,W-12,(top+bottom)/2,'TRACTORS & COMBINES · MILLIONS',{transform:`rotate(90 ${W-12} ${(top+bottom)/2})`,'text-anchor':'middle',class:'axis-label'});
+ text(svg,13,(top+bottom)/2,'HORSES · MILLIONS',{transform:`rotate(-90 13 ${(top+bottom)/2})`,'text-anchor':'middle',class:'axis-label'});
+ text(svg,W-12,(top+bottom)/2,'TRACTORS · MILLIONS',{transform:`rotate(90 ${W-12} ${(top+bottom)/2})`,'text-anchor':'middle',class:'axis-label'});
  const reveal=revealGroup(svg,`reveal-${scene.id}`,{left,right,top,bottom,width:right-left,height:bottom-top});
  d.series.forEach((series,i)=>{
   const y=i===0?horseY:machineY;
   const path=make('path',{d:linePath(series.points,x,y),fill:'none',stroke:series.color,'stroke-width':small?2.5:3.5,'stroke-dasharray':i?'8 6':''},reveal.group);
-  title(path,`${series.name}: approximate values in millions; ${i?'right':'left'} axis`);
+  title(path,`${series.name}: approximate values in millions`);
  });
  return s=>reveal.set(progress(s));
 }
@@ -138,7 +138,7 @@ function surplus(svg,scene,d,W,H){
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
 const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,surplus,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
 try{
-const response=await fetch('/posts/ai2026-pt3/native-data.json?v=surplus-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
+const response=await fetch('/posts/ai2026-pt3/native-data.json?v=horses-tractors-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
 for(const scene of document.querySelectorAll('.scene[data-native]')){
  const spec=data[scene.id];if(!spec)throw Error(`Missing chart specification: ${scene.id}`);
  const plot=scene.querySelector('.native-plot'),svg=plot.querySelector('svg');let render;
