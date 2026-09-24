@@ -123,10 +123,12 @@ function surplus(svg,scene,d,W,H){
  make('path',{d:`M${left} ${top}V${bottom}H${right}`,fill:'none',stroke:'#91a6b5','stroke-width':2},svg);
  text(svg,left-14,top+10,'Price',{'text-anchor':'end',class:'axis-label'});
  text(svg,right,bottom+28,'Quantity',{'text-anchor':'end',class:'axis-label'});
- const demandLine=make('path',{d:`M${X(0)} ${Y(demand(0))}L${X(1)} ${Y(demand(1))}`,fill:'none',stroke:'#7dcfff','stroke-width':small?3:4},svg);
- text(svg,X(.18),Y(demand(.18))-13,'Demand',{'text-anchor':'middle',class:'annotation'});
+ const reveal=revealGroup(svg,`reveal-${scene.id}`,{left,right,top,bottom,width,height});
+ const chart=reveal.group;
+ make('path',{d:`M${X(0)} ${Y(demand(0))}L${X(1)} ${Y(demand(1))}`,fill:'none',stroke:'#7dcfff','stroke-width':small?3:4},chart);
+ text(chart,X(.18),Y(demand(.18))-13,'Demand',{'text-anchor':'middle',class:'annotation'});
  const groups=scenarios.map(({supply,q,color,name,caption},i)=>{
-  const group=make('g',{},svg),p=demand(q),shade=make('g',{},group);
+  const group=make('g',{},chart),p=demand(q),shade=make('g',{},group);
   make('path',{d:`M${X(0)} ${Y(demand(0))} L${X(q)} ${Y(p)} L${X(0)} ${Y(p)} Z`,fill:'#39ffc1','fill-opacity':i===0?.46:.13},shade);
   make('path',{d:`M${X(0)} ${Y(supply(0))} L${X(q)} ${Y(p)} L${X(0)} ${Y(p)} Z`,fill:'#ff914f','fill-opacity':i===1?.62:.13},shade);
   make('path',{d:`M${X(0)} ${Y(supply(0))}L${X(1)} ${Y(supply(1))}`,fill:'none',stroke:'#f1cf65','stroke-width':small?3:4},group);
@@ -143,7 +145,7 @@ function surplus(svg,scene,d,W,H){
   title(group,`${name}: illustrative supply and demand equilibrium, not measured data`);
   return group;
  });
- return s=>{const stage=s.reduced?1:s.stage;demandLine.style.opacity='1';groups.forEach((g,i)=>{g.style.opacity=stage===i?'1':'0';g.style.visibility=stage===i?'visible':'hidden'});scene.dataset.surplus=stage===0?'consumer':stage===1?'producer':''};
+ return s=>{const stage=s.reduced?1:s.stage;groups.forEach((g,i)=>{g.style.opacity=stage===i?'1':'0';g.style.visibility=stage===i?'visible':'hidden'});reveal.set(s.reduced?1:ease(clamp(s.local/.45)));scene.dataset.surplus=stage===0?'consumer':stage===1?'producer':''};
 }
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
 const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,surplus,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
