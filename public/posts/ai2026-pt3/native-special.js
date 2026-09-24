@@ -110,7 +110,7 @@ function simulation(svg,scene,d,W,H,a){
   const groups=[];
   panel.series.forEach((s,j)=>{
    const color=j===0?colors[1]:muted,g=make('g',{opacity:0},child);groups.push(g);
-   make('path',{d:s.points.map(([x,y],k)=>`${k?'L':'M'}${f.x(x)},${f.y(y)}`).join(' '),fill:'none',stroke:color,'stroke-width':2,'stroke-dasharray':s.dashed?'4 4':''},g);
+   make('path',{d:s.points.map(([x,y],k)=>`${k?'L':'M'}${f.x(x)},${f.y(y)}`).join(' '),fill:'none',stroke:color,'stroke-width':small?2.5:3.5,'stroke-dasharray':s.dashed?'4 4':''},g);
    s.points.forEach(([x,y])=>{
     const mark=j===0?make('circle',{cx:f.x(x),cy:f.y(y),r:3.5,fill:color},g):make('rect',{x:f.x(x)-3,y:f.y(y)-3,width:6,height:6,fill:color},g);
     title(mark,`${panel.name}, ${s.name}: ${a.compact(x)} iterations, ${y} success rate`);

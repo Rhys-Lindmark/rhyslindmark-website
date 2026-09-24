@@ -25,8 +25,8 @@ if(d.scenarioStart!==undefined){const xx=a.x(d.scenarioStart);make('rect',{x:xx,
 let cumulative=[];
 series.forEach((s,i)=>{const color=s.color||colors[i%colors.length],points=s.points||[];let path;
 if(kind==='area'){
-const lower=points.map(([xx],j)=>[xx,cumulative[j]||0]);const upper=points.map(([xx,yy],j)=>[xx,(cumulative[j]||0)+yy]);cumulative=upper.map(p=>p[1]);path=linePath(upper,a.x,a.y)+' '+lower.reverse().map(([xx,yy])=>`L${a.x(xx)},${a.y(yy)}`).join(' ')+' Z';make('path',{d:path,fill:color,opacity:'.65',stroke:color,'stroke-width':1},g);
-}else{make('path',{d:linePath(points,a.x,a.y),fill:'none',stroke:color,'stroke-width':2.5,'stroke-dasharray':s.dashed?'6 5':''},g);points.forEach(([xx,yy])=>{const dot=make('circle',{cx:a.x(xx),cy:a.y(yy),r:2.5,fill:color},g);title(dot,`${s.name}: ${format(xx,d.x.format)}, ${format(yy,d.y.format)}`)})}
+const lower=points.map(([xx],j)=>[xx,cumulative[j]||0]);const upper=points.map(([xx,yy],j)=>[xx,(cumulative[j]||0)+yy]);cumulative=upper.map(p=>p[1]);path=linePath(upper,a.x,a.y)+' '+lower.reverse().map(([xx,yy])=>`L${a.x(xx)},${a.y(yy)}`).join(' ')+' Z';make('path',{d:path,fill:color,opacity:'.65',stroke:color,'stroke-width':W<620?1.8:2.5},g);
+}else{make('path',{d:linePath(points,a.x,a.y),fill:'none',stroke:color,'stroke-width':W<620?2.5:3.5,'stroke-dasharray':s.dashed?'6 5':''},g);points.forEach(([xx,yy])=>{const dot=make('circle',{cx:a.x(xx),cy:a.y(yy),r:2.5,fill:color},g);title(dot,`${s.name}: ${format(xx,d.x.format)}, ${format(yy,d.y.format)}`)})}
 });
 for(const b of d.bubbles||[]){const r=Math.max(5,Math.min(W*.065,Math.sqrt(b.value/(d.bubbleMax||Math.max(...d.bubbles.map(q=>q.value))))*W*.065));make('circle',{cx:a.x(b.x),cy:a.y(b.y),r,fill:'#f1cf65','fill-opacity':'.2',stroke:'#f1cf65'},g);text(g,a.x(b.x),a.y(b.y)-r-7,b.label||compact(b.value),{'text-anchor':'middle',class:'annotation'})}
 for(const q of d.annotations||[]){text(g,a.x(q.x)+5,a.y(q.y)-9,q.label,{class:'annotation'})}

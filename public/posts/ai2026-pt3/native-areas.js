@@ -16,10 +16,10 @@ window.NativeAreas = (svg, scene, d, W, H, api) => {
     make('line',{x1:a.x(2025),x2:a.x(2025),y1:a.top,y2:a.bottom,stroke:'#91a6b5','stroke-dasharray':'5 6'},svg);
   }
   const areas=make('g',{},svg),paths=d.series.map((s,i)=>{
-    const p=make('path',{fill:palette[i],'fill-opacity':'.53',stroke:palette[i],'stroke-width':'1.3'},areas);
+    const p=make('path',{fill:palette[i],'fill-opacity':'.53',stroke:palette[i],'stroke-width':small?1.8:2.5},areas);
     title(p,s.name+' · modeled annual spending, real 2025 USD');return p;
   });
-  const totalLine=make('path',{fill:'none',stroke:'#e6edf3','stroke-width':'1.2'},areas);
+  const totalLine=make('path',{fill:'none',stroke:'#e6edf3','stroke-width':small?2.5:3.5},areas);
   const status=text(svg,a.right,a.top-17,'',{'text-anchor':'end',class:'annotation',fill:'#91a6b5','font-size':small?10:12});
   const bubbleGroup=make('g',{},svg);
   const bubbleYears=history?[1980,2000,2025]:[1980,2000,2025,2040];
