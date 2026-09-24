@@ -44,6 +44,14 @@
       scene.dataset.stage = stage;
       scene.dataset.progress = progress;
       scene.dataset.localProgress = local;
+      if (scene.id === 'domain-benchmarks') {
+        scene.querySelectorAll('.domain-benchmark-row').forEach((row, i) => {
+          const reveal = reduced.matches ? 1 : clamp((progress - .06 - i * .07) / .13);
+          const eased = reveal * reveal * (3 - 2 * reveal);
+          row.style.opacity = eased;
+          row.style.setProperty('--reveal', eased);
+        });
+      }
       if (scene.dataset.chart) scene.dispatchEvent(new CustomEvent('chart-progress', {detail:{stage,local,reduced:reduced.matches}}));
     });
     if (codingUniverse) {
