@@ -87,6 +87,14 @@ body:not(.all-mode) #article #domain-benchmarks .passage{top:clamp(130px,24svh,1
 @media(max-width:760px){body:not(.all-mode) #article #domain-benchmarks .passage{top:85px;left:12px;width:calc(100% - 24px);max-width:none;transform:none;padding:15px 18px}body:not(.all-mode) #article #domain-benchmarks .passage .card-copy p{font-size:17px}}
 .quoted-source{border-left:2px solid #526777;padding:26px 30px;margin:24px auto}
 .closing-copy{padding:60px 0 90px;font-size:17px;color:#fff}
+.autonomous-universe-section{padding:clamp(50px,8svh,100px) 0 clamp(90px,14svh,170px)}
+.autonomous-universe-section .closing-copy{padding:0 0 clamp(38px,6svh,70px)}
+.autonomous-universe-visual{position:relative;isolation:isolate;overflow:hidden;width:min(1400px,calc(100% - 40px));aspect-ratio:1672/941;margin:0 auto;background:#071321}
+.autonomous-universe-visual img{display:block;width:100%;height:100%;object-fit:cover;animation:autonomous-world-drift 18s ease-in-out infinite alternate}
+.autonomous-universe-visual::after{content:"";position:absolute;inset:-8%;pointer-events:none;background:radial-gradient(ellipse 24% 12% at 35% 48%,#6ac8ff38,transparent 75%),radial-gradient(ellipse 32% 10% at 69% 32%,#4aaeff32,transparent 78%),radial-gradient(ellipse 24% 9% at 74% 69%,#83dcff24,transparent 80%);filter:blur(18px);mix-blend-mode:screen;animation:autonomous-current-drift 11s ease-in-out infinite alternate}
+@keyframes autonomous-world-drift{from{transform:scale(1.025) translate3d(-.4%,0,0)}to{transform:scale(1.045) translate3d(.4%,-.4%,0)}}
+@keyframes autonomous-current-drift{from{transform:translate3d(-2%,1%,0);opacity:.45}to{transform:translate3d(3%,-2%,0);opacity:.85}}
+@media(prefers-reduced-motion:reduce){.autonomous-universe-visual img,.autonomous-universe-visual::after{animation:none}}
 footer{padding:50px 24px 70px}footer details{max-width:740px;margin:0 auto 50px}footer nav{line-height:1.7}
 .all-mode .scene.agents{height:auto;margin:45px auto 70px}
 .all-mode .scene.agents>.sticky{position:relative;top:0;height:auto;min-height:0;overflow:visible;padding:24px max(22px,calc((100vw - 1100px)/2));gap:24px}
