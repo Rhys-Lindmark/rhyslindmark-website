@@ -167,8 +167,8 @@ body:not(.all-mode) #ai-economy[data-surplus="consumer"] .native-legend span:nth
 .epoch-caption a{margin-left:auto;color:#8bdeec}
 .epoch-key{display:inline-flex;align-items:center;gap:6px}
 .epoch-key i{display:inline-block;width:15px;border-top:3px solid var(--key)}
-body:not(.all-mode) #experience-curves[data-stage="2"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="2"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="2"] figcaption{display:none}
-body:not(.all-mode) #experience-curves[data-stage="2"] .epoch-plot{display:flex}
+body:not(.all-mode) #experience-curves[data-stage="4"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="4"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="4"] figcaption{display:none}
+body:not(.all-mode) #experience-curves[data-stage="4"] .epoch-plot{display:flex}
 .all-mode #experience-curves .epoch-plot{display:flex;min-height:600px;margin-top:30px}
 .rd-plot{display:none;flex:1;min-height:0;width:100%;flex-direction:column}
 .rd-plot svg{display:block;width:100%;height:100%;min-height:0}
@@ -183,8 +183,8 @@ body:not(.all-mode) #experience-curves[data-stage="2"] .epoch-plot{display:flex}
 .rd-plot svg .rd-series-label,.rd-plot svg .rd-series-slope,.rd-plot svg .rd-series line{transition:opacity .15s ease}
 .rd-caption{display:flex;justify-content:space-between;gap:10px;font:11px/1.4 var(--mono);color:#a5bdca}
 .rd-caption a{color:#8bdeec;white-space:nowrap}
-body:not(.all-mode) #experience-curves[data-stage="3"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="3"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="3"] figcaption{display:none}
-body:not(.all-mode) #experience-curves[data-stage="3"] .rd-plot{display:flex}
+body:not(.all-mode) #experience-curves[data-stage="5"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="5"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="5"] figcaption{display:none}
+body:not(.all-mode) #experience-curves[data-stage="5"] .rd-plot{display:flex}
 .all-mode #experience-curves .rd-plot{display:flex;min-height:600px;margin-top:30px}
 @media(max-width:760px){.rd-plot svg .rd-heading{font-size:25px}.rd-plot svg .rd-tick{font-size:15px}.rd-caption{font-size:9px;flex-wrap:wrap}}
 @media(max-width:760px){.epoch-plot svg .epoch-heading{font-size:25px}.epoch-plot svg .epoch-tick{font-size:15px}.epoch-plot svg .epoch-note{font-size:15px}.epoch-caption{font-size:9px;gap:4px 10px}}
