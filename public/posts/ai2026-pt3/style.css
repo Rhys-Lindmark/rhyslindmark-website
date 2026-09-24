@@ -96,6 +96,11 @@ ai-building-intro{--intro-top:58px}
 .native-plot svg .network-core{fill:#0b1015;font-size:11px}
 .native-legend{display:flex;flex-wrap:wrap;order:1;gap:6px 20px;justify-content:flex-start;flex:none;min-height:16px;padding:8px 0 8px calc(var(--axis-inset,96px) - 16px);font:11px/1.4 var(--mono);color:#a5bdca}
 .native-legend[hidden]{display:none}.native-legend span{display:inline-flex;align-items:center;gap:7px}.native-legend i{display:block;width:12px;height:3px;flex:none}
+/* Use the Part II chart type scale for the software factory labels. */
+#software-pipeline .native-plot svg text,#software-pipeline .native-legend{font-family:var(--mono)}
+#software-pipeline .native-plot svg :is(.row-label,.axis-tick,.value-label,.axis-label),#software-pipeline .native-legend{font-size:12px}
+#software-pipeline .native-plot svg .large-value{font-size:16px}
+@media(max-width:760px){#software-pipeline .native-plot svg :is(.row-label,.axis-tick,.value-label,.axis-label),#software-pipeline .native-legend{font-size:10px}#software-pipeline .native-plot svg .large-value{font-size:13px}}
 /* Match Part II's plotted-line weight in the pre-rendered chart fallback. */
 .scene.agents[data-native] .native-plot svg path[fill="none"][stroke-width="2.5"],#sim-to-real .native-plot svg path[fill="none"][stroke-width="2"]{stroke-width:3.5}
 .scene.agents:is(#code-history,#code-future) .native-plot svg path[stroke-width="1.3"]{stroke-width:2.5}
