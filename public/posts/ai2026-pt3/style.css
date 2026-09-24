@@ -22,6 +22,7 @@
 .scene.agents figcaption{text-align:center;flex:none;font-size:11px}
 body:not(.all-mode) #article .scene.agents .passage{position:absolute;top:0;left:50%;right:auto;width:min(440px,calc(100% - 48px));max-width:440px;max-height:none;min-height:0;margin:0;padding:24px 28px;background:#0c141ef5;border:1px solid #566b7b;border-radius:6px;box-shadow:0 16px 60px #0007;z-index:3;transform:translate(-50%,var(--card-shift,100svh));overflow:visible}
 .passage .card-copy p{font-size:17px;line-height:1.55;letter-spacing:0;margin:0}
+#claude-usage .card-copy[data-slide="4"] p+p{margin-top:1em}
 body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px);line-height:1.4}
 .card-copy[hidden]{display:none}
 .scene.agents .track{flex:none}
