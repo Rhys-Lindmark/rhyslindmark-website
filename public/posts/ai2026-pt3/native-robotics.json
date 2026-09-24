@@ -671,6 +671,7 @@
       "series": [
         {
           "name": "Waymo",
+          "color": "#43a9ff",
           "points": [
             [
               2023.5833,
@@ -816,6 +817,7 @@
         },
         {
           "name": "Lyft",
+          "color": "#ff78ad",
           "points": [
             [
               2023.5833,
@@ -961,6 +963,7 @@
         },
         {
           "name": "Uber",
+          "color": "#b8c4ce",
           "points": [
             [
               2023.5833,
@@ -1138,18 +1141,7 @@
         "format": "percent",
         "scale": "linear"
       },
-      "annotations": [
-        {
-          "x": 2025.4166666666667,
-          "y": 60,
-          "label": "Jun 2025 expansion"
-        },
-        {
-          "x": 2025.8333333333333,
-          "y": 58,
-          "label": "Nov 2025 expansion"
-        }
-      ]
+      "annotations": []
     }
   },
   "waymo-data": {
