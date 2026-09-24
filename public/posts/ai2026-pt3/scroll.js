@@ -16,7 +16,7 @@
       simScatter.style.setProperty('--sim-correlation-opacity', eased.toFixed(3));
     });
   }
-  for (const video of document.querySelectorAll('.generalist-video video, .mildenhall-video video, .uma-science video')) {
+  for (const video of document.querySelectorAll('.generalist-video video, .mildenhall-video video, .uma-science video, .nature-model-science video')) {
     let loaded = false, inView = false;
     video.muted = true;
     video.defaultMuted = true;
@@ -39,7 +39,7 @@
     reduced.addEventListener('change', sync);
   }
 
-  const codingUniverse = document.querySelector('.coding-universe-visual');
+  const revealVisuals = [...document.querySelectorAll('.coding-universe-section:not(.office-universe-section) .coding-universe-visual')];
   const entries = [...document.querySelectorAll('#article [data-slide]')].map(el => {
     const scene = el.closest('.scene.agents');
     const passages = scene ? [...scene.querySelectorAll('.card-copy')] : [el];
@@ -90,11 +90,11 @@
       }
       if (scene.dataset.chart) scene.dispatchEvent(new CustomEvent('chart-progress', {detail:{stage,local,reduced:reduced.matches}}));
     });
-    if (codingUniverse) {
-      const top = codingUniverse.getBoundingClientRect().top;
+    revealVisuals.forEach(visual => {
+      const top = visual.getBoundingClientRect().top;
       const opacity = reduced.matches ? 1 : clamp((innerHeight * .9 - top) / (innerHeight * .55));
-      codingUniverse.style.setProperty('--coding-universe-opacity', opacity.toFixed(3));
-    }
+      visual.style.setProperty('--coding-universe-opacity', opacity.toFixed(3));
+    });
     syncAddress();
   }
   function request() { if (!frame) frame = requestAnimationFrame(update); }

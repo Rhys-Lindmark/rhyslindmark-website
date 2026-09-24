@@ -14,6 +14,8 @@
 .coding-universe-copy p+p{margin-top:1.4em}
 .coding-universe-visual{width:min(1400px,calc(100% - 40px));margin:0 auto}
 .coding-universe-visual img{display:block;width:100%;height:auto;opacity:var(--coding-universe-opacity,1)}
+.closing-signoff p:first-child{margin-bottom:.45em}
+.closing-signoff p:last-child{margin-top:1.25em}
 .pt3-lede-one{min-height:330svh}.pt3-lede-one .lede-note a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.15em}
 @media(max-width:760px){.pt3-lede-one .lede-jensen{object-fit:contain;background:#05080d}}
 @media(prefers-reduced-motion:reduce){.pt3-lede-one{min-height:0}.pt3-lede-one .lede-jensen{display:block;position:static;width:100%;height:auto;opacity:1;margin-top:2rem}}
@@ -70,6 +72,16 @@ body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px)
 .uma-science figure{align-items:center;justify-content:center}
 .uma-science video{display:block;width:min(1100px,100%);max-height:76svh;aspect-ratio:16/9;object-fit:contain;border-radius:14px;background:#05080d}
 .uma-science figcaption a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.virtual-cell-science figure{align-items:center;justify-content:center}
+.virtual-cell-science figure img{display:block;width:min(1000px,100%);max-height:76svh;aspect-ratio:767/491;object-fit:contain;border-radius:14px;background:#fff}
+.virtual-cell-science figcaption a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.connectome-science figure{align-items:center;justify-content:center}
+.connectome-science picture{display:flex;align-items:center;justify-content:center;flex:1;min-height:0;width:100%}
+.connectome-science picture img{display:block;width:min(1000px,100%);max-height:76svh;aspect-ratio:798/532;object-fit:contain;border-radius:14px;background:#000}
+.connectome-science figcaption a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.nature-model-science figure{align-items:center;justify-content:center}
+.nature-model-science video{display:block;width:min(1100px,100%);max-height:76svh;aspect-ratio:16/9;object-fit:contain;border-radius:14px;background:#05080d}
+.nature-model-science figcaption a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 
 
 
