@@ -3,6 +3,7 @@
   const scenes = [...document.querySelectorAll('.scene.agents')];
   const legacySlides = { '13b':'14', '15b':'17', '16b':'19', '21b':'25', '21c':'26', '21d':'27', '36a':'43', '37a':'45', '37b':'46' };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const codingUniverse = document.querySelector('.coding-universe-visual');
   const entries = [...document.querySelectorAll('#article [data-slide]')].map(el => {
     const scene = el.closest('.scene.agents');
     const passages = scene ? [...scene.querySelectorAll('.card-copy')] : [el];
@@ -45,6 +46,11 @@
       scene.dataset.localProgress = local;
       if (scene.dataset.chart) scene.dispatchEvent(new CustomEvent('chart-progress', {detail:{stage,local,reduced:reduced.matches}}));
     });
+    if (codingUniverse) {
+      const top = codingUniverse.getBoundingClientRect().top;
+      const opacity = reduced.matches ? 1 : clamp((innerHeight * .9 - top) / (innerHeight * .55));
+      codingUniverse.style.setProperty('--coding-universe-opacity', opacity.toFixed(3));
+    }
     syncAddress();
   }
   function request() { if (!frame) frame = requestAnimationFrame(update); }
