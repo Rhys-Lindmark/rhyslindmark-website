@@ -47,7 +47,7 @@ window.NativeAreas = (svg, scene, d, W, H, api) => {
   return state=>{
     const stage=Math.max(0,state.stage||0),local=clamp(state.local||0);
     const blend=history?0:stage<3?0:stage>3?1:state.reduced?1:ease(local);
-    const future=state.reduced?1:stage>=3?1:clamp((stage+local)/3);
+    const future=state.reduced?1:stage>=2?1:clamp((stage+local)/2);
     const cutoff=history?mix(1980,2025,state.reduced?1:ease(clamp((state.progress-.025)/.7))):mix(2025,2040,future);
     const values=conservative.series.map((s,i)=>s.points.map(([year,value])=>[year,mix(value,valueAt(optimistic.series[i].points,year),blend)]));
     let cumulative=[];
