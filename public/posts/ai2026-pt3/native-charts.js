@@ -32,7 +32,7 @@ for(const b of d.bubbles||[]){const r=Math.max(5,Math.min(W*.065,Math.sqrt(b.val
 for(const q of d.annotations||[]){text(g,a.x(q.x)+5,a.y(q.y)-9,q.label,{class:'annotation'})}
 return s=>reveal.set(progress(s))}
 function experienceCurves(svg,scene,d,W,H){
- const order=[1,0,2,3],firstStage=[1,0,2,3];
+ const order=[1,0,2],firstStage=[1,0,2,2];
  addLegend(scene,order.map(i=>({...d.series[i],color:d.series[i].color||colors[i%colors.length]})));
  const legend=[...scene.querySelectorAll('.native-legend span')],a=frame(svg,W,H,d.x,d.y);
  const defs=make('defs',{},svg);
@@ -148,7 +148,7 @@ function surplus(svg,scene,d,W,H){
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
 const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,surplus,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
 try{
-const response=await fetch('/posts/ai2026-pt3/native-data.json?v=horses-tractors-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
+const response=await fetch('/posts/ai2026-pt3/native-data.json?v=slide37-shared-curve-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
 for(const scene of document.querySelectorAll('.scene[data-native]')){
  const spec=data[scene.id];if(!spec)throw Error(`Missing chart specification: ${scene.id}`);
  const plot=scene.querySelector('.native-plot'),svg=plot.querySelector('svg');let render;
