@@ -32,7 +32,7 @@ for(const b of d.bubbles||[]){const r=Math.max(5,Math.min(W*.065,Math.sqrt(b.val
 for(const q of d.annotations||[]){text(g,a.x(q.x)+5,a.y(q.y)-9,q.label,{class:'annotation'})}
 return s=>reveal.set(progress(s))}
 function experienceCurves(svg,scene,d,W,H){
- const order=[1,0,2,3],firstStage=[1,0,2,2];
+ const order=[1,0,2,3],firstStage=[1,0,3,3];
  addLegend(scene,order.map(i=>({...d.series[i],color:d.series[i].color||colors[i%colors.length]})));
  const legend=[...scene.querySelectorAll('.native-legend span')],a=frame(svg,W,H,d.x,d.y);
  const groups=d.series.map((series,i)=>{

@@ -128,6 +128,24 @@ body:not(.all-mode) #tfp[data-stage="0"] .native-plot svg :is(rect,.value-label)
 #coding-spend .native-legend span:first-child i{background:#7dcfff!important}
 #article .scene.agents figcaption{position:static;order:2;align-self:stretch;border-top:1px solid var(--line);padding:8px 0 0;text-align:left;font:10px/1.4 var(--mono);opacity:.7}
 #article .scene.agents figcaption:hover{opacity:1}
+.epoch-plot{display:none;flex:1;min-height:0;width:100%;flex-direction:column}
+.epoch-plot svg{width:100%;height:100%;min-height:0;flex:1;display:block}
+.epoch-plot svg text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#91a6b5}
+.epoch-plot svg .epoch-heading{font-size:27px;font-weight:600;fill:#e6edf3}
+.epoch-plot svg .epoch-subheading{font-size:17px;fill:#b3c5d1}
+.epoch-plot svg .epoch-grid{stroke:#2a3a47;stroke-width:1}
+.epoch-plot svg .epoch-grid-vertical{stroke-dasharray:3 6}
+.epoch-plot svg .epoch-tick{font-size:14px}
+.epoch-plot svg .epoch-ai-label{font-size:21px;font-weight:600;fill:#7dcfff}
+.epoch-plot svg .epoch-note{font-size:13px}
+.epoch-caption{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;font:11px/1.4 var(--mono);color:#a5bdca}
+.epoch-caption a{margin-left:auto;color:#8bdeec}
+.epoch-key{display:inline-flex;align-items:center;gap:6px}
+.epoch-key i{display:inline-block;width:15px;border-top:3px solid var(--key)}
+body:not(.all-mode) #experience-curves[data-stage="2"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="2"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="2"] figcaption{display:none}
+body:not(.all-mode) #experience-curves[data-stage="2"] .epoch-plot{display:flex}
+.all-mode #experience-curves .epoch-plot{display:flex;min-height:600px;margin-top:30px}
+@media(max-width:760px){.epoch-plot svg .epoch-heading{font-size:25px}.epoch-plot svg .epoch-tick{font-size:15px}.epoch-plot svg .epoch-note{font-size:15px}.epoch-caption{font-size:9px;gap:4px 10px}}
 @media(min-width:761px){body:not(.all-mode) #article .scene.agents[data-native]>.sticky{padding-left:4px;padding-right:4px}}
 .all-mode .native-plot{height:720px;flex:none}
 .all-mode #white-collar .native-plot{height:1450px}
