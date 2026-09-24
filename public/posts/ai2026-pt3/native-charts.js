@@ -81,6 +81,34 @@ if(scene.id==='tfp'){
 }
 return s=>{const p=progress(s);marks.forEach(m=>{const amount=s.reduced?1:clamp(p*(1+.2*rows.length)-m.i*.2);if(m.attr==='opacity'){m.el.style.opacity=amount>=.99?'1':'0'}else{m.el.setAttribute(m.attr,m.value*amount);if(m.baseline!==undefined)m.el.setAttribute('y',m.baseline-m.value*amount)}})}
 }
+function laborMarketBars(svg,scene,d,W,H){
+ addLegend(scene,[]);
+ const small=W<620,rows=d.rows,val=d.value,left=small?54:70,right=W-20,top=20,bottom=H-75;
+ const y=scaler(val,bottom,top),step=(right-left)/rows.length,marks=[];
+ for(const v of ticks(val)){
+  make('line',{x1:left,x2:right,y1:y(v),y2:y(v),stroke:grid},svg);
+  text(svg,left-8,y(v)+4,format(v,val.format),{'text-anchor':'end',class:'axis-tick'});
+ }
+ text(svg,13,(top+bottom)/2,val.label||'',{transform:`rotate(-90 13 ${(top+bottom)/2})`,'text-anchor':'middle',class:'axis-label'});
+ rows.forEach((row,i)=>{
+  const cx=left+(i+.5)*step,w=step*.7,value=row.values[0],barTop=y(value);
+  text(svg,cx,bottom+20,row.label,{'text-anchor':'middle',class:'row-label'});
+  const rect=make('rect',{x:cx-w/2,y:bottom,width:w,height:0,fill:row.color||colors[i]},svg);
+  title(rect,`${row.label}: ${format(value,val.format)} average annual wage`);
+  marks.push({el:rect,height:bottom-barTop,baseline:bottom,i});
+  const label=text(svg,cx,Math.max(top+11,barTop-(small?50:58)),'',{'text-anchor':'middle',class:'labor-detail'});
+  (row.detailLines||[]).forEach((line,j)=>make('tspan',{x:cx,dy:j?'1.15em':0},label,line));
+  marks.push({el:label,i});
+ });
+ return state=>{
+  const p=state.reduced?1:ease(state.progress/.3);
+  marks.forEach(mark=>{
+   const amount=p;
+   if(mark.height===undefined)mark.el.style.opacity=amount>=.99?'1':'0';
+   else{mark.el.setAttribute('height',mark.height*amount);mark.el.setAttribute('y',mark.baseline-mark.height*amount)}
+  });
+ };
+}
 function whiteCollarBars(svg,scene,d,W,H){
  const series=d.series,rows=d.rows,val=d.value,small=W<620;
  addLegend(scene,series);
@@ -185,9 +213,9 @@ function surplus(svg,scene,d,W,H){
  return s=>{const stage=s.reduced?1:s.stage;groups.forEach((g,i)=>{g.style.opacity=stage===i?'1':'0';g.style.visibility=stage===i?'visible':'hidden'});reveal.set(s.reduced?1:ease(clamp(s.local/.45)));scene.dataset.surplus=stage===0?'consumer':stage===1?'producer':''};
 }
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
-const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars:(svg,scene,d,W,H)=>scene.id==='white-collar'?whiteCollarBars(svg,scene,d,W,H):bars(svg,scene,d,W,H),scatter,rectangles,pipeline,farmMechanization,cards,surplus,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
+const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars:(svg,scene,d,W,H)=>scene.id==='labor-markets'?laborMarketBars(svg,scene,d,W,H):scene.id==='white-collar'?whiteCollarBars(svg,scene,d,W,H):bars(svg,scene,d,W,H),scatter,rectangles,pipeline,farmMechanization,cards,surplus,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
 try{
-const response=await fetch('/posts/ai2026-pt3/native-data.json?v=app-revenue-2026-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
+const response=await fetch('/posts/ai2026-pt3/native-data.json?v=labor-market-formula-2');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
 for(const scene of document.querySelectorAll('.scene[data-native]')){
  const spec=data[scene.id];if(!spec)throw Error(`Missing chart specification: ${scene.id}`);
  const plot=scene.querySelector('.native-plot'),svg=plot.querySelector('svg');let render;

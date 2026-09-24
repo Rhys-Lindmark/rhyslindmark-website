@@ -316,7 +316,7 @@
     "kind": "bars",
     "title": "White-collar and blue-collar labor",
     "source": "https://substack-post-media.s3.amazonaws.com/public/images/a3ea83cd-f6ee-43d4-8baf-1cd4e31eafb7_723x422.jpeg",
-    "note": "Exact labels transcribed from supplied chart: all BLS occupations, 155.5M jobs. Bars encode average wage; employee count and wage pool are separate annotations.",
+    "note": "Figures from the supplied chart: all BLS occupations, 155.5M jobs. Each label shows employees multiplied by rounded average annual wage to give the approximate wage pool.",
     "data": {
       "orientation": "vertical",
       "stacked": false,
@@ -328,21 +328,31 @@
       "rows": [
         {
           "label": "White-collar",
+          "color": "#ffffff",
           "values": [
             91684
           ],
           "employees": 78300000,
           "wagePool": 7180000000000.0,
-          "detail": "78.3M employees \u00b7 $7.18T wage pool"
+          "detailLines": [
+            "78.3M employees",
+            "× $91.7k avg. wage",
+            "= $7.18T wage pool"
+          ]
         },
         {
           "label": "Blue-collar",
+          "color": "#43a9ff",
           "values": [
             47510
           ],
           "employees": 77200000,
           "wagePool": 3670000000000.0,
-          "detail": "77.2M employees \u00b7 $3.67T wage pool"
+          "detailLines": [
+            "77.2M employees",
+            "× $47.5k avg. wage",
+            "= $3.67T wage pool"
+          ]
         }
       ],
       "value": {
