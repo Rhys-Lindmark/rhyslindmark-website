@@ -1,0 +1,137 @@
+{
+  "article": "https://waymo.com/blog/2026/02/the-waymo-world-model-a-new-frontier-for-autonomous-driving-simulation/",
+  "clips": [
+    {
+      "cell": 1,
+      "article_video": 3,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/3ce22b07dde57095d6e65364cda0a421-020_IP_Straight_Final_W12.webm"
+    },
+    {
+      "cell": 2,
+      "article_video": 4,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/3cf25ac72e1e3d51dd71b8243c540376-world_knowledge_tornado_og_joint.webm"
+    },
+    {
+      "cell": 3,
+      "article_video": 5,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/178604b2e3d536b2d755281670ec8bbb-flood_culdesac.webm"
+    },
+    {
+      "cell": 4,
+      "article_video": 6,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/0303b620caa4e6d6a90a9525936e06a5-world_knowledge_palm_tree_snow_og_joint.webm"
+    },
+    {
+      "cell": 5,
+      "article_video": 7,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/9787294d5e8bd2af9ce8f150df11b1b1-world_knowledge_fire_og_joint.webm"
+    },
+    {
+      "cell": 6,
+      "article_video": 8,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/f4c270a7da5807214986164ab00e8aef-world_knowledge_off_road_og_joint.webm"
+    },
+    {
+      "cell": 7,
+      "article_video": 9,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/d75066b2b1ad064096ac27a8f45c5396-tree_og_joint.webm"
+    },
+    {
+      "cell": 8,
+      "article_video": 10,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/ae9a0d5e443407adb5032cefacd6c70b-world_knowledge_bookshelf_og_joint.webm"
+    },
+    {
+      "cell": 9,
+      "article_video": 11,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/35793387e02b4d1809ca02e883c209c5-truck_og_joint.webm"
+    },
+    {
+      "cell": 10,
+      "article_video": 12,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/5d439a54753142156d3f52948a2b7a29-elephant_og_joint.webm"
+    },
+    {
+      "cell": 11,
+      "article_video": 13,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/f4d54bf35d0416fd93c1a9ebc9681f24-longhorn_og_joint.webm"
+    },
+    {
+      "cell": 12,
+      "article_video": 14,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/5a4091d3c19683c64667b136ce1798de-world_knowledge_male_lion_og_joint.webm"
+    },
+    {
+      "cell": 13,
+      "article_video": 15,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/b39da0c2bdb84743dd15a0e901df40df-t_rex_og_joint.webm"
+    },
+    {
+      "cell": 14,
+      "article_video": 16,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/d9f6d27c98d3e89ffa904b4cf4eb21cf-tumbleweed_og_joint.webm"
+    },
+    {
+      "cell": 15,
+      "article_video": 30,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/6b7018432b9022ed7d749058ded0a07f-mutation_time_2_dawn_og_joint.webm"
+    },
+    {
+      "cell": 16,
+      "article_video": 31,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/b105287933e58782bd1fbcf8fc5189b8-mutation_time_2_morning_og_joint.webm"
+    },
+    {
+      "cell": 17,
+      "article_video": 32,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/078e13aaa1df3490dc32c916fe4e2175-mutation_time_2_noon_og_joint.webm"
+    },
+    {
+      "cell": 18,
+      "article_video": 33,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/e1dd98a5fd58dc16a3c39d92124f6631-mutation_time_2_afternoon_og_joint.webm"
+    },
+    {
+      "cell": 19,
+      "article_video": 34,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/40797a66f71e2c16d64d3468a39478a3-mutation_time_2_evening_og_joint.webm"
+    },
+    {
+      "cell": 20,
+      "article_video": 35,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/d709279fb371242fdfbb461d91405c57-mutation_time_2_night_og_joint.webm"
+    },
+    {
+      "cell": 21,
+      "article_video": 36,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/5a471f83f3d22453f6207b7d4a8123bf-mutation_weather_2_cloudy_og_joint.webm"
+    },
+    {
+      "cell": 22,
+      "article_video": 37,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/b12b9316e07f361eb4fbe61fbca6bd2c-mutation_weather_2_foggy_og_joint.webm"
+    },
+    {
+      "cell": 23,
+      "article_video": 38,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/3ff095e3d5d312d80b0d4fed7293ae9b-mutation_weather_2_rainy_og_joint.webm"
+    },
+    {
+      "cell": 24,
+      "article_video": 39,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/49c6c88af19e971450bec3696103e87d-mutation_weather_2_snowy_og_joint.webm"
+    },
+    {
+      "cell": 25,
+      "article_video": 40,
+      "url": "https://storage.googleapis.com/waymo-prod-cdn/uploads/d69eb3b4ee3b5422f6ed938b9b8859b4-mutation_weather_2_sunny_og_joint.webm"
+    }
+  ],
+  "mosaic": {
+    "grid": "5x5",
+    "duration_seconds": 3.2,
+    "frames": 16,
+    "size_pixels": "1000x600",
+    "note": "Clips 3\u201316 and 30\u201340 from the linked Waymo article; GIF loops continuously. The montage illustrates simulation and does not depict 10 billion unique miles."
+  }
+}
