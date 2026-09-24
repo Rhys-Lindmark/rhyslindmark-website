@@ -6,8 +6,10 @@
 .body-copy{width:min(740px,calc(100% - 48px));margin:0 auto;padding:28px 0;font-size:17px;line-height:1.55}
 .body-copy p{margin:0}.body-copy a,.passage a{color:#8bdeec;text-decoration:underline}
 .intro-topics p+p{margin-top:1em}.intro-topics ol{margin:.7em 0 0;padding-left:1.5em}
-.article-heading{min-height:65svh;display:grid;place-items:center;padding:70px 24px}
-.article-heading h2{font-size:clamp(58px,11vw,140px);font-weight:450;letter-spacing:-.055em;line-height:1.05;text-align:center;color:#fff;max-width:1100px}
+.article-heading{min-height:100svh;display:grid;place-items:center;padding:70px 24px;background:#070b10}
+.article-heading h2{width:fit-content;max-width:min(1600px,100%);margin:0;font-size:clamp(80px,16vw,200px);font-weight:450;letter-spacing:-.065em;line-height:1.02;text-align:center;text-wrap:balance;color:#fff}
+#robotics h2{font-size:clamp(48px,10vw,130px)}
+.article-heading h2::after{content:"";display:block;height:3px;border-radius:2px;margin:.34em auto 0;background:#ffffff5c}
 .scene.agents{height:var(--scene-height,300svh);--axis-inset:96px}
 .scene.agents>.sticky{top:0;height:100svh;min-height:0;overflow:hidden;padding:76px max(22px,calc((100vw - 1200px)/2)) 24px}
 .scene.agents figure{gap:16px;min-height:0}
@@ -33,7 +35,7 @@ footer{padding:50px 24px 70px}footer details{max-width:740px;margin:0 auto 50px}
 .all-mode .card-copy+.card-copy{margin-top:28px}.all-mode .card-copy[hidden]{display:block}
 .all-mode .graph-link img{max-height:85svh;width:auto;max-width:100%;height:auto}
 .all-mode .graph-link{flex:auto}.all-mode .track{display:none}
-@media(max-width:760px){header{padding:0 16px;gap:12px}.scene.agents>.sticky{padding:68px 10px 20px}body:not(.all-mode) #article .scene.agents .passage{width:min(320px,calc(100% - 40px));padding:20px}body:not(.all-mode) .scene.agents .card-copy p{font-size:18px;line-height:1.4}.scene.agents h3{font-size:12px}.scene.agents figcaption{font-size:10px}.body-copy{padding:24px 0;font-size:15px;line-height:24px}.article-heading{min-height:50svh}.all-mode .scene.agents>.sticky{padding-inline:12px}}
+@media(max-width:760px){header{padding:0 16px;gap:12px}.scene.agents>.sticky{padding:68px 10px 20px}body:not(.all-mode) #article .scene.agents .passage{width:min(320px,calc(100% - 40px));padding:20px}body:not(.all-mode) .scene.agents .card-copy p{font-size:18px;line-height:1.4}.scene.agents h3{font-size:12px}.scene.agents figcaption{font-size:10px}.body-copy{padding:24px 0;font-size:15px;line-height:24px}.article-heading h2{font-size:48px}.article-heading h2::after{height:2px;margin-top:.3em}.all-mode .scene.agents>.sticky{padding-inline:12px}}
 @media print{header,.scroll-hint,.track{display:none!important}.scene.agents{height:auto!important;break-inside:avoid}.scene.agents>.sticky{position:static!important;height:auto!important;overflow:visible!important;padding:24px!important;display:flex!important}.scene.agents .passage{position:static!important;transform:none!important;background:none!important;box-shadow:none!important;border:0!important;max-height:none!important;width:100%!important;max-width:none!important;order:-1}.card-copy[hidden]{display:block!important}.card-copy+.card-copy{margin-top:20px}.graph-link img{max-height:500px!important}.article-heading,.post-intro{min-height:0}.article-heading{padding:40px}.body-copy{padding:18px 0}}
 /* Fill the available graph area while keeping every label and axis visible. */
 .scene.agents .graph-link img{width:100%;height:100%;object-fit:contain}
