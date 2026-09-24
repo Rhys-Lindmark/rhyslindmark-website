@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const scenes = [...document.querySelectorAll('.scene.agents')];
-  const legacySlides = { '13b':'14', '15b':'17', '16b':'19', '21b':'25', '21c':'26', '21d':'27', '36a':'43', '37a':'45', '37b':'46', '51':'52' };
+  const legacySlides = { '13b':'14', '15b':'17', '16b':'19', '21b':'25', '21c':'26', '21d':'27', '36a':'43', '37a':'45', '37b':'46', '51':'52', '53':'54' };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const codingUniverse = document.querySelector('.coding-universe-visual');
   const entries = [...document.querySelectorAll('#article [data-slide]')].map(el => {
