@@ -185,22 +185,6 @@ body:not(.all-mode) #experience-curves[data-stage="4"] .epoch-plot{display:flex}
 body:not(.all-mode) #experience-curves[data-stage="5"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="5"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="5"] figure>figcaption{display:none}
 body:not(.all-mode) #experience-curves[data-stage="5"] .rd-plot{display:flex}
 .all-mode #experience-curves .rd-plot{display:flex;min-height:600px;margin-top:30px}
-.experience-reestimate{display:none;flex:1;min-height:0;width:100%;flex-direction:column}
-.experience-reestimate svg{display:block;flex:1;min-height:0;width:100%}
-.experience-reestimate svg text{font:12px var(--mono)}
-.experience-reestimate svg .axis-label{font-size:12px;fill:#b7cad5}
-.experience-reestimate svg .axis-tick{font-size:12px;fill:#a5bdca}
-.experience-reestimate svg .reestimate-label{font-size:13px;font-weight:650;paint-order:stroke;stroke:#0b1015;stroke-width:3px}
-.reestimate-legend{display:flex;flex-wrap:wrap;gap:8px 24px;padding:12px 0 4px;color:#a5bdca;font:12px/1.4 var(--mono)}
-.reestimate-legend span{display:inline-flex;align-items:center;gap:8px}
-.reestimate-legend span[hidden]{display:none}
-.reestimate-legend i{display:block;width:22px;height:4px}
-.experience-reestimate figcaption{text-align:left!important;font:11px/1.4 var(--mono);color:#a5bdca}
-.experience-reestimate figcaption a{color:#a5bdca;text-decoration:none}
-.experience-reestimate figcaption a:hover{text-decoration:underline}
-body:not(.all-mode) #experience-curves:is([data-stage="2"],[data-stage="3"]) .native-legend,body:not(.all-mode) #experience-curves:is([data-stage="2"],[data-stage="3"]) .native-plot,body:not(.all-mode) #experience-curves:is([data-stage="2"],[data-stage="3"]) figure>figcaption{display:none}
-body:not(.all-mode) #experience-curves:is([data-stage="2"],[data-stage="3"]) .experience-reestimate{display:flex}
-.all-mode #experience-curves .experience-reestimate{display:flex;min-height:600px;margin-top:30px}
 @media(max-width:760px){.rd-plot svg .rd-tick,.rd-plot svg .rd-axis-title{font-size:10px}.rd-legend{font-size:9px;gap:5px 12px}.rd-caption{font-size:9px}}
 @media(max-width:760px){.epoch-plot svg .epoch-heading{font-size:25px}.epoch-plot svg .epoch-tick{font-size:15px}.epoch-plot svg .epoch-note{font-size:15px}.epoch-caption{font-size:9px;gap:4px 10px}}
 @media(min-width:761px){body:not(.all-mode) #article .scene.agents[data-native]>.sticky{padding-left:4px;padding-right:4px}}

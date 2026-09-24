@@ -56,7 +56,7 @@ function experienceCurves(svg,scene,d,W,H){
  });
  return state=>{
   const stage=state.reduced?Infinity:state.stage;
-  const reveal=i=>state.reduced||stage>firstStage[i]?1:stage===firstStage[i]?clamp(state.local):0;
+  const reveal=i=>state.reduced||stage>firstStage[i]?1:stage===firstStage[i]?clamp(state.local*(i>=2?3:1)):0;
   groups.forEach(({g,window,span},i)=>{const amount=reveal(i);window.setAttribute('width',span*amount);g.style.pointerEvents=amount?'auto':'none'});
   notes.forEach(({g,index})=>{g.style.opacity=reveal(index)>.85?'1':'0'});
   legend.forEach((item,j)=>{item.style.visibility=stage>=firstStage[order[j]]?'visible':'hidden'});
