@@ -5,7 +5,9 @@
 .scroll-hint{margin-top:60px;color:#7e9aab;font:12px var(--mono)}
 .body-copy{width:min(740px,calc(100% - 48px));margin:0 auto;padding:28px 0;font-size:17px;line-height:1.55}
 .body-copy p{margin:0}.body-copy a,.passage a{color:#8bdeec;text-decoration:underline}
-.pt3-lede-one{min-height:100svh}.pt3-lede-one .lede-note a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.15em}
+.pt3-lede-one{min-height:330svh}.pt3-lede-one .lede-note a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.15em}
+@media(max-width:760px){.pt3-lede-one .lede-jensen{object-fit:contain;background:#05080d}}
+@media(prefers-reduced-motion:reduce){.pt3-lede-one{min-height:0}.pt3-lede-one .lede-jensen{display:block;position:static;width:100%;height:auto;opacity:1;margin-top:2rem}}
 .intro-topics p+p{margin-top:1em}.intro-topics ol{margin:.7em 0 0;padding-left:1.5em}
 .article-heading{min-height:100svh;display:grid;place-items:center;padding:70px 24px;background:#070b10}
 .article-heading h2{width:fit-content;max-width:min(1600px,100%);margin:0;font-size:clamp(80px,16vw,200px);font-weight:450;letter-spacing:-.065em;line-height:1.02;text-align:center;text-wrap:balance;color:#fff}
