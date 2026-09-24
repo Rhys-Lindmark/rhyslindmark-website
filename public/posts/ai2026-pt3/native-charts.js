@@ -82,13 +82,40 @@ if(scene.id==='tfp'){
 return s=>{const p=progress(s);marks.forEach(m=>{const amount=s.reduced?1:clamp(p*(1+.2*rows.length)-m.i*.2);if(m.attr==='opacity'){m.el.style.opacity=amount>=.99?'1':'0'}else{m.el.setAttribute(m.attr,m.value*amount);if(m.baseline!==undefined)m.el.setAttribute('y',m.baseline-m.value*amount)}})}
 }
 function whiteCollarBars(svg,scene,d,W,H){
- const layer=make('g',{},svg),software=d.rows.find(row=>row.label==='Software developers');
- const softwareData={...d,series:[d.series[0]],rows:[{...software,values:[software.values[0]]}]};
- let showingSoftware,render;
+ const series=d.series,rows=d.rows,val=d.value,small=W<620;
+ addLegend(scene,series);
+ const legend=[...scene.querySelectorAll('.native-legend span')];
+ const left=small?Math.min(142,W*.39):Math.min(245,W*.31),right=W-(small?44:60),top=18,bottom=H-60;
+ const x=scaler(val,left,right),step=(bottom-top)/rows.length;
+ for(const v of ticks(val)){
+  make('line',{x1:x(v),x2:x(v),y1:top,y2:bottom,stroke:grid},svg);
+  text(svg,x(v),bottom+22,format(v,val.format),{'text-anchor':'middle',class:'axis-tick'});
+ }
+ text(svg,(left+right)/2,H-8,val.label||'',{'text-anchor':'middle',class:'axis-label'});
+ const rowMarks=rows.map((row,i)=>{
+  const group=make('g',{'data-row':row.label},svg),cy=top+step*(i+.5),h=Math.min(step*.62,50);
+  const label=wrapLabel(group,row.label,left-10,cy+(row.label.length>(small?18:28)?-4:4),small?18:28,{'text-anchor':'end',class:'row-label'});
+  title(label,row.label);
+  let total=0;
+  const bars=row.values.map((value,j)=>{
+   const start=total;
+   total+=value||0;
+   const rect=make('rect',{x:x(start),y:cy-h/2,width:0,height:h,rx:1,fill:series[j]?.color||colors[j%colors.length]},group);
+   title(rect,`${row.label} · ${series[j]?.name||''}: ${format(value||0,val.format)}`);
+   return {rect,width:Math.max(0,x(total)-x(start))};
+  });
+  text(group,x(total)+7,cy+4,row.totalLabel||format(total,val.format),{class:'value-label'});
+  return {group,bars,software:row.label==='Software developers'};
+ });
  return state=>{
-  const softwareOnly=!state.reduced&&!document.body.classList.contains('all-mode')&&state.stage===0;
-  if(softwareOnly!==showingSoftware){layer.replaceChildren();render=bars(layer,scene,softwareOnly?softwareData:d,W,H);showingSoftware=softwareOnly}
-  render({...state,reduced:true});
+  const showAll=state.reduced||document.body.classList.contains('all-mode');
+  rowMarks.forEach(({group,bars,software},i)=>{
+   const amount=showAll||software?1:state.stage===0?0:ease(clamp((state.local-i*.006)/.22));
+   group.style.opacity=String(amount);
+   group.style.visibility=amount>.001?'visible':'hidden';
+   bars.forEach(({rect,width})=>rect.setAttribute('width',width*amount));
+  });
+  if(legend[1])legend[1].style.visibility=showAll||state.stage>0&&state.local>.1?'visible':'hidden';
  };
 }
 function scatter(svg,scene,d,W,H){addLegend(scene,d.groups||[]);const a=frame(svg,W,H,d.x,d.y);if(d.identityLine){make('path',{d:`M${a.x(d.x.domain[0])},${a.y(d.y.domain[0])} L${a.x(d.x.domain[1])},${a.y(d.y.domain[1])}`,stroke:'#8194a3','stroke-dasharray':'5 5',fill:'none'},svg)}const marks=[],labelBoxes=[];(d.points||[]).forEach((p,i)=>{const group=(d.groups||[]).findIndex(g=>(g.name||g.id)===p.group||g.id===p.group);const color=p.color||colors[Math.max(0,group)%colors.length],g=make('g',{opacity:0},svg);if(scene.id==='productivity')g.setAttribute('data-point',p.label);make('circle',{cx:a.x(p.x),cy:a.y(p.y),r:W<600?3.5:5,fill:color,'fill-opacity':'.8'},g);title(g,`${p.label||p.group||'Observation'}: ${p.x}, ${p.y}`);if(p.label&&(d.points.length<=20||p.labelImportant)){const label=text(g,0,0,p.label,{class:'point-label'}),box=label.getBBox(),px=a.x(p.x),py=a.y(p.y);let placed=false;for(const dy of [-10,16,-24,30,-38,44]){for(const side of [1,-1]){const xx=Math.max(a.left,Math.min(a.right-box.width,side===1?px+7:px-box.width-7)),yy=py+dy,b={x:xx,y:yy-box.height,w:box.width,h:box.height+3};if(b.y<a.top||yy>a.bottom||labelBoxes.some(q=>b.x<q.x+q.w+3&&b.x+b.w+3>q.x&&b.y<q.y+q.h&&b.y+b.h>q.y))continue;label.setAttribute('x',xx);label.setAttribute('y',yy);labelBoxes.push(b);placed=true;break}if(placed)break}if(!placed)label.remove();}marks.push(g)});for(const series of d.fit?[d.fit]:(d.trend||d.trends||[])){make('path',{d:linePath(series.points,a.x,a.y),fill:'none',stroke:series.color||'#f1cf65','stroke-dasharray':'4 5','stroke-width':2},svg)}if(d.fit?.label)text(svg,a.right-5,a.top+17,d.fit.label,{'text-anchor':'end',class:'annotation'});svg.querySelectorAll('.labor-detail').forEach(e=>svg.append(e));return s=>{const p=progress(s);marks.forEach((g,i)=>g.style.opacity=s.reduced||i/Math.max(1,marks.length-1)<=p?'1':'.06')}
