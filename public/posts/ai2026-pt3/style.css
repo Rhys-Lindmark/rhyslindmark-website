@@ -41,7 +41,9 @@ body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px)
 .article-visual{display:block;width:min(850px,calc(100% - 40px));margin:32px auto 65px}
 .article-visual img{display:block;width:100%;height:auto;max-height:75svh;object-fit:contain}
 .article-embed{width:min(550px,calc(100% - 40px));margin:35px auto 60px}
-.article-embed blockquote{margin:0;padding:26px;border:1px solid #334351;border-radius:12px;font-size:18px}
+.article-embed blockquote:not(.twitter-tweet-rendered){margin:0;padding:26px;border:1px solid #334351;border-radius:12px;font-size:18px}
+.article-embed .twitter-tweet-rendered{margin:0!important;border-radius:16px;background:#15202b}
+.article-embed iframe{display:block;border:0;border-radius:16px;clip-path:inset(0 round 16px);background:#15202b}
 .quoted-source{border-left:2px solid #526777;padding:26px 30px;margin:24px auto}
 .closing-copy{padding:60px 0 90px;font-size:17px;color:#fff}
 footer{padding:50px 24px 70px}footer details{max-width:740px;margin:0 auto 50px}footer nav{line-height:1.7}
