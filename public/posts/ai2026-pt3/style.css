@@ -155,22 +155,16 @@ body:not(.all-mode) #ai-economy[data-surplus="consumer"] .native-legend span:nth
 .epoch-plot{display:none;flex:1;min-height:0;width:100%;flex-direction:column}
 .epoch-plot svg{width:100%;height:100%;min-height:0;flex:1;display:block}
 .epoch-plot svg text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#91a6b5}
-.epoch-plot svg .epoch-heading{font-size:27px;font-weight:600;fill:#e6edf3}
-.epoch-plot svg .epoch-subheading{font-size:17px;fill:#b3c5d1}
 .epoch-plot svg .epoch-grid{stroke:#2a3a47;stroke-width:1}
 .epoch-plot svg .epoch-grid-vertical{stroke-dasharray:3 6}
 .epoch-plot svg .epoch-tick{font-size:14px}
-.epoch-plot svg .epoch-ai-label{font-size:21px;font-weight:600;fill:#7dcfff}
-.epoch-plot svg .epoch-note{font-size:13px}
 .epoch-plot svg .epoch-axis-title{font-size:17px;fill:#d1dce5}
 .epoch-plot svg .epoch-series-label{font-size:19px;font-weight:600;paint-order:stroke;stroke:#0b1015;stroke-width:3px}
 .epoch-plot svg .epoch-series-dates{font-size:16px;paint-order:stroke;stroke:#0b1015;stroke-width:3px}
-.epoch-caption{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;font:11px/1.4 var(--mono);color:#a5bdca}
-.epoch-caption a{margin-left:auto;color:#8bdeec}
-.epoch-key{display:inline-flex;align-items:center;gap:6px}
-.epoch-key i{display:inline-block;width:15px;border-top:3px solid var(--key)}
-body:not(.all-mode) #experience-curves[data-stage="4"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="4"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="4"] figcaption{display:none}
-body:not(.all-mode) #experience-curves[data-stage="4"] .epoch-plot{display:flex}
+.epoch-caption{display:flex;align-items:center;gap:4px;align-self:stretch;padding:8px 0 0;border-top:1px solid var(--line);font:11px/1.4 var(--mono);color:#a5bdca}
+.epoch-caption a{color:#8bdeec}
+body:not(.all-mode) #experience-curves:is([data-stage="4"],[data-stage="5"]) .native-legend,body:not(.all-mode) #experience-curves:is([data-stage="4"],[data-stage="5"]) .native-plot,body:not(.all-mode) #experience-curves:is([data-stage="4"],[data-stage="5"]) figure>figcaption{display:none}
+body:not(.all-mode) #experience-curves:is([data-stage="4"],[data-stage="5"]) .epoch-plot{display:flex}
 .all-mode #experience-curves .epoch-plot{display:flex;min-height:600px;margin-top:30px}
 .rd-plot{display:none;flex:1;min-height:0;width:100%;flex-direction:column}
 .rd-plot svg{display:block;flex:1;width:100%;height:auto;min-height:0}
@@ -184,11 +178,11 @@ body:not(.all-mode) #experience-curves[data-stage="4"] .epoch-plot{display:flex}
 .rd-caption{font:11px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#a5bdca;text-align:left!important}
 .rd-caption a{color:#a5bdca;text-decoration:none}
 .rd-caption a:hover{text-decoration:underline}
-body:not(.all-mode) #experience-curves[data-stage="5"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="5"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="5"] figure>figcaption{display:none}
-body:not(.all-mode) #experience-curves[data-stage="5"] .rd-plot{display:flex}
+body:not(.all-mode) #experience-curves[data-stage="6"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="6"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="6"] figure>figcaption{display:none}
+body:not(.all-mode) #experience-curves[data-stage="6"] .rd-plot{display:flex}
 .all-mode #experience-curves .rd-plot{display:flex;min-height:600px;margin-top:30px}
 @media(max-width:760px){.rd-plot svg .rd-tick,.rd-plot svg .rd-axis-title{font-size:10px}.rd-legend{font-size:9px;gap:5px 12px}.rd-caption{font-size:9px}}
-@media(max-width:760px){.epoch-plot svg .epoch-heading{font-size:25px}.epoch-plot svg .epoch-tick{font-size:15px}.epoch-plot svg .epoch-note{font-size:15px}.epoch-caption{font-size:9px;gap:4px 10px}}
+@media(max-width:760px){.epoch-plot svg .epoch-tick{font-size:15px}.epoch-caption{font-size:9px;gap:4px 10px}}
 @media(min-width:761px){body:not(.all-mode) #article .scene.agents[data-native]>.sticky{padding-left:4px;padding-right:4px}}
 .all-mode .native-plot{height:720px;flex:none}
 .all-mode #white-collar .native-plot{height:1450px}

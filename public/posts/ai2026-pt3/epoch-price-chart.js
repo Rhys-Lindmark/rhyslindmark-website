@@ -1,5 +1,6 @@
 (() => {
-  const container = document.querySelector('#experience-curves .epoch-plot');
+  const scene = document.getElementById('experience-curves');
+  const container = scene?.querySelector('.epoch-plot');
   if (!container) return;
 
   const ns = 'http://www.w3.org/2000/svg';
@@ -15,19 +16,20 @@
     return el;
   };
   add(svg, 'title', {id:'epoch-title'}, 'Relative cost by years since the start of each price decline');
-  add(svg, 'desc', {id:'epoch-desc'}, 'Approximate traces of electricity over 81 years, lithium batteries over 33 years, compute over 61 years, and DNA sequencing over 21 years, redrawn from Epoch AI’s comparison chart. The AI line spans about five years, with a dotted extrapolation for 2021 to 2023 and a solid 47 percent quarterly estimate for 2023 to 2026. That rate implies about two thousand times cheaper over the measured three years and about three hundred thirty thousand times cheaper over five years if the early rate also held. A narrow band shows alternative averaging choices, not a numerical correction for Toby Ord’s conceptual caveat.');
+  add(svg, 'desc', {id:'epoch-desc'}, 'Relative cost curves for electricity, lithium batteries, compute, and DNA sequencing, redrawn from Epoch AI’s comparison chart. Their historical paths appear first; an estimated AI cost curve appears on the next scroll.');
 
-  const left = 125, right = 1020, top = 90, bottom = 602;
+  const left = 125, right = 1020, top = 42, bottom = 620;
   const x = year => left + year / 90 * (right - left);
   const y = logDecline => top + logDecline / 12 * (bottom - top);
   const line = points => points.map(([year, logDecline], i) => `${i ? 'L' : 'M'}${x(year).toFixed(1)},${y(logDecline).toFixed(1)}`).join(' ');
   const label = (year, logDecline, name, dates, color, dx = 12, dy = 0) => {
+    const group=add(svg,'g',{class:'epoch-label'});
     const xx=x(year)+dx, yy=y(logDecline)+dy;
-    add(svg,'text',{x:xx,y:yy,class:'epoch-series-label',style:`fill:${color}`},name);
-    add(svg,'text',{x:xx,y:yy+19,class:'epoch-series-dates',style:`fill:${color}`},dates);
+    add(group,'text',{x:xx,y:yy,class:'epoch-series-label',style:`fill:${color}`},name);
+    add(group,'text',{x:xx,y:yy+19,class:'epoch-series-dates',style:`fill:${color}`},dates);
+    return group;
   };
 
-  add(svg,'text',{x:left,y:35,class:'epoch-heading'},'Relative cost');
   for (const [logDecline,text] of [[0,'Starting price'],[1,'10× cheaper'],[2,'100×'],[3,'1,000×'],[6,'1 million×'],[9,'1 billion×'],[12,'1 trillion×']]) {
     const yy=y(logDecline);
     add(svg,'line',{x1:left,x2:right,y1:yy,y2:yy,class:'epoch-grid'});
@@ -48,31 +50,45 @@
     {name:'Compute',dates:'1940–2001',color:'#ff714b',end:61,points:[[0,0],[1,.09],[2,.4],[3,.97],[4,1.05],[5,1.06],[6,1.26],[7,1.27],[8,1.36],[9,2.07],[10,2.2],[11,2.2],[12,2.27],[13,2.77],[14,2.9],[15,3.31],[16,3.35],[17,3.35],[18,3.35],[19,3.41],[20,3.76],[21,3.83],[22,3.83],[23,3.88],[24,4.25],[25,4.32],[26,4.32],[27,4.32],[28,4.45],[29,4.59],[30,4.6],[31,4.6],[32,4.6],[33,4.6],[34,4.6],[35,4.65],[36,5.3],[37,6],[38,6.14],[39,6.14],[40,6.16],[41,6.51],[42,6.87],[43,6.9],[44,6.9],[45,6.98],[46,7.53],[47,7.67],[48,8.24],[49,8.33],[50,8.38],[51,8.82],[52,8.91],[53,9.29],[54,9.6],[55,9.62],[56,9.62],[57,9.69],[58,10.2],[59,10.44],[60,10.53],[61,10.94]]},
     {name:'DNA sequencing',dates:'2001–2022',color:'#e24a97',end:21,points:[[0,0],[1,.13],[2,.32],[3,.67],[4,.78],[5,.97],[6,1.17],[7,2.3],[8,3.15],[9,3.65],[10,4.11],[11,4.3],[12,4.39],[13,4.39],[14,4.89],[15,4.99],[16,5],[17,5],[18,5.25],[19,5.36],[20,5.45],[21,5.47]]}
   ];
-  for (const series of historical) add(svg,'path',{d:line(series.points),fill:'none',stroke:series.color,'stroke-width':3.4,'stroke-linejoin':'round'});
+  const historicalPaths=historical.map(series=>add(svg,'path',{d:line(series.points),fill:'none',stroke:series.color,'stroke-width':3.4,'stroke-linejoin':'round'}));
 
   const annual=(1/(1-.47))**4;
   const aiLog=year=>year*Math.log10(annual);
-  const earlyEnd=aiLog(2);
-  const slow=year=>earlyEnd+(year-2)*4*Math.log10(1/(1-.429));
-  const fast=year=>earlyEnd+(year-2)*4*Math.log10(1/(1-.58));
-  const bandPoints=Array.from({length:31},(_,i)=>2+i/10);
-  const band=line(bandPoints.map(year=>[year,slow(year)]))+' '+bandPoints.reverse().map(year=>`L${x(year).toFixed(1)},${y(fast(year)).toFixed(1)}`).join(' ')+' Z';
-  add(svg,'path',{d:band,fill:'#009da3','fill-opacity':'.20'});
-  add(svg,'path',{d:line([[0,0],[2,earlyEnd]]),fill:'none',stroke:'#009da3','stroke-width':4,'stroke-dasharray':'7 5'});
-  add(svg,'path',{d:line([[2,earlyEnd],[5,aiLog(5)]]),fill:'none',stroke:'#009da3','stroke-width':5});
-  add(svg,'circle',{cx:x(5),cy:y(aiLog(5)),r:5,fill:'#009da3'});
+  const aiPath=add(svg,'path',{d:line([[0,0],[5,aiLog(5)]]),fill:'none',stroke:'#009da3','stroke-width':4.5,'stroke-linecap':'round'});
+  const aiDot=add(svg,'circle',{cx:x(5),cy:y(aiLog(5)),r:4,fill:'#009da3'});
 
-  label(81,1.54,'Electricity','1892–1973','#b18af4',-185,-11);
-  label(33,1.97,'Lithium batteries','1991–2024','#2667d8',15,4);
-  label(61,10.94,'Compute','1940–2001','#ff714b',13,-9);
-  label(21,5.47,'DNA sequencing','2001–2022','#e24a97',16,-54);
-  label(5,aiLog(5),'AI ≈330,000×','2021–26 · estimate','#009da3',18,-70);
-  add(svg,'text',{x:left,y:bottom+86,class:'epoch-note'},'AI: 2021–23 dotted extrapolation; 2023–26 solid estimate (47%/quarter ≈2,000× over 3 years).');
-  add(svg,'text',{x:left,y:bottom+103,class:'epoch-note'},'AI band: 42.9–58%/quarter (≈830–33,000× in 3 years), not an Ord correction. Other paths approximate Epoch’s figure.');
+  const historicalLabels=[
+    label(81,1.54,'Electricity','1892–1973','#b18af4',-185,-11),
+    label(33,1.97,'Lithium batteries','1991–2024','#2667d8',15,4),
+    label(61,10.94,'Compute','1940–2001','#ff714b',13,-9),
+    label(21,5.47,'DNA sequencing','2001–2022','#e24a97',16,-54)
+  ];
+  const aiLabel=label(5,aiLog(5),'AI','2021–26 · estimate','#009da3',18,-20);
   container.append(svg);
-
-  const caption = document.createElement('div');
-  caption.className = 'epoch-caption';
-  caption.innerHTML = '<a href="https://epoch.ai/publications/the-plunging-price-of-thought">Source: Epoch AI · The plunging price of thought</a>';
+  const caption=document.createElement('div');
+  caption.className='epoch-caption';
+  caption.innerHTML='Source: <a href="https://epoch.ai/publications/the-plunging-price-of-thought">Epoch AI</a>';
   container.append(caption);
+
+  const clamp=value=>Math.max(0,Math.min(1,value));
+  const historicalLengths=historicalPaths.map(path=>{
+    const length=path.getTotalLength();
+    path.style.strokeDasharray=String(length);
+    return length;
+  });
+  const aiLength=aiPath.getTotalLength();
+  aiPath.style.strokeDasharray=String(aiLength);
+  const update=({stage=0,local=0,reduced=false}={})=>{
+    historicalPaths.forEach((path,i)=>{
+      const amount=reduced||stage>4?1:stage===4?clamp((local-i*.055)*4.8):0;
+      path.style.strokeDashoffset=String(historicalLengths[i]*(1-amount));
+      historicalLabels[i].style.opacity=amount>.98?'1':'0';
+    });
+    const aiAmount=reduced||stage>5?1:stage===5?clamp(local*3):0;
+    aiPath.style.strokeDashoffset=String(aiLength*(1-aiAmount));
+    aiDot.style.opacity=aiAmount>.98?'1':'0';
+    aiLabel.style.opacity=aiAmount>.98?'1':'0';
+  };
+  scene.addEventListener('chart-progress',event=>update(event.detail));
+  update({stage:Number(scene.dataset.stage||0),local:Number(scene.dataset.localProgress||0),reduced:matchMedia('(prefers-reduced-motion: reduce)').matches});
 })();

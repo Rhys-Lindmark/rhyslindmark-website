@@ -65,7 +65,7 @@
   container.append(caption);
   const clamp=n=>Math.max(0,Math.min(1,n));
   const update=({stage=0,local=0,reduced=false}={})=>{
-    const active=reduced||stage===5;
+    const active=reduced||stage===6;
     marks.forEach((mark,i)=>{
       const amount=reduced?1:active?clamp((local-i*.17)/.2):0;
       mark.path.style.strokeDashoffset=String(mark.length*(1-amount));
