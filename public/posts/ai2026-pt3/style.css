@@ -7,7 +7,7 @@
 .body-copy p{margin:0}.body-copy a,.passage a{color:#8bdeec;text-decoration:underline}
 .article-heading{min-height:65svh;display:grid;place-items:center;padding:70px 24px}
 .article-heading h2{font-size:clamp(58px,11vw,140px);font-weight:450;letter-spacing:-.055em;line-height:1.05;text-align:center;color:#fff;max-width:1100px}
-.scene.agents{height:var(--scene-height,300svh);--axis-inset:80px}
+.scene.agents{height:var(--scene-height,300svh);--axis-inset:96px}
 .scene.agents>.sticky{top:0;height:100svh;min-height:0;overflow:hidden;padding:76px max(22px,calc((100vw - 1200px)/2)) 24px}
 .scene.agents figure{gap:16px;min-height:0}
 .scene.agents h3{text-align:center;font-size:14px;color:#d1dce5;flex:none}
@@ -16,6 +16,7 @@
 .scene.agents figcaption{text-align:center;flex:none;font-size:11px}
 body:not(.all-mode) #article .scene.agents .passage{position:absolute;top:0;left:50%;right:auto;width:min(440px,calc(100% - 48px));max-width:440px;max-height:none;min-height:0;margin:0;padding:24px 28px;background:#0c141ef5;border:1px solid #566b7b;border-radius:6px;box-shadow:0 16px 60px #0007;z-index:3;transform:translate(-50%,var(--card-shift,100svh));overflow:visible}
 .passage .card-copy p{font-size:17px;line-height:1.55;letter-spacing:0;margin:0}
+body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px);line-height:1.4}
 .card-copy[hidden]{display:none}
 .scene.agents .track{flex:none}
 .article-visual{display:block;width:min(850px,calc(100% - 40px));margin:32px auto 65px}
@@ -31,7 +32,7 @@ footer{padding:50px 24px 70px}footer details{max-width:740px;margin:0 auto 50px}
 .all-mode .card-copy+.card-copy{margin-top:28px}.all-mode .card-copy[hidden]{display:block}
 .all-mode .graph-link img{max-height:85svh;width:auto;max-width:100%;height:auto}
 .all-mode .graph-link{flex:auto}.all-mode .track{display:none}
-@media(max-width:760px){header{padding:0 16px;gap:12px}.scene.agents>.sticky{padding:68px 10px 20px}body:not(.all-mode) #article .scene.agents .passage{width:min(320px,calc(100% - 40px));padding:20px}.passage .card-copy p{font-size:15px;line-height:24px}.scene.agents h3{font-size:12px}.scene.agents figcaption{font-size:10px}.body-copy{padding:24px 0;font-size:15px;line-height:24px}.article-heading{min-height:50svh}.all-mode .scene.agents>.sticky{padding-inline:12px}}
+@media(max-width:760px){header{padding:0 16px;gap:12px}.scene.agents>.sticky{padding:68px 10px 20px}body:not(.all-mode) #article .scene.agents .passage{width:min(320px,calc(100% - 40px));padding:20px}body:not(.all-mode) .scene.agents .card-copy p{font-size:18px;line-height:1.4}.scene.agents h3{font-size:12px}.scene.agents figcaption{font-size:10px}.body-copy{padding:24px 0;font-size:15px;line-height:24px}.article-heading{min-height:50svh}.all-mode .scene.agents>.sticky{padding-inline:12px}}
 @media print{header,.scroll-hint,.track{display:none!important}.scene.agents{height:auto!important;break-inside:avoid}.scene.agents>.sticky{position:static!important;height:auto!important;overflow:visible!important;padding:24px!important;display:flex!important}.scene.agents .passage{position:static!important;transform:none!important;background:none!important;box-shadow:none!important;border:0!important;max-height:none!important;width:100%!important;max-width:none!important;order:-1}.card-copy[hidden]{display:block!important}.card-copy+.card-copy{margin-top:20px}.graph-link img{max-height:500px!important}.article-heading,.post-intro{min-height:0}.article-heading{padding:40px}.body-copy{padding:18px 0}}
 /* Fill the available graph area while keeping every label and axis visible. */
 .scene.agents .graph-link img{width:100%;height:100%;object-fit:contain}
@@ -41,10 +42,10 @@ footer{padding:50px 24px 70px}footer details{max-width:740px;margin:0 auto 50px}
 .intro-fallback{display:block;width:100%;height:auto}
 ai-building-intro{--intro-top:58px}
 @media(max-width:760px){ai-building-intro{--intro-top:52px}}
-/* Match the earlier posts: narrative boxes travel up the left side. */
+/* Match Part 1's inset narrative cards and centered, full-width charts. */
 @media(min-width:761px){
- body:not(.all-mode) #article .scene.agents .passage{left:max(24px,calc((100vw - 1440px)/2));width:clamp(280px,28vw,360px);padding:24px;transform:translateY(var(--card-shift,100svh));border-radius:4px}
- #claude-usage>.sticky{padding-left:max(410px,calc((100vw - 1440px)/2 + 390px));padding-right:30px}
+ body:not(.all-mode) #article .scene.agents .passage{left:calc(var(--card-gutter) + var(--axis-inset));width:min(clamp(300px,30vw,430px),calc(100% - var(--card-gutter) - var(--card-gutter) - var(--axis-inset)));max-width:430px;padding:28px;transform:translateY(var(--card-shift,100svh));border-radius:4px}
+ body:not(.all-mode) #article #claude-usage>.sticky{padding-left:4px;padding-right:4px}
 }
 .usage-chart{flex:1;min-height:0;width:100%}
 .usage-chart[hidden],.usage-fallback[hidden]{display:none!important}
@@ -85,7 +86,7 @@ ai-building-intro{--intro-top:58px}
 .native-legend[hidden]{display:none}.native-legend span{display:inline-flex;align-items:center;gap:7px}.native-legend i{display:block;width:12px;height:3px;flex:none}
 #article .scene.agents figcaption{position:absolute;bottom:16px;left:24px;border:0;padding:0;text-align:left;font:10px/1.4 var(--mono);opacity:.7;z-index:4}
 #article .scene.agents figcaption:hover{opacity:1}
-@media(min-width:761px){#article .scene.agents[data-native]>.sticky{padding-left:max(410px,calc((100vw - 1440px)/2 + 390px));padding-right:30px}}
+@media(min-width:761px){body:not(.all-mode) #article .scene.agents[data-native]>.sticky{padding-left:4px;padding-right:4px}}
 .all-mode .native-plot{height:720px;flex:none}
 .all-mode #white-collar .native-plot{height:1450px}
 .all-mode #article .scene.agents[data-native]>.sticky{padding:24px max(22px,calc((100vw - 1100px)/2)) 50px}
