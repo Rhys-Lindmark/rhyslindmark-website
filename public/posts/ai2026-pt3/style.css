@@ -10,7 +10,7 @@
 .body-copy[data-slide="8"]{padding-bottom:.5em}
 .body-copy[data-slide="9"]{padding-top:.5em}
 .coding-universe-section{padding:clamp(80px,12svh,150px) 0 clamp(100px,15svh,180px)}
-.coding-universe-copy{text-align:center;padding:0 0 clamp(45px,7svh,85px)}
+.coding-universe-copy{text-align:left;padding:0 0 clamp(45px,7svh,85px)}
 .coding-universe-copy p+p{margin-top:1.4em}
 .coding-universe-visual{width:min(1400px,calc(100% - 40px));margin:0 auto}
 .coding-universe-visual img{display:block;width:100%;height:auto;opacity:var(--coding-universe-opacity,1)}
