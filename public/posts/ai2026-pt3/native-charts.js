@@ -31,6 +31,30 @@ const lower=points.map(([xx],j)=>[xx,cumulative[j]||0]);const upper=points.map((
 for(const b of d.bubbles||[]){const r=Math.max(5,Math.min(W*.065,Math.sqrt(b.value/(d.bubbleMax||Math.max(...d.bubbles.map(q=>q.value))))*W*.065));make('circle',{cx:a.x(b.x),cy:a.y(b.y),r,fill:'#f1cf65','fill-opacity':'.2',stroke:'#f1cf65'},g);text(g,a.x(b.x),a.y(b.y)-r-7,b.label||compact(b.value),{'text-anchor':'middle',class:'annotation'})}
 for(const q of d.annotations||[]){text(g,a.x(q.x)+5,a.y(q.y)-9,q.label,{class:'annotation'})}
 return s=>reveal.set(progress(s))}
+function experienceCurves(svg,scene,d,W,H){
+ const order=[1,0,2,3],firstStage=[1,0,2,2];
+ addLegend(scene,order.map(i=>({...d.series[i],color:d.series[i].color||colors[i%colors.length]})));
+ const legend=[...scene.querySelectorAll('.native-legend span')],a=frame(svg,W,H,d.x,d.y);
+ const groups=d.series.map((series,i)=>{
+  const color=series.color||colors[i%colors.length],g=make('g',{},svg);
+  g.style.transition='opacity .4s ease';
+  make('path',{d:linePath(series.points,a.x,a.y),fill:'none',stroke:color,'stroke-width':W<620?2.5:3.5,'stroke-dasharray':series.dashed?'6 5':''},g);
+  series.points.forEach(([x,y])=>{const dot=make('circle',{cx:a.x(x),cy:a.y(y),r:2.5,fill:color},g);title(dot,`${series.name}: ${format(x,d.x.format)}, ${format(y,d.y.format)}`)});
+  return g;
+ });
+ const notes=(d.annotations||[]).map(note=>{
+  const g=make('g',{},svg),index=note.label.startsWith('Solar')?1:note.label.startsWith('Cars')?0:2;
+  g.style.transition='opacity .4s ease';
+  text(g,a.x(note.x)+5,a.y(note.y)-9,note.label,{class:'annotation'});
+  return {g,index};
+ });
+ return state=>{
+  const stage=state.reduced?2:state.stage;
+  groups.forEach((g,i)=>{const visible=stage>=firstStage[i];g.style.opacity=visible?'1':'0';g.style.pointerEvents=visible?'auto':'none'});
+  notes.forEach(({g,index})=>{g.style.opacity=stage>=firstStage[index]?'1':'0'});
+  legend.forEach((item,j)=>{item.style.visibility=stage>=firstStage[order[j]]?'visible':'hidden'});
+ };
+}
 function bars(svg,scene,d,W,H){const series=d.series||[{name:''}],rows=d.rows;addLegend(scene,series.filter(s=>s.name));const horizontal=d.orientation!=='vertical';const val=d.value||{domain:[0,Math.max(...rows.map(r=>d.stacked?r.values.reduce((a,b)=>a+b,0):Math.max(...r.values)))],label:'',format:'compact'};const small=W<620,marks=[];
 if(horizontal){const left=small?Math.min(142,W*.39):Math.min(245,W*.31),right=W-(small?44:60),top=18,bottom=H-60;const x=scaler(val,left,right),zero=val.scale==='log'?val.domain[0]:Math.max(0,val.domain[0]);for(const v of ticks(val)){make('line',{x1:x(v),x2:x(v),y1:top,y2:bottom,stroke:grid},svg);text(svg,x(v),bottom+22,format(v,val.format),{'text-anchor':'middle',class:'axis-tick'})}text(svg,(left+right)/2,H-8,val.label||'',{'text-anchor':'middle',class:'axis-label'});const step=(bottom-top)/rows.length;rows.forEach((r,i)=>{const cy=top+step*(i+.5),h=Math.min(step*.62,50);const label=wrapLabel(svg,r.label,left-10,cy+(r.label.length>(small?18:28)?-4:4),small?18:28,{'text-anchor':'end',class:'row-label'});title(label,r.label);let total=0;r.values.forEach((v,j)=>{if(v===null)return;const base=d.stacked?total:zero;const yy=d.stacked?cy-h/2:cy-h/2+j*h/r.values.length;const bh=d.stacked?h:h/r.values.length-2;const rect=make('rect',{x:x(base),y:yy,width:0,height:Math.max(2,bh),rx:1,fill:series[j]?.color||colors[j%colors.length]},svg);title(rect,`${r.label} · ${series[j]?.name||''}: ${format(v,val.format)}`);const end=d.stacked?base+v:v;marks.push({el:rect,attr:'width',value:Math.max(0,x(end)-x(base)),i,j});total+=v;});const end=d.stacked?total:Math.max(...r.values.filter(v=>v!==null));const labelValue=r.valueLabel||r.totalLabel||(d.stacked?format(total,val.format):r.values.length===1?format(end,val.format):'');if(labelValue){const t=text(svg,x(end)+7,cy+4,labelValue,{class:'value-label'});marks.push({el:t,attr:'opacity',value:1,i,j:0})}})
 }else{const left=small?54:70,right=W-20,top=20,bottom=H-75,y=scaler(val,bottom,top);for(const v of ticks(val)){make('line',{x1:left,x2:right,y1:y(v),y2:y(v),stroke:grid},svg);text(svg,left-8,y(v)+4,format(v,val.format),{'text-anchor':'end',class:'axis-tick'})}text(svg,13,(top+bottom)/2,val.label||'',{transform:`rotate(-90 13 ${(top+bottom)/2})`,'text-anchor':'middle',class:'axis-label'});const step=(right-left)/rows.length;rows.forEach((r,i)=>{const cx=left+(i+.5)*step,w=step*.7;wrapLabel(svg,r.label.replace('–',' – '),cx,bottom+20,rows.length<=2?18:small?5:7,{'text-anchor':'middle',class:'row-label'});if(r.detail){wrapLabel(svg,r.detail,cx,top+Math.min(220,H*.4),small?18:28,{'text-anchor':'middle',class:'labor-detail'});}let total=0;r.values.forEach((v,j)=>{if(v===null)return;const base=d.stacked?total:0;const xx=d.stacked?cx-w/2:cx-w/2+j*w/r.values.length;const bw=d.stacked?w:w/r.values.length-3;const end=base+v;const rect=make('rect',{x:xx,y:y(base),width:Math.max(2,bw),height:0,fill:series[j]?.color||colors[j%colors.length]},svg);title(rect,`${r.label} · ${series[j]?.name||''}: ${format(v,val.format)}`);marks.push({el:rect,attr:'height',value:y(base)-y(end),baseline:y(base),i,j});if(!d.stacked){const t=text(svg,xx+bw/2,y(end)-7,r.valueLabels?.[j]||format(v,val.format),{'text-anchor':'middle',class:'value-label'});marks.push({el:t,attr:'opacity',value:1,i,j})}total+=v});if(d.stacked){const t=text(svg,cx,y(total)-8,r.totalLabel||format(total,val.format),{'text-anchor':'middle',class:'value-label'});marks.push({el:t,attr:'opacity',value:1,i,j:0})}})}
@@ -69,7 +93,7 @@ function farmMechanization(svg,scene,d,W,H){
 }
 function cards(svg,scene,d,W,H){addLegend(scene,[]);const small=W<620,cols=2,gap=small?10:18,pad=small?12:20,cw=(W-gap)/2,rh=(H-gap*2)/3,groups=[];d.cards.forEach((c,i)=>{const col=i<2?i:i%2===0?0:1;const row=i<2?0:Math.floor((i-2)/2)+1;const xx=col*(cw+gap),yy=row*(rh+gap),g=make('g',{},svg);groups.push(g);make('rect',{x:xx,y:yy,width:cw,height:rh,rx:4,fill:col?'#18212b':'#10242b',stroke:grid},g);wrapLabel(g,c.label,xx+pad,yy+pad+10,small?20:35,{class:'card-label'});const body=c.description;wrapLabel(g,body,xx+pad,yy+pad+(small?42:42),Math.floor((cw-pad*2)/(small?5.5:6.7)),{class:'card-body'});if(c.value)text(g,xx+pad,yy+rh-35,c.value,{class:'large-value',fill:colors[col]});wrapLabel(g,c.measurement,xx+pad,yy+rh-17,small?26:45,{class:'card-caption'});title(g,[c.label,c.description,c.examples?.join('; '),c.period,c.value,c.measurement,c.citation].filter(Boolean).join(' · '))});return s=>groups.forEach((g,i)=>g.style.opacity=s.reduced?'1':String(clamp(progress(s)*6-i)))}
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
-const renderers={line:(...args)=>cartesian(...args,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
+const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
 try{
 const response=await fetch('/posts/ai2026-pt3/native-data.json?v=horse-tractor-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
 for(const scene of document.querySelectorAll('.scene[data-native]')){
