@@ -6,6 +6,7 @@
 .body-copy{width:min(740px,calc(100% - 48px));margin:0 auto;padding:28px 0;font-size:17px;line-height:1.55}
 .body-copy[data-slide="6"]{padding-block:clamp(96px,16svh,160px)}
 .body-copy p{margin:0}.body-copy a,.passage a{color:#8bdeec;text-decoration:underline}
+.body-copy[data-slide="8"] p+p{margin-top:1em}
 .pt3-lede-one{min-height:330svh}.pt3-lede-one .lede-note a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.15em}
 @media(max-width:760px){.pt3-lede-one .lede-jensen{object-fit:contain;background:#05080d}}
 @media(prefers-reduced-motion:reduce){.pt3-lede-one{min-height:0}.pt3-lede-one .lede-jensen{display:block;position:static;width:100%;height:auto;opacity:1;margin-top:2rem}}
