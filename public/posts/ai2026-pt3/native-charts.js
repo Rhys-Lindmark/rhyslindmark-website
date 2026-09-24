@@ -73,7 +73,7 @@ if(scene.id==='tfp'){
  const bars=marks.filter(m=>m.attr==='height'),layer=make('g',{'clip-path':`url(#${clipId})`},svg);
  svg.insertBefore(layer,bars[0].el);
  bars.forEach(m=>{m.el.setAttribute('height',m.value);m.el.setAttribute('y',m.baseline-m.value);layer.append(m.el)});
- return s=>{scene.dataset.focus=s.reduced||s.stage<2?'':(['Electricity','Cars','Computers'][Math.min(2,Math.floor(s.local*3))]);marks.forEach(m=>{
+ return s=>{scene.dataset.focus=s.reduced||s.stage!==2?'':(['Electricity','Cars','Computers'][Math.min(2,Math.floor(s.local*3))]);marks.forEach(m=>{
   const amount=s.reduced||s.stage>1?1:ease(clamp((s.stage<1?0:s.local-m.i*.025)/.19));
   if(m.attr==='opacity'){m.el.style.opacity=amount>=.95?'1':'0';m.el.style.visibility=amount>=.95?'visible':'hidden'}
   else m.el.setAttribute('transform',`translate(0 ${(top-12-bottom)*(1-amount)})`);
@@ -143,7 +143,7 @@ function surplus(svg,scene,d,W,H){
   title(group,`${name}: illustrative supply and demand equilibrium, not measured data`);
   return group;
  });
- return s=>{const stage=s.reduced?2:s.stage;demandLine.style.opacity=stage?'1':'.4';groups.forEach((g,i)=>{g.style.opacity=stage===i+1?'1':'0';g.style.visibility=stage===i+1?'visible':'hidden'});scene.dataset.surplus=stage===1?'consumer':stage===2?'producer':''};
+ return s=>{const stage=s.reduced?1:s.stage;demandLine.style.opacity='1';groups.forEach((g,i)=>{g.style.opacity=stage===i?'1':'0';g.style.visibility=stage===i?'visible':'hidden'});scene.dataset.surplus=stage===0?'consumer':stage===1?'producer':''};
 }
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
 const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars,scatter,rectangles,pipeline,farmMechanization,cards,surplus,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};

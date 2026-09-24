@@ -143,7 +143,6 @@ body:not(.all-mode) #tfp[data-focus="Computers"] rect[data-series="Computers"]{f
 #tfp[data-focus="Computers"] .tfp-focus-word[data-series="Computers"]{opacity:1;color:#43a9ff}
 #ai-economy .native-plot svg .surplus-label{font-size:clamp(13px,1.4vw,21px);font-weight:700;fill:#eef7fb;filter:drop-shadow(0 1px 2px #000)}
 #ai-economy .native-plot svg g,#ai-economy .native-legend span{transition:opacity .35s ease}
-body:not(.all-mode) #ai-economy[data-stage="0"] .native-legend{opacity:0}
 body:not(.all-mode) #ai-economy[data-surplus="consumer"] .native-legend span:nth-child(2),body:not(.all-mode) #ai-economy[data-surplus="producer"] .native-legend span:first-child{opacity:.35}
 @media(max-width:760px){.scene.agents[data-native] .native-plot svg path[fill="none"][stroke-width="2.5"],#sim-to-real .native-plot svg path[fill="none"][stroke-width="2"]{stroke-width:2.5}.scene.agents:is(#code-history,#code-future) .native-plot svg path[stroke-width="1.3"]{stroke-width:1.8}.scene.agents:is(#code-history,#code-future) .native-plot svg path[fill="none"][stroke-width="1.2"]{stroke-width:2.5}}
 #coding-spend .native-plot svg path[stroke="#43a9ff"]{stroke:#7dcfff}
