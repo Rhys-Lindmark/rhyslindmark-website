@@ -14,8 +14,7 @@
 @media(prefers-reduced-motion:reduce){.pt3-lede-one{min-height:0}.pt3-lede-one .lede-jensen{display:block;position:static;width:100%;height:auto;opacity:1;margin-top:2rem}}
 .intro-topics p+p{margin-top:1em}.intro-topics ol{margin:.7em 0 0;padding-left:1.5em}
 .article-heading{min-height:100svh;display:grid;place-items:center;padding:70px 24px;background:#070b10}
-.article-heading h2{width:fit-content;max-width:min(1600px,100%);margin:0;font-size:clamp(80px,16vw,200px);font-weight:450;letter-spacing:-.065em;line-height:1.02;text-align:center;text-wrap:balance;color:#fff}
-#robotics h2{font-size:clamp(48px,10vw,130px)}
+.article-heading h2{width:fit-content;max-width:min(1000px,100%);margin:0;font-size:clamp(48px,8vw,112px);font-weight:450;letter-spacing:-.055em;line-height:1.02;text-align:center;text-wrap:balance;color:#fff}
 .article-heading h2::after{content:"";display:block;height:3px;border-radius:2px;margin:.34em auto 0;background:#ffffff5c}
 .scene.agents{height:var(--scene-height,300svh);--axis-inset:96px}
 .scene.agents>.sticky{top:0;height:100svh;min-height:0;overflow:hidden;padding:76px max(22px,calc((100vw - 1200px)/2)) 24px}

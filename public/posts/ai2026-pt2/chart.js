@@ -493,7 +493,7 @@
   function followHash(){
     const hash=decodeURIComponent(location.hash.slice(1)),query=new URL(location.href).searchParams.get('slide');
     const requested=query==='59'?'60':query==='machine-robots'?'73':query;
-    const entry=hash?slideEntries.find(e=>e.anchor===hash):slideEntries.find(e=>e.id===requested||e.anchor===requested);
+    const entry=hash?slideEntries.find(e=>e.anchor===hash):(slideEntries.find(e=>e.id===requested)||slideEntries.find(e=>e.anchor===requested));
     slideLinksReady=false;
     if(entry){
       const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;
