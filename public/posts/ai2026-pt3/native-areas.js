@@ -19,7 +19,6 @@ window.NativeAreas = (svg, scene, d, W, H, api) => {
     const p=make('path',{fill:palette[i],'fill-opacity':'.53',stroke:palette[i],'stroke-width':small?1.8:2.5},areas);
     title(p,s.name+' · modeled annual spending, real 2025 USD');return p;
   });
-  const totalLine=history?null:make('path',{fill:'none',stroke:'#e6edf3','stroke-width':small?2.5:3.5},areas);
   const status=text(svg,a.right,a.top-17,'',{'text-anchor':'end',class:'annotation',fill:'#91a6b5','font-size':small?10:12});
   const bubbleGroup=make('g',{},svg);
   const bubbleYears=history?[1980,2000,2025]:[1980,2000,2025,2040];
@@ -56,7 +55,6 @@ window.NativeAreas = (svg, scene, d, W, H, api) => {
       const upper=part.map(([year,value],j)=>[year,(cumulative[j]||0)+value]);
       cumulative=upper.map(p=>p[1]);
       paths[i].setAttribute('d',linePath(upper,a.x,a.y)+' '+lower.slice().reverse().map(([x,y])=>`L${a.x(x)},${a.y(y)}`).join(' ')+' Z');
-      if(i===values.length-1&&totalLine)totalLine.setAttribute('d',linePath(upper,a.x,a.y));
     });
     status.textContent=history?'HISTORICAL ESTIMATE':blend===0?'2040 · CONSERVATIVE SCENARIO':blend===1?'2040 · OPTIMISTIC SCENARIO':'2040 · EXPANDING SCENARIO';
     for(const b of bubbles){
