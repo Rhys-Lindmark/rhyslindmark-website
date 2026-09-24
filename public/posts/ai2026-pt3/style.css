@@ -94,9 +94,10 @@ ai-building-intro{--intro-top:58px}
 .native-plot{flex:1;width:100%;min-height:0}
 .native-plot svg{display:block;width:100%;height:100%;overflow:visible}
 #app-revenue .native-plot{position:relative}
-#app-revenue .app-revenue-icons{position:absolute;left:70px;right:20px;bottom:25px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:center;justify-items:center;pointer-events:none}
-#app-revenue .app-revenue-icons svg{display:block;width:100%;height:48px;overflow:hidden;mix-blend-mode:screen}
-@media(max-width:760px){#app-revenue .app-revenue-icons{left:54px;right:20px;bottom:28px}#app-revenue .app-revenue-icons svg{height:28px}}
+#app-revenue .app-revenue-icons{position:absolute;left:70px;right:20px;bottom:28px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:center;pointer-events:none}
+#app-revenue .logo-group{display:flex;align-items:center;justify-content:center;gap:4px;min-width:0}
+#app-revenue .logo-group img{display:block;flex:1 1 0;min-width:0;max-width:42px;max-height:42px;aspect-ratio:1;object-fit:contain;box-sizing:border-box;padding:2px;background:#fff;border-radius:7px}
+@media(max-width:760px){#app-revenue .app-revenue-icons{left:54px;right:20px;bottom:28px}#app-revenue .logo-group{height:42px;flex-wrap:wrap;align-content:center;gap:1px}#app-revenue .logo-group img{flex:0 1 calc((100% - 1px)/2);max-width:20px;max-height:20px;padding:1px;border-radius:3px}#app-revenue .logo-group:nth-child(5) img,#app-revenue .logo-group:nth-child(6) img{max-width:24px}}
 .native-plot svg text{font:12px var(--mono);fill:#91a6b5}
 .native-plot svg .axis-label{font-size:10px;letter-spacing:.02em}
 .native-plot svg .axis-tick,.native-plot svg .row-label{font-size:11px}
