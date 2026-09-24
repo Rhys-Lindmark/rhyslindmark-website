@@ -2589,76 +2589,25 @@
   },
   "app-revenue": {
     "kind": "bars",
-    "title": "AI beyond software development",
+    "title": "AI application revenue, 2026",
     "source": "https://substack-post-media.s3.amazonaws.com/public/images/ace4bdfb-7ece-41e1-99c2-941cf9c60455_1447x1146.jpeg",
-    "note": "Exact displayed revenue/ARR labels from the supplied chart. These are the chart\u2019s selected applications, not total category revenue; coding excludes Cursor, Anthropic, and OpenAI per the accompanying text.",
+    "note": "Illustrative 2026 annualized revenue / ARR. Coding and apps combines the source chart's $1.43B with Dealroom-reported $4B+ June 2026 Cursor run rate and TickerTrends' August 10, 2026 tracked estimates of $15.12B for Claude Code and $8.83B for Codex, totaling at least $29.38B. The other bars are the source chart's selected-app estimates, not full category revenue. Product revenue definitions and provider payments may overlap.",
     "data": {
       "orientation": "vertical",
       "stacked": false,
-      "series": [
-        {
-          "name": "2025"
-        },
-        {
-          "name": "2026"
-        }
-      ],
+      "series": [{"name": "2026", "color": "#ff914f"}],
       "rows": [
-        {
-          "label": "Coding & apps",
-          "values": [
-            655000000.0,
-            1430000000.0
-          ]
-        },
-        {
-          "label": "Creative & media",
-          "values": [
-            1170000000.0,
-            1480000000.0
-          ]
-        },
-        {
-          "label": "Legal",
-          "values": [
-            640000000.0,
-            900000000.0
-          ]
-        },
-        {
-          "label": "Enterprise & search",
-          "values": [
-            500000000.0,
-            950000000.0
-          ]
-        },
-        {
-          "label": "Healthcare",
-          "values": [
-            267000000.0,
-            417000000.0
-          ]
-        },
-        {
-          "label": "Customer service",
-          "values": [
-            130000000.0,
-            200000000.0
-          ]
-        }
+        {"label": "Coding & apps", "values": [29380000000], "valueLabels": ["$29B+"]},
+        {"label": "Creative & media", "values": [1480000000]},
+        {"label": "Legal", "values": [900000000]},
+        {"label": "Enterprise & search", "values": [950000000]},
+        {"label": "Healthcare", "values": [417000000]},
+        {"label": "Customer service", "values": [200000000]}
       ],
       "value": {
         "label": "Annualized revenue / ARR (USD)",
-        "domain": [
-          0,
-          1600000000.0
-        ],
-        "ticks": [
-          0,
-          500000000.0,
-          1000000000.0,
-          1500000000.0
-        ],
+        "domain": [0, 32000000000],
+        "ticks": [0, 10000000000, 20000000000, 30000000000],
         "format": "dollars",
         "scale": "linear"
       }

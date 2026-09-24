@@ -93,6 +93,10 @@ ai-building-intro{--intro-top:58px}
 .scene.agents figure{position:static;gap:12px}
 .native-plot{flex:1;width:100%;min-height:0}
 .native-plot svg{display:block;width:100%;height:100%;overflow:visible}
+#app-revenue .native-plot{position:relative}
+#app-revenue .app-revenue-icons{position:absolute;left:70px;right:20px;bottom:25px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:center;justify-items:center;pointer-events:none}
+#app-revenue .app-revenue-icons svg{display:block;width:100%;height:48px;overflow:hidden;mix-blend-mode:screen}
+@media(max-width:760px){#app-revenue .app-revenue-icons{left:54px;right:20px;bottom:28px}#app-revenue .app-revenue-icons svg{height:28px}}
 .native-plot svg text{font:12px var(--mono);fill:#91a6b5}
 .native-plot svg .axis-label{font-size:10px;letter-spacing:.02em}
 .native-plot svg .axis-tick,.native-plot svg .row-label{font-size:11px}
