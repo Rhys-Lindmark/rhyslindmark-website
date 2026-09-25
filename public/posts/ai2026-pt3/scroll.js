@@ -16,7 +16,7 @@
       simScatter.style.setProperty('--sim-correlation-opacity', eased.toFixed(3));
     });
   }
-  for (const video of document.querySelectorAll('.generalist-video video, .mildenhall-video video, .uma-science video, .nature-model-science video')) {
+  for (const video of document.querySelectorAll('.generalist-video video, .mildenhall-video video, .uma-science video, .nature-model-science video, .autonomous-universe-visual video')) {
     let loaded = false, inView = false;
     video.muted = true;
     video.defaultMuted = true;

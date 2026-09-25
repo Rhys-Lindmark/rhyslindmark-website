@@ -118,14 +118,8 @@ body:not(.all-mode) #article #domain-benchmarks .passage{top:clamp(130px,24svh,1
 .autonomous-universe-section{padding:clamp(50px,8svh,100px) 0 clamp(90px,14svh,170px)}
 .autonomous-universe-section .closing-copy{padding:0 0 clamp(38px,6svh,70px)}
 .autonomous-universe-visual{position:relative;isolation:isolate;overflow:hidden;width:min(1400px,calc(100% - 40px));aspect-ratio:1671/941;margin:0 auto;background:#071321}
-.autonomous-world-bg{display:block;width:100%;height:100%;object-fit:cover}
-.autonomous-mover{position:absolute;display:block;height:auto;filter:drop-shadow(0 5px 12px #00132799);animation:autonomous-loop 9s linear infinite;will-change:transform,opacity}
-.autonomous-car{left:8%;top:69%;width:14%;--dx:55%;--dy:19%}
-.autonomous-boat{left:42%;top:55%;width:14%;--dx:55%;--dy:2%}
-.autonomous-drone{left:41%;top:17%;width:11%;--dx:70%;--dy:-14%}
-.autonomous-bot{left:85%;top:47%;width:8%;--dx:22%;--dy:0%}
-@keyframes autonomous-loop{0%{opacity:1;transform:translate3d(0,0,0)}78%{opacity:1;transform:translate3d(var(--dx),var(--dy),0)}88%{opacity:0;transform:translate3d(var(--dx),var(--dy),0)}89%,99%{opacity:0;transform:translate3d(0,0,0)}100%{opacity:1;transform:translate3d(0,0,0)}}
-@media(prefers-reduced-motion:reduce){.autonomous-mover{animation:none;will-change:auto;opacity:1}}
+.autonomous-universe-visual video{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.autonomous-universe-visual video::-webkit-media-controls{display:none!important}
 footer{padding:50px 24px 70px}footer details{max-width:740px;margin:0 auto 50px}footer nav{line-height:1.7}
 .all-mode .scene.agents{height:auto;margin:45px auto 70px}
 .all-mode .scene.agents>.sticky{position:relative;top:0;height:auto;min-height:0;overflow:visible;padding:24px max(22px,calc((100vw - 1100px)/2));gap:24px}
