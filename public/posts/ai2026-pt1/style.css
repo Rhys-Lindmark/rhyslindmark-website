@@ -184,18 +184,11 @@ html,body,#article,.scene{background-color:var(--bg)}
 .scene.video figcaption{position:absolute;bottom:12px;right:16px;border:0;padding:4px 8px;background:#070b1099}
 .scene.video .track{position:absolute;bottom:0;left:0;right:0;margin:0;z-index:2}
 
-/* Match Anthropic's econ-scenarios narrative type scale. */
+/* Use a consistent weight and spacing for narrative passages. */
 .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2,
 .scene.fulltext.reading .passage p,
 .scene.building-return .passage p{
- font-size:17px;line-height:1.55;font-weight:400;letter-spacing:0;
-}
-@media(max-width:700px){
- .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2,
- .scene.fulltext.reading .passage p,
- .scene.building-return .passage p{
-  font-size:15px;line-height:24px;
- }
+ font-weight:400;letter-spacing:0;
 }
 
 .scene.chart-only .passage{display:none}
@@ -389,3 +382,17 @@ body.header-revealed>header{transform:translateY(0);pointer-events:auto}
 .owid-hover-tooltip[hidden]{display:none}.owid-hover-tooltip strong{display:block;margin-bottom:6px;font-weight:600}.owid-hover-values{display:grid;gap:3px}.owid-hover-values>div{display:flex;align-items:baseline;justify-content:space-between;gap:14px}.owid-hover-values span{display:inline-flex;align-items:center;min-width:0;color:#c2d0db}.owid-hover-values b{font-weight:500;white-space:nowrap}.owid-hover-values i{width:8px;height:8px;margin-right:6px;border-radius:50%;background:var(--color);flex:none}.owid-hover-live{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:760px){.owid-hover-tooltip{max-width:min(230px,calc(100% - 12px));font-size:10px}.owid-hover-values>div{gap:9px}}
 @media print{.owid-hover-tooltip,.owid-hover-overlay,.owid-hover-live{display:none!important}}
+
+/* Narrative copy shared by all three parts. Keep chart annotations and sources compact. */
+.scene:not(.chapter):not(.statement):not(.fulltext) .passage h2,
+.scene.fulltext.reading .passage p,
+.scene.building-return .passage p,
+.article-signoff p,.lede-inner p,.lede-list li{font-size:22px;line-height:1.5}
+body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2{font-size:clamp(22px,1.62vw,26px);line-height:1.4}
+@media(max-width:760px){
+ .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2,
+ .scene.fulltext.reading .passage p,
+ .scene.building-return .passage p,
+ .article-signoff p,.lede-inner p,.lede-list li,
+ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage h2{font-size:20px;line-height:1.5}
+}
