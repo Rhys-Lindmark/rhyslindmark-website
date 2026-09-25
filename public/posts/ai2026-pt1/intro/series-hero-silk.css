@@ -1,0 +1,25 @@
+/* Shared opening, loaded after each part's article styles. */
+.series-hero{min-height:100svh;background:#0b1015;color:#e6edf3;display:grid;place-items:center;overflow:hidden}
+.series-hero-inner{width:min(1180px,100%,calc((100svh - 210px)*2.4));min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,4svh,48px);padding:clamp(28px,5svh,60px) 22px}
+.series-hero-art{position:relative;width:100%}
+.series-hero-labels{position:absolute;top:clamp(16px,2.5vw,30px);left:0;display:block;width:100%;height:28px;font:400 clamp(14px,1.9vw,24px)/1.2 var(--mono);letter-spacing:.14em;color:#cfdeeb}
+.series-hero-labels span{position:absolute;transform:translateX(-50%)}
+.series-hero-labels span:nth-child(1){left:14.17%}
+.series-hero-labels span:nth-child(2){left:49.17%}
+.series-hero-labels span:nth-child(3){left:83.33%}
+.series-hero #series-hero-canvas{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:1200/500;max-height:none;filter:brightness(1)}
+.series-hero-bottom{display:flex;flex-direction:column;align-items:center;gap:20px}
+.series-hero-bottom p{margin:0;color:#e6edf3;font:400 clamp(28px,4.2vw,48px)/1 var(--mono);letter-spacing:.14em}
+.series-hero-labels,.series-hero-bottom{opacity:1;transform:none;transition:opacity .75s ease}
+.series-hero[data-art="pending"] .series-hero-labels,.series-hero[data-art="pending"] .series-hero-bottom{opacity:0;transform:none;visibility:hidden}
+/* One brief sheen over the completed canvas, in sync with the captions. */
+.series-hero[data-art="complete"] #series-hero-canvas{animation:silk-highlight .7s ease-out both}
+@keyframes silk-highlight{0%,100%{filter:brightness(1)}38%{filter:brightness(1.9)}}
+@media(max-width:760px){
+ .series-hero-inner{width:100%;padding:40px 12px;gap:42px}
+ .series-hero-labels{top:10px;font-size:clamp(13px,3.8vw,18px);letter-spacing:.1em}
+}
+@media(prefers-reduced-motion:reduce){
+ .series-hero[data-art="complete"] #series-hero-canvas{animation:none;filter:none}
+ .series-hero .series-hero-labels,.series-hero .series-hero-bottom{opacity:1!important;transform:none!important;visibility:visible!important;transition:none}
+}
