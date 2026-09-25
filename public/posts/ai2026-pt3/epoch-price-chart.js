@@ -5,7 +5,8 @@
 
   const ns = 'http://www.w3.org/2000/svg';
   const svg = document.createElementNS(ns, 'svg');
-  svg.setAttribute('viewBox', '0 0 1100 720');
+  const compact = matchMedia('(max-width:760px)').matches;
+  svg.setAttribute('viewBox', compact ? '0 0 1100 720' : '0 0 1320 720');
   svg.setAttribute('role', 'img');
   svg.setAttribute('aria-labelledby', 'epoch-title epoch-desc');
   const add = (parent, name, attrs = {}, value) => {
@@ -18,7 +19,7 @@
   add(svg, 'title', {id:'epoch-title'}, 'Relative cost by years since the start of each price decline');
   add(svg, 'desc', {id:'epoch-desc'}, 'Relative cost curves for electricity, lithium batteries, compute, and DNA sequencing, redrawn from Epoch AI’s comparison chart. Their historical paths appear first; an estimated AI cost curve appears on the next scroll.');
 
-  const left = 125, right = 1020, top = 42, bottom = 620;
+  const left = compact ? 125 : 90, right = compact ? 1020 : 1270, top = 42, bottom = 620;
   const x = year => left + year / 90 * (right - left);
   const y = logDecline => top + logDecline / 12 * (bottom - top);
   const line = points => points.map(([year, logDecline], i) => `${i ? 'L' : 'M'}${x(year).toFixed(1)},${y(logDecline).toFixed(1)}`).join(' ');
@@ -58,10 +59,10 @@
   const aiDot=add(svg,'circle',{cx:x(5),cy:y(aiLog(5)),r:4,fill:'#009da3'});
 
   const historicalLabels=[
-    label(81,1.54,'Electricity','1892–1973','#b18af4',-185,-11),
+    label(81,1.54,'Electricity','1892–1973','#b18af4',-185,45),
     label(33,1.97,'Lithium batteries','1991–2024','#2667d8',15,4),
     label(61,10.94,'Compute','1940–2001','#ff714b',13,-9),
-    label(21,5.47,'DNA sequencing','2001–2022','#e24a97',16,-54)
+    label(21,5.47,'DNA sequencing','2001–2022','#e24a97',20,-10)
   ];
   const aiLabel=label(5,aiLog(5),'AI','2021–26 · estimate','#009da3',18,-20);
   container.append(svg);
@@ -78,13 +79,15 @@
   });
   const aiLength=aiPath.getTotalLength();
   aiPath.style.strokeDasharray=String(aiLength);
+  const historicalProgress=(local,i)=>clamp((local-.12-i*.07)/.58);
+  const aiProgress=local=>clamp((local-.12)/.72);
   const update=({stage=0,local=0,reduced=false}={})=>{
     historicalPaths.forEach((path,i)=>{
-      const amount=reduced||stage>4?1:stage===4?clamp((local-i*.055)*4.8):0;
+      const amount=reduced||stage>4?1:stage===4?historicalProgress(local,i):0;
       path.style.strokeDashoffset=String(historicalLengths[i]*(1-amount));
       historicalLabels[i].style.opacity=amount>.98?'1':'0';
     });
-    const aiAmount=reduced||stage>5?1:stage===5?clamp(local*3):0;
+    const aiAmount=reduced||stage>5?1:stage===5?aiProgress(local):0;
     aiPath.style.strokeDashoffset=String(aiLength*(1-aiAmount));
     aiDot.style.opacity=aiAmount>.98?'1':'0';
     aiLabel.style.opacity=aiAmount>.98?'1':'0';
@@ -93,8 +96,8 @@
     const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(!reduced&&stage!==4&&stage!==5)return null;
     const candidates=[];
-    if(reduced||stage===4)historical.forEach((series,i)=>{const amount=reduced?1:clamp((local-i*.055)*4.8),count=Math.ceil(series.points.length*amount);series.points.slice(0,count).forEach(p=>candidates.push({name:series.name,color:series.color,p}));});
-    if(reduced||stage===5){const amount=reduced?1:clamp(local*3);if(amount>0){const year=5*amount;candidates.push({name:'AI · estimate',color:'#009da3',p:[year,aiLog(year)]});}}
+    if(reduced||stage===4)historical.forEach((series,i)=>{const amount=reduced?1:historicalProgress(local,i),count=Math.ceil(series.points.length*amount);series.points.slice(0,count).forEach(p=>candidates.push({name:series.name,color:series.color,p}));});
+    if(reduced||stage===5){const amount=reduced?1:aiProgress(local);if(amount>0){const year=5*amount;candidates.push({name:'AI · estimate',color:'#009da3',p:[year,aiLog(year)]});}}
     if(!candidates.length)return null;
     const hit=candidates.reduce((best,item)=>{const score=(x(item.p[0])-point.x)**2+(y(item.p[1])-point.y)**2;return !best||score<best.score?{...item,score}:best},null);
     return{title:`${hit.p[0].toFixed(1)} years since start`,guide:false,items:[{label:hit.name,value:`${(10**hit.p[1]).toLocaleString('en-US',{maximumFractionDigits:0})}× cheaper`,color:hit.color,x:x(hit.p[0]),y:y(hit.p[1])}]};
