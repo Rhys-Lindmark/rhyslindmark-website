@@ -335,9 +335,9 @@
           "employees": 78300000,
           "wagePool": 7180000000000.0,
           "detailLines": [
-            "78.3M employees",
-            "× $91.7k avg. wage",
-            "= $7.18T wage pool"
+            "78M employees",
+            "× $92k avg. wage",
+            "= $7T wage pool"
           ]
         },
         {
@@ -349,9 +349,9 @@
           "employees": 77200000,
           "wagePool": 3670000000000.0,
           "detailLines": [
-            "77.2M employees",
-            "× $47.5k avg. wage",
-            "= $3.67T wage pool"
+            "77M employees",
+            "× $48k avg. wage",
+            "= $4T wage pool"
           ]
         }
       ],
