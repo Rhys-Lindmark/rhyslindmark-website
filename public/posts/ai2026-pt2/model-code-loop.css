@@ -57,8 +57,6 @@
 .model-code-loop[data-stage="2"] .loop-growth{inset:0 8% 5%}
 body:not(.all-mode) .scene.model-code-loop>.sticky{padding:0}
 body:not(.all-mode) .scene.model-code-loop .loop-visual{position:absolute;inset:0;width:100%;height:100%}
-.scene.model-code-loop .passage{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;max-width:none;max-height:none;overflow:visible}
-body:not(.all-mode) .scene.model-code-loop:not(.chapter):not(.statement):not(.fulltext) .passage{left:8%;width:84%;transform:translateY(var(--card-shift,100svh))}
 .model-code-loop[data-stage="2"] .loop-stack{gap:4px}
 .model-code-loop[data-stage="2"] .loop-model-row,.model-code-loop[data-stage="2"] .loop-code-row{height:calc(5.55556% - 3.77778px);min-height:0}
 .model-code-loop[data-stage="2"] .loop-link{opacity:0}
