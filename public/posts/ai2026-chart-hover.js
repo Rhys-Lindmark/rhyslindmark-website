@@ -19,7 +19,7 @@ function attach(svg,options){
  const tip=document.createElement('div');tip.className='owid-hover-tooltip';tip.hidden=true;wrap.append(tip);
  const live=document.createElement('span');live.className='owid-hover-live';live.id=`chart-hover-${Math.random().toString(36).slice(2)}`;wrap.append(live);
  svg.setAttribute('tabindex','0');svg.setAttribute('aria-describedby',live.id);svg.classList.add('owid-hover-surface');
- let active=false,index=0,last=null;
+ let active=false,index=0,last=null,pointerFocus=false;
  const keyboard=options.keyboard?.length?options.keyboard:Array.from({length:21},(_,i)=>({x:bounds.left+(bounds.right-bounds.left)*i/20,y:(bounds.top+bounds.bottom)/2}));
  function hide(){active=false;tip.hidden=true;overlay.style.display='none';live.textContent='';}
  function show(point){
@@ -40,10 +40,10 @@ function attach(svg,options){
  }
  function pointer(event){const p=localPoint(svg,event);show({x:clamp(p.x,bounds.left,bounds.right),y:clamp(p.y,bounds.top,bounds.bottom)});}
  function key(event){if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End','Escape'].includes(event.key))return;if(event.key==='Escape'){hide();return;}event.preventDefault();if(event.key==='Home')index=0;else if(event.key==='End')index=keyboard.length-1;else index=clamp(index+(event.key==='ArrowLeft'||event.key==='ArrowUp'?-1:1),0,keyboard.length-1);show(keyboard[index]);}
- const enter=event=>pointer(event),move=event=>pointer(event),leave=()=>{if(document.activeElement!==svg)hide();},focus=()=>show(keyboard[index]),blur=()=>hide(),context=event=>event.preventDefault();
- svg.addEventListener('pointerenter',enter);svg.addEventListener('pointermove',move);svg.addEventListener('pointerdown',enter);svg.addEventListener('pointerleave',leave);svg.addEventListener('keydown',key);svg.addEventListener('focus',focus);svg.addEventListener('blur',blur);svg.addEventListener('contextmenu',context);
+ const enter=event=>pointer(event),move=event=>pointer(event),down=event=>{pointerFocus=true;pointer(event);},leave=()=>{if(document.activeElement!==svg)hide();},focus=()=>{if(!pointerFocus)show(keyboard[index]);},blur=()=>{pointerFocus=false;hide();},context=event=>event.preventDefault();
+ svg.addEventListener('pointerenter',enter);svg.addEventListener('pointermove',move);svg.addEventListener('pointerdown',down);svg.addEventListener('pointerleave',leave);svg.addEventListener('keydown',key);svg.addEventListener('focus',focus);svg.addEventListener('blur',blur);svg.addEventListener('contextmenu',context);
  window.addEventListener('scroll',hide,{passive:true});
- const destroy=()=>{svg.removeEventListener('pointerenter',enter);svg.removeEventListener('pointermove',move);svg.removeEventListener('pointerdown',enter);svg.removeEventListener('pointerleave',leave);svg.removeEventListener('keydown',key);svg.removeEventListener('focus',focus);svg.removeEventListener('blur',blur);svg.removeEventListener('contextmenu',context);window.removeEventListener('scroll',hide);tip.remove();live.remove();overlay.remove();};
+ const destroy=()=>{svg.removeEventListener('pointerenter',enter);svg.removeEventListener('pointermove',move);svg.removeEventListener('pointerdown',down);svg.removeEventListener('pointerleave',leave);svg.removeEventListener('keydown',key);svg.removeEventListener('focus',focus);svg.removeEventListener('blur',blur);svg.removeEventListener('contextmenu',context);window.removeEventListener('scroll',hide);tip.remove();live.remove();overlay.remove();};
  const api={destroy,hide,refresh(){if(active&&last)show(last.point);}};instances.set(svg,api);return api;
 }
 window.AIChartHover={attach};

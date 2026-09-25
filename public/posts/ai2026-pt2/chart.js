@@ -364,28 +364,37 @@
         label(svg,x(v),17,`${v}%`);
       });
       const bars=[];
-      const marginRows=data.margins.map((row,i)=>{
+      data.margins.forEach((row,i)=>{
         const cy=65+i*(H-105)/3, bh=Math.min(45,(H-110)/8);
         label(svg,left-10,cy+bh,row.name,'end');
-        const rowBars=[];
         ['gross','operating'].forEach((metric,j)=>{
           const value=row[metric],color=j?'#ff914f':'#43a9ff',yy=cy+j*(bh+7);
           const bar=node('rect',{x:Math.min(x(0),x(value)),y:yy,width:Math.abs(x(value)-x(0)),height:bh,fill:color},svg);
           const t=label(svg,value<0?x(value)+5:x(value)+6,yy+bh/2+4,`${value}%`,'start');t.style.fill='#fff';
-          const entry={bar,t,value,metric,company:row.name,y:yy+bh/2};bars.push(entry);rowBars.push(entry);
+          bars.push({bar,t,value,metric,company:row.name,y:yy+bh/2});
         });
-        return{row,cy:cy+bh,rowBars};
       });
       legend(scene,[{name:'Gross margin',color:'#43a9ff'},{name:'Operating margin, ex-SBC',color:'#ff914f'}]);
-      hoverRows(svg,{left,right:left+width,top:28,bottom:H-30},marginRows,({row,rowBars})=>{
-        const stage=Number(scene.dataset.stage||0),focus=stage===1||stage===2?'gross':stage>=3?'operating':null;
-        const progress=reduce.matches||stage>0?1:clamp(Number(scene.dataset.localProgress||0)/.8);
-        if(progress<=0)return null;
-        const visible=rowBars.filter(entry=>!focus||entry.metric===focus),items=visible.map(entry=>{
+      window.AIChartHover?.attach(svg,{
+        bounds:{left,right:left+width,top:28,bottom:H-30},
+        keyboard:bars.map(entry=>({x:x(0)+Math.sign(entry.value)*3,y:entry.y})),
+        get:point=>{
+          const entry=bars.find(({bar})=>{
+            const bx=Number(bar.getAttribute('x')),by=Number(bar.getAttribute('y'));
+            const bw=Number(bar.getAttribute('width')),bh=Number(bar.getAttribute('height'));
+            return bw>0&&point.x>=bx&&point.x<=bx+bw&&point.y>=by&&point.y<=by+bh;
+          });
+          if(!entry)return null;
+          const stage=Number(scene.dataset.stage||0);
+          const progress=reduce.matches||stage>0?1:clamp(Number(scene.dataset.localProgress||0)/.8);
+          if(progress<=0)return null;
           const current=entry.value*progress;
-          return{label:entry.metric==='gross'?'Gross margin':'Operating margin, ex-SBC',value:`${current.toFixed(0)}%`,color:entry.metric==='gross'?'#43a9ff':'#ff914f',x:x(current),y:entry.y};
-        });
-        return{title:row.name,items};
+          return{title:entry.company,x:point.x,y:entry.y,guide:false,items:[{
+            label:entry.metric==='gross'?'Gross margin':'Operating margin, ex-SBC',
+            value:`${Number(current.toFixed(1))}%`,
+            color:entry.metric==='gross'?'#43a9ff':'#ff914f',x:x(current),y:entry.y
+          }]};
+        }
       });
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0);
