@@ -8,6 +8,13 @@ function localPoint(svg,event){const p=svg.createSVGPoint();p.x=event.clientX;p.
 function attach(svg,options){
  instances.get(svg)?.destroy();
  const wrap=svg.closest('.plot-wrap,.benchmark-figure,.native-plot,.usage-chart,.epoch-plot,.rd-plot');if(!wrap)return null;
+ // SVG titles trigger a second, browser-native tooltip over our chart readout.
+ // Keep the chart's accessible name before removing titles from the SVG and marks.
+ const chartTitle=svg.querySelector(':scope > title')?.textContent?.trim();
+ if(chartTitle&&!svg.hasAttribute('aria-label')&&!svg.hasAttribute('aria-labelledby'))svg.setAttribute('aria-label',chartTitle);
+ svg.querySelectorAll('title').forEach(node=>node.remove());
+ svg.querySelectorAll('[title]').forEach(node=>node.removeAttribute('title'));
+ svg.removeAttribute('title');
  const bounds=options.bounds,overlay=svgNode('g',{'class':'owid-hover-overlay','aria-hidden':'true'},svg),guide=svgNode('line',{'class':'owid-hover-guide'},overlay),dots=svgNode('g',{},overlay);
  const tip=document.createElement('div');tip.className='owid-hover-tooltip';tip.hidden=true;wrap.append(tip);
  const live=document.createElement('span');live.className='owid-hover-live';live.id=`chart-hover-${Math.random().toString(36).slice(2)}`;wrap.append(live);
