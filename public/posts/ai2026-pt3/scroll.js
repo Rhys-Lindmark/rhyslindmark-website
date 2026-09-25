@@ -83,7 +83,7 @@
       scene.dataset.localProgress = local;
       if (scene.id === 'domain-benchmarks') {
         scene.querySelectorAll('.domain-benchmark-row').forEach((row, i) => {
-          const reveal = reduced.matches ? 1 : clamp((progress - .06 - i * .07) / .13);
+          const reveal = reduced.matches ? 1 : clamp((progress - .2 - i * .16) / .16);
           const eased = reveal * reveal * (3 - 2 * reveal);
           row.style.opacity = eased;
           row.style.setProperty('--reveal', eased);
