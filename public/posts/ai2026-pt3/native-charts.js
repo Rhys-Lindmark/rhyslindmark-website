@@ -218,7 +218,7 @@ function surplus(svg,scene,d,W,H){
   title(group,`${name}: illustrative supply and demand equilibrium, not measured data`);
   return group;
  });
- return s=>{const stage=s.reduced?1:s.stage;groups.forEach((g,i)=>{g.style.opacity=stage===i?'1':'0';g.style.visibility=stage===i?'visible':'hidden'});reveal.set(s.reduced?1:ease(clamp(s.local/.45)));scene.dataset.surplus=stage===0?'consumer':stage===1?'producer':''};
+ return s=>{const stage=s.reduced?2:s.stage,scenario=stage===1?1:0;groups.forEach((g,i)=>{g.style.opacity=scenario===i?'1':'0';g.style.visibility=scenario===i?'visible':'hidden'});reveal.set(s.reduced?1:ease(clamp(s.local/.45)));scene.dataset.surplus=scenario===0?'consumer':'producer'};
 }
 function valueAt(points,key){if(key<points[0][0]||key>points.at(-1)[0])return null;const i=points.findIndex(point=>point[0]>=key);if(i<=0)return points[0][1];const [x0,y0]=points[i-1],[x1,y1]=points[i],t=(key-x0)/(x1-x0);return y0+(y1-y0)*t}
 function attachHover(svg,scene,d,W,H,kind){
@@ -279,7 +279,7 @@ function attachHover(svg,scene,d,W,H,kind){
   attach({left:labelW,right:W-10,top,bottom},mapped,point=>{const hit=nearest(mapped,point,e=>e.x,e=>e.y),s=state(),real=progress(s),sim=s.reduced?1:s.stage>0?ease(clamp(s.local/.24)):0,items=[];if(clamp(real*2.65-hit.i*.1)>0){const r=d.panels[0].rows[hit.i];items.push({label:d.panels[0].name,value:r.valueLabel||format(r.value,'compact'),color:colors[0]})}if(sim>0&&clamp((s.local-.04-hit.i*.07)/.22)>0){const r=d.panels[1].rows[hit.i];items.push({label:d.panels[1].name,value:r.valueLabel||format(r.value,'compact'),color:colors[1]})}return items.length?{title:`${hit.row.label} · ${hit.row.detail}`,guide:'y',y:hit.y,items}:null});return;
  }
  if(scene.id==='ai-economy'){
-  const s=state(),stage=s.reduced?1:s.stage;attach({left:small?52:78,right:W-(small?26:48),top:small?26:36,bottom:H-(small?66:70)},null,()=>{const now=state(),which=(now.reduced?1:now.stage)===0;return{title:'Illustrative equilibrium',guide:false,items:[{label:which?'Consumer surplus':'Producer surplus',value:which?'Low-price scenario':'Higher-price scenario',color:which?'#39ffc1':'#ff914f'}]}});return;
+  attach({left:small?52:78,right:W-(small?26:48),top:small?26:36,bottom:H-(small?66:70)},null,()=>{const now=state(),which=now.reduced||now.stage!==1;return{title:'Illustrative equilibrium',guide:false,items:[{label:which?'Consumer surplus':'Producer surplus',value:which?'Low-price scenario':'Higher-price scenario',color:which?'#39ffc1':'#ff914f'}]}});return;
  }
 }
 const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler,progress,clamp,ease,addLegend,frame,cartesian,scatter,linePath};
