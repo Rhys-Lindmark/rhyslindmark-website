@@ -11,6 +11,8 @@
 .body-copy[data-slide="9"]{padding-top:.5em}
 .body-copy[data-slide="11"]{padding-top:clamp(64px,10svh,96px)}
 .body-copy[data-slide="12"]{padding-bottom:clamp(64px,10svh,96px)}
+.body-copy[data-slide="20"]{padding-top:clamp(64px,10svh,96px)}
+.body-copy[data-slide="23"]{padding-bottom:clamp(64px,10svh,96px)}
 .coding-universe-section{padding:clamp(80px,12svh,150px) 0 clamp(100px,15svh,180px)}
 .coding-universe-copy{text-align:left;padding:0 0 clamp(45px,7svh,85px)}
 .coding-universe-copy p+p{margin-top:1.4em}
