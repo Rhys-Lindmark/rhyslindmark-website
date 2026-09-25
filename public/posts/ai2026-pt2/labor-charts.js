@@ -49,9 +49,19 @@ function machineTiers(svg,scene,d,W,H,a){
   const clipId=`tier-reveal-${++sequence}`,defs=make('defs',{},svg),clip=make('clipPath',{id:clipId},defs);
   const rect=make('rect',{x:left-3,y:top-4,width:0,height:bottom-top+8},clip);
   path.setAttribute('clip-path',`url(#${clipId})`);
-  return {rect,label,dot};
+  return {rect,label,dot,series:s};
  });
+ let currentState={stage:Number(scene.dataset.stage||0),local:Number(scene.dataset.localProgress||0),reduced:false};
+ const seriesProgress=i=>{const step=i<4?i:6;return currentState.reduced?1:currentState.stage>step?1:currentState.stage<step?0:ease(clamp(currentState.local*1.15));};
+ window.AIChartHover?.attach(svg,{bounds:{left,right,top,bottom},keyboard:d.dates.map((date,i)=>({x:x(i),y:(top+bottom)/2})),get:point=>{
+  const active=marks.map((mark,i)=>({mark,p:seriesProgress(i)})).filter(entry=>entry.p>0);if(!active.length)return null;
+  const maxIndex=Math.max(...active.map(({p})=>p*(d.dates.length-1))),index=Math.max(0,Math.min(Math.round(Math.min((point.x-left)/(right-left)*(d.dates.length-1),maxIndex)),d.dates.length-1));
+  const items=active.filter(({p})=>index<=p*(d.dates.length-1)+.01).map(({mark})=>{const value=mark.series.values[index];return{label:mark.series.name,value:Math.round(value).toLocaleString('en-US'),color:mark.series.color,x:x(index),y:y(value)};});
+  d.references.forEach((reference,i)=>{const step=4+i,p=currentState.reduced?1:currentState.stage>step?1:currentState.stage<step?0:ease(clamp(currentState.local*1.5));if(p>0)items.push({label:reference.name,value:`${Math.round(reference.value/1e6)}M`,color:muted,x:x(index),y:y(reference.value)});});
+  return items.length?{title:d.dates[index],x:x(index),items}:null;
+ }});
  return state=>{
+  currentState=state;
   marks.forEach((m,i)=>{
    const step=i<4?i:6;
    const p=state.reduced?1:state.stage>step?1:state.stage<step?0:ease(clamp(state.local*1.15));

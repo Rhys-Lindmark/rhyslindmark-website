@@ -23,13 +23,12 @@
       el.style.setProperty('--color', row.color); el.append(marker, document.createTextNode(row.name)); target.append(el);
     });
   }
-  function revenueAt(row, year) {
-    const points=row.points;
-    if(year<points[0][0]||year>points.at(-1)[0])return null;
+  function valueAt(points, key, log=false) {
+    const year=key;if(year<points[0][0]||year>points.at(-1)[0])return null;
     const right=points.findIndex(point=>point[0]>=year);
     if(right<=0)return points[0][1];
     const [x0,y0]=points[right-1],[x1,y1]=points[right],t=(year-x0)/(x1-x0);
-    return 10**(Math.log10(y0)+(Math.log10(y1)-Math.log10(y0))*t);
+    return log?10**(Math.log10(y0)+(Math.log10(y1)-Math.log10(y0))*t):y0+(y1-y0)*t;
   }
   function revenueDate(year) {
     const date=new Date(Date.UTC(Math.floor(year),Math.min(11,Math.round((year%1)*12)),1));
@@ -39,40 +38,8 @@
     if(value<1)return `$${Math.round(value*1000)}M`;
     return `$${value<10?value.toFixed(1):Math.round(value)}B`;
   }
-  function revenueHover(scene,svg,rows,{W,H,m,iw,ih,x,y}) {
-    const wrap=scene.querySelector('.plot-wrap'),start=Math.min(...rows.map(row=>row.points[0][0])),end=Math.max(...rows.map(row=>row.points.at(-1)[0]));
-    const hover=node('g',{class:'chart-hover-marks'},svg),rule=node('line',{class:'chart-hover-rule',y1:m.t,y2:m.t+ih},hover);
-    const dots=rows.map(row=>node('circle',{r:5,fill:row.color,stroke:'#0b1015','stroke-width':2},hover));
-    const hit=node('rect',{class:'chart-hover-hit',x:m.l,y:m.t,width:iw,height:ih,fill:'transparent',tabindex:0,role:'slider','aria-label':'Explore annualized revenue by date','aria-valuemin':String(start),'aria-valuemax':String(end)},svg);
-    const tip=document.createElement('div'),date=document.createElement('div'),list=document.createElement('div');
-    tip.className='chart-hover-tooltip';tip.hidden=true;tip.setAttribute('aria-live','polite');date.className='chart-hover-date';list.className='chart-hover-list';tip.append(date,list);wrap.append(tip);
-    const tipRows=rows.map(row=>{
-      const item=document.createElement('div'),swatch=document.createElement('i'),name=document.createElement('span'),value=document.createElement('strong');
-      swatch.style.setProperty('--color',row.color);name.textContent=row.name;item.append(swatch,name,value);list.append(item);return {item,value};
-    });
-    let current=end,focused=false;
-    function show(year) {
-      current=Math.max(start,Math.min(end,year));
-      const xx=x(current),visible=[];rule.setAttribute('x1',xx);rule.setAttribute('x2',xx);
-      rows.forEach((row,i)=>{
-        const value=revenueAt(row,current),shown=value!==null;
-        dots[i].style.display=shown?'':'none';tipRows[i].item.hidden=!shown;
-        if(shown){dots[i].setAttribute('cx',xx);dots[i].setAttribute('cy',y(value));tipRows[i].value.textContent=revenueValue(value);visible.push(`${row.name} ${revenueValue(value)}`);}
-      });
-      hover.style.display='';tip.hidden=false;date.textContent=revenueDate(current);
-      const cssX=xx/W*wrap.clientWidth,flip=cssX+tip.offsetWidth+12>wrap.clientWidth;
-      tip.style.left=`${cssX}px`;tip.classList.toggle('flip',flip);
-      hit.setAttribute('aria-valuenow',current.toFixed(3));hit.setAttribute('aria-valuetext',`${revenueDate(current)}: ${visible.join(', ')}`);
-    }
-    function hide(){if(!focused){hover.style.display='none';tip.hidden=true;}}
-    function point(event){const box=svg.getBoundingClientRect(),xx=(event.clientX-box.left)/box.width*W;show(2023+(xx-m.l)/iw*4);}
-    function key(event){
-      if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
-      event.preventDefault();show(event.key==='Home'?start:event.key==='End'?end:current+(event.key==='ArrowLeft'?-1:1)/12);
-    }
-    hover.style.display='none';hit.addEventListener('pointermove',point);hit.addEventListener('pointerdown',point);hit.addEventListener('pointerleave',hide);
-    hit.addEventListener('focus',()=>{focused=true;show(current);});hit.addEventListener('blur',()=>{focused=false;hide();});hit.addEventListener('keydown',key);
-    svg._hoverCleanup=()=>tip.remove();
+  function hoverRows(svg,bounds,rows,getRow){
+    window.AIChartHover?.attach(svg,{bounds,keyboard:rows.map(row=>({x:row.x??(bounds.left+bounds.right)/2,y:row.y})),get:point=>getRow(rows.reduce((best,row)=>Math.abs(row.y-point.y)<Math.abs(best.y-point.y)?row:best,rows[0]),point)});
   }
   function regimeLabel(svg, row, left, cy, bh, small) {
     // "GPT-4-era foundation" overruns any sane left gutter on a phone, so the
@@ -165,12 +132,13 @@
         if(r.ci_low>0)node('line',{x1:xx,x2:xx,y1:y(Math.min(600,r.ci_high)),y2:y(Math.max(.008,r.ci_low)),stroke:'#39ffc1',opacity:'.22','stroke-width':2},g);
         node('circle',{cx:xx,cy:yy,r:r.sota?5:3,fill:r.sota?'#39ffc1':'#67887c'},g);
         if(names[r.name]&&(!small||[0,3,9,25].includes(i))){const end=i===data.metr.rows.length-1;label(g,xx+(end?-10:9),yy-10,names[r.name],end?'end':'start');}
-        marks.push(g);
+        marks.push({g,row:r,x:xx,y:yy});
       });
+      const metrBounds={left,right:W-right,top,bottom};window.AIChartHover?.attach(svg,{bounds:metrBounds,keyboard:marks.map(mark=>({x:mark.x,y:mark.y})),get:point=>{const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),shown=reduce.matches?marks.length:stage===1?Math.floor(clamp(local/.9)*marks.length):0;if(!shown)return null;const visible=marks.slice(0,shown),mark=visible.reduce((best,item)=>{const d=((item.x-point.x)/(W-left-right))**2+((item.y-point.y)/(bottom-top))**2,b=((best.x-point.x)/(W-left-right))**2+((best.y-point.y)/(bottom-top))**2;return d<b?item:best;},visible[0]),r=mark.row;return{title:names[r.name]||r.name,x:mark.x,y:mark.y,guide:false,items:[{label:'80% task duration',value:r.estimate<1?`${Math.round(r.estimate*60)} sec`:`${r.estimate.toFixed(1)} min`,color:r.sota?'#39ffc1':'#67887c',x:mark.x,y:mark.y},{label:'Release',value:r.date,color:'#9aafbf'}]};}});
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
         const shown=reduce.matches?marks.length:stage===1?Math.floor(clamp(local/.9)*marks.length):0;
-        marks.forEach((g,i)=>g.style.opacity=i<shown?'1':'0');
+        marks.forEach(({g},i)=>g.style.opacity=i<shown?'1':'0');
       });
       renderers.get(scene)();
     } else
@@ -188,6 +156,8 @@
         segments.push(g);total+=row.value;
       });
       legend(scene,rows);
+      const segmentRows=[];total=0;rows.forEach(row=>{const start=left+total/30*width,end=start+row.value/30*width;segmentRows.push({row,x:(start+end)/2,y:top+bh/2});total+=row.value;});
+      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.reduce((best,item)=>Math.abs(item.x-point.x)<Math.abs(best.x-point.x)?item:best,segmentRows[0]);return{title:'$30B revenue per GW',x:segment.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:segment.x,y:segment.y}]};}});
       renderers.set(scene,p=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
         const sentenceCount=stage===0?0:stage===2?3:local<.25?1:local<.5?2:3;
@@ -223,6 +193,7 @@
         paths.push({g,row,path,reveal,marker,focus});
       });
       legend(scene,data.expansion);
+      const expansionBounds={left,right:W-right,top:28,bottom};window.AIChartHover?.attach(svg,{bounds:expansionBounds,keyboard:Array.from({length:28},(_,i)=>({x:x(1999+i),y:(28+bottom)/2})),get:point=>{const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),comparison=reduce.matches||stage>0,progress=reduce.matches?1:clamp((local-.08)/.72),desired=Math.round(1999+(point.x-left)/width*28);if(!comparison){const estimates=paths.filter(({row})=>row.estimated).map(({row})=>({row,point:row.points.at(-1)})),year=estimates.reduce((best,item)=>Math.abs(item.point[0]-desired)<Math.abs(best.point[0]-desired)?item:best,estimates[0]).point[0],items=estimates.filter(item=>item.point[0]===year).map(({row,point})=>({label:row.name,value:`${point[1]}%`,color:row.color,x:x(year),y:y(point[1])}));return{title:`${year} estimate`,x:x(year),items};}const items=[];for(const {row,focus} of paths){const first=row.points[0][0],last=row.points.at(-1)[0],cap=focus?first+(last-first)*progress:last,allowed=desired<=cap||(row.estimated&&desired===last);if(!allowed)continue;const value=valueAt(row.points,desired);if(value!==null)items.push({label:row.name,value:`${value.toFixed(1)}%`,color:row.color,x:x(desired),y:y(value)});}return items.length?{title:String(desired),x:x(desired),items}:null;}});
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
         const comparison=reduce.matches||stage>0, progress=reduce.matches?1:clamp((local-.08)/.72);
@@ -254,6 +225,7 @@
       text(rd,left+8,top+rdMainHeight+trainHeight/2+4,small?'$400M':'$400M · GPT-4.5 final run');
       text(rd,left+rdWidth*.4/.48+3,top+rdMainHeight+trainHeight/2+4,'$80M');
       legend(scene,[{name:'Other R&D',color:'#17bdb6'},{name:'GPT-4.5 final run',color:'#39ffc1'},{name:'Other final runs',color:'#8aecbb'},{name:'Inference',color:'#43a9ff'}]);
+      const computeRows=[{label:'Other R&D',value:'$4.5B',color:'#17bdb6',x:left+rdWidth/2,y:top+rdMainHeight/2},{label:'GPT-4.5 final run',value:'$400M',color:'#39ffc1',x:left+rdWidth*.4/.48/2,y:top+rdMainHeight+trainHeight/2},{label:'Other final runs',value:'$80M',color:'#8aecbb',x:left+rdWidth*(.4+.04)/.48,y:top+rdMainHeight+trainHeight/2},{label:'Inference',value:'$2B',color:'#43a9ff',x:left+rdWidth+infWidth/2,y:top+height/2}];window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+height},keyboard:computeRows.map(row=>({x:row.x,y:row.y})),get:point=>{const row=computeRows.reduce((best,item)=>{const d=(item.x-point.x)**2+(item.y-point.y)**2,b=(best.x-point.x)**2+(best.y-point.y)**2;return d<b?item:best;},computeRows[0]);return{title:'OpenAI compute spending · 2024',x:row.x,y:row.y,guide:false,items:[{...row}]};}});
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0);
         rd.style.opacity=!reduce.matches&&stage>=3?'.15':'1';
@@ -286,7 +258,7 @@
         }
         series.push({group,path,tip,ai,length:path.getTotalLength()});
       }
-      if(revenue)revenueHover(scene,svg,data.revenue,{W,H,m,iw,ih,x,y});
+      const timeBounds={left:m.l,right:m.l+iw,top:m.t,bottom:m.t+ih},keyboard=[...new Set(data[kind].flatMap(row=>row.points.map(point=>point[0])))].sort((a,b)=>a-b).map(key=>({x:x(key),y:m.t+ih/2}));window.AIChartHover?.attach(svg,{bounds:timeBounds,keyboard,get:point=>{const p=Number(scene.dataset.progress||0),raw=revenue?2023+(point.x-m.l)/iw*4:(point.x-m.l)/iw*10;if(revenue){const progress=reduce.matches?1:clamp(p/.78),key=Math.min(raw,2023+4*progress),first=Math.min(...data.revenue.map(row=>row.points[0][0]));if(key<first)return null;const items=data.revenue.map(row=>{const value=valueAt(row.points,key,true);return value===null?null:{label:row.name,value:revenueValue(value),color:row.color,x:x(key),y:y(value)};}).filter(Boolean);return items.length?{title:revenueDate(key),x:x(key),items}:null;}const caps=data.growth.map((row,i)=>{const ai=series[i].ai,progress=reduce.matches?1:clamp(ai?(p-.5)/.4:p/.4);return{row,progress,cap:row.points[0][0]+(row.points.at(-1)[0]-row.points[0][0])*progress};}).filter(entry=>entry.progress>0);if(!caps.length)return null;const key=Math.min(raw,Math.max(...caps.map(entry=>entry.cap))),items=caps.map(({row,cap})=>{if(key>cap)return null;const value=valueAt(row.points,key);return value===null?null:{label:row.name,value:`$${value.toFixed(1)}B`,color:row.color,x:x(key),y:y(value)};}).filter(Boolean);return items.length?{title:`${key.toFixed(1)} years after ≈$10B`,x:x(key),items}:null;}});
       legend(scene,data[kind]);
       renderers.set(scene,p=>{
         if(revenue){rect.setAttribute('width',(iw+6)*(reduce.matches?1:clamp(p/.78)));return;}
@@ -318,7 +290,14 @@
         const inside=false;
         const est=label(svg,left,cy-3,'EST.',inside?'end':'start');
         const value=label(svg,left,cy+15,`${row.value} TB`,inside?'end':'start');value.classList.add('value');
-        return {bar,est,value,row,inside};
+        return {bar,est,value,row,inside,cy};
+      });
+      hoverRows(svg,{left,right:left+width,top,bottom},bars,({row,cy},point)=>{
+        const t=reduce.matches?1:clamp(Number(scene.dataset.progress||0)/.7),i=cfg.rows.indexOf(row);
+        const local=clamp((t-i*.12)/.64),eased=local*local*(3-2*local);
+        if(eased<=0)return null;
+        const current=row.value*eased;
+        return{title:row.name,items:[{label:'Training data',value:`${current.toFixed(current<10?1:0)} TB`,color:row.color,x:x(current),y:cy}]};
       });
       renderers.set(scene,p=>{
         const t=reduce.matches?1:clamp(p/.7);
@@ -352,6 +331,16 @@
         return {base,rl,share,cost,row,bh,cy};
       });
       legend(scene,[{name:'Base / pretraining',color:'#5a5f66'},{name:'RL + trajectory post-training',color:'#ef8a5c'}]);
+      hoverRows(svg,{left,right:left+width,top,bottom},bars,({row,cy},point)=>{
+        const t=reduce.matches?1:clamp(Number(scene.dataset.progress||0)/.7),i=cfg.rows.indexOf(row);
+        const local=clamp((t-i*.16)/.7),eased=local*local*(3-2*local);
+        if(eased<=0)return null;
+        const base=row.base*eased,rl=row.rl*eased;
+        return{title:row.name,items:[
+          {label:'Base / pretraining',value:`$${base.toFixed(0)}M`,color:'#5a5f66',x:x(base/2),y:cy},
+          {label:'RL + trajectories',value:`$${rl.toFixed(0)}M`,color:'#ef8a5c',x:x(base+rl/2),y:cy}
+        ]};
+      });
       renderers.set(scene,p=>{
         const t=reduce.matches?1:clamp(p/.7);
         bars.forEach(({base,rl,share,cost,row},i)=>{
@@ -375,17 +364,29 @@
         label(svg,x(v),17,`${v}%`);
       });
       const bars=[];
-      data.margins.forEach((row,i)=>{
+      const marginRows=data.margins.map((row,i)=>{
         const cy=65+i*(H-105)/3, bh=Math.min(45,(H-110)/8);
         label(svg,left-10,cy+bh,row.name,'end');
+        const rowBars=[];
         ['gross','operating'].forEach((metric,j)=>{
           const value=row[metric],color=j?'#ff914f':'#43a9ff',yy=cy+j*(bh+7);
           const bar=node('rect',{x:Math.min(x(0),x(value)),y:yy,width:Math.abs(x(value)-x(0)),height:bh,fill:color},svg);
           const t=label(svg,value<0?x(value)+5:x(value)+6,yy+bh/2+4,`${value}%`,'start');t.style.fill='#fff';
-          bars.push({bar,t,value,metric,company:row.name});
+          const entry={bar,t,value,metric,company:row.name,y:yy+bh/2};bars.push(entry);rowBars.push(entry);
         });
+        return{row,cy:cy+bh,rowBars};
       });
       legend(scene,[{name:'Gross margin',color:'#43a9ff'},{name:'Operating margin, ex-SBC',color:'#ff914f'}]);
+      hoverRows(svg,{left,right:left+width,top:28,bottom:H-30},marginRows,({row,rowBars})=>{
+        const stage=Number(scene.dataset.stage||0),focus=stage===1||stage===2?'gross':stage>=3?'operating':null;
+        const progress=reduce.matches||stage>0?1:clamp(Number(scene.dataset.localProgress||0)/.8);
+        if(progress<=0)return null;
+        const visible=rowBars.filter(entry=>!focus||entry.metric===focus),items=visible.map(entry=>{
+          const current=entry.value*progress;
+          return{label:entry.metric==='gross'?'Gross margin':'Operating margin, ex-SBC',value:`${current.toFixed(0)}%`,color:entry.metric==='gross'?'#43a9ff':'#ff914f',x:x(current),y:entry.y};
+        });
+        return{title:row.name,items};
+      });
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0);
         const focus=stage===1||stage===2?'gross':stage>=3?'operating':null;

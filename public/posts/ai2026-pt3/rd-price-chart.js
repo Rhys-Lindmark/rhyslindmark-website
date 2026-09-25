@@ -73,6 +73,12 @@
       mark.item.style.opacity=visible?'1':'0';
     });
   };
+  window.AIChartHover?.attach(svg,{bounds:{left,right,top,bottom},keyboard:orderedSeries.flatMap(s=>s.points.map(p=>({x:x(p[0]),y:y(p[1])}))),get:point=>{
+    const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;if(!reduced&&stage!==6)return null;
+    const candidates=[];orderedSeries.forEach((s,i)=>{const amount=reduced?1:clamp((local-i*.17)/.2),count=Math.ceil(s.points.length*amount);s.points.slice(0,count).forEach(p=>candidates.push({s,p}));});if(!candidates.length)return null;
+    const hit=candidates.reduce((best,item)=>{const score=(x(item.p[0])-point.x)**2+(y(item.p[1])-point.y)**2;return !best||score<best.score?{...item,score}:best},null);
+    return{title:hit.s.label,guide:false,items:[{label:'Cumulative R&D stock',value:`${hit.p[0].toLocaleString('en-US',{maximumFractionDigits:1})}×`,color:colors[hit.s.id],x:x(hit.p[0]),y:y(hit.p[1])},{label:'Relative cost decrease',value:`${hit.p[1].toLocaleString('en-US',{maximumFractionDigits:0})}× cheaper`,color:colors[hit.s.id]}]};
+  }});
   scene.addEventListener('chart-progress',event=>update(event.detail));
   update({stage:Number(scene.dataset.stage||0),local:Number(scene.dataset.localProgress||0),reduced:matchMedia('(prefers-reduced-motion: reduce)').matches});
 })();

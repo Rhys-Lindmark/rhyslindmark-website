@@ -14,6 +14,13 @@ window.drawContinuationChart = function(scene, data, reduced) {
     text((right+m.l)/2,H-12,xlabel);
     n('text',{x:17,y:(m.t+bottom)/2,transform:`rotate(-90 17 ${(m.t+bottom)/2})`,'text-anchor':'middle'},svg,ylabel);
   }
+  const plotBounds={left:m.l,right,top:m.t,bottom};
+  const dateLabel=value=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(new Date(value));
+  const nearest=(rows,point,getX,getY)=>rows.reduce((best,row)=>{
+    const dx=getX(row)-point.x,dy=(getY(row)-point.y)*.7,score=dx*dx+dy*dy;
+    return !best||score<best.score?{row,score}:best;
+  },null)?.row;
+  const attach=(keyboard,get)=>window.AIChartHover?.attach(svg,{bounds:plotBounds,keyboard,get});
   if(scene.id==='anthropic-rd-automation'){
     const rows=data.rdAutomation.rows,cell=iw/rows.length,edge=i=>m.l+i*cell,y=v=>bottom-v/100*ih;
     const bands=[
@@ -47,6 +54,14 @@ window.drawContinuationChart = function(scene, data, reduced) {
       months.forEach((month,i)=>{month.style.display=i<visible?'':'none';});
       legend.style.opacity=visible?1:0;
     };
+    attach(rows.map((row,i)=>({x:edge(i)+cell/2,y:y(50)})),point=>{
+      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),progress=reduced()?1:stage===1?clamp(local/.85):0;
+      const visible=Math.floor(progress*rows.length);if(!visible)return null;
+      let index=Math.round((point.x-m.l)/cell-.5);index=Math.max(0,Math.min(visible-1,index));
+      const row=rows[index],items=[];let lower=0;
+      bands.slice().reverse().forEach(({index:bandIndex,name,color})=>{const value=row[bandIndex+1],upper=lower+value;items.push({label:name,value:`${value}%`,color,x:edge(index)+cell/2,y:y((lower+upper)/2)});lower=upper;});
+      return{title:row[0],x:edge(index)+cell/2,items};
+    });
     render();
     return render;
   }
@@ -67,6 +82,12 @@ window.drawContinuationChart = function(scene, data, reduced) {
     const legend=scene.querySelector('.legend');legend.replaceChildren();
     const item=document.createElement('span'),swatch=document.createElement('i');
     swatch.style.setProperty('--color','#43a9ff');item.append(swatch,document.createTextNode('Median researcher · 365-day run rate'));legend.append(item);
+    attach(rows.map(([date,daily])=>({x:x(date),y:y(daily*annualizationDays)})),point=>{
+      const progress=reduced()?1:clamp(Number(scene.dataset.localProgress||0)/.85),cap=m.l+iw*progress;
+      const visible=rows.filter(([date])=>x(date)<=cap+.5);if(!visible.length)return null;
+      const row=visible.reduce((best,current)=>Math.abs(x(current[0])-point.x)<Math.abs(x(best[0])-point.x)?current:best),annual=row[1]*annualizationDays;
+      return{title:dateLabel(Date.parse(row[0])),x:x(row[0]),items:[{label:'Annualized usage',value:`$${Math.round(annual).toLocaleString('en-US')}`,color:'#43a9ff',x:x(row[0]),y:y(annual)}]};
+    });
     const render=()=>{
       const progress=reduced()?1:clamp(Number(scene.dataset.localProgress||0)/.85);
       reveal.setAttribute('width',iw*progress);
@@ -120,6 +141,14 @@ window.drawContinuationChart = function(scene, data, reduced) {
         item.style.opacity=progress>0?'1':'.25';
       });
     };
+    attach(rows.map(row=>({x:x(row[0]),y:y(Math.max(row[1],row[2],row[3],row[4]))})),point=>{
+      const p=Number(scene.dataset.progress||0),employees=reduced()?1:clamp(p/.46),agents=reduced()?1:clamp((p-.5)/.46);
+      const caps={employee:m.l+iw*employees,agent:m.l+iw*agents};
+      const available=rows.filter(row=>x(row[0])<=Math.max(caps.employee,caps.agent)+.5);if(!available.length)return null;
+      const row=available.reduce((best,current)=>Math.abs(x(current[0])-point.x)<Math.abs(x(best[0])-point.x)?current:best),items=[];
+      series.forEach(({index,name,color,agent})=>{if(x(row[0])<=caps[agent?'agent':'employee']+.5&&(!agent||row[index]>0))items.push({label:name,value:Math.round(row[index]).toLocaleString('en-US'),color,x:x(row[0]),y:y(row[index])});});
+      return items.length?{title:dateLabel(Date.parse(row[0])),x:x(row[0]),items}:null;
+    });
     render(0);
     return render;
   }
@@ -146,13 +175,20 @@ window.drawContinuationChart = function(scene, data, reduced) {
       n('title',{},mark,`${point.name}: ${Math.round(point.parameters/1e9)}B parameters`);
       const anchor=small?'end':point.side,offset=anchor==='end'?-14:14,dy=i===0?18:i===1?4:-12;
       const name=text(cx+offset,cy+dy,point.name,anchor);name.style.fill=point.color;name.style.fontSize=small?'10px':'12px';name.style.paintOrder='stroke';name.style.stroke='#0b1015';name.style.strokeWidth='4px';
-      return {mark,name};
+      return {mark,name,point,cx,cy};
     });
     const chinchillaX=x(5.8e23),chinchillaY=y(7e10),chinchilla=n('path',{d:starPath(chinchillaX,chinchillaY,small?9:12),fill:'#39ffc1',stroke:'#f2f6f8','stroke-width':1.3});
     n('title',{},chinchilla,'Chinchilla: 70B parameters');
     const chinchillaLabel=text(chinchillaX+(small?-14:14),chinchillaY+5,'Chinchilla · 70B',small?'end':'start');chinchillaLabel.style.fill='#39ffc1';chinchillaLabel.style.fontSize=small?'10px':'12px';chinchillaLabel.style.paintOrder='stroke';chinchillaLabel.style.stroke='#0b1015';chinchillaLabel.style.strokeWidth='4px';
     const legend=scene.querySelector('.legend');legend.replaceChildren();
     [['Kaplan et al. (2020)','#d8e1e8','dashed'],['Our Approach','#39ffc1','solid']].forEach(([name,color,style])=>{const item=document.createElement('span'),swatch=document.createElement('i');swatch.style.setProperty('--color',color);swatch.style.borderTopStyle=style;item.append(swatch,document.createTextNode(name));legend.append(item);});
+    const hoverPoints=[...kaplanMarks,{point:{name:'Chinchilla',flops:5.8e23,parameters:7e10,color:'#39ffc1'},cx:chinchillaX,cy:chinchillaY,chinchilla:true}];
+    attach(hoverPoints.map(entry=>({x:entry.cx,y:entry.cy})),point=>{
+      const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),first=reduced()?1:stage===0?0:stage===1?clamp(local/.8):1,second=reduced()?1:stage===2?clamp(local/.8):0;
+      const visible=hoverPoints.filter((entry,i)=>entry.chinchilla?second>0:first>.5+i*.1);if(!visible.length)return null;
+      const hit=nearest(visible,point,entry=>entry.cx,entry=>entry.cy),row=hit.point;
+      return{title:row.name,items:[{label:'Model parameters',value:`${(row.parameters/1e9).toFixed(0)}B`,color:row.color,x:hit.cx,y:hit.cy},{label:'Training compute',value:`${row.flops.toExponential(1)} FLOP`,color:row.color}]};
+    });
     return ()=>{
       const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
       const first=reduced()?1:stage===0?0:stage===1?clamp(local/.8):1;
@@ -177,7 +213,7 @@ window.drawContinuationChart = function(scene, data, reduced) {
       const cx=x(row.flops),cy=y(row.parameters),v=depth?row.toolSteps:row.rolloutTokens,r=Math.max(3,Math.sqrt(v/max)*maxR);
       const dot=n('circle',{cx,cy,r,fill:colors[row.group],'fill-opacity':.32,stroke:colors[row.group],'stroke-width':1.5});
       n('title',{},dot,`${row.name}: ≈${(row.parameters/1e9).toFixed(0)}B parameters; ≈${row.flops.toExponential(1)} FLOP; ${depth?'≈'+Math.round(v)+' steps':'≈'+(v/1e12).toFixed(1)+'T rollout tokens'}`);
-      marks.push({dot,r,cx,model:row.name});
+      marks.push({dot,r,cx,cy,model:row.name,row});
       const width=row.name.length*(small?5.6:6.3),height=16;
       let best=null,bestScore=Infinity;
       for(let dy of [-r-12,r+20,-30,35,-50,55,-70,75])for(let dx of [0,-width*.55,width*.55]){
@@ -202,6 +238,17 @@ window.drawContinuationChart = function(scene, data, reduced) {
       scaleMarks.push(n('circle',{cx,cy:bottom-22-r,r,fill:'none',stroke:'#9aafbf','stroke-opacity':.6}));
       scaleMarks.push(text(cx,bottom-7,depth?`${v}`:`${v/1e12}T`));
     });
+    attach(marks.map(mark=>({x:mark.cx,y:mark.cy})),point=>{
+      const p=Number(scene.dataset.progress||0),stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
+      const t=depth?(reduced()?1:clamp(p/.72)):null,reveal=depth?null:(reduced()?1:stage?1:clamp(local/.28));
+      const visible=marks.filter(mark=>depth?clamp((t-(mark.cx-m.l)/iw*.6)/.25)>0:reveal>0);if(!visible.length)return null;
+      const hit=nearest(visible,point,mark=>mark.cx,mark=>mark.cy),row=hit.row,color=colors[row.group];
+      return{title:row.name,items:[
+        {label:'Parameters',value:`${(row.parameters/1e9).toFixed(0)}B`,color,x:hit.cx,y:hit.cy},
+        {label:'Training compute',value:`${row.flops.toExponential(1)} FLOP`,color},
+        {label:depth?'Rewarded tool steps':'RL rollout tokens',value:depth?`≈${Math.round(row.toolSteps)}`:`≈${(row.rolloutTokens/1e12).toFixed(1)}T`,color}
+      ]};
+    });
     return p=>{
       if(depth){const t=reduced()?1:clamp(p/.72);marks.forEach(({dot,r,cx})=>dot.setAttribute('r',r*clamp((t-(cx-m.l)/iw*.6)/.25)));labels.forEach(({name,lead,cx})=>{const a=clamp((t-(cx-m.l)/iw*.6)/.25);name.style.opacity=a;lead.style.opacity=a;});return;}
       const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reveal=reduced()?1:stage?1:clamp(local/.28),size=reduced()?1:stage>=2?1:stage?clamp(local/.42):0,focus=reduced()?0:stage>=2?clamp(local/.35):0;
@@ -224,5 +271,18 @@ window.drawContinuationChart = function(scene, data, reduced) {
     if(isChina)rows.forEach(([date,v])=>{const dot=n('circle',{cx:x(date),cy:y(v),r:4,fill:color,stroke:'#0b1015','stroke-width':2},group);n('title',{},dot,`${name}: ≈${v} ECI, ${date}`);});
     const s=document.createElement('span');s.textContent=name;s.style.color=color;legend.append(s);
   }
+  const allDates=[...new Set(series.flatMap(([,rows])=>rows.map(row=>Date.parse(row[0]))))].sort((a,b)=>a-b);
+  const seriesValue=(rows,time)=>{
+    if(time<Date.parse(rows[0][0]))return null;
+    if(isChina){let value=rows[0][1];for(const [date,v] of rows){if(Date.parse(date)>time)break;value=v;}return value;}
+    const rightIndex=rows.findIndex(([date])=>Date.parse(date)>=time);if(rightIndex<=0)return rows[0][1];if(rightIndex<0)return rows.at(-1)[1];
+    const [d0,v0]=rows[rightIndex-1],[d1,v1]=rows[rightIndex],f=(time-Date.parse(d0))/(Date.parse(d1)-Date.parse(d0));return v0+(v1-v0)*f;
+  };
+  attach(allDates.map(time=>({x:m.l+(time-start)/(end-start)*iw,y:(m.t+bottom)/2})),point=>{
+    const progress=reduced()?1:clamp(Number(scene.dataset.progress||0)/.75);if(progress<=0)return null;
+    const cap=start+(end-start)*progress,time=Math.min(cap,start+(point.x-m.l)/iw*(end-start)),px=m.l+(time-start)/(end-start)*iw;
+    const items=series.map(([name,rows,color])=>{const value=seriesValue(rows,time);return value===null?null:{label:name,value:isChina?`${value.toFixed(0)} ECI`:`${value.toFixed(1)}%`,color,x:px,y:y(value)};}).filter(Boolean);
+    return items.length?{title:dateLabel(time),x:px,items}:null;
+  });
   return p=>rect.setAttribute('width',(iw+10)*(reduced()?1:clamp(p/.75)));
 };

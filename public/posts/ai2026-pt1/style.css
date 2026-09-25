@@ -369,3 +369,16 @@ body.header-revealed>header{transform:translateY(0);pointer-events:auto}
 .series-title-card-last{position:relative}
 .series-title-card-last::after{content:"";position:absolute;left:50%;bottom:18svh;width:min(700px,calc(100% - 40px));height:1px;background:#2a3a47;transform:translateX(-50%)}
 @media(max-width:760px){.series-hero-inner{padding:50px 16px 45px}.series-hero-labels{font-size:clamp(13px,4vw,19px)}#series-hero-canvas{width:calc(100% + 32px);max-width:none;aspect-ratio:1200/620;max-height:none}.series-title-card h1,.series-title-card p{font-size:48px}.series-title-card-last::after{bottom:20svh;width:calc(100% - 32px)}}
+
+/* OWID-style data inspection: the renderer supplies values; this layer stays
+   above chart marks, within the chart bounds, and out of native selection UI. */
+.plot-wrap,.benchmark-figure{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.owid-hover-surface{touch-action:pan-y;cursor:crosshair;outline:none}
+.owid-hover-surface:focus-visible{outline:2px solid #a2d1f4;outline-offset:-2px}
+.owid-hover-overlay{pointer-events:none}
+.owid-hover-guide{stroke:#d8e7f2;stroke-width:1;stroke-dasharray:3 4;opacity:.72;vector-effect:non-scaling-stroke}
+.owid-hover-dot{stroke:#0b1015;stroke-width:2;vector-effect:non-scaling-stroke}
+.owid-hover-tooltip{position:absolute;left:0;top:0;z-index:6;width:max-content;max-width:min(280px,calc(100% - 12px));max-height:calc(100% - 12px);overflow:auto;padding:9px 11px;border:1px solid #526777;border-radius:4px;background:#101820f2;color:#fff;box-shadow:0 5px 20px #0008;pointer-events:none;font:11px/1.35 var(--mono)}
+.owid-hover-tooltip[hidden]{display:none}.owid-hover-tooltip strong{display:block;margin-bottom:6px;font-weight:600}.owid-hover-values{display:grid;gap:3px}.owid-hover-values>div{display:flex;align-items:baseline;justify-content:space-between;gap:14px}.owid-hover-values span{display:inline-flex;align-items:center;min-width:0;color:#c2d0db}.owid-hover-values b{font-weight:500;white-space:nowrap}.owid-hover-values i{width:8px;height:8px;margin-right:6px;border-radius:50%;background:var(--color);flex:none}.owid-hover-live{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:760px){.owid-hover-tooltip{max-width:min(230px,calc(100% - 12px));font-size:10px}.owid-hover-values>div{gap:9px}}
+@media print{.owid-hover-tooltip,.owid-hover-overlay,.owid-hover-live{display:none!important}}

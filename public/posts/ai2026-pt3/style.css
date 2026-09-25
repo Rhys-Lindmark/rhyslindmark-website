@@ -26,6 +26,8 @@
 .scene.agents{height:var(--scene-height,300svh);--axis-inset:96px}
 .scene.agents>.sticky{top:0;height:100svh;min-height:0;overflow:hidden;padding:76px max(22px,calc((100vw - 1200px)/2)) 24px}
 .scene.agents figure{gap:16px;min-height:0}
+.scene.agents :is(.native-plot,.usage-chart,.epoch-plot,.rd-plot),.scene.agents :is(.native-plot,.usage-chart,.epoch-plot,.rd-plot) *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.scene.agents :is(.native-plot,.usage-chart,.epoch-plot,.rd-plot) svg{touch-action:pan-y}
 .scene.agents h3{text-align:center;font-size:14px;color:#d1dce5;flex:none}
 .graph-link{display:flex;align-items:center;justify-content:center;flex:1;min-height:0;overflow:hidden}
 .graph-link img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
@@ -141,7 +143,7 @@ ai-building-intro{--intro-top:58px}
  body:not(.all-mode) #article #claude-usage[data-stage="1"] .passage{left:calc(var(--card-gutter) + var(--axis-inset) + 110px)}
  body:not(.all-mode) #article #claude-usage>.sticky{padding-left:4px;padding-right:4px}
 }
-.usage-chart{flex:1;min-height:0;width:100%}
+.usage-chart{position:relative;flex:1;min-height:0;width:100%}
 .usage-chart[hidden],.usage-fallback[hidden]{display:none!important}
 .usage-chart svg{overflow:hidden;width:100%;height:100%}
 .usage-chart svg text{font:12px var(--mono);fill:#a5bdca}
@@ -163,7 +165,7 @@ ai-building-intro{--intro-top:58px}
 .usage-chart svg.compact .usage-job,.usage-chart svg.compact .worker-value,.usage-chart svg.compact .claude-value,.usage-chart svg.compact .usage-tick{font-size:9px}
 /* One plot system, without image headings or per-chart toolbars. */
 .scene.agents figure{position:static;gap:12px}
-.native-plot{flex:1;width:100%;min-height:0}
+.native-plot{position:relative;flex:1;width:100%;min-height:0}
 .native-plot svg{display:block;width:100%;height:100%;overflow:visible}
 #sim-to-real .sim-equality{opacity:var(--sim-correlation-opacity,0)}
 #sim-to-real .native-plot svg .axis-label{font-size:15px}
@@ -236,7 +238,7 @@ body:not(.all-mode) #ai-economy[data-surplus="consumer"] .native-legend span:nth
 #coding-spend .native-legend span:first-child i{background:#7dcfff!important}
 #article .scene.agents figcaption{position:static;order:2;align-self:stretch;border-top:1px solid var(--line);padding:8px 0 0;text-align:left;font:10px/1.4 var(--mono);opacity:.7}
 #article .scene.agents figcaption:hover{opacity:1}
-.epoch-plot{display:none;flex:1;min-height:0;width:100%;flex-direction:column}
+.epoch-plot{position:relative;display:none;flex:1;min-height:0;width:100%;flex-direction:column}
 .epoch-plot svg{width:100%;height:100%;min-height:0;flex:1;display:block}
 .epoch-plot svg text{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#91a6b5}
 .epoch-plot svg .epoch-grid{stroke:#2a3a47;stroke-width:1}
@@ -250,7 +252,7 @@ body:not(.all-mode) #ai-economy[data-surplus="consumer"] .native-legend span:nth
 body:not(.all-mode) #experience-curves:is([data-stage="4"],[data-stage="5"]) .native-legend,body:not(.all-mode) #experience-curves:is([data-stage="4"],[data-stage="5"]) .native-plot,body:not(.all-mode) #experience-curves:is([data-stage="4"],[data-stage="5"]) figure>figcaption{display:none}
 body:not(.all-mode) #experience-curves:is([data-stage="4"],[data-stage="5"]) .epoch-plot{display:flex}
 .all-mode #experience-curves .epoch-plot{display:flex;min-height:600px;margin-top:30px}
-.rd-plot{display:none;flex:1;min-height:0;width:100%;flex-direction:column}
+.rd-plot{position:relative;display:none;flex:1;min-height:0;width:100%;flex-direction:column}
 .rd-plot svg{display:block;flex:1;width:100%;height:auto;min-height:0}
 .rd-plot svg text{font:12px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;fill:#a5bdca}
 .rd-plot svg .rd-grid{stroke:#2a3a47;stroke-width:1}

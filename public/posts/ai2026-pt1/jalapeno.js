@@ -18,7 +18,9 @@ for(const host of document.querySelectorAll('.benchmark-scroll[data-benchmark]')
    const dots=s.points.map(([a,b])=>el(g,'circle',{cx:x(a),cy:y(b),r:3,fill:s.color}));
    const first=s.points[0],label=text(Math.min(W-8,x(first[0])+12),Math.max(16,y(first[1])-12),s.name,{fill:s.color,'text-anchor':'start','font-weight':700});
    return {path,dots,label};
-  });update();
+  });
+  const bounds={left:m.l,right:m.l+iw,top:m.t,bottom:m.t+ih},points=d.series.flatMap(s=>s.points.map(([a,b])=>({a,b,s,x:x(a),y:y(b)}))).sort((a,b)=>a.a-b.a);window.AIChartHover?.attach(svg,{bounds,keyboard:points.map(p=>({x:p.x,y:p.y})),get:point=>{const p=points.reduce((best,item)=>{const dist=((item.x-point.x)/iw)**2+((item.y-point.y)/ih)**2,bestDist=((best.x-point.x)/iw)**2+((best.y-point.y)/ih)**2;return dist<bestDist?item:best;},points[0]);return{title:p.s.name,x:p.x,y:p.y,guide:false,items:[{label:'Interactivity',value:`${p.a} tok/s/user`,color:p.s.color,x:p.x,y:p.y},{label:'Throughput',value:`${p.b}M tok/s/MW`,color:p.s.color}]};}});
+  update();
  }
  function update(force=false){
   const all=force===true||reduce.matches||document.body.classList.contains('all-mode'),p=all?1:clamp((90-host.getBoundingClientRect().top)/Math.max(1,host.offsetHeight-figure.offsetHeight));

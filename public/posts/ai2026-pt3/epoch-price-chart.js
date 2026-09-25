@@ -89,6 +89,16 @@
     aiDot.style.opacity=aiAmount>.98?'1':'0';
     aiLabel.style.opacity=aiAmount>.98?'1':'0';
   };
+  window.AIChartHover?.attach(svg,{bounds:{left,right,top,bottom},keyboard:[...historical.flatMap(series=>series.points.map(point=>({x:x(point[0]),y:y(point[1])}))),{x:x(5),y:y(aiLog(5))}],get:point=>{
+    const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!reduced&&stage!==4&&stage!==5)return null;
+    const candidates=[];
+    if(reduced||stage===4)historical.forEach((series,i)=>{const amount=reduced?1:clamp((local-i*.055)*4.8),count=Math.ceil(series.points.length*amount);series.points.slice(0,count).forEach(p=>candidates.push({name:series.name,color:series.color,p}));});
+    if(reduced||stage===5){const amount=reduced?1:clamp(local*3);if(amount>0){const year=5*amount;candidates.push({name:'AI · estimate',color:'#009da3',p:[year,aiLog(year)]});}}
+    if(!candidates.length)return null;
+    const hit=candidates.reduce((best,item)=>{const score=(x(item.p[0])-point.x)**2+(y(item.p[1])-point.y)**2;return !best||score<best.score?{...item,score}:best},null);
+    return{title:`${hit.p[0].toFixed(1)} years since start`,guide:false,items:[{label:hit.name,value:`${(10**hit.p[1]).toLocaleString('en-US',{maximumFractionDigits:0})}× cheaper`,color:hit.color,x:x(hit.p[0]),y:y(hit.p[1])}]};
+  }});
   scene.addEventListener('chart-progress',event=>update(event.detail));
   update({stage:Number(scene.dataset.stage||0),local:Number(scene.dataset.localProgress||0),reduced:matchMedia('(prefers-reduced-motion: reduce)').matches});
 })();
