@@ -497,6 +497,17 @@
     if(current)setSlideAddress(current.id);
     else if(scrollY<innerHeight)setSlideAddress(null);
   }
+  function loopTiming(scene,sticky){
+    const mobile=matchMedia('(max-width:760px)').matches;
+    const travel=Math.max(1,scene.offsetHeight-sticky.offsetHeight);
+    // The scene gained scroll length only for the rapid "Nothing to see here" build.
+    // Recover the original first two passages so their pacing stays unchanged.
+    const originalHeight=scene.offsetHeight*(mobile?1000/1384:1040/1440);
+    const intro=Math.max(1,(originalHeight-sticky.offsetHeight)/6);
+    const ending=Math.max(1,travel-2*intro);
+    const build=Math.min(ending*.95,4*intro*.16*5);
+    return{travel,intro,ending,build};
+  }
   function update() {
     frame=0;
     for(const scene of scenes){
@@ -504,9 +515,26 @@
       const p=reduce.matches?1:clamp(-scene.getBoundingClientRect().top/Math.max(1,scene.offsetHeight-sticky.offsetHeight));
       const steps=(scene.dataset.steps||scene.id).split(',');
       const forestLoop=scene.dataset.kind==='model-code-loop';
-      const scaled=p*(forestLoop?6:steps.length);
-      const stage=forestLoop?(scaled<1?0:scaled<2?1:2):Math.min(steps.length-1,Math.floor(scaled));
-      const local=reduce.matches?1:Math.min(1,forestLoop&&stage===2?(scaled-2)/4:scaled-stage);
+      let stage,local;
+      if(forestLoop){
+        if(reduce.matches){stage=2;local=1;}
+        else{
+          const timing=loopTiming(scene,sticky),distance=p*timing.travel;
+          if(distance<timing.intro){stage=0;local=distance/timing.intro;}
+          else if(distance<2*timing.intro){stage=1;local=(distance-timing.intro)/timing.intro;}
+          else{
+            stage=2;
+            const within=distance-2*timing.intro;
+            local=within<timing.build ? .16*within/timing.build :
+              .16+.84*(within-timing.build)/(timing.ending-timing.build);
+          }
+        }
+      }else{
+        const scaled=p*steps.length;
+        stage=Math.min(steps.length-1,Math.floor(scaled));
+        local=reduce.matches?1:Math.min(1,scaled-stage);
+      }
+      local=clamp(local);
       scene.dataset.stage=stage;scene.dataset.localProgress=local;
       scene.querySelectorAll('[data-passage]').forEach(el=>el.hidden=!reduce.matches&&el.dataset.passage!==steps[stage]);
       renderers.get(scene)?.(p);
@@ -540,8 +568,10 @@
     slideLinksReady=false;
     if(entry){
       const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;
-      const progress=reduce.matches?0:entry.el.dataset.kind==='model-code-loop'?
-        (entry.index===2?2+4*.28:entry.index+.4)/6:(entry.index+.4)/entry.count;
+      const timing=sticky&&entry.el.dataset.kind==='model-code-loop'?loopTiming(entry.el,sticky):null;
+      const progress=reduce.matches?0:timing?
+        (entry.index===2?2*timing.intro+timing.build*.4:timing.intro*(entry.index+.4))/timing.travel:
+        (entry.index+.4)/entry.count;
       window.scrollTo({top:scrollY+entry.el.getBoundingClientRect().top+travel*progress,behavior:'instant'});
       setSlideAddress(entry.id);
     }else if(hash){document.getElementById(hash)?.scrollIntoView({behavior:'instant'});}
