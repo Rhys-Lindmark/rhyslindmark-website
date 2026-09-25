@@ -21,7 +21,7 @@ function attach(svg,options){
  svg.setAttribute('tabindex','0');svg.setAttribute('aria-describedby',live.id);svg.classList.add('owid-hover-surface');
  let active=false,index=0,last=null;
  const keyboard=options.keyboard?.length?options.keyboard:Array.from({length:21},(_,i)=>({x:bounds.left+(bounds.right-bounds.left)*i/20,y:(bounds.top+bounds.bottom)/2}));
- function hide(){active=false;tip.hidden=true;overlay.style.display='none';}
+ function hide(){active=false;tip.hidden=true;overlay.style.display='none';live.textContent='';}
  function show(point){
   const datum=options.get(point);if(!datum||!datum.items?.length){hide();return;}
   active=true;last={point,datum};overlay.style.display='';dots.replaceChildren();
@@ -44,7 +44,7 @@ function attach(svg,options){
  svg.addEventListener('pointerenter',enter);svg.addEventListener('pointermove',move);svg.addEventListener('pointerdown',enter);svg.addEventListener('pointerleave',leave);svg.addEventListener('keydown',key);svg.addEventListener('focus',focus);svg.addEventListener('blur',blur);svg.addEventListener('contextmenu',context);
  window.addEventListener('scroll',hide,{passive:true});
  const destroy=()=>{svg.removeEventListener('pointerenter',enter);svg.removeEventListener('pointermove',move);svg.removeEventListener('pointerdown',enter);svg.removeEventListener('pointerleave',leave);svg.removeEventListener('keydown',key);svg.removeEventListener('focus',focus);svg.removeEventListener('blur',blur);svg.removeEventListener('contextmenu',context);window.removeEventListener('scroll',hide);tip.remove();live.remove();overlay.remove();};
- const api={destroy,refresh(){if(active&&last)show(last.point);}};instances.set(svg,api);return api;
+ const api={destroy,hide,refresh(){if(active&&last)show(last.point);}};instances.set(svg,api);return api;
 }
 window.AIChartHover={attach};
 })();
