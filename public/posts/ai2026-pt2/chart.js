@@ -450,6 +450,9 @@
       slideEntries.push({id:String(nextSlide++),anchor:el.id,el,index:0,count:1});
     }
   }
+  // Keep passage names for animation and old deep links, but publish one-based,
+  // consecutive slide numbers for every reading step.
+  slideEntries.forEach((entry,index)=>{entry.legacyId=entry.id;entry.id=String(index+1);});
   function setSlideAddress(id){
     const url=new URL(location.href);
     if(id)url.searchParams.set('slide',id);else url.searchParams.delete('slide');
@@ -502,8 +505,10 @@
   function request(){if(!frame)frame=requestAnimationFrame(update);}
   function followHash(){
     const hash=decodeURIComponent(location.hash.slice(1)),query=new URL(location.href).searchParams.get('slide');
-    const requested=query==='59'?'60':query==='machine-robots'?'73':query;
-    const entry=hash?slideEntries.find(e=>e.anchor===hash):(slideEntries.find(e=>e.id===requested)||slideEntries.find(e=>e.anchor===requested));
+    const numeric=/^\d+$/.test(query||'')?String(Number(query)):null;
+    const legacy=query==='machine-robots'?'73':query;
+    const entry=hash?slideEntries.find(e=>e.anchor===hash):
+      (slideEntries.find(e=>e.id===numeric)||slideEntries.find(e=>e.anchor===legacy||e.legacyId===legacy));
     slideLinksReady=false;
     if(entry){
       const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;
@@ -514,8 +519,9 @@
     }else if(hash){document.getElementById(hash)?.scrollIntoView({behavior:'instant'});}
     else if(['compute-chips','compute-actual','compute-gap'].includes(query)){
       document.getElementById('text-5444')?.scrollIntoView({behavior:'instant'});
-      setSlideAddress('74');
-    }
+      const summary=slideEntries.find(e=>e.legacyId==='74');
+      if(summary)setSlideAddress(summary.id);
+    }else if(query)setSlideAddress(null);
     slideLinksReady=true;request();
   }
   try {

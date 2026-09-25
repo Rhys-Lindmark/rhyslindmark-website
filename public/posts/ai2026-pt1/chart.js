@@ -300,31 +300,56 @@ function setupBuildingReturn(scene){
  return ()=>{};
 }
 
+const slideEntries=[];
+for(const el of root.children){
+ if(el.classList.contains('lede')&&el.dataset.passage){
+  slideEntries.push({id:String(slideEntries.length+1),internal:el.dataset.passage,el,index:0,count:1});
+ }else if(el.classList.contains('scene')){
+  const steps=(el.dataset.steps?.split(',')||[...el.querySelectorAll('.passage [data-passage]')].map(p=>p.dataset.passage)).filter(Boolean);
+  if(!steps.length&&el.dataset.step)steps.push(el.dataset.step);
+  steps.forEach((internal,index)=>slideEntries.push({id:String(slideEntries.length+1),internal,el,index,count:steps.length}));
+ }
+}
 let slideLinksReady=false;
 function setSlideAddress(id){
- const url=new URL(window.location.href);url.searchParams.set('slide',id);url.hash='';
+ const url=new URL(window.location.href);if(id)url.searchParams.set('slide',id);else url.searchParams.delete('slide');url.hash='';
  if(url.href!==window.location.href)window.history.replaceState(window.history.state,'',url.pathname+url.search+url.hash);
 }
 function followSlideLink(){
  const hash=window.location.hash.match(/^#(?:chart-)?(\d+)$/),query=new URL(window.location.href).searchParams.get('slide');
- const raw=hash?hash[1]:query,id=/^\d+$/.test(raw||'')?String(Number(raw)):null,passage=id&&document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');
+ const numeric=/^\d+$/.test(query||'')?String(Number(query)):null;
+ const entry=hash?slideEntries.find(e=>e.internal===hash[1]&&e.el.querySelector(`[data-passage="${hash[1]}"]`)):
+  slideEntries.find(e=>e.id===numeric);
  slideLinksReady=true;
- if(!scene){
+ if(entry&&!entry.el.classList.contains('scene')){
+  setSlideAddress(entry.id);entry.el.scrollIntoView({behavior:'instant'});request();return;
+ }
+ if(!entry){
   // Old links to the removed closing animation now land at the actual ending.
-  if(id==='51'||id==='52')document.getElementById('sources')?.scrollIntoView({behavior:'instant'});
+  if(numeric==='52'){
+   document.getElementById('sources')?.scrollIntoView({behavior:'instant'});
+   setSlideAddress(slideEntries.at(-1).id);
+  }else if(query)setSlideAddress(null);
   return;
  }
- setSlideAddress(id);
- const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=steps.indexOf(id),progress=scene.dataset.kind==='revenue'?(id==='9'?.796:.264):scene.dataset.kind==='eras'?.088:['fulltext','chapter','statement'].includes(scene.dataset.kind)?0:(Math.max(0,index)+.4)/steps.length;
+ const scene=entry.el,id=entry.internal;
+ setSlideAddress(entry.id);
+ const progress=scene.dataset.kind==='revenue'?(id==='9'?.796:.264):scene.dataset.kind==='eras'?.088:['fulltext','chapter','statement'].includes(scene.dataset.kind)?0:(entry.index+.4)/entry.count;
  const travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight),top=window.scrollY+scene.getBoundingClientRect().top+(all?0:progress*travel);
  window.scrollTo({top,behavior:'instant'});request();
 }
 function syncSlideAddress(){
  if(!slideLinksReady)return;
  let current;for(const scene of scenes){if(scene.getBoundingClientRect().top<=innerHeight*.35)current=scene;else break;}
- if(!current)return;
- const id=String(Math.floor(Number(current.dataset.currentStep||current.dataset.step)));
- if(document.querySelector(`[data-passage="${id}"]`))setSlideAddress(id);
+ if(!current){
+  const lede=[...document.querySelectorAll('.lede[data-passage]')].filter(el=>el.getBoundingClientRect().top<=innerHeight*.35).at(-1);
+  const entry=slideEntries.find(e=>e.el===lede);
+  if(entry)setSlideAddress(entry.id);
+  return;
+ }
+ const internal=String(Math.floor(Number(current.dataset.currentStep||current.dataset.step)));
+ const entry=slideEntries.find(e=>e.el===current&&(current.dataset.kind==='meme'||e.internal===internal));
+ if(entry)setSlideAddress(entry.id);
 }
 function sceneProgress(scene){if(all)return 1;const rect=scene.getBoundingClientRect(),sticky=scene.querySelector('.sticky');return clamp((-rect.top)/Math.max(1,scene.offsetHeight-sticky.offsetHeight));}
 function update(){raf=0;for(const scene of scenes){const p=sceneProgress(scene);/* A "series" scene reads its card into place first, holds it there, and only then spends the rest of the scroll drawing the chart. */const series=Number(scene.dataset.cardSeries||0);renderers.get(scene)?.(series?clamp((p-series)/(1-series)):p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight);card.style.setProperty('--card-shift',`${all?0:series?lerp(viewportHeight,26,clamp(p/series)):lerp(viewportHeight,-card.offsetHeight,clamp(cp))}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);}syncSlideAddress();}

@@ -40,10 +40,10 @@
   }
 
   const revealVisuals = [...document.querySelectorAll('.coding-universe-section:not(.office-universe-section) .coding-universe-visual')];
-  const entries = [...document.querySelectorAll('#article [data-slide]')].map(el => {
+  const entries = [...document.querySelectorAll('#article [data-slide]')].map((el,number) => {
     const scene = el.closest('.scene.agents');
     const passages = scene ? [...scene.querySelectorAll('.card-copy')] : [el];
-    return {id:el.dataset.slide, el, scene, index:passages.indexOf(el), count:passages.length};
+    return {id:String(number+1),legacyId:el.dataset.slide,el,scene,index:passages.indexOf(el),count:passages.length};
   });
   let frame = 0, linksReady = false;
   const clamp = value => Math.max(0, Math.min(1, value));
@@ -104,10 +104,11 @@
     try { hash = decodeURIComponent(location.hash.slice(1)); } catch { hash = ''; }
     const hashTarget = hash ? document.getElementById(hash) : null;
     const requested = new URL(location.href).searchParams.get('slide');
-    const id = legacySlides[requested] || requested;
+    const numeric=/^\d+$/.test(requested||'')?String(Number(requested)):null;
+    const legacy=legacySlides[requested] || requested;
     const entry = hashTarget
       ? entries.find(e => e.el === hashTarget || e.scene === hashTarget)
-      : !hash && entries.find(e => e.id === id);
+      : !hash && (entries.find(e => e.id === numeric) || entries.find(e => e.legacyId === legacy));
     if (entry) {
       const target = entry.scene && !reduced.matches ? entry.scene : entry.el;
       const sticky = entry.scene?.querySelector('.sticky');
@@ -117,8 +118,10 @@
       setAddress(entry.id);
     } else if (hashTarget) {
       hashTarget.scrollIntoView({behavior:'instant'});
-    } else if (!hash && !id) {
+    } else if (!hash && !requested) {
       scrollTo({top:0, behavior:'instant'});
+    } else if (requested) {
+      setAddress(null);
     }
     linksReady = true;
     update();
