@@ -1,5 +1,5 @@
 /* Shared opening, loaded after each part's article styles. */
-.series-hero{min-height:100svh;background:#0b1015;color:#e6edf3;display:grid;place-items:center;overflow:hidden}
+.series-hero{min-height:100svh;background:var(--bg);color:#e6edf3;display:grid;place-items:center;overflow:hidden}
 .series-hero-inner{width:min(1180px,100%,calc((100svh - 210px)*2.4));min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(20px,4svh,48px);padding:clamp(28px,5svh,60px) 22px}
 .series-hero-art{position:relative;width:100%}
 .series-hero-labels{position:absolute;top:clamp(16px,2.5vw,30px);left:0;display:block;width:100%;height:28px;font:400 clamp(14px,1.9vw,24px)/1.2 var(--mono);letter-spacing:.14em;color:#cfdeeb}
