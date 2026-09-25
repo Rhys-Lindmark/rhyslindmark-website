@@ -34,11 +34,11 @@ const introStyle=document.createElement('style');introStyle.textContent=`
 :host([lede-divider]:not([preview])) .title-card:last-child::after{content:"";position:absolute;left:50%;bottom:18svh;width:min(700px,calc(100% - 40px));height:1px;background:#2a3a47;transform:translateX(-50%)}
 @media(max-width:760px){:host([lede-divider]:not([preview])) .title-card:last-child::after{bottom:20svh;width:calc(100% - 32px)}}
 `;root.append(introStyle);
-// Each part supplies its own pair of title cards; part 1's copy is the default.
+// Page-top intros use one title card; a second card is optional.
 const escapeHtml=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const titleOne=this.hasAttribute('title-one')?escapeHtml(this.getAttribute('title-one')).replace(/\n/g,'<br>'):'Part I:<br>Chips in a data center';
-const titleTwo=escapeHtml(this.getAttribute('title-two')||'Nvidia & The 100 GW Opportunity');
-root.querySelector('.pin').insertAdjacentHTML('beforeend',`<div class="titles"><div class="title-card"><h1 class="title title-one">${titleOne}</h1></div><div class="title-card"><p class="title title-two">${titleTwo}</p></div></div>`);
+const titleOne=escapeHtml(this.getAttribute('title-one')||'Part 1: Chips').replace(/\n/g,'<br>');
+const titleTwo=this.getAttribute('title-two')?.trim();
+root.querySelector('.pin').insertAdjacentHTML('beforeend',`<div class="titles"><div class="title-card"><h1 class="title title-one">${titleOne}</h1></div>${titleTwo?`<div class="title-card"><p class="title title-two">${escapeHtml(titleTwo)}</p></div>`:''}</div>`);
 const brains=this.getAttribute('focus-floor')==='brains';
 const agents=this.getAttribute('focus-floor')==='agents';
 const continueTo=this.getAttribute('continue-to');
