@@ -50,15 +50,10 @@ body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px)
 .card-copy[hidden]{display:none}
 .scene.agents .track{flex:none}
 .waymo-mosaic-slide{position:relative;height:100svh;min-height:560px;overflow:hidden;background:#05080d;color:#fff;isolation:isolate}
-.waymo-mosaic-slide picture,.waymo-mosaic-slide img{position:absolute;inset:0;display:block;width:100%;height:100%}
-.waymo-mosaic-slide img{object-fit:contain}
-.waymo-mosaic-slide::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#05080de0,transparent 32%,transparent 70%,#05080dd9);pointer-events:none}
-.waymo-mosaic-content{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(76px,10svh,116px) clamp(22px,6vw,90px) clamp(28px,6svh,72px)}
-.waymo-mosaic-kicker{margin:0 0 14px;color:#b8cee0;font:600 12px var(--mono);letter-spacing:.16em;text-transform:uppercase}
-.waymo-mosaic-content h2{margin:0;max-width:900px;font-size:clamp(48px,8vw,112px);font-weight:500;letter-spacing:-.055em;line-height:.98;text-shadow:0 3px 28px #000}
-.waymo-mosaic-source{align-self:flex-end;margin:0;padding:8px 12px;border-radius:3px;background:#05080dbb;color:#d4e2ec;font:12px var(--mono)}
-.waymo-mosaic-source a{color:#d4e2ec;text-decoration:underline;text-underline-offset:2px}
-@media(max-width:760px){.waymo-mosaic-slide img{object-fit:contain}.waymo-mosaic-content{padding-top:80px}.waymo-mosaic-content h2{font-size:clamp(44px,12vw,72px)}.waymo-mosaic-source{font-size:10px}}
+.waymo-mosaic-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr))}
+.waymo-mosaic-grid video{display:block;width:100%;height:100%;min-width:0;min-height:0;object-fit:cover;background:#05080d}
+.waymo-mosaic-poster{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media(prefers-reduced-motion:reduce){.waymo-mosaic-grid{display:none}.waymo-mosaic-poster{display:block}}
 .article-visual{display:block;width:min(850px,calc(100% - 40px));margin:32px auto 65px}
 .article-visual img{display:block;width:100%;height:auto;max-height:75svh;object-fit:contain}
 .article-embed{width:min(550px,calc(100% - 40px));margin:35px auto 60px}

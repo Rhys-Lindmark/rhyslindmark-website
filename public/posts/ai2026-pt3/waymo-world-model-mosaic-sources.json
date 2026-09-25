@@ -129,9 +129,9 @@
   ],
   "mosaic": {
     "grid": "5x5",
-    "duration_seconds": 3.2,
-    "frames": 16,
-    "size_pixels": "1000x600",
-    "note": "Clips 3\u201316 and 30\u201340 from the linked Waymo article; GIF loops continuously. The montage illustrates simulation and does not depict 10 billion unique miles."
+    "clips_path": "waymo-mosaic-clips/{cell:02}.mp4",
+    "posters_path": "waymo-mosaic-clips/{cell:02}.jpg",
+    "video_format": "H.264 MP4, 320x180, 15 fps, no audio",
+    "note": "Clips 3\u201316 and 30\u201340 from the linked Waymo article. The 25 clips are shuffled across the grid and loop with different playback phases and speeds. The montage illustrates simulation and does not depict 10 billion unique miles."
   }
 }
