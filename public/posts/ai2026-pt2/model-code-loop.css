@@ -49,7 +49,10 @@
 
 /* The RSI loop keeps its model and code in the same positions through all three passages. */
 .loop-visual{background:radial-gradient(ellipse at 50% 65%,#102930 0,#0b1921 38%,#080d13 76%)}
+.loop-visual::after{content:"";position:absolute;z-index:3;inset:0;background:var(--bg);opacity:var(--scene-fade,0);pointer-events:none}
 .loop-growth{position:absolute;inset:5% 8% 7%;display:grid;grid-template-columns:minmax(0,1fr) minmax(40px,17%) minmax(0,1fr);gap:3%;align-items:end;opacity:var(--tower-opacity,1);transform:scale(var(--tower-scale,1));transform-origin:center bottom}
+.redwood-breathing-room{height:100svh;background:var(--bg)}
+.all-mode .loop-visual::after,.all-mode .redwood-breathing-room{display:none}
 .loop-redwood-reveal{position:absolute;z-index:2;inset:0;display:block;overflow:hidden;opacity:var(--redwood-opacity,0);pointer-events:none}
 .loop-redwood-art{position:absolute;left:0;bottom:0;width:100%;transform:translateY(var(--redwood-pan,0px)) scale(var(--redwood-scale,1));transform-origin:center bottom}
 .loop-redwood-art img{position:relative;display:block;width:100%;height:auto;max-width:none}
