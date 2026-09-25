@@ -40,6 +40,7 @@
   }
 
   const revealVisuals = [...document.querySelectorAll('.coding-universe-section:not(.office-universe-section) .coding-universe-visual')];
+  const humanAiVisual = document.querySelector('.human-ai-human-visual');
   let numberedSlide = 0;
   const entries = [...document.querySelectorAll('#article [data-slide]')].map(el => {
     const scene = el.closest('.scene.agents');
@@ -96,6 +97,14 @@
       const opacity = reduced.matches ? 1 : clamp((innerHeight * .9 - top) / (innerHeight * .55));
       visual.style.setProperty('--coding-universe-opacity', opacity.toFixed(3));
     });
+    if (humanAiVisual) {
+      const travel = Math.max(1, humanAiVisual.offsetHeight - innerHeight);
+      const progress = clamp(-humanAiVisual.getBoundingClientRect().top / travel);
+      const reveal = reduced.matches ? 1 : clamp(progress / .6);
+      const eased = reveal * reveal * (3 - 2 * reveal);
+      humanAiVisual.style.setProperty('--human-ai-emerge', eased.toFixed(3));
+      humanAiVisual.style.setProperty('--human-ai-scale', (1.08 - .08 * eased).toFixed(3));
+    }
     syncAddress();
   }
   function request() { if (!frame) frame = requestAnimationFrame(update); }
@@ -113,7 +122,7 @@
     if (entry) {
       const target = entry.scene && !reduced.matches ? entry.scene : entry.el;
       const sticky = entry.scene?.querySelector('.sticky');
-      const travel = sticky && !reduced.matches ? Math.max(0, entry.scene.offsetHeight - sticky.offsetHeight) : 0;
+      const travel = sticky && !reduced.matches ? Math.max(0, entry.scene.offsetHeight - sticky.offsetHeight) : entry.el === humanAiVisual && !reduced.matches ? Math.max(0, humanAiVisual.offsetHeight - innerHeight) : 0;
       // Land with the requested text box visible, not below the graph.
       scrollTo({top:scrollY + target.getBoundingClientRect().top + travel * (entry.index + .45) / entry.count, behavior:'instant'});
       setAddress(entry.id);
