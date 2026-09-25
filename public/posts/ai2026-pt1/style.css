@@ -353,3 +353,19 @@ body:not(.header-revealed){--header-visible-height:0px}
 body>header{position:fixed;left:0;right:0}
 body:not(.header-revealed)>header{transform:translateY(-100%);pointer-events:none}
 body.header-revealed>header{transform:translateY(0);pointer-events:auto}
+
+/* The series opening is a single, three-second pen drawing. */
+.series-hero{min-height:100svh;background:#0b1015;color:#e6edf3;display:grid;place-items:center;overflow:hidden}
+.series-hero-inner{width:min(1180px,100%);min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:clamp(36px,7svh,78px) 22px clamp(35px,6svh,70px)}
+.series-hero-labels{width:100%;display:grid;grid-template-columns:repeat(3,1fr);font:clamp(16px,2vw,25px)/1.2 var(--mono);letter-spacing:.025em;text-align:center;color:#cfdeeb}
+#series-hero-canvas{width:100%;height:auto;aspect-ratio:1200/620;max-height:62svh;display:block}
+.series-hero-bottom{display:flex;flex-direction:column;align-items:center;gap:20px}
+.series-hero-bottom p{margin:0;color:#e6edf3;font:clamp(28px,4.2vw,48px)/1 var(--mono);letter-spacing:.09em}
+.series-hero-button{display:inline-flex;align-items:center;gap:11px;padding:10px 20px;border:1px solid #768391;border-radius:999px;background:#edf1ed;color:#17212a;text-decoration:none;font:18px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;transition:transform .18s ease,background .18s ease}
+.series-hero-button:hover{background:#fff;transform:translateY(-2px)}
+.series-hero-button span{font-size:23px;line-height:.8}
+.series-title-card{min-height:100svh;display:grid;place-items:center;padding:clamp(64px,8svh,96px) clamp(20px,5vw,80px);background:#070b10;text-align:center}
+.series-title-card h1,.series-title-card p{margin:0;width:100%;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:650;font-size:clamp(48px,8vw,112px);letter-spacing:-.055em;line-height:1.02;text-wrap:balance}
+.series-title-card-last{position:relative}
+.series-title-card-last::after{content:"";position:absolute;left:50%;bottom:18svh;width:min(700px,calc(100% - 40px));height:1px;background:#2a3a47;transform:translateX(-50%)}
+@media(max-width:760px){.series-hero-inner{padding:50px 16px 45px}.series-hero-labels{font-size:clamp(13px,4vw,19px)}#series-hero-canvas{width:calc(100% + 32px);max-width:none;aspect-ratio:1200/620;max-height:none}.series-title-card h1,.series-title-card p{font-size:48px}.series-title-card-last::after{bottom:20svh;width:calc(100% - 32px)}}
