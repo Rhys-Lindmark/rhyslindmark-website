@@ -44,6 +44,7 @@ body:not(.all-mode) #article .scene.agents .passage{position:absolute;top:0;left
 #omarchy .card-copy[data-slide="10"] p+p{margin-top:1em}
 #code-future .card-copy:is([data-slide="28"],[data-slide="29"],[data-slide="31"]) p+p{margin-top:1em}
 #experience-curves .card-copy[data-slide="34"] p+p{margin-top:1em}
+#waymo-share .card-copy[data-slide="69"] p+p{margin-top:1em}
 #robot-data .card-copy[data-slide="83"] p+p{margin-top:1em}
 body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px);line-height:1.4}
 .card-copy[hidden]{display:none}
