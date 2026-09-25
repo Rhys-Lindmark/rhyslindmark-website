@@ -487,7 +487,7 @@
   slideEntries.forEach(entry=>{
     entry.legacyId=entry.id;
     if(entry.index===0&&entry.el.dataset.slideId==='66')publicSlide=66;
-    else if(!(entry.el.hasAttribute('data-one-slide')&&entry.index>0))publicSlide++;
+    else publicSlide++;
     entry.id=String(publicSlide);
   });
   function setSlideAddress(id){

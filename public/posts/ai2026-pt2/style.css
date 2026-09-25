@@ -163,7 +163,7 @@ blockquote.pullquote{border-left:2px solid #526777;padding:28px 32px;margin-bloc
 .scene.labor-graph svg .workforce-reference{fill:#9dafbb;font:10px var(--mono);paint-order:stroke;stroke:#080d12;stroke-width:3px}
 @media(max-width:760px){.scene.labor-graph .figure-heading h3{font-size:11px}.scene.labor-graph svg .tier-endpoint{font-size:10px}}
 
-/* Slide 66 keeps all six passages on the same linear two-bar chart. */
+/* Slides 66–71 keep all six passages on the same linear two-bar chart. */
 #rl-labor-intro.scene{height:700svh}
 #rl-labor-intro .plot-wrap{min-height:280px}
 #rl-labor-intro .passage a{text-decoration:underline;text-underline-offset:3px}
