@@ -24,7 +24,7 @@
     const comparing = reduced || stage > 0;
     scene.dataset.comparing = String(comparing);
     for (const m of marks) {
-      const amount = reduced ? 1 : stage === 0 ? 0 : ease((local - (m.coding ? .12 : 0)) / (m.coding ? .45 : .28));
+      const amount = reduced || stage > 1 ? 1 : stage === 0 ? 0 : ease((local - (m.coding ? .12 : 0)) / (m.coding ? .45 : .28));
       const w = x(m.row.workers * workers);
       const a = x(m.row.workers + (m.row.claude - m.row.workers) * amount);
       m.worker.setAttribute('cx', w);
@@ -75,7 +75,7 @@
       const mark=marks.reduce((best,item)=>Math.abs(item.y-point.y)<Math.abs(best.y-point.y)?item:best,marks[0]);
       const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reduced=reduce.matches;
       const workers=reduced||stage>0?1:ease(local/.35);if(workers<=0)return null;
-      const amount=reduced?1:stage===0?0:ease((local-(mark.coding?.12:0))/(mark.coding?.45:.28));
+      const amount=reduced||stage>1?1:stage===0?0:ease((local-(mark.coding?.12:0))/(mark.coding?.45:.28));
       const workerValue=mark.row.workers*workers,items=[{label:'U.S. workers',value:`${workerValue.toFixed(1)}%`,color:'#a5bdca',x:x(workerValue),y:mark.y}];
       if(stage>0||reduced){const claude=mark.row.workers+(mark.row.claude-mark.row.workers)*amount;items.push({label:'Claude conversations',value:`${claude.toFixed(1)}%`,color:'#ff914f',x:x(claude),y:mark.y});}
       return{title:mark.row.job,guide:'y',y:mark.y,items};
