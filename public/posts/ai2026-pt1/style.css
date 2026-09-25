@@ -153,6 +153,8 @@ html,body,#article,.scene{background-color:var(--bg)}
 .article-signoff p{margin:0 0 .45em;font-size:17px;line-height:1.55;font-weight:400;letter-spacing:0}
 .article-signoff p:first-child{margin-bottom:1.25em}
 .article-signoff a{text-decoration-thickness:1px;text-underline-offset:.18em}
+.closing-signoff p:first-child{margin-bottom:.45em}
+.closing-signoff p:last-child{margin-top:1.25em}
 
 /* Center mobile scroll cards while preserving their vertical scroll motion. */
 @media(max-width:760px){
