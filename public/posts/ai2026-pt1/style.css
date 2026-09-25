@@ -155,6 +155,7 @@ html,body,#article,.scene{background-color:var(--bg)}
 .article-signoff a{text-decoration-thickness:1px;text-underline-offset:.18em}
 .closing-signoff p:first-child{margin-bottom:.45em}
 .closing-signoff p:last-child{margin-top:1.25em}
+.series-footer-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 30px;line-height:1.7}
 
 /* Center mobile scroll cards while preserving their vertical scroll motion. */
 @media(max-width:760px){
