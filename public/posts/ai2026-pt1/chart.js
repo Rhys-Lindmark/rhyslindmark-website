@@ -266,6 +266,7 @@ function drawShare(scene){
 }
 function drawUnits(scene){
  const {svg,W,H}=svgBase(scene),size=Math.min((W-30)/10,(H-95)/10),x=(W-size*10)/2,y=65,units=[];
+ svg.querySelector(':scope > title')?.remove();
  const total=label(svg,W/2,30,'$2T','middle','series-label');total.style.fontSize='28px';total.style.fill='#63ff91';
  for(let i=0;i<100;i++){
   const chip=node('g',{transform:`translate(${x+(i%10)*size},${y+(9-Math.floor(i/10))*size}) scale(${size/100})`,stroke:'#63ff91','stroke-width':2.5,'stroke-linejoin':'round'},svg);
@@ -276,7 +277,6 @@ function drawUnits(scene){
   units.push(chip);
  }
  const firstValue=label(svg,x+size/2,y+9.5*size,'$20B','middle','series-label');firstValue.setAttribute('dominant-baseline','middle');firstValue.style.fontSize=`${Math.min(20,size*.23)}px`;firstValue.style.fill='#63ff91';legend(scene,[]);
- const unitBounds={left:x,right:x+size*10,top:y,bottom:y+size*10};window.AIChartHover?.attach(svg,{bounds:unitBounds,keyboard:Array.from({length:100},(_,i)=>({x:x+(i%10+.5)*size,y:y+(9-Math.floor(i/10)+.5)*size})),get:point=>{const col=clamp(Math.floor((point.x-x)/size),0,9),visualRow=clamp(Math.floor((point.y-y)/size),0,9),index=(9-visualRow)*10+col+1,cx=x+(col+.5)*size,cy=y+(visualRow+.5)*size;return{title:`${index} GW`,x:cx,y:cy,guide:false,items:[{label:'Chip opportunity',value:`$${index*20}B`,color:'#63ff91',x:cx,y:cy}]};}});
  return p=>{const {index,local}=passageStage(scene,p),expanded=index||all,count=expanded?Math.max(1,Math.ceil(clamp(local/.8)*100)):1;units.forEach((u,i)=>{u.style.visibility=all||i<count?'visible':'hidden';});total.style.visibility=expanded?'visible':'hidden';firstValue.style.visibility=expanded?'hidden':'visible';scene.querySelector('.readout').textContent='$20B / GW';};
 }
 
