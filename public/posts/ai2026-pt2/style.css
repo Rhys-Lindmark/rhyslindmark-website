@@ -116,7 +116,7 @@ blockquote.pullquote{border-left:2px solid #526777;padding:28px 32px;margin-bloc
 .source-graph figcaption{flex:none}
 .all-mode .scene.models.source-graph{height:auto}
 .all-mode .source-chart{height:70svh;flex:none}
-.closing-copy{padding-block:60px 90px;font-size:17px;color:#fff}
+.closing-signoff{width:min(740px,calc(100% - 48px));max-width:none;padding-inline:0}
 #closing-building.scene{height:180svh}
 #closing-building .sticky{background:#070b10}
 #closing-building ai-building-intro{width:min(100%,calc((100svh - 120px)*1.5))}
