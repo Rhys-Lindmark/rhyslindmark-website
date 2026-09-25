@@ -357,11 +357,14 @@ body.header-revealed>header{transform:translateY(0);pointer-events:auto}
 /* The series opening is a single, three-second pen drawing. */
 .series-hero{min-height:100svh;background:#0b1015;color:#e6edf3;display:grid;place-items:center;overflow:hidden}
 .series-hero-inner{width:min(1180px,100%);min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:clamp(36px,7svh,78px) 22px clamp(35px,6svh,70px)}
-.series-hero-labels{width:100%;display:grid;grid-template-columns:repeat(3,1fr);font:clamp(16px,2vw,25px)/1.2 var(--mono);letter-spacing:.025em;text-align:center;color:#cfdeeb}
+.series-hero-labels{width:100%;display:grid;grid-template-columns:repeat(3,1fr);font:400 clamp(14px,1.7vw,22px)/1.2 var(--mono);letter-spacing:.14em;text-align:center;color:#cfdeeb}
 #series-hero-canvas{width:100%;height:auto;aspect-ratio:1200/620;max-height:62svh;display:block}
 .series-hero-bottom{display:flex;flex-direction:column;align-items:center;gap:20px}
-.series-hero-bottom p{margin:0;color:#e6edf3;font:clamp(28px,4.2vw,48px)/1 var(--mono);letter-spacing:.09em}
-.series-hero-button{display:inline-flex;align-items:center;gap:11px;padding:10px 20px;border:1px solid #768391;border-radius:999px;background:#edf1ed;color:#17212a;text-decoration:none;font:18px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;transition:transform .18s ease,background .18s ease}
+.series-hero-bottom p{margin:0;color:#e6edf3;font:400 clamp(28px,4.2vw,48px)/1 var(--mono);letter-spacing:.14em}
+.series-hero-labels,.series-hero-bottom{opacity:1;transform:translateY(0);transition:opacity .75s ease,transform .75s ease}
+.series-hero[data-art="pending"] .series-hero-labels,.series-hero[data-art="pending"] .series-hero-bottom{opacity:0;transform:translateY(7px);visibility:hidden}
+@media(prefers-reduced-motion:reduce){.series-hero .series-hero-labels,.series-hero .series-hero-bottom{opacity:1!important;transform:none!important;visibility:visible!important;transition:none}}
+.series-hero-button{display:inline-flex;align-items:center;gap:11px;padding:10px 20px;border:1px solid #768391;border-radius:999px;background:#edf1ed;color:#17212a;text-decoration:none;font:400 15px/1.2 var(--mono);transition:transform .18s ease,background .18s ease}
 .series-hero-button:hover{background:#fff;transform:translateY(-2px)}
 .series-hero-button span{font-size:23px;line-height:.8}
 .series-title-card{min-height:100svh;display:grid;place-items:center;padding:clamp(64px,8svh,96px) clamp(20px,5vw,80px);background:#070b10;text-align:center}
