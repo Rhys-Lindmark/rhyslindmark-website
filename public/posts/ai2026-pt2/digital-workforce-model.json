@@ -1,0 +1,552 @@
+{
+  "version": "first-principles-2026-09-24",
+  "start": "2022-11-30",
+  "as_of": "2026-09-24",
+  "human_hours_per_year": 1800,
+  "status": "Judgmental center estimates, not measured workforce totals. All conversions, global coverage factors, active cohorts and utilization rates are assumptions. The source ledger identifies the smaller set of observed constraints. No confidence bands.",
+  "partition": "Consumer general tasks and research exclude coding. Coding includes all channels, with disjoint assistant-only and frequent-agent cohorts. Enterprise/API task output excludes consumer-channel tasks and all coding; its research portion belongs to Researchers and the remainder to Knowledge Workers. Standalone API tasks exclude seat-mediated requests and internal agent subcalls. Robots exclude on-road passenger driving.",
+  "consumer": {
+    "formula": "ChatGPT work messages/day \u00d7 global volume factor \u00d7 category share \u00f7 messages/task \u00d7 human minutes/task \u00d7 accepted fraction \u00d7 365 \u00f7 108000. Ten percent of work messages are reserved for coding and not counted here.",
+    "observed_constraints": "Work messages/day: 213 million on 2024-06-26 and 716 million on 2025-06-26, from OpenAI usage paper Table 1. These work classifications are sample estimates applied to observed total message volume. Other dates are modeled. The first anchor is launch day, not November 1. 2026 daily volume is an extrapolation, not an observed September statistic.",
+    "anchors": [
+      {
+        "date": "2022-11-30",
+        "chatgpt_work_messages_per_day": 100000,
+        "all_platforms_factor": 1.05,
+        "general_share": 0.85,
+        "research_share": 0.05,
+        "general_human_minutes_per_task": 2,
+        "general_messages_per_task": 4,
+        "general_acceptance": 0.5,
+        "research_human_minutes_per_task": 8,
+        "research_messages_per_task": 8,
+        "research_acceptance": 0.25
+      },
+      {
+        "date": "2022-12-31",
+        "chatgpt_work_messages_per_day": 5000000,
+        "all_platforms_factor": 1.08,
+        "general_share": 0.85,
+        "research_share": 0.05,
+        "general_human_minutes_per_task": 2,
+        "general_messages_per_task": 4,
+        "general_acceptance": 0.5,
+        "research_human_minutes_per_task": 8,
+        "research_messages_per_task": 8,
+        "research_acceptance": 0.3
+      },
+      {
+        "date": "2023-11-30",
+        "chatgpt_work_messages_per_day": 150000000,
+        "all_platforms_factor": 1.25,
+        "general_share": 0.82,
+        "research_share": 0.08,
+        "general_human_minutes_per_task": 2.5,
+        "general_messages_per_task": 4,
+        "general_acceptance": 0.6,
+        "research_human_minutes_per_task": 10,
+        "research_messages_per_task": 8,
+        "research_acceptance": 0.4
+      },
+      {
+        "date": "2024-06-26",
+        "chatgpt_work_messages_per_day": 213000000,
+        "all_platforms_factor": 1.35,
+        "general_share": 0.8,
+        "research_share": 0.1,
+        "general_human_minutes_per_task": 3,
+        "general_messages_per_task": 4,
+        "general_acceptance": 0.65,
+        "research_human_minutes_per_task": 12,
+        "research_messages_per_task": 8,
+        "research_acceptance": 0.45
+      },
+      {
+        "date": "2024-12-31",
+        "chatgpt_work_messages_per_day": 360000000,
+        "all_platforms_factor": 1.45,
+        "general_share": 0.78,
+        "research_share": 0.12,
+        "general_human_minutes_per_task": 3,
+        "general_messages_per_task": 4,
+        "general_acceptance": 0.7,
+        "research_human_minutes_per_task": 14,
+        "research_messages_per_task": 8,
+        "research_acceptance": 0.5
+      },
+      {
+        "date": "2025-06-26",
+        "chatgpt_work_messages_per_day": 716000000,
+        "all_platforms_factor": 1.55,
+        "general_share": 0.75,
+        "research_share": 0.15,
+        "general_human_minutes_per_task": 3,
+        "general_messages_per_task": 3.5,
+        "general_acceptance": 0.7,
+        "research_human_minutes_per_task": 18,
+        "research_messages_per_task": 8,
+        "research_acceptance": 0.55
+      },
+      {
+        "date": "2025-12-31",
+        "chatgpt_work_messages_per_day": 900000000,
+        "all_platforms_factor": 1.65,
+        "general_share": 0.75,
+        "research_share": 0.15,
+        "general_human_minutes_per_task": 3,
+        "general_messages_per_task": 3.25,
+        "general_acceptance": 0.72,
+        "research_human_minutes_per_task": 21,
+        "research_messages_per_task": 8,
+        "research_acceptance": 0.6
+      },
+      {
+        "date": "2026-09-24",
+        "chatgpt_work_messages_per_day": 1100000000,
+        "all_platforms_factor": 1.75,
+        "general_share": 0.75,
+        "research_share": 0.15,
+        "general_human_minutes_per_task": 3,
+        "general_messages_per_task": 3,
+        "general_acceptance": 0.75,
+        "research_human_minutes_per_task": 24,
+        "research_messages_per_task": 8,
+        "research_acceptance": 0.65
+      }
+    ]
+  },
+  "coding": {
+    "formula": "(Assistant-only weekly users \u00d7 accepted human-equivalent coding hours/week + frequent-agent weekly users \u00d7 accepted coding hours/week) \u00d7 48 \u00f7 1800. Agent cohort credit includes their autocomplete/chat coding, so it is not added twice.",
+    "observed_constraints": "Copilot launched June 2022; 1.2 million preview participants was cumulative, not active paid workers. Microsoft reported >1 million paid users in October 2023, 1.8 million in 2024, 4.7 million in January 2026 and 50 million total users in July 2026. Codex reported >5 million weekly users, including noncoding use. Cohort counts below are deduplicated global assumptions, not sums of product accounts. Claude Code began February 2025; agent-like editing tools existed in late 2024.",
+    "anchors": [
+      {
+        "date": "2022-11-30",
+        "assistant_only_weekly_users": 600000,
+        "assistant_accepted_hours_per_week": 0.25,
+        "agent_weekly_users": 0,
+        "agent_accepted_hours_per_week": 0
+      },
+      {
+        "date": "2022-12-31",
+        "assistant_only_weekly_users": 700000,
+        "assistant_accepted_hours_per_week": 0.35,
+        "agent_weekly_users": 0,
+        "agent_accepted_hours_per_week": 0
+      },
+      {
+        "date": "2023-11-30",
+        "assistant_only_weekly_users": 2000000,
+        "assistant_accepted_hours_per_week": 1,
+        "agent_weekly_users": 0,
+        "agent_accepted_hours_per_week": 0
+      },
+      {
+        "date": "2024-06-26",
+        "assistant_only_weekly_users": 4000000,
+        "assistant_accepted_hours_per_week": 1.5,
+        "agent_weekly_users": 0,
+        "agent_accepted_hours_per_week": 0
+      },
+      {
+        "date": "2024-12-31",
+        "assistant_only_weekly_users": 6000000,
+        "assistant_accepted_hours_per_week": 2,
+        "agent_weekly_users": 300000,
+        "agent_accepted_hours_per_week": 3
+      },
+      {
+        "date": "2025-06-26",
+        "assistant_only_weekly_users": 8000000,
+        "assistant_accepted_hours_per_week": 1.5,
+        "agent_weekly_users": 2000000,
+        "agent_accepted_hours_per_week": 4
+      },
+      {
+        "date": "2025-12-31",
+        "assistant_only_weekly_users": 10000000,
+        "assistant_accepted_hours_per_week": 1.5,
+        "agent_weekly_users": 6000000,
+        "agent_accepted_hours_per_week": 8
+      },
+      {
+        "date": "2026-09-24",
+        "assistant_only_weekly_users": 12000000,
+        "assistant_accepted_hours_per_week": 1.5,
+        "agent_weekly_users": 12000000,
+        "agent_accepted_hours_per_week": 12
+      }
+    ]
+  },
+  "enterprise": {
+    "formula": "Unique paid seats \u00d7 active fraction \u00d7 accepted noncoding human task-minutes/workday \u00d7 240 \u00f7 108000 + standalone noncoding API task attempts/day \u00d7 acceptance \u00d7 human minutes/task \u00d7 365 \u00f7 108000. API calls, retries and tool substeps are not separate tasks. Allocate 20% of seat output and 10% of standalone API output to Researchers; the rest to Knowledge Workers. These task-mix shares are assumptions.",
+    "observed_constraints": "OpenAI reported 7 million workplace seats in November 2025; Microsoft 15 million paid M365 Copilot seats in January 2026 and >30 million in July; Google 8 million Gemini Enterprise paid seats in February. The unique-seat pool discounts multi-product overlap. There is no observed global standalone API completion count: this component is explicitly a scenario assumption and the weakest volume input. In-app integrated AI is included in the standalone pool only when not represented in the paid-seat pool.",
+    "anchors": [
+      {
+        "date": "2022-11-30",
+        "unique_seats": 50000,
+        "active_fraction": 0.4,
+        "standalone_task_attempts_per_day": 50000,
+        "accepted_fraction": 0.5,
+        "human_minutes_per_task": 0.3,
+        "accepted_noncoding_minutes_per_workday": 3
+      },
+      {
+        "date": "2022-12-31",
+        "unique_seats": 100000,
+        "active_fraction": 0.4,
+        "standalone_task_attempts_per_day": 200000,
+        "accepted_fraction": 0.5,
+        "human_minutes_per_task": 0.3,
+        "accepted_noncoding_minutes_per_workday": 3
+      },
+      {
+        "date": "2023-11-30",
+        "unique_seats": 1000000,
+        "active_fraction": 0.45,
+        "standalone_task_attempts_per_day": 2000000,
+        "accepted_fraction": 0.55,
+        "human_minutes_per_task": 0.5,
+        "accepted_noncoding_minutes_per_workday": 6
+      },
+      {
+        "date": "2024-06-26",
+        "unique_seats": 3000000,
+        "active_fraction": 0.5,
+        "standalone_task_attempts_per_day": 5000000,
+        "accepted_fraction": 0.6,
+        "human_minutes_per_task": 0.6,
+        "accepted_noncoding_minutes_per_workday": 8
+      },
+      {
+        "date": "2024-12-31",
+        "unique_seats": 8000000,
+        "active_fraction": 0.5,
+        "standalone_task_attempts_per_day": 15000000,
+        "accepted_fraction": 0.65,
+        "human_minutes_per_task": 0.75,
+        "accepted_noncoding_minutes_per_workday": 10
+      },
+      {
+        "date": "2025-06-26",
+        "unique_seats": 15000000,
+        "active_fraction": 0.55,
+        "standalone_task_attempts_per_day": 35000000,
+        "accepted_fraction": 0.7,
+        "human_minutes_per_task": 1,
+        "accepted_noncoding_minutes_per_workday": 12
+      },
+      {
+        "date": "2025-12-31",
+        "unique_seats": 30000000,
+        "active_fraction": 0.6,
+        "standalone_task_attempts_per_day": 75000000,
+        "accepted_fraction": 0.72,
+        "human_minutes_per_task": 1.2,
+        "accepted_noncoding_minutes_per_workday": 14
+      },
+      {
+        "date": "2026-09-24",
+        "unique_seats": 50000000,
+        "active_fraction": 0.65,
+        "standalone_task_attempts_per_day": 150000000,
+        "accepted_fraction": 0.75,
+        "human_minutes_per_task": 1.5,
+        "accepted_noncoding_minutes_per_workday": 16
+      }
+    ],
+    "seat_research_share": 0.2,
+    "api_research_share": 0.1
+  },
+  "driving": {
+    "formula": "Weekly fully driverless passenger trips \u00d7 0.4 passenger hours/trip \u00d7 1.35 repositioning allowance \u00d7 0.95 autonomous task fraction \u00d7 52 \u00f7 1800. Excludes safety-driver trips, supervised Tesla FSD, testing miles, and cumulative rides. Small commercial autonomous trucking is not modeled.",
+    "passenger_hours_per_trip": 0.4,
+    "reposition_factor": 1.35,
+    "autonomous_task_fraction": 0.95,
+    "observed_constraints": "Waymo: 10k public weekly trips May 2023 (some free); 250k paid weekly May 2025; current sustainability page >500k weekly. Apollo Go: 1.1m Q4 2024 rides, full driverless nationwide from February 2025; 3.2m fully driverless Q1 2026 rides (246k/week average, >350k peak). Endpoint 600k Waymo + 300k Apollo + 100k others is a September nowcast, not a reported count. Historical values between those constraints and other-provider activity are modeled.",
+    "anchors": [
+      {
+        "date": "2022-11-30",
+        "waymo_weekly_trips": 5000,
+        "apollo_weekly_driverless_trips": 2000,
+        "other_weekly_driverless_trips": 1000
+      },
+      {
+        "date": "2022-12-31",
+        "waymo_weekly_trips": 7000,
+        "apollo_weekly_driverless_trips": 3000,
+        "other_weekly_driverless_trips": 2000
+      },
+      {
+        "date": "2023-11-30",
+        "waymo_weekly_trips": 20000,
+        "apollo_weekly_driverless_trips": 20000,
+        "other_weekly_driverless_trips": 8000
+      },
+      {
+        "date": "2024-06-26",
+        "waymo_weekly_trips": 50000,
+        "apollo_weekly_driverless_trips": 50000,
+        "other_weekly_driverless_trips": 10000
+      },
+      {
+        "date": "2024-12-31",
+        "waymo_weekly_trips": 150000,
+        "apollo_weekly_driverless_trips": 65000,
+        "other_weekly_driverless_trips": 15000
+      },
+      {
+        "date": "2025-06-26",
+        "waymo_weekly_trips": 250000,
+        "apollo_weekly_driverless_trips": 130000,
+        "other_weekly_driverless_trips": 40000
+      },
+      {
+        "date": "2025-12-31",
+        "waymo_weekly_trips": 350000,
+        "apollo_weekly_driverless_trips": 250000,
+        "other_weekly_driverless_trips": 50000
+      },
+      {
+        "date": "2026-09-24",
+        "waymo_weekly_trips": 600000,
+        "apollo_weekly_driverless_trips": 300000,
+        "other_weekly_driverless_trips": 100000
+      }
+    ]
+  },
+  "robots": {
+    "formula": "Sum across disjoint robot groups: deployed units \u00d7 productive autonomous hours per deployed unit/year \u00d7 human task-hours per robot-hour \u00f7 1800. Productive hours already discount idle, retired, demo and teleoperated time. Do not multiply by another active fraction.",
+    "scope": "Commercial mobile/service robots, including constrained warehouse AMRs/AGVs, cleaning, delivery and humanoids. Excludes conventional fixed industrial arms, household devices, software RPA and passenger AVs. This measures existing automation as well as recent AI; it is NOT all attributable to reinforcement learning or foundation models.",
+    "observed_constraints": "Amazon: 520k robotic drive units June 2022, >750k mobile robots June 2023, 1m robots deployed June 2025. Later total includes some arms, so mobile-only estimates and productive-hour discounts remain assumptions. Brain Corp: >40k AMRs and 21m cumulative autonomous hours August 2025. Pudu: >100k units shipped September 2025, 120k by year end. IFR sampled 2024 sales: 102900 logistics robots, 25k cleaning; sample cannot be summed across editions as a census. Humanoid shipments include thousands of research/demo units; productive stock is heavily discounted. All global subgroup stocks below are estimates anchored on these disclosures; sales are not equated with active workers.",
+    "groups": [
+      {
+        "key": "amazon_mobile_units",
+        "productive_hours_per_deployed_unit_per_year": 1600,
+        "human_hours_per_robot_hour": 0.15,
+        "rationale": "Many transport robots feed one human workstation. Credit 9 minutes of manual transport task work per productive robot-hour, not one robot = one person."
+      },
+      {
+        "key": "other_logistics_units",
+        "productive_hours_per_deployed_unit_per_year": 1400,
+        "human_hours_per_robot_hour": 0.25,
+        "rationale": "Non-Amazon mobile logistics only; global stock inferred from several years of sales, not a direct census."
+      },
+      {
+        "key": "cleaning_units",
+        "productive_hours_per_deployed_unit_per_year": 300,
+        "human_hours_per_robot_hour": 0.8,
+        "rationale": "Short daily cleaning windows and many inactive deployments; considerably less than a full-time shift."
+      },
+      {
+        "key": "delivery_service_units",
+        "productive_hours_per_deployed_unit_per_year": 500,
+        "human_hours_per_robot_hour": 0.25,
+        "rationale": "Indoor food/hospital service and sidewalk delivery; only transport portion of a service job, excludes cleaners and warehouse movers."
+      },
+      {
+        "key": "humanoid_units",
+        "productive_hours_per_deployed_unit_per_year": 200,
+        "human_hours_per_robot_hour": 0.5,
+        "rationale": "Most delivered units are research/demo or intermittently productive. Humanoid work is not assumed to run full shifts globally."
+      }
+    ],
+    "anchors": [
+      {
+        "date": "2022-11-30",
+        "amazon_mobile_units": 520000,
+        "other_logistics_units": 150000,
+        "cleaning_units": 30000,
+        "delivery_service_units": 60000,
+        "humanoid_units": 20
+      },
+      {
+        "date": "2022-12-31",
+        "amazon_mobile_units": 550000,
+        "other_logistics_units": 160000,
+        "cleaning_units": 32000,
+        "delivery_service_units": 65000,
+        "humanoid_units": 30
+      },
+      {
+        "date": "2023-11-30",
+        "amazon_mobile_units": 750000,
+        "other_logistics_units": 230000,
+        "cleaning_units": 50000,
+        "delivery_service_units": 100000,
+        "humanoid_units": 100
+      },
+      {
+        "date": "2024-06-26",
+        "amazon_mobile_units": 750000,
+        "other_logistics_units": 300000,
+        "cleaning_units": 65000,
+        "delivery_service_units": 135000,
+        "humanoid_units": 200
+      },
+      {
+        "date": "2024-12-31",
+        "amazon_mobile_units": 800000,
+        "other_logistics_units": 370000,
+        "cleaning_units": 80000,
+        "delivery_service_units": 170000,
+        "humanoid_units": 500
+      },
+      {
+        "date": "2025-06-26",
+        "amazon_mobile_units": 1000000,
+        "other_logistics_units": 450000,
+        "cleaning_units": 100000,
+        "delivery_service_units": 200000,
+        "humanoid_units": 1200
+      },
+      {
+        "date": "2025-12-31",
+        "amazon_mobile_units": 1050000,
+        "other_logistics_units": 520000,
+        "cleaning_units": 120000,
+        "delivery_service_units": 250000,
+        "humanoid_units": 3000
+      },
+      {
+        "date": "2026-09-24",
+        "amazon_mobile_units": 1200000,
+        "other_logistics_units": 650000,
+        "cleaning_units": 160000,
+        "delivery_service_units": 350000,
+        "humanoid_units": 7000
+      }
+    ]
+  },
+  "sources": [
+    [
+      "OpenAI usage study, Table 1 (2025-09)",
+      "https://cdn.openai.com/pdf/a253471f-8260-40c6-a2cc-aa93fe9f142e/economic-research-chatgpt-usage-paper.pdf",
+      "2024/2025 daily work-message anchors; consumer products only, excludes enterprise/API."
+    ],
+    [
+      "OpenAI, February 2026",
+      "https://openai.com/index/update-on-mental-health-related-work/",
+      "More than 900m weekly ChatGPT users; supports scale, not a September message count."
+    ],
+    [
+      "GitHub, Copilot launch",
+      "https://github.blog/changelog/2022-06-21-github-copilot-is-now-available-to-individual-developers/",
+      "Coding assistance existed before Claude Code and Opus 4.5."
+    ],
+    [
+      "Microsoft, October 2023",
+      "https://www.microsoft.com/en-us/investor/events/fy-2024/earnings-fy-2024-q1",
+      "More than 1m paid Copilot users."
+    ],
+    [
+      "Microsoft annual report 2024",
+      "https://www.microsoft.com/investor/reports/ar24/",
+      "1.8m paid GitHub Copilot subscribers."
+    ],
+    [
+      "Microsoft, FY2026 Q2",
+      "https://www.microsoft.com/en-us/investor/events/fy-2026/earnings-fy-2026-q2",
+      "4.7m paid GitHub Copilot users; 15m paid M365 Copilot seats."
+    ],
+    [
+      "Microsoft, FY2026 Q4",
+      "https://www.microsoft.com/en-us/investor/events/fy-2026/earnings-fy-2026-q4",
+      "50m GitHub Copilot users, not necessarily active; >30m paid M365 Copilot seats."
+    ],
+    [
+      "OpenAI, Codex for knowledge work",
+      "https://openai.com/index/codex-for-knowledge-work/",
+      ">5m weekly Codex users; 20% noncoding."
+    ],
+    [
+      "Anthropic, Claude Code preview",
+      "https://www.anthropic.com/news/claude-3-7-sonnet",
+      "February 24, 2025 research preview."
+    ],
+    [
+      "OpenAI workplace seats",
+      "https://openai.com/index/1-million-businesses-putting-ai-to-work/",
+      "7m workplace seats November 2025; seats do not equal active users."
+    ],
+    [
+      "Alphabet Q4 2025",
+      "https://blog.google/company-news/inside-google/message-ceo/alphabet-earnings-q4-2025/",
+      "8m paid Gemini Enterprise seats; consumer Gemini MAUs cannot be added to ChatGPT WAUs."
+    ],
+    [
+      "Waymo, May 2023",
+      "https://waymo.com/blog/2023/05/waymo-one-doubles-service-area-in/",
+      "10k public trips/week (some not yet fare-paying)."
+    ],
+    [
+      "Waymo, May 2025",
+      "https://waymo.com/blog/2025/05/scaling-our-fleet-through-us-manufacturing/",
+      "250k paid trips/week."
+    ],
+    [
+      "Waymo sustainability",
+      "https://blog.waymo.com/sustainability/",
+      ">500k weekly trips; current page without a precise September observation date."
+    ],
+    [
+      "Baidu Q4 2024",
+      "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-fourth-quarter-and-fiscal-year-2024-results",
+      "1.1m quarterly rides; fully driverless across China from February 2025."
+    ],
+    [
+      "Baidu Q1 2026",
+      "https://ir.baidu.com/news-releases/news-release-details/baidu-announces-first-quarter-2026-results",
+      "3.2m fully driverless quarterly rides; >350k weekly peak is not the quarterly average."
+    ],
+    [
+      "Amazon, June 2022",
+      "https://www.aboutamazon.com/news/operations/10-years-of-amazon-robotics-how-robots-help-sort-packages-move-product-and-improve-safety",
+      "520k robotic drive units."
+    ],
+    [
+      "Amazon, June 2023",
+      "https://www.aboutamazon.com/news/operations/how-amazon-deploys-robots-in-its-operations-facilities",
+      ">750k mobile robots."
+    ],
+    [
+      "Amazon, June 2025",
+      "https://www.aboutamazon.com/news/operations/amazon-million-robots-ai-foundation-model",
+      "Millionth deployed robot; includes pre-generative-AI automation."
+    ],
+    [
+      "Brain Corp, August 2025",
+      "https://www.braincorp.com/resources/brain-corp-promotes-john-back-to-chief-technology-officer-and-hires-dr-kavitha-velusamy-as-senior-vice-president-of-software-and-ai",
+      "40k robots, 21m cumulative autonomous hours; cumulative hours are not annual output."
+    ],
+    [
+      "Pudu, 2025 review",
+      "https://www.pudurobotics.com/news/pudu-robotics-scaled-120000-units-100-percent-growth-2025",
+      "120k cumulative shipments; cleaning and service delivery groups must not overlap."
+    ],
+    [
+      "IFR, World Robotics 2025",
+      "https://ifr.org/ifr-press-releases/news/robot-race-",
+      "2024 professional-service sales by application; sample changes prohibit treating year-on-year reports as a consistent global stock series."
+    ],
+    [
+      "Unitree, January 2026",
+      "https://shop.unitree.com/zh-au/blogs/news/clarification-regarding-unitrees-2025-sales-data",
+      "5500 humanoids sold/delivered in 2025, not 5500 full-time workers."
+    ],
+    [
+      "Figure at BMW, November 2025",
+      "https://www.figure.ai/news/production-at-bmw",
+      "1250 operating hours in one deployment over 11 months; not a global humanoid census."
+    ],
+    [
+      "Agility, September 2026",
+      "https://www.agilityrobotics.com/content/agility-unveils-digit-5-humanoid-robot-built-for-cooperatively-safe-work-at-scale",
+      "65000 cumulative operational hours; do not count future Digit 5 orders."
+    ],
+    [
+      "METR, July 2025",
+      "https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/",
+      "In one experienced open-source developer trial, AI increased completion time. Gross useful outputs cannot be treated as net time saved."
+    ]
+  ]
+}

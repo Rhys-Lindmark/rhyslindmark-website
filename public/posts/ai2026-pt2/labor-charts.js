@@ -14,51 +14,57 @@ const api={make,text,title,grid,muted,colors,clamp,ease,progress:s=>s.reduced?1:
 function machineTiers(svg,scene,d,W,H,a){
  const {make,text,title,grid,muted,clamp,ease}=a,small=W<700;
  a.addLegend(scene,[]);
- const left=small?53:69,right=W-(small?93:186),top=25,bottom=H-41;
- const x=i=>left+i/(d.dates.length-1)*(right-left);
- const y=v=>bottom-(Math.log10(Math.max(.1,v))+1)/9*(bottom-top);
+ const left=small?45:69,right=W-(small?125:220),top=25,bottom=H-41;
+ const times=d.dates.map(date=>Date.parse(date)),start=times[0],span=times.at(-1)-start;
+ const dateX=time=>left+(time-start)/span*(right-left),x=i=>dateX(times[i]);
+ const y=v=>bottom-Math.log10(Math.max(1,v))/8*(bottom-top);
  // Major log ticks only: the physical series must fit on the same axis.
- [.1,1,10,100,1000,10000,100000,1000000,10000000,100000000].forEach(v=>{
+ [1,10,100,1000,10000,100000,1000000,10000000,100000000].forEach(v=>{
   const yy=y(v);
-  make('line',{x1:left,x2:right,y1:yy,y2:yy,stroke:grid,'stroke-opacity':v===.1?0:.75},svg);
+  make('line',{x1:left,x2:right,y1:yy,y2:yy,stroke:grid,'stroke-opacity':.75},svg);
   text(svg,left-9,yy+4,v>=1e6?`${v/1e6}M`:v>=1000?`${v/1000}K`:String(v),{'text-anchor':'end',class:'axis-tick'});
  });
- [2,14,26,38].forEach((i,j)=>text(svg,x(i),bottom+23,String(2023+j),{'text-anchor':'middle',class:'axis-tick'}));
+ [2023,2024,2025,2026].forEach(year=>text(svg,dateX(Date.parse(`${year}-01-01`)),bottom+23,String(year),{'text-anchor':'middle',class:'axis-tick'}));
  const ylabel=text(svg,13,(top+bottom)/2,'Workers',{'text-anchor':'middle',class:'workforce-axis-label'});
  ylabel.setAttribute('transform',`rotate(-90 13 ${(top+bottom)/2})`);
  const referenceMarks=d.references.map((r,i)=>{
   const group=make('g',{},svg),yy=y(r.value);
   make('line',{x1:left,x2:right,y1:yy,y2:yy,stroke:muted,'stroke-dasharray':'5 5','stroke-opacity':'.65'},group);
-  const label=small?(i?'U.S. knowledge · 62M':'Developers · 40M'):`${r.name} · ${Math.round(r.value/1e6)}M`;
+  const label=small?(i?'US knowledge · 62M':'Developers · 40M'):`${r.name} · ${Math.round(r.value/1e6)}M`;
   text(group,right+7,yy+(i?-5:13),label,{class:'workforce-reference'});
   title(group,`${r.name}: ${Math.round(r.value/1e6)} million`);
   return group;
  });
  // Keep categories in the requested reveal order; direct labels avoid a legend.
- const offsets=[2,28,8,-8,3,3];
+ const labelYs=d.series.map((s,i)=>({i,y:y(s.values.at(-1))+4})).sort((a,b)=>a.y-b.y);
+ const gap=small?15:19;
+ labelYs.forEach((p,i)=>{if(i)p.y=Math.max(p.y,labelYs[i-1].y+gap);});
+ const endLabelY=new Map(labelYs.map(p=>[p.i,p.y]));
  const short=['Chatbots','Researchers','Knowledge','Coders','Drivers','Robots'];
  const marks=d.series.map((s,i)=>{
   const points=s.values.map((v,j)=>[x(j),y(v)]);
   const path=make('path',{d:points.map(([xx,yy],j)=>`${j?'L':'M'}${xx},${yy}`).join(' '),fill:'none',stroke:s.color,'stroke-width':small?2.5:3.1,'stroke-linejoin':'round','stroke-linecap':'round'},svg);
   const end=s.values.at(-1),lastY=y(end);
   const amount=end>=1e6?`${(end/1e6).toFixed(1)}M`:end>=1000?`${(end/1000).toFixed(0)}K`:`${Math.round(end)}`;
-  const label=text(svg,right+7,lastY+offsets[i],`${small?short[i]:s.name} · ${amount}`,{class:'tier-endpoint',fill:s.color});
+  const label=text(svg,right+7,endLabelY.get(i),`${small?short[i]:s.name} · ${amount}`,{class:'tier-endpoint',fill:s.color});
   label.style.fill=s.color;
+  const leader=make('line',{x1:right+3,x2:right+6,y1:lastY,y2:endLabelY.get(i)-4,stroke:s.color,'stroke-opacity':'.6'},svg);
   const dot=make('circle',{cx:right,cy:lastY,r:small?3:4,fill:s.color},svg);
   title(path,`${s.name}: ${Math.round(end).toLocaleString('en-US')} paid-work-equivalent task-years per year in September 2026`);
   const clipId=`tier-reveal-${++sequence}`,defs=make('defs',{},svg),clip=make('clipPath',{id:clipId},defs);
   const rect=make('rect',{x:left-3,y:top-4,width:0,height:bottom-top+8},clip);
   path.setAttribute('clip-path',`url(#${clipId})`);
-  return {rect,label,dot,series:s};
+  return {rect,label,dot,leader,series:s};
  });
  let currentState={stage:Number(scene.dataset.stage||0),local:Number(scene.dataset.localProgress||0),reduced:false};
  const seriesProgress=i=>{const step=i<4?i:6;return currentState.reduced?1:currentState.stage>step?1:currentState.stage<step?0:ease(clamp(currentState.local*1.15));};
  window.AIChartHover?.attach(svg,{bounds:{left,right,top,bottom},keyboard:d.dates.map((date,i)=>({x:x(i),y:(top+bottom)/2})),get:point=>{
   const active=marks.map((mark,i)=>({mark,p:seriesProgress(i)})).filter(entry=>entry.p>0);if(!active.length)return null;
-  const maxIndex=Math.max(...active.map(({p})=>p*(d.dates.length-1))),index=Math.max(0,Math.min(Math.round(Math.min((point.x-left)/(right-left)*(d.dates.length-1),maxIndex)),d.dates.length-1));
-  const items=active.filter(({p})=>index<=p*(d.dates.length-1)+.01).map(({mark})=>{const value=mark.series.values[index];return{label:mark.series.name,value:Math.round(value).toLocaleString('en-US'),color:mark.series.color,x:x(index),y:y(value)};});
+  const maxX=left+Math.max(...active.map(({p})=>p))*(right-left),targetX=Math.min(point.x,maxX);
+  const index=d.dates.reduce((best,_,i)=>Math.abs(x(i)-targetX)<Math.abs(x(best)-targetX)?i:best,0);
+  const items=active.filter(({p})=>x(index)<=left+p*(right-left)+.5).map(({mark})=>{const value=mark.series.values[index];return{label:mark.series.name,value:Math.round(value).toLocaleString('en-US'),color:mark.series.color,x:x(index),y:y(value)};});
   d.references.forEach((reference,i)=>{const step=4+i,p=currentState.reduced?1:currentState.stage>step?1:currentState.stage<step?0:ease(clamp(currentState.local*1.5));if(p>0)items.push({label:reference.name,value:`${Math.round(reference.value/1e6)}M`,color:muted,x:x(index),y:y(reference.value)});});
-  return items.length?{title:d.dates[index],x:x(index),items}:null;
+  return items.length?{title:`${d.dates[index]} · estimate`,x:x(index),items}:null;
  }});
  return state=>{
   currentState=state;
@@ -66,7 +72,7 @@ function machineTiers(svg,scene,d,W,H,a){
    const step=i<4?i:6;
    const p=state.reduced?1:state.stage>step?1:state.stage<step?0:ease(clamp(state.local*1.15));
    m.rect.setAttribute('width',(right-left+6)*p);
-   m.label.style.opacity=m.dot.style.opacity=p>.96?'1':'0';
+   m.label.style.opacity=m.dot.style.opacity=m.leader.style.opacity=p>.96?'1':'0';
   });
   referenceMarks.forEach((g,i)=>{
    const step=4+i,p=state.reduced?1:state.stage>step?1:state.stage<step?0:ease(clamp(state.local*1.5));
