@@ -64,6 +64,9 @@
     if (kind === 'native-labor') {
       renderers.set(scene,window.drawLaborChart(scene,data.labor,()=>reduce.matches));return;
     }
+    if (kind === 'labor-value') {
+      renderers.set(scene,window.drawLaborValueChart(scene,()=>reduce.matches));return;
+    }
     if (kind === 'frontier') {
       const box=scene.querySelector('.plot-wrap').getBoundingClientRect();
       const W=Math.max(280,box.width),H=Math.max(300,box.height),cx=W/2,cy=H*.51;
@@ -480,7 +483,13 @@
   }
   // Keep passage names for animation and old deep links, but publish one-based,
   // consecutive slide numbers for every reading step.
-  slideEntries.forEach((entry,index)=>{entry.legacyId=entry.id;entry.id=String(index+1);});
+  let publicSlide=0;
+  slideEntries.forEach(entry=>{
+    entry.legacyId=entry.id;
+    if(entry.index===0&&entry.el.dataset.slideId==='66')publicSlide=66;
+    else if(!(entry.el.hasAttribute('data-one-slide')&&entry.index>0))publicSlide++;
+    entry.id=String(publicSlide);
+  });
   function setSlideAddress(id){
     const url=new URL(location.href);
     if(id)url.searchParams.set('slide',id);else url.searchParams.delete('slide');
@@ -563,8 +572,9 @@
     const hash=decodeURIComponent(location.hash.slice(1)),query=new URL(location.href).searchParams.get('slide');
     const numeric=/^\d+$/.test(query||'')?String(Number(query)):null;
     const legacy=query==='machine-robots'?'73':query;
+    const numbered=slideEntries.filter(e=>e.id===numeric),lastNumbered=numbered.at(-1);
     const entry=hash?slideEntries.find(e=>e.anchor===hash):
-      (slideEntries.find(e=>e.id===numeric)||slideEntries.find(e=>e.anchor===legacy||e.legacyId===legacy));
+      numbered.find(e=>e.el===lastNumbered?.el)||slideEntries.find(e=>e.anchor===legacy||e.legacyId===legacy);
     slideLinksReady=false;
     if(entry){
       const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;

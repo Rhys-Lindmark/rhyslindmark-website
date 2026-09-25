@@ -162,3 +162,13 @@ blockquote.pullquote{border-left:2px solid #526777;padding:28px 32px;margin-bloc
 .scene.labor-graph svg .workforce-axis-label{fill:#d5e1e8;font:12px var(--mono)}
 .scene.labor-graph svg .workforce-reference{fill:#9dafbb;font:10px var(--mono);paint-order:stroke;stroke:#080d12;stroke-width:3px}
 @media(max-width:760px){.scene.labor-graph .figure-heading h3{font-size:11px}.scene.labor-graph svg .tier-endpoint{font-size:10px}}
+
+/* Slide 66 keeps all six passages on the same linear two-bar chart. */
+#rl-labor-intro.scene{height:700svh}
+#rl-labor-intro .plot-wrap{min-height:280px}
+#rl-labor-intro .passage a{text-decoration:underline;text-underline-offset:3px}
+#rl-labor-intro svg .labor-value-amount{fill:#fff;font-size:16px;font-weight:700;paint-order:stroke;stroke:#0b1015;stroke-width:4px}
+#rl-labor-intro svg .labor-value-name{fill:#e6edf3;font-size:13px}
+#rl-labor-intro svg .labor-value-tick{fill:#9aafbf;font-size:11px}
+.all-mode #rl-labor-intro.scene{height:auto}
+@media(max-width:760px){#rl-labor-intro svg .labor-value-name{font-size:10px}#rl-labor-intro svg .labor-value-amount{font-size:12px}#rl-labor-intro svg .labor-value-tick{font-size:9px}}
