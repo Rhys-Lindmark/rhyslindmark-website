@@ -40,10 +40,11 @@
   }
 
   const revealVisuals = [...document.querySelectorAll('.coding-universe-section:not(.office-universe-section) .coding-universe-visual')];
-  const entries = [...document.querySelectorAll('#article [data-slide]')].map((el,number) => {
+  let numberedSlide = 0;
+  const entries = [...document.querySelectorAll('#article [data-slide]')].map(el => {
     const scene = el.closest('.scene.agents');
     const passages = scene ? [...scene.querySelectorAll('.card-copy')] : [el];
-    return {id:String(number+1),legacyId:el.dataset.slide,el,scene,index:passages.indexOf(el),count:passages.length};
+    return {id:el.dataset.publicSlide || String(++numberedSlide),legacyId:el.dataset.slide,el,scene,index:passages.indexOf(el),count:passages.length};
   });
   let frame = 0, linksReady = false;
   const clamp = value => Math.max(0, Math.min(1, value));

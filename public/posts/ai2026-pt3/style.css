@@ -263,16 +263,14 @@ body:not(.all-mode) #experience-curves:is([data-stage="4"],[data-stage="5"]) .ep
 .rd-plot svg .rd-grid{stroke:#2a3a47;stroke-width:1}
 .rd-plot svg .rd-grid-vertical{stroke-dasharray:3 6}
 .rd-plot svg .rd-tick,.rd-plot svg .rd-axis-title{font-size:12px}
-.rd-legend{display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center;padding:10px 0 4px;font:12px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#a5bdca}
-.rd-legend span{display:inline-flex;align-items:center;gap:7px;transition:opacity .15s ease}
-.rd-legend i{display:block;width:20px;height:4px;flex:none}
+.rd-plot svg .rd-series-label{font-size:16px;font-weight:700;paint-order:stroke;stroke:#0b1015;stroke-width:4px}
 .rd-caption{font:11px/1.4 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#a5bdca;text-align:left!important}
 .rd-caption a{color:#a5bdca;text-decoration:none}
 .rd-caption a:hover{text-decoration:underline}
-body:not(.all-mode) #experience-curves[data-stage="6"] .native-legend,body:not(.all-mode) #experience-curves[data-stage="6"] .native-plot,body:not(.all-mode) #experience-curves[data-stage="6"] figure>figcaption{display:none}
-body:not(.all-mode) #experience-curves[data-stage="6"] .rd-plot{display:flex}
+body:not(.all-mode) #experience-curves:is([data-stage="6"],[data-stage="7"]) .native-legend,body:not(.all-mode) #experience-curves:is([data-stage="6"],[data-stage="7"]) .native-plot,body:not(.all-mode) #experience-curves:is([data-stage="6"],[data-stage="7"]) figure>figcaption{display:none}
+body:not(.all-mode) #experience-curves:is([data-stage="6"],[data-stage="7"]) .rd-plot{display:flex}
 .all-mode #experience-curves .rd-plot{display:flex;min-height:600px;margin-top:30px}
-@media(max-width:760px){.rd-plot svg .rd-tick,.rd-plot svg .rd-axis-title{font-size:10px}.rd-legend{font-size:9px;gap:5px 12px}.rd-caption{font-size:9px}}
+@media(max-width:760px){.rd-plot svg .rd-tick,.rd-plot svg .rd-axis-title{font-size:10px}.rd-plot svg .rd-series-label{font-size:20px}.rd-caption{font-size:9px}}
 @media(max-width:760px){.epoch-plot svg .epoch-tick{font-size:15px}.epoch-caption{font-size:9px;gap:4px 10px}}
 @media(min-width:761px){body:not(.all-mode) #article .scene.agents[data-native]>.sticky{padding-left:4px;padding-right:4px}}
 .all-mode .native-plot{height:720px;flex:none}

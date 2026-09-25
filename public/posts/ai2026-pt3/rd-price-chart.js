@@ -35,8 +35,7 @@
   add(svg,'text',{x:(left+right)/2,y:bottom+49,'text-anchor':'middle',class:'rd-axis-title'},'Cumulative R&D stock, relative to start');
   add(svg,'text',{x:20,y:(top+bottom)/2,transform:`rotate(-90 20 ${(top+bottom)/2})`,'text-anchor':'middle',class:'rd-axis-title'},'Relative cost decrease');
   const orderedSeries=['electricity','battery','dna','compute','llm'].map(id=>series.find(s=>s.id===id));
-  const legend=document.createElement('div');
-  legend.className='rd-legend';
+  const labelOffsets={electricity:[14,-7],battery:[14,17],dna:[14,-7],compute:[14,-7],llm:[14,-60]};
   const marks=[];
   for (const s of orderedSeries) {
     const g=add(svg,'g',{'data-series':s.id,class:'rd-series'});
@@ -51,31 +50,29 @@
     path.style.strokeDasharray=String(length);
     const [ex,ey]=pts.at(-1);
     add(path,'title',{},`${s.label}: ${ex.toFixed(1)}× R&D stock, ${ey.toLocaleString('en-US',{maximumFractionDigits:0})}× cheaper; descriptive slope ${s.slope}`);
-    const item=document.createElement('span');
-    const swatch=document.createElement('i');
-    swatch.style.background=colors[s.id];
-    item.append(swatch,document.createTextNode(s.id==='battery'?'Lithium-ion batteries':s.label));
-    legend.append(item);
-    marks.push({path,length,item});
+    const [dx,dy]=labelOffsets[s.id];
+    const label=add(g,'text',{x:x(ex)+dx,y:y(ey)+dy,class:'rd-series-label',style:`fill:${colors[s.id]}`},s.label);
+    marks.push({path,length,label});
   }
-  container.append(svg,legend);
+  container.append(svg);
   const caption=document.createElement('figcaption');
   caption.className='rd-caption';
   caption.innerHTML='Source: <a href="https://epoch.ai/publications/the-plunging-price-of-thought">Epoch AI</a> · <a href="https://github.com/karthiktadepalli1/rd-price-declines">Karthik Tadepalli</a>';
   container.append(caption);
   const clamp=n=>Math.max(0,Math.min(1,n));
+  const reveal=(i,stage,local,reduced)=>reduced?1:i===4
+    ?stage>7?1:stage===7?clamp((local-.12)/.72):0
+    :stage>6?1:stage===6?clamp((local-i*.12)/.55):0;
   const update=({stage=0,local=0,reduced=false}={})=>{
-    const active=reduced||stage===6;
     marks.forEach((mark,i)=>{
-      const amount=reduced?1:active?clamp((local-i*.17)/.2):0;
+      const amount=reveal(i,stage,local,reduced);
       mark.path.style.strokeDashoffset=String(mark.length*(1-amount));
-      const visible=amount>.95;
-      mark.item.style.opacity=visible?'1':'0';
+      mark.label.style.opacity=amount>.98?'1':'0';
     });
   };
   window.AIChartHover?.attach(svg,{bounds:{left,right,top,bottom},keyboard:orderedSeries.flatMap(s=>s.points.map(p=>({x:x(p[0]),y:y(p[1])}))),get:point=>{
-    const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;if(!reduced&&stage!==6)return null;
-    const candidates=[];orderedSeries.forEach((s,i)=>{const amount=reduced?1:clamp((local-i*.17)/.2),count=Math.ceil(s.points.length*amount);s.points.slice(0,count).forEach(p=>candidates.push({s,p}));});if(!candidates.length)return null;
+    const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;if(!reduced&&stage!==6&&stage!==7)return null;
+    const candidates=[];orderedSeries.forEach((s,i)=>{const amount=reveal(i,stage,local,reduced),count=Math.ceil(s.points.length*amount);s.points.slice(0,count).forEach(p=>candidates.push({s,p}));});if(!candidates.length)return null;
     const hit=candidates.reduce((best,item)=>{const score=(x(item.p[0])-point.x)**2+(y(item.p[1])-point.y)**2;return !best||score<best.score?{...item,score}:best},null);
     return{title:hit.s.label,guide:false,items:[{label:'Cumulative R&D stock',value:`${hit.p[0].toLocaleString('en-US',{maximumFractionDigits:1})}×`,color:colors[hit.s.id],x:x(hit.p[0]),y:y(hit.p[1])},{label:'Relative cost decrease',value:`${hit.p[1].toLocaleString('en-US',{maximumFractionDigits:0})}× cheaper`,color:colors[hit.s.id]}]};
   }});
