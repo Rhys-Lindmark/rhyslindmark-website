@@ -38,8 +38,10 @@
     if(value<1)return `$${Math.round(value*1000)}M`;
     return `$${value<10?value.toFixed(1):Math.round(value)}B`;
   }
-  function hoverRows(svg,bounds,rows,getRow){
-    window.AIChartHover?.attach(svg,{bounds,keyboard:rows.map(row=>({x:row.x??(bounds.left+bounds.right)/2,y:row.y})),get:point=>getRow(rows.reduce((best,row)=>Math.abs(row.y-point.y)<Math.abs(best.y-point.y)?row:best,rows[0]),point)});
+  function insideBar(bar,point){
+    const x=Number(bar.getAttribute('x')),y=Number(bar.getAttribute('y'));
+    const width=Number(bar.getAttribute('width')),height=Number(bar.getAttribute('height'));
+    return width>0&&height>0&&point.x>=x&&point.x<=x+width&&point.y>=y&&point.y<=y+height;
   }
   function regimeLabel(svg, row, left, cy, bh, small) {
     // "GPT-4-era foundation" overruns any sane left gutter on a phone, so the
@@ -147,17 +149,16 @@
       const sentences=[...scene.querySelectorAll('.business-sentence')];
       const top=H*.28, bh=Math.min(180,H*.32), segments=[];
       label(svg,left+width/2,top+bh+52,'REVENUE ALLOCATION · USD BILLIONS / GW');
-      let total=0;
+      let total=0,segmentRows=[];
       rows.forEach((row,i)=>{
         const x=left+total/30*width,bw=row.value/30*width;
         const g=node('g',{},svg),rect=node('rect',{x,y:top,width:Math.max(0,bw-3),height:bh,fill:row.color},g);
         const t=label(g,x+bw/2,top+bh/2+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
         if(small&&row.value===1){t.setAttribute('y',top+bh+24);t.style.fill=row.color;}
-        segments.push(g);total+=row.value;
+        segments.push(g);segmentRows.push({row,rect,x:x+Math.max(0,bw-3)/2,y:top+bh/2});total+=row.value;
       });
       legend(scene,rows);
-      const segmentRows=[];total=0;rows.forEach(row=>{const start=left+total/30*width,end=start+row.value/30*width;segmentRows.push({row,x:(start+end)/2,y:top+bh/2});total+=row.value;});
-      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.reduce((best,item)=>Math.abs(item.x-point.x)<Math.abs(best.x-point.x)?item:best,segmentRows[0]);return{title:'$30B revenue per GW',x:segment.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:segment.x,y:segment.y}]};}});
+      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.find(item=>insideBar(item.rect,point));if(!segment)return null;return{title:'$30B revenue per GW',x:point.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:point.x,y:segment.y}]};}});
       renderers.set(scene,p=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
         const sentenceCount=stage===0?0:stage===2?3:local<.25?1:local<.5?2:3;
@@ -292,12 +293,17 @@
         const value=label(svg,left,cy+15,`${row.value} TB`,inside?'end':'start');value.classList.add('value');
         return {bar,est,value,row,inside,cy};
       });
-      hoverRows(svg,{left,right:left+width,top,bottom},bars,({row,cy},point)=>{
-        const t=reduce.matches?1:clamp(Number(scene.dataset.progress||0)/.7),i=cfg.rows.indexOf(row);
-        const local=clamp((t-i*.12)/.64),eased=local*local*(3-2*local);
-        if(eased<=0)return null;
-        const current=row.value*eased;
-        return{title:row.name,items:[{label:'Training data',value:`${current.toFixed(current<10?1:0)} TB`,color:row.color,x:x(current),y:cy}]};
+      window.AIChartHover?.attach(svg,{
+        bounds:{left,right:left+width,top,bottom},
+        keyboard:bars.map(({cy})=>({x:left+2,y:cy})),
+        get:point=>{
+          const entry=bars.find(({bar})=>insideBar(bar,point));
+          if(!entry)return null;
+          const current=Number(entry.bar.getAttribute('width'))/width*100;
+          return{title:entry.row.name,x:point.x,y:entry.cy,guide:false,items:[{
+            label:'Training data',value:`${current.toFixed(current<10?1:0)} TB`,color:entry.row.color,x:point.x,y:entry.cy
+          }]};
+        }
       });
       renderers.set(scene,p=>{
         const t=reduce.matches?1:clamp(p/.7);
@@ -331,15 +337,19 @@
         return {base,rl,share,cost,row,bh,cy};
       });
       legend(scene,[{name:'Base / pretraining',color:'#5a5f66'},{name:'RL + trajectory post-training',color:'#ef8a5c'}]);
-      hoverRows(svg,{left,right:left+width,top,bottom},bars,({row,cy},point)=>{
-        const t=reduce.matches?1:clamp(Number(scene.dataset.progress||0)/.7),i=cfg.rows.indexOf(row);
-        const local=clamp((t-i*.16)/.7),eased=local*local*(3-2*local);
-        if(eased<=0)return null;
-        const base=row.base*eased,rl=row.rl*eased;
-        return{title:row.name,items:[
-          {label:'Base / pretraining',value:`$${base.toFixed(0)}M`,color:'#5a5f66',x:x(base/2),y:cy},
-          {label:'RL + trajectories',value:`$${rl.toFixed(0)}M`,color:'#ef8a5c',x:x(base+rl/2),y:cy}
-        ]};
+      window.AIChartHover?.attach(svg,{
+        bounds:{left,right:left+width,top,bottom},
+        keyboard:bars.flatMap(({row,cy})=>[{x:left+2,y:cy},{x:x(row.base+row.rl/2),y:cy}]),
+        get:point=>{
+          const entry=bars.find(({base,rl})=>insideBar(base,point)||insideBar(rl,point));
+          if(!entry)return null;
+          const isRl=insideBar(entry.rl,point),bar=isRl?entry.rl:entry.base;
+          const current=Number(bar.getAttribute('width'))/width*2000;
+          return{title:entry.row.name,x:point.x,y:entry.cy,guide:false,items:[{
+            label:isRl?'RL + trajectories':'Base / pretraining',value:`$${current.toFixed(0)}M`,
+            color:isRl?'#ef8a5c':'#5a5f66',x:point.x,y:entry.cy
+          }]};
+        }
       });
       renderers.set(scene,p=>{
         const t=reduce.matches?1:clamp(p/.7);
@@ -427,6 +437,24 @@
       });
       label(svg,left+width/2,H-8,'SPENDING PER $100 OF REVENUE');
       legend(scene,[{name:'Inference · COGS',color:'#43a9ff'},{name:'Training R&D · opex',color:'#ff914f'}]);
+      window.AIChartHover?.attach(svg,{
+        bounds:{left,right:left+width,top:25,bottom:H-45},
+        keyboard:bars.flatMap(({a,b,row})=>[
+          {x:x(30),y:Number(a.getAttribute('y'))+Number(a.getAttribute('height'))/2},
+          {x:x(60+row.training/2),y:Number(b.getAttribute('y'))+Number(b.getAttribute('height'))/2}
+        ]),
+        get:point=>{
+          const entry=bars.find(({a,b})=>insideBar(a,point)||insideBar(b,point));
+          if(!entry)return null;
+          const training=insideBar(entry.b,point),bar=training?entry.b:entry.a;
+          const current=Number(bar.getAttribute('width'))/width*240;
+          const cy=Number(bar.getAttribute('y'))+Number(bar.getAttribute('height'))/2;
+          return{title:entry.row.name,x:point.x,y:cy,guide:false,items:[{
+            label:training?'Training R&D · opex':'Inference · COGS',value:`$${Number(current.toFixed(1))}`,
+            color:training?'#ff914f':'#43a9ff',x:point.x,y:cy
+          }]};
+        }
+      });
       renderers.set(scene,p=>bars.forEach(({a,b,t,row})=>{const t1=reduce.matches?1:clamp(p/.35),t2=reduce.matches?1:clamp((p-.35)/.4);a.setAttribute('width',width*60/240*t1);b.setAttribute('width',width*row.training/240*t2);t.style.opacity=t2===1?'1':'0';}));
     }
     svg.hidden = false; svg.removeAttribute('hidden'); scene.querySelector('.fallback').hidden = true;
