@@ -16,21 +16,22 @@ const description = 'Explore more than 120 San Francisco restaurants, bars, priv
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/vendor/leaflet/leaflet.css" />
     <link rel="stylesheet" href="/vendor/leaflet-cluster/MarkerCluster.css" />
-    <link rel="stylesheet" href="/tools/sf-hosting.css?v=2" />
+    <link rel="stylesheet" href="/tools/sf-hosting.css?v=4" />
     <script defer src="/vendor/leaflet/leaflet.js"></script>
     <script defer src="/vendor/leaflet-cluster/leaflet.markercluster.js"></script>
-    <script defer src="/tools/sf-hosting.js?v=3"></script>
+    <script defer src="/tools/sf-hosting.js?v=4"></script>
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="/tools/sf-hosting" aria-label="SF Hosting home"><span class="brand-mark">✳</span><span>sf hosting</span></a>
       <div class="header-search" role="search">
-        <label class="search-segment where-segment"><strong>Where</strong><input id="search" type="search" placeholder="SF neighborhood or place" aria-label="Search places or neighborhoods" autocomplete="off" /></label>
+        <label class="search-segment where-segment"><strong>Where</strong><input id="search" type="search" placeholder="ZIP or neighborhood" aria-label="Search ZIP code, neighborhood, or place" aria-expanded="false" aria-controls="where-panel" autocomplete="off" /></label>
         <button class="search-segment search-trigger" id="date-trigger" type="button" aria-expanded="false" aria-controls="date-panel"><strong>When</strong><span id="date-summary">Add dates</span></button>
         <button class="search-segment search-trigger" id="guest-trigger" type="button" aria-expanded="false" aria-controls="guest-panel"><strong>Who</strong><span id="guest-summary">Add guests</span></button>
         <button id="search-submit" class="search-submit" type="button" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
         <div id="date-panel" class="search-panel" hidden><h2>When is your gathering?</h2><div class="date-fields"><label>Any time between<input id="date-start" type="date" /></label><label>And<input id="date-end" type="date" /></label></div><p>Choose a flexible window for one gathering. Confirm availability with the venue.</p><button class="panel-done" type="button">Done</button></div>
-        <div id="guest-panel" class="search-panel" hidden><h2>How many guests?</h2><div class="guest-stepper"><div><strong>Guests</strong><span>Filter for places with enough room</span></div><button id="guest-minus" type="button" aria-label="Remove one guest">−</button><output id="guest-count">0</output><button id="guest-plus" type="button" aria-label="Add one guest">+</button></div><button class="panel-done" type="button">Done</button></div>
+        <div id="guest-panel" class="search-panel" hidden><h2>How many guests?</h2><p>Filter for places with enough room.</p><div class="guest-picker-head"><label for="guest-number">Guests</label><input id="guest-number" type="number" min="1" max="500" step="1" placeholder="Any size" aria-label="Number of guests" /></div><input id="guest-range" type="range" min="1" max="500" step="1" value="1" aria-label="Guest count" /><div class="guest-range-labels"><span>1 guest</span><span>500 guests</span></div><button id="guest-any" class="guest-any" type="button">Any group size</button><button class="panel-done" type="button">Done</button></div>
+        <div id="where-panel" class="search-panel where-panel" hidden><h2>Where in San Francisco?</h2><p>Type a ZIP code or choose a neighborhood.</p><button class="neighborhood-option citywide-option" type="button" data-query="">Anywhere in San Francisco</button><div id="neighborhood-options" class="neighborhood-options"></div><p class="zip-note">ZIP search uses <a href="https://data.sf.gov/dataset/San-Francisco-ZIP-Codes/uq3t-6t53" target="_blank" rel="noopener">DataSF ZIP areas</a>.</p></div>
       </div>
       <a class="header-link" href="/">Rhys Lindmark <span aria-hidden="true">↗</span></a>
     </header>
@@ -55,6 +56,7 @@ const description = 'Explore more than 120 San Francisco restaurants, bars, priv
             <div><strong id="result-count">Loading places…</strong><span class="results-subtitle" id="result-context"> in San Francisco</span></div>
             <label class="sort-label">Sort <select id="sort"><option value="recommended">Recommended</option><option value="price-low">Price: low to high</option><option value="capacity-high">Capacity: high to low</option></select></label>
           </div>
+          <p id="search-feedback" class="search-feedback" role="status" hidden></p>
           <div id="cards" class="cards" aria-live="polite"></div>
           <div id="empty-state" class="empty-state" hidden><h2>No places in this map area.</h2><p>Move the map or widen your filters.</p><button type="button" id="show-all-matches">Show all matching places</button><button type="button" id="empty-clear">Clear filters</button></div>
           <div class="data-note">Prices and room terms are planning information, not live quotes. Confirm availability, minimum spend, fees, and capacity with the venue. <button id="about-data" type="button">About this guide</button></div>

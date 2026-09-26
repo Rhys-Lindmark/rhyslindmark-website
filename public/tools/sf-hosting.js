@@ -5,6 +5,7 @@ const money = (value) => `$${Number(value).toLocaleString('en-US')}`;
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const safeUrl = (value) => { try { const url=new URL(value); return ['https:','http:'].includes(url.protocol) ? url.href : '#'; } catch { return '#'; } };
 const text = (value) => String(value || '').replace(/\s+/g,' ').trim();
+const neighborhoods=['Hayes Valley','SoMa','Mission District','North Beach','Marina','Cow Hollow','Nob Hill','Russian Hill','Financial District','Jackson Square','Embarcadero','Union Square','Chinatown','Castro','Pacific Heights','Japantown','NoPa','Dogpatch','Inner Sunset','Outer Richmond'];
 
 function getFilters(){
   const priceMin=Number($('#price-min').value),priceMax=Number($('#price-max').value);
@@ -28,7 +29,11 @@ function matches(v,f){
   if(state.type==='drinks' && !['drinks','both'].includes(v.category))return false;
   if(state.type==='both' && v.category!=='both')return false;
   if(state.type==='dropin' && !v.sources?.includes("Rhys's drop-in map"))return false;
-  if(f.query && ![v.name,v.neighborhood,v.cuisine,v.details,v.address].some(x=>String(x||'').toLowerCase().includes(f.query)))return false;
+  if(f.query){
+    const zip=f.query.match(/^(\d{5})(?:-\d{4})?$/);
+    if(zip){if(v.zipCode!==zip[1])return false;}
+    else if(![v.name,v.neighborhood,v.cuisine,v.details,v.address].some(x=>String(x||'').toLowerCase().includes(f.query)))return false;
+  }
   if((f.minPrice||f.maxPrice) && (!v.pricePerHead || (f.minPrice&&v.pricePerHead<f.minPrice) || (f.maxPrice&&v.pricePerHead>f.maxPrice)))return false;
   if(f.minBooking||f.maxBooking){
     const privacySelected=f.private||f.semi||f.buyout;
@@ -141,7 +146,7 @@ function updateVisibleFromMap(){
 function fitToMatches(animate=true){
   if(!state.map||!state.matched.length)return;
   const points=state.matched.filter(v=>v.lat&&v.lng).map(v=>[v.lat,v.lng]);
-  if(points.length)state.map.fitBounds(points,{padding:[40,40],maxZoom:13,animate});
+  if(points.length)state.map.fitBounds(points,{padding:[40,40],maxZoom:$('#search').value.trim()?16:13,animate});
 }
 
 function roomHtml(room){
@@ -177,6 +182,7 @@ function closeVenue(){
 }
 
 function applyFilters(){
+  $('#search-feedback').hidden=true;
   const f=getFilters();state.matched=sortVenues(state.venues.filter(v=>matches(v,f)));
   $('#clear-filters').hidden=!hasActiveFilters(f);
   $('#filter-count').hidden=!(f.minPrice||f.maxPrice||f.minBooking||f.maxBooking||f.private||f.semi||f.buyout||f.dropin);
@@ -185,7 +191,7 @@ function applyFilters(){
 }
 
 function clearFilters(){
-  $('#search').value='';state.guests=0;$('#guest-count').textContent='0';$('#guest-summary').textContent='Add guests';
+  $('#search').value='';state.guests=0;updateGuestSummary();$('#search-feedback').hidden=true;
   $('#date-start').value='';$('#date-end').value='';updateDateSummary();
   ['price','booking'].forEach(kind=>{$(`#${kind}-min`).value=0;$(`#${kind}-max`).value=$(`#${kind}-max`).max;});
   ['#private-only','#semi-only','#buyout-only','#dropin-only'].forEach(s=>$(s).checked=false);
@@ -195,6 +201,21 @@ function clearFilters(){
 
 function closeSearchPanels(){
   ['date','guest'].forEach(kind=>{$(`#${kind}-panel`).hidden=true;$(`#${kind}-trigger`).setAttribute('aria-expanded','false');});
+  $('#where-panel').hidden=true;$('#search').setAttribute('aria-expanded','false');
+}
+
+function showNeighborhoods(){
+  const query=$('#search').value.trim().toLowerCase();
+  const options=neighborhoods.filter(name=>name.toLowerCase().includes(query));
+  $('#neighborhood-options').innerHTML=options.map(name=>`<button class="neighborhood-option" type="button" data-query="${esc(name)}">${esc(name)}</button>`).join('')||'<p class="neighborhood-empty">Press Search to find this ZIP code or place.</p>';
+}
+
+function submitSearch(){
+  closeSearchPanels();applyFilters();fitToMatches();
+  const location=$('#search').value.trim();
+  const parts=[`${state.matched.length} matching ${state.matched.length===1?'place':'places'}`,location?`in ${location}`:'across San Francisco',state.guests?`for ${state.guests}+ guests`:''];
+  $('#search-feedback').textContent=parts.filter(Boolean).join(' · ')+($('#date-start').value||$('#date-end').value?'. Flexible dates saved for your inquiry.':'');
+  $('#search-feedback').hidden=false;
 }
 
 function updateRangeLabels(){
@@ -216,8 +237,13 @@ function renderHistogram(kind,values){
 }
 
 function updateGuestSummary(){
-  $('#guest-count').textContent=state.guests;
+  $('#guest-number').value=state.guests||'';$('#guest-range').value=state.guests||1;
   $('#guest-summary').textContent=state.guests?`${state.guests} ${state.guests===1?'guest':'guests'}`:'Add guests';
+}
+
+function setGuests(value){
+  state.guests=value?Math.max(1,Math.min(500,Math.round(Number(value)||1))):0;
+  updateGuestSummary();applyFilters();
 }
 
 function updateDateSummary(){
@@ -231,13 +257,16 @@ function updateDateSummary(){
 
 function wireEvents(){
   $$('.type-tab').forEach(tab=>tab.addEventListener('click',()=>{state.type=tab.dataset.type;$$('.type-tab').forEach(t=>{const active=t===tab;t.classList.toggle('active',active);t.setAttribute('aria-pressed',active);});applyFilters();}));
-  $('#search').addEventListener('input',applyFilters);
-  $('#search').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();applyFilters();fitToMatches();}});
-  $('#search-submit').addEventListener('click',()=>{closeSearchPanels();applyFilters();fitToMatches();});
+  $('#search').addEventListener('focus',()=>{closeSearchPanels();showNeighborhoods();$('#where-panel').hidden=false;$('#search').setAttribute('aria-expanded','true');});
+  $('#search').addEventListener('input',()=>{showNeighborhoods();$('#where-panel').hidden=false;$('#search').setAttribute('aria-expanded','true');$('#search-feedback').hidden=true;applyFilters();});
+  $('#search').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();submitSearch();}});
+  $('#where-panel').addEventListener('click',event=>{const option=event.target.closest('[data-query]');if(option){$('#search').value=option.dataset.query;submitSearch();}});
+  $('#search-submit').addEventListener('click',submitSearch);
   ['date','guest'].forEach(kind=>$(`#${kind}-trigger`).addEventListener('click',()=>{const panel=$(`#${kind}-panel`),open=panel.hidden;closeSearchPanels();panel.hidden=!open;$(`#${kind}-trigger`).setAttribute('aria-expanded',String(open));}));
-  $$('.panel-done').forEach(button=>button.addEventListener('click',closeSearchPanels));
-  $('#guest-minus').addEventListener('click',()=>{state.guests=Math.max(0,state.guests-1);updateGuestSummary();applyFilters();});
-  $('#guest-plus').addEventListener('click',()=>{state.guests=Math.min(500,state.guests+1);updateGuestSummary();applyFilters();});
+  $$('.panel-done').forEach(button=>button.addEventListener('click',submitSearch));
+  $('#guest-range').addEventListener('input',event=>setGuests(event.target.value));
+  $('#guest-number').addEventListener('input',event=>setGuests(event.target.value));
+  $('#guest-any').addEventListener('click',()=>setGuests(0));
   ['#date-start','#date-end'].forEach(s=>$(s).addEventListener('change',updateDateSummary));
   ['price','booking'].forEach(kind=>['min','max'].forEach(bound=>$(`#${kind}-${bound}`).addEventListener('input',()=>{updateRangeLabels();applyFilters();})));
   ['#private-only','#semi-only','#buyout-only','#dropin-only','#sort'].forEach(s=>$(s).addEventListener('change',applyFilters));
@@ -257,8 +286,9 @@ function wireEvents(){
 async function init(){
   wireEvents();
   try{
-    const response=await fetch('/data/sf-hosting.json');if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const [response,zipResponse]=await Promise.all([fetch('/data/sf-hosting.json'),fetch('/data/sf-hosting-zips.json')]);if(!response.ok)throw new Error(`HTTP ${response.status}`);
     const data=await response.json();state.venues=data.venues;
+    if(zipResponse.ok){const zipData=await zipResponse.json();state.venues.forEach(v=>v.zipCode=zipData.venues[v.id]);}
     $('#price-max').max=Math.ceil(Math.max(...state.venues.map(v=>v.pricePerHead||0))/10)*10;$('#price-max').min=10;$('#price-max').value=$('#price-max').max;$('#price-min').max=$('#price-max').max;
     const bookingPrices=state.venues.map(v=>v.fullBookingPrice).filter(Boolean);
     state.bookingSteps=[0,...new Set(bookingPrices.sort((a,b)=>a-b))];
