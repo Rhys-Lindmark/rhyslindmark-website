@@ -224,7 +224,9 @@ function updateDateSummary(){
   const start=$('#date-start').value,end=$('#date-end').value;
   if(start&&end&&end<start){$('#date-end').value=start;}
   const date=value=>new Date(`${value}T12:00:00`).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-  $('#date-summary').textContent=start?(end?`${date(start)} – ${date($('#date-end').value)}`:date(start)):'Add dates';
+  const latest=$('#date-end').value;
+  const summary=start?(latest?(start===latest?date(start):`Anytime ${date(start)} – ${date(latest)}`):`From ${date(start)}`):(latest?`By ${date(latest)}`:'Add dates');
+  $('#date-summary').textContent=summary;$('#date-summary').title=summary;
 }
 
 function wireEvents(){

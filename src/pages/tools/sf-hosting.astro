@@ -19,7 +19,7 @@ const description = 'Explore more than 120 San Francisco restaurants, bars, priv
     <link rel="stylesheet" href="/tools/sf-hosting.css?v=2" />
     <script defer src="/vendor/leaflet/leaflet.js"></script>
     <script defer src="/vendor/leaflet-cluster/leaflet.markercluster.js"></script>
-    <script defer src="/tools/sf-hosting.js?v=2"></script>
+    <script defer src="/tools/sf-hosting.js?v=3"></script>
   </head>
   <body>
     <header class="site-header">
@@ -29,7 +29,7 @@ const description = 'Explore more than 120 San Francisco restaurants, bars, priv
         <button class="search-segment search-trigger" id="date-trigger" type="button" aria-expanded="false" aria-controls="date-panel"><strong>When</strong><span id="date-summary">Add dates</span></button>
         <button class="search-segment search-trigger" id="guest-trigger" type="button" aria-expanded="false" aria-controls="guest-panel"><strong>Who</strong><span id="guest-summary">Add guests</span></button>
         <button id="search-submit" class="search-submit" type="button" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
-        <div id="date-panel" class="search-panel" hidden><h2>When is your gathering?</h2><div class="date-fields"><label>Start date<input id="date-start" type="date" /></label><label>End date<input id="date-end" type="date" /></label></div><p>Dates help plan your inquiry. Confirm availability with the venue.</p><button class="panel-done" type="button">Done</button></div>
+        <div id="date-panel" class="search-panel" hidden><h2>When is your gathering?</h2><div class="date-fields"><label>Any time between<input id="date-start" type="date" /></label><label>And<input id="date-end" type="date" /></label></div><p>Choose a flexible window for one gathering. Confirm availability with the venue.</p><button class="panel-done" type="button">Done</button></div>
         <div id="guest-panel" class="search-panel" hidden><h2>How many guests?</h2><div class="guest-stepper"><div><strong>Guests</strong><span>Filter for places with enough room</span></div><button id="guest-minus" type="button" aria-label="Remove one guest">−</button><output id="guest-count">0</output><button id="guest-plus" type="button" aria-label="Add one guest">+</button></div><button class="panel-done" type="button">Done</button></div>
       </div>
       <a class="header-link" href="/">Rhys Lindmark <span aria-hidden="true">↗</span></a>
