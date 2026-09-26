@@ -1,4 +1,4 @@
-const state = {venues:[], matched:[], filtered:[], type:'all', selected:null, map:null, clusterLayer:null, markers:[], guests:0, bookingSteps:[]};
+const state = {venues:[], matched:[], filtered:[], type:'all', selected:null, map:null, clusterLayer:null, markers:[], guests:0};
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const money = (value) => `$${Number(value).toLocaleString('en-US')}`;
@@ -13,7 +13,8 @@ function getFilters(){
   return {
     query:$('#search').value.trim().toLowerCase(),
     minPrice:priceMin>0?priceMin:null,maxPrice:priceMax<Number($('#price-max').max)?priceMax:null,
-    minBooking:bookingMin>0?state.bookingSteps[bookingMin]:null,maxBooking:bookingMax<Number($('#booking-max').max)?state.bookingSteps[bookingMax]:null,
+    minBooking:bookingMin>0?bookingMin:null,maxBooking:bookingMax<Number($('#booking-max').max)?bookingMax:null,
+    minCapacity:Number($('#capacity-min').value)||null,maxCapacity:Number($('#capacity-max').value)<500?Number($('#capacity-max').value):null,
     guests:state.guests||null,
     private:$('#private-only').checked,
     semi:$('#semi-only').checked,
@@ -22,7 +23,7 @@ function getFilters(){
   };
 }
 
-function hasActiveFilters(f){return Boolean(f.query || f.minPrice || f.maxPrice || f.minBooking || f.maxBooking || f.guests || f.private || f.semi || f.buyout || f.dropin || state.type!=='all');}
+function hasActiveFilters(f){return Boolean(f.query || f.minPrice || f.maxPrice || f.minBooking || f.maxBooking || f.minCapacity || f.maxCapacity || f.guests || f.private || f.semi || f.buyout || f.dropin || state.type!=='all');}
 
 function matches(v,f){
   if(state.type==='dinner' && !['dinner','both'].includes(v.category))return false;
@@ -47,6 +48,7 @@ function matches(v,f){
     }else if(!v.fullBookingPrice||(f.minBooking&&v.fullBookingPrice<f.minBooking)||(f.maxBooking&&v.fullBookingPrice>f.maxBooking))return false;
   }
   if(f.guests && (!v.maxGuests || v.maxGuests<f.guests))return false;
+  if((f.minCapacity||f.maxCapacity)&&(!v.maxGuests||(f.minCapacity&&v.maxGuests<f.minCapacity)||(f.maxCapacity&&v.maxGuests>f.maxCapacity)))return false;
   const selected=[f.private&&v.private,f.semi&&v.semiPrivate,f.buyout&&v.buyout,f.dropin&&v.sources?.includes("Rhys's drop-in map")].filter(Boolean);
   if((f.private||f.semi||f.buyout||f.dropin) && !selected.length)return false;
   return true;
@@ -184,8 +186,9 @@ function closeVenue(){
 function applyFilters(){
   $('#search-feedback').hidden=true;
   const f=getFilters();state.matched=sortVenues(state.venues.filter(v=>matches(v,f)));
+  $('#dialog-done').textContent=`Show ${state.matched.length} ${state.matched.length===1?'place':'places'}`;
   $('#clear-filters').hidden=!hasActiveFilters(f);
-  $('#filter-count').hidden=!(f.minPrice||f.maxPrice||f.minBooking||f.maxBooking||f.private||f.semi||f.buyout||f.dropin);
+  $('#filter-count').hidden=!(f.minPrice||f.maxPrice||f.minBooking||f.maxBooking||f.minCapacity||f.maxCapacity||f.private||f.semi||f.buyout||f.dropin);
   $('#filter-count').textContent='•';
   if(state.map)renderMap();else{state.filtered=state.matched;renderCards();}
 }
@@ -193,7 +196,7 @@ function applyFilters(){
 function clearFilters(){
   $('#search').value='';state.guests=0;updateGuestSummary();$('#search-feedback').hidden=true;
   $('#date-start').value='';$('#date-end').value='';updateDateSummary();
-  ['price','booking'].forEach(kind=>{$(`#${kind}-min`).value=0;$(`#${kind}-max`).value=$(`#${kind}-max`).max;});
+  ['price','booking','capacity'].forEach(kind=>{$(`#${kind}-min`).value=0;$(`#${kind}-max`).value=$(`#${kind}-max`).max;});
   ['#private-only','#semi-only','#buyout-only','#dropin-only'].forEach(s=>$(s).checked=false);
   state.type='all';$$('.type-tab').forEach(tab=>{const active=tab.dataset.type==='all';tab.classList.toggle('active',active);tab.setAttribute('aria-pressed',active);});
   updateRangeLabels();applyFilters();fitToMatches();
@@ -218,22 +221,28 @@ function submitSearch(){
   $('#search-feedback').hidden=false;
 }
 
-function updateRangeLabels(){
-  for(const kind of ['price','booking']){
+function updateRangeLabels(changed){
+  for(const kind of ['price','booking','capacity']){
     const min=$(`#${kind}-min`),max=$(`#${kind}-max`);
-    if(Number(min.value)>Number(max.value)){if(document.activeElement===min)max.value=min.value;else min.value=max.value;}
-    const display=value=>money(kind==='booking'?state.bookingSteps[Number(value)]:value);
-    $(`#${kind}-low-label`).textContent=Number(min.value)?display(min.value):'Any minimum';
-    $(`#${kind}-high-label`).textContent=Number(max.value)<Number(max.max)?display(max.value):'Any maximum';
+    const step=Number(min.step),limit=Number(max.max);
+    if(Number(min.value)>=Number(max.value)){if(changed===min)min.value=Number(max.value)-step;else max.value=Number(min.value)+step;}
+    const low=Number(min.value),high=Number(max.value),display=value=>kind==='capacity'?String(value):money(value);
+    $(`#${kind}-low-label`).textContent=display(low);
+    $(`#${kind}-high-label`).textContent=display(high)+(high===limit?'+':'');
+    min.setAttribute('aria-valuetext',display(low));max.setAttribute('aria-valuetext',display(high)+(high===limit?' or more':''));
+    const track=$(`#${kind}-track`);track.style.setProperty('--low',`${low/limit*100}%`);track.style.setProperty('--high',`${high/limit*100}%`);
+    $$('#'+kind+'-histogram span').forEach(bar=>{const from=Number(bar.dataset.from),to=Number(bar.dataset.to);bar.classList.toggle('in-range',to>low&&from<high);});
   }
 }
 
 function renderHistogram(kind,values){
-  const max=Number($(`#${kind}-max`).max),bins=18,counts=Array(bins).fill(0);
-  values.forEach(value=>{const position=kind==='booking'?state.bookingSteps.indexOf(value):value;counts[Math.min(bins-1,Math.floor(position/max*bins))]++;});
+  const max=Number($(`#${kind}-max`).max),bins=40,counts=Array(bins).fill(0);
+  values.forEach(value=>counts[Math.min(bins-1,Math.floor(value/max*bins))]++);
   const tallest=Math.max(...counts,1);
-  $(`#${kind}-histogram`).innerHTML=counts.map(count=>`<span style="height:${Math.max(4,count/tallest*100)}%" title="${count} places"></span>`).join('');
-  $(`#${kind}-data-note`).textContent=`${values.length} published prices shown · ${state.venues.length-values.length} places need a quote. Price filters show places with a published figure.`;
+  $(`#${kind}-histogram`).innerHTML=counts.map((count,i)=>`<span data-from="${i/bins*max}" data-to="${(i+1)/bins*max}" style="height:${count/tallest*100}%" title="${count} places"></span>`).join('');
+  const sorted=[...values].sort((a,b)=>a-b),middle=Math.floor(sorted.length/2),median=sorted.length%2?sorted[middle]:(sorted[middle-1]+sorted[middle])/2;
+  $(`#${kind}-median`).textContent=kind==='capacity'?`Median capacity: ${Math.round(median)} people`:`Median published price: ${money(median)}`;
+  $(`#${kind}-data-note`).textContent=kind==='capacity'?`${values.length} published capacities · ${state.venues.length-values.length} on request. 500+ includes larger venues.`:`${values.length} published prices · ${state.venues.length-values.length} need a quote. Budget ranges include only published figures; confirm fees and terms with the venue.`;
 }
 
 function updateGuestSummary(){
@@ -268,12 +277,12 @@ function wireEvents(){
   $('#guest-number').addEventListener('input',event=>setGuests(event.target.value));
   $('#guest-any').addEventListener('click',()=>setGuests(0));
   ['#date-start','#date-end'].forEach(s=>$(s).addEventListener('change',updateDateSummary));
-  ['price','booking'].forEach(kind=>['min','max'].forEach(bound=>$(`#${kind}-${bound}`).addEventListener('input',()=>{updateRangeLabels();applyFilters();})));
+  ['price','booking','capacity'].forEach(kind=>['min','max'].forEach(bound=>$(`#${kind}-${bound}`).addEventListener('input',event=>{updateRangeLabels(event.target);applyFilters();})));
   ['#private-only','#semi-only','#buyout-only','#dropin-only','#sort'].forEach(s=>$(s).addEventListener('change',applyFilters));
   $('#clear-filters').addEventListener('click',clearFilters);$('#empty-clear').addEventListener('click',clearFilters);
   $('#show-all-matches').addEventListener('click',()=>fitToMatches());
   const filtersDialog=$('#filters-dialog');$('#filters-button').addEventListener('click',()=>filtersDialog.showModal());
-  $('#dialog-done').addEventListener('click',()=>filtersDialog.close());
+  $('#dialog-done').addEventListener('click',()=>{filtersDialog.close();submitSearch();});
   $('#dialog-clear').addEventListener('click',clearFilters);
   $('#filters-dialog .dialog-close').addEventListener('click',()=>filtersDialog.close());
   document.addEventListener('click',event=>{if(!event.target.closest('.header-search'))closeSearchPanels();});
@@ -289,11 +298,9 @@ async function init(){
     const [response,zipResponse]=await Promise.all([fetch('/data/sf-hosting.json'),fetch('/data/sf-hosting-zips.json')]);if(!response.ok)throw new Error(`HTTP ${response.status}`);
     const data=await response.json();state.venues=data.venues;
     if(zipResponse.ok){const zipData=await zipResponse.json();state.venues.forEach(v=>v.zipCode=zipData.venues[v.id]);}
-    $('#price-max').max=Math.ceil(Math.max(...state.venues.map(v=>v.pricePerHead||0))/10)*10;$('#price-max').min=10;$('#price-max').value=$('#price-max').max;$('#price-min').max=$('#price-max').max;
+    $('#price-max').max=Math.ceil(Math.max(...state.venues.map(v=>v.pricePerHead||0))/10)*10;$('#price-max').value=$('#price-max').max;$('#price-min').max=$('#price-max').max;
     const bookingPrices=state.venues.map(v=>v.fullBookingPrice).filter(Boolean);
-    state.bookingSteps=[0,...new Set(bookingPrices.sort((a,b)=>a-b))];
-    $('#booking-min').max=state.bookingSteps.length-1;$('#booking-max').min=1;$('#booking-max').max=state.bookingSteps.length;$('#booking-max').value=state.bookingSteps.length;
-    renderHistogram('price',state.venues.map(v=>v.pricePerHead).filter(Boolean));renderHistogram('booking',bookingPrices);updateRangeLabels();
+    renderHistogram('price',state.venues.map(v=>v.pricePerHead).filter(Boolean));renderHistogram('booking',bookingPrices);renderHistogram('capacity',state.venues.map(v=>v.maxGuests).filter(Boolean));updateRangeLabels();
     applyFilters();initMap();
     const selected=new URLSearchParams(location.search).get('venue');if(selected)openVenue(selected);
   }catch(error){
