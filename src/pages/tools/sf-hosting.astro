@@ -1,0 +1,102 @@
+---
+const title = 'SF Hosting — Private dinners & group drinks in San Francisco';
+const description = 'Explore more than 120 San Francisco restaurants, bars, private dining rooms, and casual group hangouts. Compare room sizes, per-person prices, and booking minimums.';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href="https://www.rhyslindmark.com/tools/sf-hosting" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/vendor/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="/vendor/leaflet-cluster/MarkerCluster.css" />
+    <link rel="stylesheet" href="/tools/sf-hosting.css" />
+    <script defer src="/vendor/leaflet/leaflet.js"></script>
+    <script defer src="/vendor/leaflet-cluster/leaflet.markercluster.js"></script>
+    <script defer src="/tools/sf-hosting.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/tools/sf-hosting" aria-label="SF Hosting home"><span class="brand-mark">✳</span><span>sf hosting</span></a>
+      <div class="header-search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+        <input id="search" type="search" placeholder="Search places, neighborhoods, or cuisine" aria-label="Search places" autocomplete="off" />
+      </div>
+      <a class="header-link" href="/">Rhys Lindmark <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main>
+      <div class="intro">
+        <div>
+          <div class="eyebrow">SAN FRANCISCO · PRIVATE DINNERS & GROUP DRINKS</div>
+          <h1>Find a place to bring people together.</h1>
+          <p>Private rooms, big tables, bars, patios, and easy group hangouts — all on one map.</p>
+        </div>
+        <div class="intro-count"><strong id="total-count">124</strong><span>places to explore</span></div>
+      </div>
+
+      <section class="controls" aria-label="Search filters">
+        <div class="type-tabs" role="group" aria-label="Occasion">
+          <button class="type-tab active" type="button" data-type="all" aria-pressed="true">All places</button>
+          <button class="type-tab" type="button" data-type="dinner" aria-pressed="false">Private dinner</button>
+          <button class="type-tab" type="button" data-type="drinks" aria-pressed="false">Drinks & casual</button>
+        </div>
+        <div class="filter-actions">
+          <button id="price-button" class="filter-button" type="button" data-opens="price-panel" aria-expanded="false">Price per person <span aria-hidden="true">⌄</span></button>
+          <button id="booking-button" class="filter-button" type="button" data-opens="booking-panel" aria-expanded="false">Space minimum <span aria-hidden="true">⌄</span></button>
+          <button id="rooms-button" class="filter-button" type="button" data-opens="rooms-panel" aria-expanded="false">Rooms & capacity <span aria-hidden="true">⌄</span></button>
+          <button id="clear-filters" class="clear-button" type="button" hidden>Clear filters</button>
+        </div>
+        <div id="price-panel" class="filter-popover" hidden>
+          <div class="popover-heading">Price per person <button class="popover-close" type="button" aria-label="Close filter">×</button></div>
+          <p>Set a maximum planning price per guest.</p>
+          <div class="input-wrap"><span>$</span><input id="max-price" type="number" min="0" step="10" placeholder="Any price" aria-label="Maximum price per person" /></div>
+          <small>Some prices are estimates including drinks and service. Published menu starts exclude extras. See each listing.</small>
+        </div>
+        <div id="booking-panel" class="filter-popover" hidden>
+          <div class="popover-heading">Space minimum <button class="popover-close" type="button" aria-label="Close filter">×</button></div>
+          <p>Maximum published spend to book a space.</p>
+          <div class="input-wrap"><span>$</span><input id="max-booking" type="number" min="0" step="250" placeholder="Any minimum" aria-label="Maximum space minimum" /></div>
+          <small>Minimums vary by room, date, and guest count. When you select a room type, this filter checks that room’s listed minimum.</small>
+        </div>
+        <div id="rooms-panel" class="filter-popover rooms-popover" hidden>
+          <div class="popover-heading">Rooms & capacity <button class="popover-close" type="button" aria-label="Close filter">×</button></div>
+          <p>What kind of space works for your group?</p>
+          <div class="room-options">
+            <label><input id="private-only" type="checkbox" /> Private room</label>
+            <label><input id="semi-only" type="checkbox" /> Semi-private area</label>
+            <label><input id="buyout-only" type="checkbox" /> Full buyout</label>
+            <label><input id="dropin-only" type="checkbox" /> Casual drop-in</label>
+          </div>
+          <label class="guest-label" for="min-guests">Guests to accommodate</label>
+          <input id="min-guests" class="guest-input" type="number" min="1" step="1" placeholder="Any group size" />
+          <small>Capacities are based on published room or venue information where available.</small>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Venue results">
+        <div class="results-pane">
+          <div class="results-head">
+            <div><strong id="result-count">Loading places…</strong><span class="results-subtitle" id="result-context"> in San Francisco</span></div>
+            <label class="sort-label">Sort <select id="sort"><option value="recommended">Recommended</option><option value="price-low">Price: low to high</option><option value="capacity-high">Capacity: high to low</option></select></label>
+          </div>
+          <div id="cards" class="cards" aria-live="polite"></div>
+          <div id="empty-state" class="empty-state" hidden><h2>No places match those filters.</h2><p>Try a higher budget or a different room type.</p><button type="button" id="empty-clear">Clear filters</button></div>
+          <div class="data-note">Prices and room terms are planning information, not live quotes. Confirm availability, minimum spend, fees, and capacity with the venue. <button id="about-data" type="button">About this guide</button></div>
+        </div>
+        <aside class="map-pane" aria-label="Map of venues"><div id="map"></div><div class="map-counter" id="map-counter">Loading map…</div></aside>
+      </section>
+    </main>
+
+    <button class="mobile-map-toggle" id="mobile-map-toggle" type="button" aria-pressed="false"><span aria-hidden="true">⌖</span> Show map</button>
+    <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+    <aside id="detail-drawer" class="detail-drawer" aria-label="Venue details" aria-hidden="true"></aside>
+    <dialog id="about-dialog" class="about-dialog"><button class="dialog-close" type="button" aria-label="Close">×</button><h2>About this guide</h2><p>This guide combines Rhys’s venue research and group-hosting maps with venue details collected by <a href="https://tablequote.com/directory" target="_blank" rel="noopener">TableQuote</a>. Each listing links to venue information or a map listing.</p><p>Per-person estimates from Rhys’s research include food, drinks, and a 35% allowance for tax and service. Other per-person figures are directory-listed starting menu prices before extras. Booking figures are listed room or food-and-beverage minimums when available, not guaranteed final costs.</p><p>Updated September 2026. Please verify every detail with the venue before booking.</p></dialog>
+  </body>
+</html>
