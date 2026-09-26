@@ -24,59 +24,28 @@ const description = 'Explore more than 120 San Francisco restaurants, bars, priv
   <body>
     <header class="site-header">
       <a class="brand" href="/tools/sf-hosting" aria-label="SF Hosting home"><span class="brand-mark">✳</span><span>sf hosting</span></a>
-      <div class="header-search">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
-        <input id="search" type="search" placeholder="Search places, neighborhoods, or cuisine" aria-label="Search places" autocomplete="off" />
+      <div class="header-search" role="search">
+        <label class="search-segment where-segment"><strong>Where</strong><input id="search" type="search" placeholder="SF neighborhood or place" aria-label="Search places or neighborhoods" autocomplete="off" /></label>
+        <button class="search-segment search-trigger" id="date-trigger" type="button" aria-expanded="false" aria-controls="date-panel"><strong>When</strong><span id="date-summary">Add dates</span></button>
+        <button class="search-segment search-trigger" id="guest-trigger" type="button" aria-expanded="false" aria-controls="guest-panel"><strong>Who</strong><span id="guest-summary">Add guests</span></button>
+        <button id="search-submit" class="search-submit" type="button" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
+        <div id="date-panel" class="search-panel" hidden><h2>When is your gathering?</h2><div class="date-fields"><label>Start date<input id="date-start" type="date" /></label><label>End date<input id="date-end" type="date" /></label></div><p>Dates help plan your inquiry. Confirm availability with the venue.</p><button class="panel-done" type="button">Done</button></div>
+        <div id="guest-panel" class="search-panel" hidden><h2>How many guests?</h2><div class="guest-stepper"><div><strong>Guests</strong><span>Filter for places with enough room</span></div><button id="guest-minus" type="button" aria-label="Remove one guest">−</button><output id="guest-count">0</output><button id="guest-plus" type="button" aria-label="Add one guest">+</button></div><button class="panel-done" type="button">Done</button></div>
       </div>
       <a class="header-link" href="/">Rhys Lindmark <span aria-hidden="true">↗</span></a>
     </header>
 
     <main>
-      <div class="intro">
-        <div>
-          <div class="eyebrow">SAN FRANCISCO · PRIVATE DINNERS & GROUP DRINKS</div>
-          <h1>Find a place to bring people together.</h1>
-          <p>Private rooms, big tables, bars, patios, and easy group hangouts — all on one map.</p>
-        </div>
-        <div class="intro-count"><strong id="total-count">124</strong><span>places to explore</span></div>
-      </div>
-
       <section class="controls" aria-label="Search filters">
-        <div class="type-tabs" role="group" aria-label="Occasion">
-          <button class="type-tab active" type="button" data-type="all" aria-pressed="true">All places</button>
-          <button class="type-tab" type="button" data-type="dinner" aria-pressed="false">Private dinner</button>
-          <button class="type-tab" type="button" data-type="drinks" aria-pressed="false">Drinks & casual</button>
-        </div>
         <div class="filter-actions">
-          <button id="price-button" class="filter-button" type="button" data-opens="price-panel" aria-expanded="false">Price per person <span aria-hidden="true">⌄</span></button>
-          <button id="booking-button" class="filter-button" type="button" data-opens="booking-panel" aria-expanded="false">Space minimum <span aria-hidden="true">⌄</span></button>
-          <button id="rooms-button" class="filter-button" type="button" data-opens="rooms-panel" aria-expanded="false">Rooms & capacity <span aria-hidden="true">⌄</span></button>
+          <button id="filters-button" class="filter-button filters-main" type="button">☷ &nbsp; Filters <span id="filter-count" hidden></span></button>
+          <span class="filter-divider" aria-hidden="true"></span>
+          <button class="type-tab active" type="button" data-type="all" aria-pressed="true">All places</button>
+          <button class="type-tab" type="button" data-type="both" aria-pressed="false">Dinner & drinks</button>
+          <button class="type-tab" type="button" data-type="dinner" aria-pressed="false">Private dining</button>
+          <button class="type-tab" type="button" data-type="drinks" aria-pressed="false">Drinks</button>
+          <button class="type-tab" type="button" data-type="dropin" aria-pressed="false">Casual hosting</button>
           <button id="clear-filters" class="clear-button" type="button" hidden>Clear filters</button>
-        </div>
-        <div id="price-panel" class="filter-popover" hidden>
-          <div class="popover-heading">Price per person <button class="popover-close" type="button" aria-label="Close filter">×</button></div>
-          <p>Set a maximum planning price per guest.</p>
-          <div class="input-wrap"><span>$</span><input id="max-price" type="number" min="0" step="10" placeholder="Any price" aria-label="Maximum price per person" /></div>
-          <small>Some prices are estimates including drinks and service. Published menu starts exclude extras. See each listing.</small>
-        </div>
-        <div id="booking-panel" class="filter-popover" hidden>
-          <div class="popover-heading">Space minimum <button class="popover-close" type="button" aria-label="Close filter">×</button></div>
-          <p>Maximum published spend to book a space.</p>
-          <div class="input-wrap"><span>$</span><input id="max-booking" type="number" min="0" step="250" placeholder="Any minimum" aria-label="Maximum space minimum" /></div>
-          <small>Minimums vary by room, date, and guest count. When you select a room type, this filter checks that room’s listed minimum.</small>
-        </div>
-        <div id="rooms-panel" class="filter-popover rooms-popover" hidden>
-          <div class="popover-heading">Rooms & capacity <button class="popover-close" type="button" aria-label="Close filter">×</button></div>
-          <p>What kind of space works for your group?</p>
-          <div class="room-options">
-            <label><input id="private-only" type="checkbox" /> Private room</label>
-            <label><input id="semi-only" type="checkbox" /> Semi-private area</label>
-            <label><input id="buyout-only" type="checkbox" /> Full buyout</label>
-            <label><input id="dropin-only" type="checkbox" /> Casual drop-in</label>
-          </div>
-          <label class="guest-label" for="min-guests">Guests to accommodate</label>
-          <input id="min-guests" class="guest-input" type="number" min="1" step="1" placeholder="Any group size" />
-          <small>Capacities are based on published room or venue information where available.</small>
         </div>
       </section>
 
@@ -87,14 +56,14 @@ const description = 'Explore more than 120 San Francisco restaurants, bars, priv
             <label class="sort-label">Sort <select id="sort"><option value="recommended">Recommended</option><option value="price-low">Price: low to high</option><option value="capacity-high">Capacity: high to low</option></select></label>
           </div>
           <div id="cards" class="cards" aria-live="polite"></div>
-          <div id="empty-state" class="empty-state" hidden><h2>No places match those filters.</h2><p>Try a higher budget or a different room type.</p><button type="button" id="empty-clear">Clear filters</button></div>
+          <div id="empty-state" class="empty-state" hidden><h2>No places in this map area.</h2><p>Move the map or widen your filters.</p><button type="button" id="show-all-matches">Show all matching places</button><button type="button" id="empty-clear">Clear filters</button></div>
           <div class="data-note">Prices and room terms are planning information, not live quotes. Confirm availability, minimum spend, fees, and capacity with the venue. <button id="about-data" type="button">About this guide</button></div>
         </div>
         <aside class="map-pane" aria-label="Map of venues"><div id="map"></div><div class="map-counter" id="map-counter">Loading map…</div></aside>
       </section>
     </main>
 
-    <button class="mobile-map-toggle" id="mobile-map-toggle" type="button" aria-pressed="false"><span aria-hidden="true">⌖</span> Show map</button>
+    <dialog id="filters-dialog" class="filters-dialog"><div class="filters-dialog-head"><button class="dialog-close" type="button" aria-label="Close filters">×</button><strong>Filters</strong><span></span></div><div class="filters-dialog-body"><h2>Price per guest</h2><p>Known starting prices across the guide</p><div id="price-histogram" class="histogram" aria-hidden="true"></div><div class="range-labels"><strong id="price-low-label">Any</strong><strong id="price-high-label">Any</strong></div><div class="range-inputs"><label>Minimum<input id="price-min" type="range" min="0" max="500" step="10" value="0" /></label><label>Maximum<input id="price-max" type="range" min="0" max="500" step="10" value="500" /></label></div><small id="price-data-note"></small><hr /><h2>Space minimum</h2><p>Published minimum spend for a room or full space</p><div id="booking-histogram" class="histogram" aria-hidden="true"></div><div class="range-labels"><strong id="booking-low-label">Any</strong><strong id="booking-high-label">Any</strong></div><div class="range-inputs"><label>Minimum<input id="booking-min" type="range" min="0" max="30000" step="1" value="0" /></label><label>Maximum<input id="booking-max" type="range" min="0" max="30000" step="1" value="30000" /></label></div><small id="booking-data-note"></small><hr /><h2>Spaces & rooms</h2><div class="room-options"><label><input id="private-only" type="checkbox" /> Private room</label><label><input id="semi-only" type="checkbox" /> Semi-private area</label><label><input id="buyout-only" type="checkbox" /> Full buyout</label><label><input id="dropin-only" type="checkbox" /> Casual drop-in</label></div></div><div class="filters-dialog-foot"><button id="dialog-clear" type="button">Clear all</button><button id="dialog-done" type="button">Show places</button></div></dialog>
     <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
     <aside id="detail-drawer" class="detail-drawer" aria-label="Venue details" aria-hidden="true"></aside>
     <dialog id="about-dialog" class="about-dialog"><button class="dialog-close" type="button" aria-label="Close">×</button><h2>About this guide</h2><p>This guide combines Rhys’s venue research and group-hosting maps with venue details collected by <a href="https://tablequote.com/directory" target="_blank" rel="noopener">TableQuote</a>. Each listing links to venue information or a map listing.</p><p>Per-person estimates from Rhys’s research include food, drinks, and a 35% allowance for tax and service. Other per-person figures are directory-listed starting menu prices before extras. Booking figures are listed room or food-and-beverage minimums when available, not guaranteed final costs.</p><p>Updated September 2026. Please verify every detail with the venue before booking.</p></dialog>
