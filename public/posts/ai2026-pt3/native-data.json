@@ -3931,7 +3931,7 @@
           3000000
         ],
         "format": "compact",
-        "label": "Downloads / users"
+        "label": "Users"
       },
       "series": [
         {
@@ -4001,7 +4001,8 @@
         {
           "name": "Instinct",
           "color": "#ff914f",
-          "dashed": true,
+          "dashed": false,
+          "estimated": true,
           "points": [
             [
               0,

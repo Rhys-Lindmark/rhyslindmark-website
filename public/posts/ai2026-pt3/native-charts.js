@@ -290,7 +290,7 @@ const api={make,text,title,wrapLabel,colors,grid,ink,muted,compact,format,scaler
 const renderers={line:(svg,scene,d,W,H)=>scene.id==='experience-curves'?experienceCurves(svg,scene,d,W,H):cartesian(svg,scene,d,W,H,'line'),area:(svg,scene,d,W,H)=>window.NativeAreas(svg,scene,d,W,H,api),bars:(svg,scene,d,W,H)=>scene.id==='labor-markets'?laborMarketBars(svg,scene,d,W,H):scene.id==='white-collar'?whiteCollarBars(svg,scene,d,W,H):bars(svg,scene,d,W,H),scatter,rectangles,pipeline,farmMechanization,cards,surplus,network,table:(svg,scene,d,W,H)=>window.NativeSpecial.table(svg,scene,d,W,H,api),pairedDots:(svg,scene,d,W,H)=>window.NativeSpecial.pairedDots(svg,scene,d,W,H,api),simulation:(svg,scene,d,W,H)=>window.NativeSpecial.simulation(svg,scene,d,W,H,api)};
 Object.assign(renderers,{assistantGrowth:(svg,scene,d,W,H)=>window.NativeAssistants.growth(svg,scene,d,W,H,api),marketplaces:(svg,scene,d,W,H)=>window.NativeAssistants.marketplaces(svg,scene,d,W,H,api),paymentsRace:(svg,scene,d,W,H)=>window.NativeAssistants.payments(svg,scene,d,W,H,api)});
 try{
-const response=await fetch('/posts/ai2026-pt3/native-data.json?v=personal-assistants-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
+const response=await fetch('/posts/ai2026-pt3/native-data.json?v=solid-instinct-1');if(!response.ok)throw Error('Chart data unavailable');const data=await response.json();
 for(const scene of document.querySelectorAll('.scene[data-native]')){
  const spec=data[scene.id];if(!spec)throw Error(`Missing chart specification: ${scene.id}`);
  const plot=scene.querySelector('.native-plot'),svg=plot.querySelector('svg');let render;

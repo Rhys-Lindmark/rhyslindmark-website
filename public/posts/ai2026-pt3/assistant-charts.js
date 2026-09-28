@@ -12,7 +12,7 @@
    make('path',{d:linePath(series.points,a.x,a.y),fill:'none',stroke:series.color,'stroke-width':W<620?2.5:3.5,'stroke-dasharray':series.dashed?'7 5':''},marks);
    (series.checkpoints||[]).forEach(([day,value])=>{
     const point=make('circle',{cx:a.x(day),cy:a.y(value),r:4,fill:series.color},marks);
-    title(point,`${series.name}: day ${day.toFixed(1)}, ${compact(value)} ${series.dashed?'users (estimated)':'downloads'}`);
+    title(point,`${series.name}: day ${day.toFixed(1)}, ${compact(value)} ${series.estimated?'users (estimated)':'downloads'}`);
    });
    const [day,value]=series.points.at(-1),xx=a.x(day),edge=xx>a.right-120;
    const valueLabel=series.name==='Instinct'?`${Math.round(value/1000)}k`:compact(value);
