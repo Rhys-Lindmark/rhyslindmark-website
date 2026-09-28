@@ -1,7 +1,6 @@
 (() => {
   'use strict';
   const scenes = [...document.querySelectorAll('.scene.agents')];
-  const legacySlides = { '13b':'14', '15b':'17', '16b':'19', '21b':'25', '21c':'26', '21d':'27', '36a':'43', '37a':'45', '37b':'46', '51':'52', '53':'54', '57a':'58', '57b':'59', '57c':'60', '57d':'61', '57e':'62', '57f':'63', '57g':'64', '57h':'65' };
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const simScatter = document.querySelector('#sim-to-real');
   if (simScatter) {
@@ -41,11 +40,10 @@
 
   const revealVisuals = [...document.querySelectorAll('.coding-universe-section:not(.office-universe-section) .coding-universe-visual')];
   const humanAiVisual = document.querySelector('.human-ai-human-visual');
-  let numberedSlide = 0;
-  const entries = [...document.querySelectorAll('#article [data-slide]')].map(el => {
+  const entries = [...document.querySelectorAll('#article [data-slide]')].map((el, slideIndex) => {
     const scene = el.closest('.scene.agents');
     const passages = scene ? [...scene.querySelectorAll('.card-copy')] : [el];
-    return {id:el.dataset.publicSlide || String(++numberedSlide),legacyId:el.dataset.slide,el,scene,index:passages.indexOf(el),count:passages.length};
+    return {id:String(slideIndex + 1),el,scene,index:passages.indexOf(el),count:passages.length};
   });
   let frame = 0, linksReady = false;
   const clamp = value => Math.max(0, Math.min(1, value));
@@ -115,10 +113,9 @@
     const hashTarget = hash ? document.getElementById(hash) : null;
     const requested = new URL(location.href).searchParams.get('slide');
     const numeric=/^\d+$/.test(requested||'')?String(Number(requested)):null;
-    const legacy=legacySlides[requested] || requested;
     const entry = hashTarget
       ? entries.find(e => e.el === hashTarget || e.scene === hashTarget)
-      : !hash && (entries.find(e => e.id === numeric) || entries.find(e => e.legacyId === legacy));
+      : !hash && entries.find(e => e.id === numeric);
     if (entry) {
       const target = entry.scene && !reduced.matches ? entry.scene : entry.el;
       const sticky = entry.scene?.querySelector('.sticky');

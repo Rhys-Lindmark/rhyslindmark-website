@@ -101,8 +101,12 @@ in the others.
 - **Part 2 — mixed.** Numeric ids `1`–`18` for the opening scenes, then semantic
   ones (`noam-brown`, `spiky-intelligence`, `longer-tasks`, `china-frontier`,
   `token-share`). `data-steps` carries both kinds.
-- **Part 3 — semantic only.** Ids like `coding`, `robotics`, `white-collar`, and
-  slides marked with `data-slide` rather than the numeric scheme.
+- **Part 3 — sequential numeric.** Public `?slide=N` addresses count every
+  `#article [data-slide]` element in reading order, starting at 1. On insertion,
+  renumber `data-slide` attributes to match. The user explicitly wants all later
+  slides shifted by n+1; do not preserve old numbers with named or letter-suffixed
+  public IDs, aliases, or `data-public-slide` overrides. Scene IDs and
+  `data-passage` names remain internal chart hooks.
 
 ### Both chart.js files hardcode slide ids
 
