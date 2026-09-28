@@ -4,6 +4,7 @@
 .series-hero-art{position:relative;width:100%}
 .series-hero-labels{position:absolute;top:clamp(16px,2.5vw,30px);left:0;display:block;width:100%;height:28px;font:400 clamp(14px,1.9vw,24px)/1.2 var(--mono);letter-spacing:.14em;color:#cfdeeb}
 .series-hero-labels span{position:absolute;transform:translateX(-50%)}
+.series-hero-labels .is-current{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:.3em}
 .series-hero-labels span:nth-child(1){left:14.17%}
 .series-hero-labels span:nth-child(2){left:49.17%}
 .series-hero-labels span:nth-child(3){left:83.33%}
