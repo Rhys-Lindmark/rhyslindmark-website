@@ -3900,5 +3900,342 @@
     "source": "https://x.com/JayaGup10/status/2003525933534179480",
     "note": "Conceptual native redraw of the supplied graph \u2192 knowledge graph \u2192 context graph diagram; nodes and links are illustrative, not measured data.",
     "data": {}
+  },
+  "assistant-growth": {
+    "kind": "assistantGrowth",
+    "title": "Personal assistant adoption",
+    "note": "Mobile checkpoints are third-party iOS download estimates. Muse: U.S. and Canada, 1.8M on day 12 and 2.6M around day 17 (Sept. 25). ChatGPT: U.S. 480k on day 5 and 550k on day 6; U.S. and Canada 1.3M on day 12. Lines interpolate from zero. Instinct uses 10% daily growth anchored to a 100k lower-bound baseline on Sept. 15, yielding 345,227 on Sept. 28. Its 10k starting milestone (~Aug. 22) is inferred rather than a verified launch date.",
+    "data": {
+      "x": {
+        "domain": [
+          0,
+          37.15885792809679
+        ],
+        "ticks": [
+          0,
+          10,
+          20,
+          30
+        ],
+        "label": "days from launch"
+      },
+      "y": {
+        "domain": [
+          0,
+          3000000
+        ],
+        "ticks": [
+          0,
+          1000000,
+          2000000,
+          3000000
+        ],
+        "format": "compact",
+        "label": "Downloads / users"
+      },
+      "series": [
+        {
+          "name": "Muse",
+          "color": "#43a9ff",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              12,
+              1800000
+            ],
+            [
+              17,
+              2600000
+            ]
+          ],
+          "checkpoints": [
+            [
+              12,
+              1800000
+            ],
+            [
+              17,
+              2600000
+            ]
+          ]
+        },
+        {
+          "name": "ChatGPT",
+          "color": "#ffffff",
+          "points": [
+            [
+              0,
+              0
+            ],
+            [
+              5,
+              480000
+            ],
+            [
+              6,
+              550000
+            ],
+            [
+              12,
+              1300000
+            ]
+          ],
+          "checkpoints": [
+            [
+              5,
+              480000
+            ],
+            [
+              6,
+              550000
+            ],
+            [
+              12,
+              1300000
+            ]
+          ]
+        },
+        {
+          "name": "Instinct",
+          "color": "#ff914f",
+          "dashed": true,
+          "points": [
+            [
+              0,
+              9999.999999999995
+            ],
+            [
+              1,
+              10999.999999999996
+            ],
+            [
+              2,
+              12099.999999999996
+            ],
+            [
+              3,
+              13309.999999999996
+            ],
+            [
+              4,
+              14640.999999999998
+            ],
+            [
+              5,
+              16105.1
+            ],
+            [
+              6,
+              17715.61
+            ],
+            [
+              7,
+              19487.171000000002
+            ],
+            [
+              8,
+              21435.888100000004
+            ],
+            [
+              9,
+              23579.476910000005
+            ],
+            [
+              10,
+              25937.42460100001
+            ],
+            [
+              11,
+              28531.16706110001
+            ],
+            [
+              12,
+              31384.283767210014
+            ],
+            [
+              13,
+              34522.71214393102
+            ],
+            [
+              14,
+              37974.98335832413
+            ],
+            [
+              15,
+              41772.481694156544
+            ],
+            [
+              16,
+              45949.729863572196
+            ],
+            [
+              17,
+              50544.702849929425
+            ],
+            [
+              18,
+              55599.17313492238
+            ],
+            [
+              19,
+              61159.09044841461
+            ],
+            [
+              20,
+              67274.99949325608
+            ],
+            [
+              21,
+              74002.4994425817
+            ],
+            [
+              22,
+              81402.74938683987
+            ],
+            [
+              23,
+              89543.02432552386
+            ],
+            [
+              24,
+              98497.32675807625
+            ],
+            [
+              25,
+              108347.0594338839
+            ],
+            [
+              26,
+              119181.7653772723
+            ],
+            [
+              27,
+              131099.9419149995
+            ],
+            [
+              28,
+              144209.93610649952
+            ],
+            [
+              29,
+              158630.92971714944
+            ],
+            [
+              30,
+              174494.02268886444
+            ],
+            [
+              31,
+              191943.42495775086
+            ],
+            [
+              32,
+              211137.76745352597
+            ],
+            [
+              33,
+              232251.5441988786
+            ],
+            [
+              34,
+              255476.69861876647
+            ],
+            [
+              35,
+              281024.36848064314
+            ],
+            [
+              36,
+              309126.80532870744
+            ],
+            [
+              37,
+              340039.48586157826
+            ],
+            [
+              37.15885792809679,
+              345227.1214393104
+            ]
+          ],
+          "checkpoints": [
+            [
+              24.15885792809679,
+              100000
+            ],
+            [
+              37.15885792809679,
+              345227.1214393104
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  "marketplace-volume": {
+    "kind": "marketplaces",
+    "title": "Annual transaction volume",
+    "note": "Instinct: supplied claim of $1B+ per year, shown at a $1B benchmark; annualization and refunds are unverified. eBay: $79.6B FY2025 GMV. Shopify: $378.4B FY2025 GMV. Approximate comparison is 80x and 380x against the benchmark. The 100-day statement is the author's estimate.",
+    "data": {
+      "x": {
+        "domain": [
+          0,
+          3
+        ],
+        "ticks": [],
+        "label": ""
+      },
+      "y": {
+        "domain": [
+          0,
+          400000000000.0
+        ],
+        "ticks": [
+          0,
+          100000000000.0,
+          200000000000.0,
+          300000000000.0,
+          400000000000.0
+        ],
+        "label": "Annual volume (USD)",
+        "format": "dollars"
+      },
+      "rows": [
+        {
+          "label": "Instinct",
+          "value": 1000000000.0,
+          "valueLabel": "$1B+",
+          "color": "#43a9ff",
+          "note": "Reported annual volume; $1B benchmark."
+        },
+        {
+          "label": "eBay",
+          "value": 79600000000.0,
+          "valueLabel": "$80B",
+          "color": "#ffffff",
+          "note": "2025 GMV."
+        },
+        {
+          "label": "Shopify",
+          "value": 378400000000.0,
+          "valueLabel": "$378B",
+          "color": "#ff914f",
+          "note": "2025 GMV."
+        }
+      ]
+    }
+  },
+  "payments-race": {
+    "kind": "paymentsRace",
+    "title": "Human and agent payments",
+    "note": "Native adaptation of agentic.market Payments Race. Human benchmark 28,935 transactions/second is the upstream assumption, not a measurement of all payments. Agent rate is x402 ecosystem transactions averaged over available daily buckets. Particles are scaled for visibility and do not correspond one-for-one to transactions. x402 is only a subset of agent payments; the 100,000x slide statement is illustrative, not established by this live subset comparison.",
+    "data": {
+      "humanColor": "#ff914f",
+      "agentColor": "#43a9ff",
+      "agentRate": 1.0288208616780046,
+      "sampledAt": "2026-09-28T16:38:00.000Z"
+    }
   }
 }
