@@ -21,6 +21,9 @@
 .coding-universe-copy p+p{margin-top:1.4em}
 .coding-universe-visual{width:min(1400px,calc(100% - 40px));margin:0 auto}
 .coding-universe-visual img{display:block;width:100%;height:auto;opacity:var(--coding-universe-opacity,1)}
+.closing-reflection{padding-block:clamp(48px,8svh,88px)}
+.closing-reflection p+p{margin-top:.65em}
+.closing-rule{width:min(740px,calc(100% - 48px));margin:clamp(40px,6svh,72px) auto 0;border:0;border-top:1px solid #ffffff3d}
 .closing-signoff p:first-child{margin-bottom:.45em}
 .closing-signoff p:last-child{margin-top:1.25em}
 .pt3-lede-one{min-height:330svh}.pt3-lede-one .lede-note a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.15em}

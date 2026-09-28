@@ -3,10 +3,11 @@
    the number rises as the reader scrolls up, falls as they scroll down, and
    eases back to today's real figure whenever they stop. */
 (()=>{
-const el=document.querySelector('[data-day-count]');if(!el)return;
-const now=new Date(),year=now.getFullYear();
-const days=Math.max(1,Math.round((new Date(year,now.getMonth(),now.getDate())-new Date(year,0,1))/864e5));
+const counters=[...document.querySelectorAll('[data-day-count]')];if(!counters.length)return;
+const now=new Date();
+const days=Math.max(1,Math.round((new Date(now.getFullYear(),now.getMonth(),now.getDate())-new Date(2026,0,1))/864e5));
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
+counters.forEach(el=>{
 const show=v=>{const n=String(Math.max(1,Math.round(v)));if(el.textContent!==n)el.textContent=n;};
 if(reduce.matches){show(days);return;}
 el.textContent='1';
@@ -53,6 +54,7 @@ const io=new IntersectionObserver(entries=>{
  started=true;io.disconnect();countUp();
 },{threshold:1,rootMargin:'0px 0px -25% 0px'});
 io.observe(el);
+});
 
 /* The opening image fades up and away across slide one. */
 const apparition=document.querySelector('[data-lede-apparition]'),slideOne=document.querySelector('.lede-one');
