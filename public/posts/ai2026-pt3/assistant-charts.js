@@ -27,20 +27,23 @@
  function marketplaces(svg,scene,d,W,H,api){
   const {make,text,title,frame,addLegend,clamp,ease}=api;
   addLegend(scene,[]);
-  const a=frame(svg,W,H,d.x,d.y),step=a.width/3,marks=[];
+  const a=frame(svg,W,H,d.x,d.y),step=a.width/d.rows.length,marks=[];
   d.rows.forEach((row,i)=>{
    const cx=a.left+step*(i+.5),width=step*.48,g=make('g',{},svg),barTop=a.y(row.value);
-   make('rect',{x:cx-width/2,y:barTop,width,height:a.bottom-barTop,fill:row.color},g);
-   // Keep the $1B benchmark legible on the shared $400B scale.
-   make('circle',{cx,cy:barTop,r:3.5,fill:row.color},g);
+   const bar=make('rect',{x:cx-width/2,y:a.bottom,width,height:0,fill:row.color},g);
+   // Keep the $1B benchmark legible beside eBay.
+   const dot=make('circle',{cx,cy:a.bottom,r:3.5,fill:row.color},g);
    title(g,`${row.label}: ${row.valueLabel}. ${row.note}`);
-   text(g,cx,barTop-12,row.valueLabel,{'text-anchor':'middle',class:'value-label'});
+   const label=text(g,cx,a.bottom-12,row.valueLabel,{'text-anchor':'middle',class:'value-label'});
    text(g,cx,a.bottom+22,row.label,{'text-anchor':'middle',class:'row-label'});
-   marks.push(g);
+   marks.push({g,bar,dot,label,height:a.bottom-barTop});
   });
-  return state=>marks.forEach((g,i)=>{
+  return state=>marks.forEach(({g,bar,dot,label,height},i)=>{
    const stage=i?2:1,amount=state.reduced||state.stage>stage?1:state.stage===stage?ease(clamp(state.local/.35)):0;
-   g.style.opacity=String(amount);g.style.visibility=amount?'visible':'hidden';
+   const y=a.bottom-height*amount;
+   bar.setAttribute('y',y);bar.setAttribute('height',height*amount);
+   dot.setAttribute('cy',y);label.setAttribute('y',y-12);
+   g.style.visibility=amount>.001?'visible':'hidden';
   });
  }
  function payments(svg,scene,d,W,H,api){

@@ -4178,12 +4178,12 @@
   "marketplace-volume": {
     "kind": "marketplaces",
     "title": "Annual transaction volume",
-    "note": "Instinct: supplied claim of $1B+ per year, shown at a $1B benchmark; annualization and refunds are unverified. eBay: $79.6B FY2025 GMV. Shopify: $378.4B FY2025 GMV. Approximate comparison is 80x and 380x against the benchmark. The 100-day statement is the author's estimate.",
+    "note": "Instinct: reported $1B+ annual transaction volume, shown at a $1B benchmark. eBay: $79.6B FY2025 GMV, approximately 80x the benchmark. The 100-day statement is the author's estimate.",
     "data": {
       "x": {
         "domain": [
           0,
-          3
+          2
         ],
         "ticks": [],
         "label": ""
@@ -4191,14 +4191,14 @@
       "y": {
         "domain": [
           0,
-          400000000000.0
+          100000000000
         ],
         "ticks": [
           0,
-          100000000000.0,
-          200000000000.0,
-          300000000000.0,
-          400000000000.0
+          25000000000,
+          50000000000,
+          75000000000,
+          100000000000
         ],
         "label": "Annual volume (USD)",
         "format": "dollars"
@@ -4216,13 +4216,6 @@
           "value": 79600000000.0,
           "valueLabel": "$80B",
           "color": "#ffffff",
-          "note": "2025 GMV."
-        },
-        {
-          "label": "Shopify",
-          "value": 378400000000.0,
-          "valueLabel": "$378B",
-          "color": "#ff914f",
           "note": "2025 GMV."
         }
       ]
