@@ -6,7 +6,7 @@
 .body-copy{width:min(740px,calc(100% - 48px));margin:0 auto;padding:28px 0;font-size:17px;line-height:1.55}
 .body-copy[data-slide="6"]{padding-block:clamp(96px,16svh,160px)}
 .body-copy p{margin:0}.body-copy a,.passage a{color:#8bdeec;text-decoration:underline}
-.body-copy[data-slide="8"] p+p{margin-top:1em}
+.body-copy:is([data-slide="8"],[data-slide="63"]) p+p{margin-top:1em}
 .body-copy[data-slide="8"]{padding-bottom:.5em}
 .body-copy[data-slide="9"]{padding-top:.5em}
 .body-copy[data-slide="11"]{padding-top:clamp(64px,10svh,96px)}
