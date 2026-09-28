@@ -116,6 +116,11 @@ function laborMarketBars(svg,scene,d,W,H){
   });
  };
 }
+function whiteCollarReveal(state,index,software){
+ if(state.reduced||document.body.classList.contains('all-mode'))return 1;
+ if(software)return state.stage>0?1:ease(state.local/.3);
+ return state.stage===0?0:ease(clamp((state.local-index*.006)/.22));
+}
 function whiteCollarBars(svg,scene,d,W,H){
  const series=d.series,rows=d.rows,val=d.value,small=W<620;
  addLegend(scene,series);
@@ -145,7 +150,7 @@ function whiteCollarBars(svg,scene,d,W,H){
  return state=>{
   const showAll=state.reduced||document.body.classList.contains('all-mode');
   rowMarks.forEach(({group,bars,software},i)=>{
-   const amount=showAll||software?1:state.stage===0?0:ease(clamp((state.local-i*.006)/.22));
+   const amount=whiteCollarReveal(state,i,software);
    group.style.opacity=String(amount);
    group.style.visibility=amount>.001?'visible':'hidden';
    bars.forEach(({rect,width})=>rect.setAttribute('width',width*amount));
@@ -267,7 +272,7 @@ function attachHover(svg,scene,d,W,H,kind){
    });
    return;
   }
-  attach({left,right,top,bottom},mapped,point=>{const hit=nearest(mapped,point,e=>e.x,e=>e.y),s=state();let amount;if(scene.id==='labor-markets')amount=s.reduced?1:ease(s.progress/.3);else if(scene.id==='tfp')amount=s.reduced||s.stage>1?1:ease(clamp((s.stage<1?0:s.local-hit.i*.025)/.19));else if(scene.id==='white-collar'){const show=s.reduced||document.body.classList.contains('all-mode'),software=hit.row.label==='Software developers';amount=show||software?1:s.stage===0?0:ease(clamp((s.local-hit.i*.006)/.22))}else{const p=progress(s);amount=s.reduced?1:clamp(p*(1+.2*rows.length)-hit.i*.2)}if(amount<=0)return null;let total=0;const items=hit.row.values.map((value,j)=>{if(value===null||value===0)return null;const start=total;total+=value;const shown=scene.id==='waymo-data'&&val.scale==='log'?val.domain[0]*(value/val.domain[0])**amount:value*amount,focus=scene.id==='tfp'&&scene.dataset.focus;if(focus&&series[j]?.name!==focus)return null;return{label:series[j]?.name||'Value',value:hit.row.valueLabels?.[j]||hit.row.valueLabel||(scene.id==='labor-markets'?`$${Math.round(shown/1000)}k`:format(shown,val.format)),color:series[j]?.color||hit.row.color||colors[j],x:horizontal?scale(scene.id==='waymo-data'?shown:(d.stacked?start:val.scale==='log'?val.domain[0]:0)+shown):hit.x,y:horizontal?hit.y:scale(shown+(d.stacked?start:0))}}).filter(Boolean);return items.length?{title:hit.row.label,guide:horizontal?'y':false,y:hit.y,items}:null});return;
+  attach({left,right,top,bottom},mapped,point=>{const hit=nearest(mapped,point,e=>e.x,e=>e.y),s=state();let amount;if(scene.id==='labor-markets')amount=s.reduced?1:ease(s.progress/.3);else if(scene.id==='tfp')amount=s.reduced||s.stage>1?1:ease(clamp((s.stage<1?0:s.local-hit.i*.025)/.19));else if(scene.id==='white-collar'){amount=whiteCollarReveal(s,hit.i,hit.row.label==='Software developers')}else{const p=progress(s);amount=s.reduced?1:clamp(p*(1+.2*rows.length)-hit.i*.2)}if(amount<=0)return null;let total=0;const items=hit.row.values.map((value,j)=>{if(value===null||value===0)return null;const start=total;total+=value;const shown=scene.id==='waymo-data'&&val.scale==='log'?val.domain[0]*(value/val.domain[0])**amount:value*amount,focus=scene.id==='tfp'&&scene.dataset.focus;if(focus&&series[j]?.name!==focus)return null;return{label:series[j]?.name||'Value',value:hit.row.valueLabels?.[j]||hit.row.valueLabel||(scene.id==='labor-markets'?`$${Math.round(shown/1000)}k`:format(shown,val.format)),color:series[j]?.color||hit.row.color||colors[j],x:horizontal?scale(scene.id==='waymo-data'?shown:(d.stacked?start:val.scale==='log'?val.domain[0]:0)+shown):hit.x,y:horizontal?hit.y:scale(shown+(d.stacked?start:0))}}).filter(Boolean);return items.length?{title:hit.row.label,guide:horizontal?'y':false,y:hit.y,items}:null});return;
  }
  if(scene.id==='productivity'||scene.id==='sim-to-real'){
   const a=scene.id==='sim-to-real'?{left:74,right:1070,top:35,bottom:543.33}:{left:small?58:76,right:W-(small?20:28),top:20,bottom:H-65},x=scaler(d.x,a.left,a.right),y=scaler(d.y,a.bottom,a.top),mapped=d.points.map((row,i)=>({row,i,x:x(row.x),y:y(row.y)}));
