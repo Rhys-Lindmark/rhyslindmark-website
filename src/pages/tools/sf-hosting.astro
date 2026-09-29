@@ -19,7 +19,7 @@ const description = 'Explore more than 120 San Francisco restaurants, bars, priv
     <link rel="stylesheet" href="/tools/sf-hosting.css?v=5" />
     <script defer src="/vendor/leaflet/leaflet.js"></script>
     <script defer src="/vendor/leaflet-cluster/leaflet.markercluster.js"></script>
-    <script defer src="/tools/sf-hosting.js?v=6"></script>
+    <script defer src="/tools/sf-hosting.js?v=7"></script>
   </head>
   <body>
     <header class="site-header">
@@ -41,11 +41,8 @@ const description = 'Explore more than 120 San Francisco restaurants, bars, priv
         <div class="filter-actions">
           <button id="filters-button" class="filter-button filters-main" type="button">☷ &nbsp; Filters <span id="filter-count" hidden></span></button>
           <span class="filter-divider" aria-hidden="true"></span>
-          <button class="type-tab active" type="button" data-type="all" aria-pressed="true">All places</button>
-          <button class="type-tab" type="button" data-type="both" aria-pressed="false">Dinner & drinks</button>
-          <button class="type-tab" type="button" data-type="dinner" aria-pressed="false">Private dining</button>
-          <button class="type-tab" type="button" data-type="drinks" aria-pressed="false">Drinks</button>
-          <button class="type-tab" type="button" data-type="dropin" aria-pressed="false">Casual hosting</button>
+          <button class="type-tab" type="button" data-type="casual" aria-pressed="false">Casual drinks</button>
+          <button class="type-tab" type="button" data-type="private" aria-pressed="false">Private dining</button>
           <button id="clear-filters" class="clear-button" type="button" hidden>Clear filters</button>
         </div>
       </section>

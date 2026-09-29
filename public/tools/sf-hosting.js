@@ -26,10 +26,8 @@ function getFilters(){
 function hasActiveFilters(f){return Boolean(f.query || f.minPrice || f.maxPrice || f.minBooking || f.maxBooking || f.minCapacity || f.maxCapacity || f.guests || f.private || f.semi || f.buyout || f.dropin || state.type!=='all');}
 
 function matches(v,f){
-  if(state.type==='dinner' && !['dinner','both'].includes(v.category))return false;
-  if(state.type==='drinks' && !['drinks','both'].includes(v.category))return false;
-  if(state.type==='both' && v.category!=='both')return false;
-  if(state.type==='dropin' && !v.sources?.includes("Rhys's drop-in map"))return false;
+  if(state.type==='casual' && !['drinks','both'].includes(v.category))return false;
+  if(state.type==='private' && (!['dinner','both'].includes(v.category)||!(v.private||v.semiPrivate||v.buyout)))return false;
   if(f.query){
     const zip=f.query.match(/^(\d{5})(?:-\d{4})?$/);
     if(zip){if(v.zipCode!==zip[1])return false;}
@@ -198,7 +196,7 @@ function clearFilters(){
   $('#date-start').value='';$('#date-end').value='';updateDateSummary();
   ['price','booking','capacity'].forEach(kind=>{$(`#${kind}-min`).value=0;$(`#${kind}-max`).value=$(`#${kind}-max`).max;});
   ['#private-only','#semi-only','#buyout-only','#dropin-only'].forEach(s=>$(s).checked=false);
-  state.type='all';$$('.type-tab').forEach(tab=>{const active=tab.dataset.type==='all';tab.classList.toggle('active',active);tab.setAttribute('aria-pressed',active);});
+  state.type='all';$$('.type-tab').forEach(tab=>{tab.classList.remove('active');tab.setAttribute('aria-pressed','false');});
   updateRangeLabels();applyFilters();fitToMatches();
 }
 
@@ -266,7 +264,7 @@ function updateDateSummary(){
 }
 
 function wireEvents(){
-  $$('.type-tab').forEach(tab=>tab.addEventListener('click',()=>{state.type=tab.dataset.type;$$('.type-tab').forEach(t=>{const active=t===tab;t.classList.toggle('active',active);t.setAttribute('aria-pressed',active);});applyFilters();}));
+  $$('.type-tab').forEach(tab=>tab.addEventListener('click',()=>{state.type=state.type===tab.dataset.type?'all':tab.dataset.type;$$('.type-tab').forEach(t=>{const active=t.dataset.type===state.type;t.classList.toggle('active',active);t.setAttribute('aria-pressed',active);});applyFilters();}));
   $('#search').addEventListener('focus',()=>{closeSearchPanels();showNeighborhoods();$('#where-panel').hidden=false;$('#search').setAttribute('aria-expanded','true');});
   $('#search').addEventListener('input',()=>{showNeighborhoods();$('#where-panel').hidden=false;$('#search').setAttribute('aria-expanded','true');$('#search-feedback').hidden=true;applyFilters();});
   $('#search').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();submitSearch();}});
