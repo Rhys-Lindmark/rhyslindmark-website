@@ -221,10 +221,7 @@ html,body,#article,.scene{background-color:var(--bg)}
 }
 
 /* Keep the chart viewport stable while the navigation slides out of view. */
-:root{--header-height:58px;--header-visible-height:var(--header-height)}
-body.header-hidden{--header-visible-height:0px}
-header{transition:transform .18s ease;will-change:transform}
-body.header-hidden header{transform:translateY(-100%)}
+:root{--header-height:58px;--header-visible-height:0px}
 body:not(.all-mode) .scene:not(.fulltext)>.sticky,
 body:not(.all-mode) .scene.building-return>.sticky{top:0;height:100svh}
 .scene{scroll-margin-top:0}
@@ -345,11 +342,8 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 .scene.fulltext.reading{min-height:auto}
 .scene.fulltext.reading .sticky{min-height:auto}
 
-/* Navigation overlays the page and is hidden before JavaScript initializes. */
-body:not(.header-revealed){--header-visible-height:0px}
-body>header{position:fixed;left:0;right:0}
-body:not(.header-revealed)>header{transform:translateY(-100%);pointer-events:none}
-body.header-revealed>header{transform:translateY(0);pointer-events:auto}
+/* Navigation belongs only to the page top, never to upward scrolling. */
+body>header{position:absolute;top:0;left:0;right:0}
 
 /* The series opening is a single, three-second pen drawing. */
 .series-hero{min-height:100svh;background:#0b1015;color:#e6edf3;display:grid;place-items:center;overflow:hidden}

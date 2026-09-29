@@ -601,9 +601,6 @@
     for(const scene of scenes){draw(scene);const plot=scene.querySelector('.plot-wrap');if(plot)new ResizeObserver(()=>{draw(scene);request();}).observe(plot);}
     reduce.addEventListener('change',()=>{document.body.classList.toggle('all-mode',reduce.matches);scenes.forEach(draw);request();});
     window.addEventListener('scroll',request,{passive:true});window.addEventListener('resize',request,{passive:true});window.addEventListener('hashchange',followHash);window.addEventListener('popstate',followHash);
-    let previous=scrollY;
-    window.addEventListener('scroll',()=>{const delta=scrollY-previous;if(Math.abs(delta)>8){document.body.classList.toggle('header-hidden',delta>0&&scrollY>58);previous=scrollY;}},{passive:true});
-    document.querySelector('header').addEventListener('focusin',()=>document.body.classList.remove('header-hidden'));
     const spin=document.querySelector('.spin-toggle');
     spin?.addEventListener('click',()=>{const paused=spin.getAttribute('aria-pressed')!=='true';spin.setAttribute('aria-pressed',String(paused));spin.textContent=paused?'Resume flow':'Pause flow';spin.closest('.spiral').classList.toggle('paused',paused);});
     requestAnimationFrame(followHash);update();
