@@ -11,7 +11,13 @@ const source = await fs.readFile(new URL('../public/posts/ai2026-pt1/intro/serie
 const geometry = source.slice(source.indexOf('  function curve('), source.indexOf('  class SilkHero'));
 const strokes = vm.runInNewContext(`${geometry}\ncomposition();`);
 const width = 1200, height = 630, fps = 24;
-const output = fileURLToPath(new URL('../public/posts/ai2026-preview-v1', import.meta.url));
+const output = fileURLToPath(new URL('../public/posts/ai2026-preview-v2', import.meta.url));
+const points = strokes.flatMap(s => s.points);
+const minX = Math.min(...points.map(p => p[0])), maxX = Math.max(...points.map(p => p[0]));
+const minY = Math.min(...points.map(p => p[1])), maxY = Math.max(...points.map(p => p[1]));
+const scale = Math.min((width - 64) / (maxX - minX), (height - 64) / (maxY - minY));
+const artX = (width - (maxX - minX) * scale) / 2 - minX * scale;
+const artY = (height - (maxY - minY) * scale) / 2 - minY * scale;
 
 function path(stroke, progress) {
   const limit = progress * stroke.total;
@@ -33,12 +39,10 @@ function frame(time) {
     const progress = Math.min(1, (time - s.start) / (s.end - s.start));
     return `<path d="${path(s, progress)}" opacity="${s.opacity}" fill="url(#ink)"/>`;
   }).join('');
-  const titleFade = Math.max(0, Math.min(1, (time - 3) / .55));
   return Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
     <defs><linearGradient id="ink" gradientUnits="userSpaceOnUse" x1="110" x2="1120"><stop stop-color="#eff4f5"/><stop offset=".44" stop-color="#c1dff0"/><stop offset=".73" stop-color="#9fcbee"/><stop offset="1" stop-color="#72ace3"/></linearGradient></defs>
     <rect width="1200" height="630" fill="#070b10"/>
-    <g transform="translate(-50,-60) scale(1.1)">${art}</g>
-    <text x="600" y="573" fill="#e6edf3" opacity="${titleFade}" font-family="monospace" font-size="62" letter-spacing="8" text-anchor="middle">AI 2026</text>
+    <g transform="translate(${artX},${artY}) scale(${scale})">${art}</g>
   </svg>`);
 }
 
