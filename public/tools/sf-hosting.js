@@ -246,8 +246,9 @@ function renderHistogram(kind,values){
 }
 
 function updateGuestSummary(){
-  $('#guest-number').value=state.guests||'';$('#guest-range').value=state.guests||1;
-  $('#guest-summary').textContent=state.guests?`${state.guests} ${state.guests===1?'guest':'guests'}`:'Add guests';
+  $('#guest-number').value=state.guests||'';$('#guest-range').value=Math.min(state.guests||1,50);
+  $('#guest-range').setAttribute('aria-valuetext',state.guests>=50?'50 or more guests':`${state.guests||1} ${state.guests===1?'guest':'guests'}`);
+  $('#guest-summary').textContent=state.guests?(state.guests===50?'50+ guests':`${state.guests} ${state.guests===1?'guest':'guests'}`):'Add guests';
 }
 
 function setGuests(value){
