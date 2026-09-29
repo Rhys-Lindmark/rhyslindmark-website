@@ -73,9 +73,52 @@
     return strokes;
   }
 
+  // Native text stays still between two tiny scanline shifts. No idle frame loop.
+  class ScanlineTitle {
+    constructor(section) {
+      this.section = section;
+      this.title = section.querySelector('.series-hero-bottom p');
+      this.visible = false;
+      this.timers = [];
+      const text = this.title.textContent;
+      const base = document.createElement('span');
+      base.className = 'scanline-base';
+      base.textContent = text;
+      const slice = document.createElement('span');
+      slice.className = 'scanline-slice';
+      slice.textContent = text;
+      slice.setAttribute('aria-hidden', 'true');
+      this.title.classList.add('scanline-title');
+      this.title.replaceChildren(base, slice);
+      new IntersectionObserver(([entry]) => {
+        this.visible = entry.isIntersecting && entry.intersectionRatio >= .5;
+        this.sync();
+      }, { threshold: .5 }).observe(this.title);
+      document.addEventListener('visibilitychange', () => this.sync());
+      reduced.addEventListener('change', () => this.sync());
+    }
+    sync() {
+      this.timers.forEach(clearTimeout);
+      this.timers = [];
+      this.title.classList.remove('is-slipping', 'slip-return');
+      if (!this.visible || document.hidden || reduced.matches || this.section.dataset.art !== 'complete') return;
+      this.timers.push(setTimeout(() => this.slip(), 3000));
+    }
+    slip() {
+      this.title.style.setProperty('--scan-top', `${42 + Math.floor(Math.random() * 20)}%`);
+      this.title.classList.add('is-slipping');
+      this.timers = [
+        setTimeout(() => this.title.classList.add('slip-return'), 75),
+        setTimeout(() => this.title.classList.remove('is-slipping', 'slip-return'), 180),
+        setTimeout(() => this.slip(), 3000),
+      ];
+    }
+  }
+
   class SilkHero {
     constructor(section) {
       this.section = section;
+      this.titleFlicker = new ScanlineTitle(section);
       this.canvas = section.querySelector('canvas');
       this.ctx = this.canvas.getContext('2d');
       this.layer = document.createElement('canvas');
@@ -180,6 +223,7 @@
     finish() {
       this.pause(); this.elapsed = DURATION; this.render();
       this.section.dataset.art = 'complete';
+      this.titleFlicker.sync();
     }
   }
 
