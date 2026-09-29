@@ -29,7 +29,7 @@ body:not(.all-mode) #article #assistant-social .assistant-social-figure img{obje
 .closing-reflection p+p{margin-top:.65em}
 .closing-rule{width:min(740px,calc(100% - 48px));margin:clamp(40px,6svh,72px) auto 0;border:0;border-top:1px solid #ffffff3d}
 .closing-signoff p:first-child{margin-bottom:.45em}
-.closing-signoff p:last-child{margin-top:1.25em}
+.closing-signoff>p:last-of-type{margin-top:1.25em}
 .pt3-lede-one{min-height:330svh}.pt3-lede-one .lede-note a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.15em}
 @media(max-width:760px){.pt3-lede-one .lede-jensen{object-fit:contain;background:#05080d}}
 @media(prefers-reduced-motion:reduce){.pt3-lede-one{min-height:0}.pt3-lede-one .lede-jensen{display:block;position:static;width:100%;height:auto;opacity:1;margin-top:2rem}}
