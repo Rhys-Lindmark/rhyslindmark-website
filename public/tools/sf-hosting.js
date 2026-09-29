@@ -45,7 +45,7 @@ function matches(v,f){
       if(!pricedRoom)return false;
     }else if(!v.fullBookingPrice||(f.minBooking&&v.fullBookingPrice<f.minBooking)||(f.maxBooking&&v.fullBookingPrice>f.maxBooking))return false;
   }
-  if(f.guests && (!v.maxGuests || v.maxGuests<f.guests))return false;
+  if(f.guests && Math.max(v.maxGuests||0,v.groupSizeHint||0)<f.guests)return false;
   if((f.minCapacity||f.maxCapacity)&&(!v.maxGuests||(f.minCapacity&&v.maxGuests<f.minCapacity)||(f.maxCapacity&&v.maxGuests>f.maxCapacity)))return false;
   const selected=[f.private&&v.private,f.semi&&v.semiPrivate,f.buyout&&v.buyout,f.dropin&&v.sources?.includes("Rhys's drop-in map")].filter(Boolean);
   if((f.private||f.semi||f.buyout||f.dropin) && !selected.length)return false;
@@ -82,7 +82,7 @@ function cardHtml(v){
   const summary=text(v.details||v.cuisine||'').slice(0,110);
   return `<article class="venue-card" data-id="${esc(v.id)}" tabindex="0" role="button" aria-label="View ${esc(v.name)} details">
     <div class="card-image ${image?'':'no-image'}">${image}<div class="image-fallback"><span>${esc(v.neighborhood||'San Francisco')}</span><strong>${esc(v.name)}</strong></div><span class="card-category">${esc(categoryLabel(v))}</span></div>
-    <div class="card-body"><div class="card-title-row"><h2>${esc(v.name)}</h2>${v.maxGuests?`<span class="guest-count">Up to ${esc(v.maxGuests)}</span>`:''}</div>
+    <div class="card-body"><div class="card-title-row"><h2>${esc(v.name)}</h2>${v.maxGuests?`<span class="guest-count">Up to ${esc(v.maxGuests)}</span>`:v.groupSizeHint?`<span class="guest-count">${esc(v.groupSizeHint)}-person group noted</span>`:''}</div>
       <div class="card-location">${esc(v.neighborhood||'San Francisco')} ${v.cuisine?`· ${esc(v.cuisine.split(/[\/,]/)[0])}`:''}</div>
       <p class="card-summary">${esc(summary)}</p>
       <div class="card-tags">${tags}</div>
@@ -294,9 +294,10 @@ function wireEvents(){
 async function init(){
   wireEvents();
   try{
-    const [response,zipResponse]=await Promise.all([fetch('/data/sf-hosting.json'),fetch('/data/sf-hosting-zips.json')]);if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    const [response,zipResponse,hintsResponse]=await Promise.all([fetch('/data/sf-hosting.json'),fetch('/data/sf-hosting-zips.json'),fetch('/data/sf-hosting-group-hints.json')]);if(!response.ok)throw new Error(`HTTP ${response.status}`);
     const data=await response.json();state.venues=data.venues;
     if(zipResponse.ok){const zipData=await zipResponse.json();state.venues.forEach(v=>v.zipCode=zipData.venues[v.id]);}
+    if(hintsResponse.ok){const hints=await hintsResponse.json();state.venues.forEach(v=>v.groupSizeHint=hints[v.id]||null);}
     $('#price-max').max=Math.ceil(Math.max(...state.venues.map(v=>v.pricePerHead||0))/10)*10;$('#price-max').value=$('#price-max').max;$('#price-min').max=$('#price-max').max;
     const bookingPrices=state.venues.map(v=>v.fullBookingPrice).filter(Boolean);
     renderHistogram('price',state.venues.map(v=>v.pricePerHead).filter(Boolean));renderHistogram('booking',bookingPrices);renderHistogram('capacity',state.venues.map(v=>v.maxGuests).filter(Boolean));updateRangeLabels();
