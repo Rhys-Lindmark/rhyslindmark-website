@@ -122,7 +122,7 @@ body:not(.all-mode) #article #domain-benchmarks .passage{top:clamp(130px,24svh,1
 .office-universe-section .coding-universe-visual img{width:100%;height:100%;object-fit:cover;object-position:center;opacity:1}
 @media(max-width:960px){.domain-benchmark-row{grid-template-columns:minmax(100px,145px) minmax(0,1fr) 54px;gap:8px}.domain-benchmark-label strong{font-size:16px}.domain-benchmark-label small{font-size:9px}}
 @media(max-width:760px){body:not(.all-mode) #article .domain-benchmarks .domain-benchmark-chart{width:100%}.domain-benchmark-rows{gap:9px}.domain-benchmark-row{grid-template-columns:100px minmax(0,1fr) 47px;min-height:45px;gap:5px}.domain-benchmark-label strong{font-size:13px}.domain-benchmark-label small{font-size:8px}.domain-benchmark-track{height:17px}.domain-benchmark-row b{font-size:11px}#article .domain-benchmark-chart figcaption{font-size:8px}}
-@media(max-width:760px){body:not(.all-mode) #article #domain-benchmarks .passage{top:85px;left:12px;width:calc(100% - 24px);max-width:none;transform:none;padding:15px 18px}body:not(.all-mode) #article #domain-benchmarks .passage .card-copy p{font-size:17px}}
+@media(max-width:760px){body:not(.all-mode) #article #domain-benchmarks .passage{top:85px;left:12px;width:calc(100% - 24px);max-width:none;transform:translateY(var(--card-shift,100svh));padding:15px 18px}body:not(.all-mode) #article #domain-benchmarks .passage .card-copy p{font-size:17px}}
 .quoted-source{border-left:2px solid #526777;padding:26px 30px;margin:24px auto}
 .closing-copy{padding:60px 0 90px;font-size:17px;color:#fff}
 .autonomous-universe-section{padding:clamp(50px,8svh,100px) 0 clamp(90px,14svh,170px)}

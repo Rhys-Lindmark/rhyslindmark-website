@@ -59,7 +59,7 @@
     let current;
     for (const entry of entries) {
       const target = entry.scene && !reduced.matches ? entry.scene : entry.el;
-      if (target.getBoundingClientRect().top > document.querySelector('header').getBoundingClientRect().bottom + 1) break;
+      if (target.getBoundingClientRect().top > Math.max(0, document.querySelector('header').getBoundingClientRect().bottom) + 1) break;
       if (!entry.scene || reduced.matches || entry.index === Number(entry.scene.dataset.stage || 0)) current = entry;
     }
     if (scrollY + innerHeight >= document.documentElement.scrollHeight - 2) current = entries.at(-1);
@@ -71,11 +71,11 @@
       const sticky = scene.querySelector('.sticky');
       const card = scene.querySelector('.passage');
       const passages = [...card.children];
-      const progress = clamp(-scene.getBoundingClientRect().top / Math.max(1, scene.offsetHeight - sticky.offsetHeight));
+      const progress = window.AIScrollExit.timing(scene).progress;
       const stage = Math.min(passages.length - 1, Math.floor(progress * passages.length));
       passages.forEach((el, i) => el.hidden = !reduced.matches && i !== stage);
       const local = Math.min(1, progress * passages.length - stage);
-      card.style.setProperty('--card-shift', `${reduced.matches ? 0 : sticky.offsetHeight - (sticky.offsetHeight + card.offsetHeight) * local}px`);
+      card.style.setProperty('--card-shift', `${reduced.matches ? 0 : window.AIScrollExit.shift(scene, local, stage === passages.length - 1, sticky.offsetHeight - (sticky.offsetHeight + card.offsetHeight) * local)}px`);
       scene.querySelector('.track span').style.width = `${progress * 100}%`;
       scene.dataset.stage = stage;
       scene.dataset.progress = progress;
@@ -119,9 +119,10 @@
     if (entry) {
       const target = entry.scene && !reduced.matches ? entry.scene : entry.el;
       const sticky = entry.scene?.querySelector('.sticky');
-      const travel = sticky && !reduced.matches ? Math.max(0, entry.scene.offsetHeight - sticky.offsetHeight) : entry.el === humanAiVisual && !reduced.matches ? Math.max(0, humanAiVisual.offsetHeight - innerHeight) : 0;
+      const exitTiming = sticky ? window.AIScrollExit.timing(entry.scene) : null;
+      const travel = sticky && !reduced.matches ? exitTiming.travel : entry.el === humanAiVisual && !reduced.matches ? Math.max(0, humanAiVisual.offsetHeight - innerHeight) : 0;
       // Land with the requested text box visible, not below the graph.
-      scrollTo({top:scrollY + target.getBoundingClientRect().top + travel * (entry.index + .45) / entry.count, behavior:'instant'});
+      scrollTo({top:scrollY + target.getBoundingClientRect().top + travel * (entry.index + .45) / entry.count - (exitTiming?.active ? exitTiming.top : 0), behavior:'instant'});
       setAddress(entry.id);
     } else if (hashTarget) {
       hashTarget.scrollIntoView({behavior:'instant'});

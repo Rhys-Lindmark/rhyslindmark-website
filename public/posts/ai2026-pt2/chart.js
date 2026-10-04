@@ -508,10 +508,10 @@
   }
   function loopTiming(scene,sticky){
     const mobile=matchMedia('(max-width:760px)').matches;
-    const travel=Math.max(1,scene.offsetHeight-sticky.offsetHeight);
+    const travel=window.AIScrollExit.timing(scene).travel;
     // The scene gained scroll length only for the rapid "Nothing to see here" build.
     // Recover the original first two passages so their pacing stays unchanged.
-    const originalHeight=scene.offsetHeight*(mobile?1000/1384:1040/1440);
+    const originalHeight=(travel+sticky.offsetHeight)*(mobile?1000/1384:1040/1440);
     const intro=Math.max(1,(originalHeight-sticky.offsetHeight)/6);
     const ending=Math.max(1,travel-2*intro);
     const build=Math.min(ending*.95,4*intro*.16*5);
@@ -521,7 +521,7 @@
     frame=0;
     for(const scene of scenes){
       const sticky=scene.querySelector('.sticky');
-      const p=reduce.matches?1:clamp(-scene.getBoundingClientRect().top/Math.max(1,scene.offsetHeight-sticky.offsetHeight));
+      const p=reduce.matches?1:window.AIScrollExit.timing(scene).progress;
       const steps=(scene.dataset.steps||scene.id).split(',');
       const forestLoop=scene.dataset.kind==='model-code-loop';
       let stage,local;
@@ -556,7 +556,7 @@
           card.style.setProperty('--card-shift',`${start-(start+card.offsetHeight+24)*exit}px`);
           card.style.setProperty('--card-opacity',`${1-clamp((local-.16)/.12)}`);
         }else{
-          card.style.setProperty('--card-shift',`${reduce.matches?0:sticky.offsetHeight-(sticky.offsetHeight+card.offsetHeight)*local}px`);
+          card.style.setProperty('--card-shift',`${reduce.matches?0:window.AIScrollExit.shift(scene,local,stage===steps.length-1,sticky.offsetHeight-(sticky.offsetHeight+card.offsetHeight)*local)}px`);
           card.style.removeProperty('--card-opacity');
         }
       }
@@ -577,12 +577,12 @@
       numbered.find(e=>e.el===lastNumbered?.el)||slideEntries.find(e=>e.anchor===legacy||e.legacyId===legacy);
     slideLinksReady=false;
     if(entry){
-      const sticky=entry.el.querySelector('.sticky'),travel=sticky?Math.max(0,entry.el.offsetHeight-sticky.offsetHeight):0;
+      const sticky=entry.el.querySelector('.sticky'),exitTiming=sticky?window.AIScrollExit.timing(entry.el):null,travel=exitTiming?.travel||0;
       const timing=sticky&&entry.el.dataset.kind==='model-code-loop'?loopTiming(entry.el,sticky):null;
       const progress=reduce.matches?0:timing?
         (entry.index===2?2*timing.intro+timing.build*.4:timing.intro*(entry.index+.4))/timing.travel:
         (entry.index+.4)/entry.count;
-      window.scrollTo({top:scrollY+entry.el.getBoundingClientRect().top+travel*progress,behavior:'instant'});
+      window.scrollTo({top:scrollY+entry.el.getBoundingClientRect().top+travel*progress-(exitTiming?.active?exitTiming.top:0),behavior:'instant'});
       setSlideAddress(entry.id);
     }else if(hash){document.getElementById(hash)?.scrollIntoView({behavior:'instant'});}
     else if(['compute-chips','compute-actual','compute-gap'].includes(query)){

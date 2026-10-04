@@ -324,7 +324,7 @@ function followSlideLink(){
  const scene=entry.el,id=entry.internal;
  setSlideAddress(entry.id);
  const progress=scene.dataset.kind==='revenue'?(id==='9'?.796:.264):scene.dataset.kind==='eras'?.088:['fulltext','chapter','statement'].includes(scene.dataset.kind)?0:(entry.index+.4)/entry.count;
- const travel=Math.max(0,scene.offsetHeight-scene.querySelector('.sticky').offsetHeight),top=window.scrollY+scene.getBoundingClientRect().top+(all?0:progress*travel);
+ const timing=window.AIScrollExit.timing(scene),travel=timing.travel,top=window.scrollY+scene.getBoundingClientRect().top+(all?0:progress*travel-(timing.active?timing.top:0));
  window.scrollTo({top,behavior:'instant'});request();
 }
 function syncSlideAddress(){
@@ -340,8 +340,8 @@ function syncSlideAddress(){
  const entry=slideEntries.find(e=>e.el===current&&(current.dataset.kind==='meme'||e.internal===internal));
  if(entry)setSlideAddress(entry.id);
 }
-function sceneProgress(scene){if(all)return 1;const rect=scene.getBoundingClientRect(),sticky=scene.querySelector('.sticky');return clamp((-rect.top)/Math.max(1,scene.offsetHeight-sticky.offsetHeight));}
-function update(){raf=0;for(const scene of scenes){const p=sceneProgress(scene);/* A "series" scene reads its card into place first, holds it there, and only then spends the rest of the scroll drawing the chart. */const series=Number(scene.dataset.cardSeries||0);renderers.get(scene)?.(series?clamp((p-series)/(1-series)):p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight);card.style.setProperty('--card-shift',`${all?0:series?lerp(viewportHeight,26,clamp(p/series)):lerp(viewportHeight,-card.offsetHeight,clamp(cp))}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);}syncSlideAddress();}
+function sceneProgress(scene){if(all)return 1;return window.AIScrollExit.timing(scene).progress;}
+function update(){raf=0;for(const scene of scenes){const p=sceneProgress(scene);/* A "series" scene reads its card into place first, holds it there, and only then spends the rest of the scroll drawing the chart. */const series=Number(scene.dataset.cardSeries||0);renderers.get(scene)?.(series?clamp((p-series)/(1-series)):p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight);const steps=scene.dataset.steps?.split(',')||[...card.querySelectorAll('[data-passage]')].map(el=>el.dataset.passage),final=!scene.dataset.currentStep||scene.dataset.currentStep===steps.at(-1);const fallback=series?lerp(viewportHeight,26,clamp(p/series)):lerp(viewportHeight,-card.offsetHeight,clamp(cp));card.style.setProperty('--card-shift',`${all?0:window.AIScrollExit.shift(scene,series?clamp(p/series):cp,final,fallback)}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);}syncSlideAddress();}
 function request(){if(!raf)raf=requestAnimationFrame(update);}
 function toggle(){document.body.classList.toggle('all-mode',all);request();}
 reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});
