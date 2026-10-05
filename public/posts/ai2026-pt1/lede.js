@@ -7,7 +7,7 @@ const counters=[...document.querySelectorAll('[data-day-count]')];if(!counters.l
 const now=new Date();
 const days=Math.max(1,Math.round((new Date(now.getFullYear(),now.getMonth(),now.getDate())-new Date(2026,0,1))/864e5));
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
-((el)=>{
+(()=>{
 const show=v=>{const n=String(Math.max(1,Math.round(v)));counters.forEach(counter=>{if(counter.textContent!==n)counter.textContent=n;});};
 if(reduce.matches){show(days);return;}
 show(days);
@@ -47,14 +47,14 @@ const countUp=()=>{
 };
 
 // Wait until the line has cleared the lower quarter of the screen, so the
-// opening count does not finish before the reader's eye arrives.
+// count does not finish before the reader's eye arrives, including deep links.
 let started=false;
 const io=new IntersectionObserver(entries=>{
- if(!entries[0].isIntersecting||started)return;
+ if(started||!entries.some(entry=>entry.isIntersecting&&entry.intersectionRatio>=1))return;
  started=true;io.disconnect();countUp();
 },{threshold:1,rootMargin:'0px 0px -25% 0px'});
-io.observe(el);
-})(counters[0]);
+counters.forEach(counter=>io.observe(counter));
+})();
 
 /* The opening image fades up and away across slide one. */
 const apparition=document.querySelector('[data-lede-apparition]'),slideOne=document.querySelector('.lede-one');
