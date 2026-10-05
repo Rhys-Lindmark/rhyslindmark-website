@@ -304,20 +304,6 @@ function drawUnits(scene){
  return p=>{const {index,local}=passageStage(scene,p),expanded=index||all,count=expanded?Math.max(1,Math.ceil(clamp(local/.8)*100)):1;units.forEach((u,i)=>{u.style.visibility=all||i<count?'visible':'hidden';});total.style.visibility=expanded?'visible':'hidden';firstValue.style.visibility=expanded?'hidden':'visible';scene.querySelector('.readout').textContent='$20B / GW';};
 }
 
-function drawROI(scene){
- const {svg,W,H,small}=svgBase(scene),a=axes(svg,W,H,{xd:[1995,2040],yd:[0,4],xt:small?[1995,2010,2025,2040]:[1995,2000,2010,2020,2030,2040],yt:[0,1,2,3,4],yfmt:v=>`$${v}T`,yTitle:'ANNUAL SPENDING / REVENUE · $T'}),d=data.roi;
- const internet=clipping(svg,'roi-internet',a.m,a.ih),infra=clipping(svg,'roi-ai-infra',a.m,a.ih),revenue=clipping(svg,'roi-ai-revenue',a.m,a.ih);
- function value(points,year){let i=points.findIndex(p=>p[0]>=year);if(i===0)return points[0][1];if(i<0)return points.at(-1)[1];let l=points[i-1],r=points[i];return lerp(l[1],r[1],(year-l[0])/(r[0]-l[0]));}
- const bw=a.iw/46*.35;
- for(let year=1995;year<=2040;year++){const v=value(d.internetInfra,year);node('rect',{x:a.x(year)-bw,y:a.y(v),width:bw,height:a.y(0)-a.y(v),fill:'#35e7ff',opacity:.7},internet.g);if(year>=2020){const v=value(d.aiInfra,year);node('rect',{x:a.x(year),y:a.y(v),width:bw,height:a.y(0)-a.y(v),fill:'#63ff91',opacity:.8},infra.g);}}
- node('path',{d:linePath(d.internetRevenue.filter(p=>p[0]<=2025),a.x,a.y),fill:'none',stroke:'#35e7ff','stroke-width':3},internet.g);
- node('path',{d:linePath(d.internetRevenue.filter(p=>p[0]>=2025),a.x,a.y),fill:'none',stroke:'#35e7ff','stroke-width':3,'stroke-dasharray':'7 5'},internet.g);
- node('path',{d:linePath(d.aiRevenue,a.x,a.y),fill:'none',stroke:'#63ff91','stroke-width':3,'stroke-dasharray':'7 5'},revenue.g);
- const topLabel=label(svg,a.x(2035),a.y(4)+18,'$4T+','middle','series-label');topLabel.style.fill='#35e7ff';const aiLabel=label(svg,a.x(2040)-8,a.y(1)-12,'$1T','end','series-label');aiLabel.style.fill='#63ff91';
- legend(scene,[{name:'Internet infrastructure',color:'#35e7ff'},{name:'Internet revenue',color:'#35e7ff'},{name:'AI infrastructure',color:'#63ff91'},{name:'AI revenue',color:'#63ff91'}]);
- hoverX(svg,a,[1995,2040],[{name:'Internet infrastructure',color:'#35e7ff',points:d.internetInfra,clip:internet},{name:'Internet revenue',color:'#35e7ff',points:d.internetRevenue,clip:internet},{name:'AI infrastructure',color:'#63ff91',points:d.aiInfra,clip:infra},{name:'AI revenue',color:'#63ff91',points:d.aiRevenue,clip:revenue}],year=>`${Math.round(year)}${year>2025?' · scenario':''}`,value=>`$${value.toFixed(2)}T / year`);
- return p=>{const {index,local}=passageStage(scene,p),stage=index-2,it=all||stage>0?1:stage===0?clamp(local/.8):0,at=all||stage>1?1:stage===1?clamp(local/.8):0,rt=all||stage>2?1:stage===2?clamp(local/.8):0;internet.rect.setAttribute('width',it*a.iw);infra.rect.setAttribute('width',at*a.iw);revenue.rect.setAttribute('width',rt*a.iw);topLabel.style.visibility=it>.8?'visible':'hidden';aiLabel.style.visibility=rt===1?'visible':'hidden';revealLegend(scene,i=>i<2&&it>0||i===2&&at>0||i===3&&rt>0);};
-}
 function setupBuildingReturn(scene){
  const building=scene.querySelector('ai-building-intro');
  customElements.whenDefined('ai-building-intro').then(()=>{const root=building.shadowRoot;if(!root)return;const style=document.createElement('style');style.textContent=':host,.pin,.controls{background:#070b10!important}';root.appendChild(style);});
@@ -349,8 +335,8 @@ function followSlideLink(){
   setSlideAddress(entry.id);entry.el.scrollIntoView({behavior:'instant'});request();return;
  }
  if(!entry){
-  // Old links to the removed closing animation now land at the actual ending.
-  if(numeric==='52'){
+  // Links to the removed payback chapter and closing animation land at the ending.
+  if(numeric&&Number(numeric)>=44&&Number(numeric)<=52){
    document.getElementById('sources')?.scrollIntoView({behavior:'instant'});
    setSlideAddress(slideEntries.at(-1).id);
   }else if(query)setSlideAddress(null);
@@ -382,7 +368,7 @@ function request(){if(!raf)raf=requestAnimationFrame(update);}
 function toggle(){document.body.classList.toggle('all-mode',all);request();}
 reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});
 try{const res=await fetch('/posts/ai2026-pt1/charts.json?v=big-tech-1');if(!res.ok)throw new Error('Chart data unavailable');data=await res.json();
- const draw=scene=>{const kind=scene.dataset.kind;const fn=kind==='roi'?drawROI:kind==='investment'||kind==='construction'?drawLines:kind==='chips'?drawChips:kind==='revenue'?drawRevenue:kind==='margin'||kind==='profit'?drawProfit:kind==='marketcap'?drawMarketcap:kind==='capacity'?drawCapacity:kind==='centers'?drawCenters:kind==='permits'?drawPermits:kind==='electricity'?drawElectricity:kind==='share'?drawShare:kind==='units'?drawUnits:drawEras;renderers.set(scene,fn(scene));request();};
+ const draw=scene=>{const kind=scene.dataset.kind;const fn=kind==='investment'||kind==='construction'?drawLines:kind==='chips'?drawChips:kind==='revenue'?drawRevenue:kind==='margin'||kind==='profit'?drawProfit:kind==='marketcap'?drawMarketcap:kind==='capacity'?drawCapacity:kind==='centers'?drawCenters:kind==='permits'?drawPermits:kind==='electricity'?drawElectricity:kind==='share'?drawShare:kind==='units'?drawUnits:drawEras;renderers.set(scene,fn(scene));request();};
  for(const scene of scenes){if(['chapter','statement','fulltext','scrolltext'].includes(scene.dataset.kind))renderers.set(scene,()=>{});else if(['panorama','city'].includes(scene.dataset.kind))renderers.set(scene,setupPhoto(scene));else if(scene.dataset.kind==='buildingreturn')renderers.set(scene,setupBuildingReturn(scene));else if(scene.dataset.kind==='meme')renderers.set(scene,setupMeme(scene));else if(scene.dataset.kind==='video')renderers.set(scene,setupVideo(scene));else if(scene.dataset.kind==='sidevideo')renderers.set(scene,setupSideVideo(scene));else{draw(scene);new ResizeObserver(()=>draw(scene)).observe(scene.querySelector('.plot-wrap'));}}
  window.addEventListener('prepare-share-poster',event=>{const id=String(event.detail.step),passage=document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');if(!scene)return;const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=Math.max(0,steps.indexOf(id));let p=(index+.96)/steps.length;if(scene.dataset.kind==='revenue')p=id==='9'?.99:.64;renderers.get(scene)?.(p);});
  toggle();window.addEventListener('hashchange',followSlideLink);window.addEventListener('popstate',followSlideLink);if('scrollRestoration' in history)history.scrollRestoration='manual';requestAnimationFrame(followSlideLink);/* The rAF fires before images and charts have laid the page out, so the scroll can be
