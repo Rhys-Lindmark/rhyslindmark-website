@@ -3,7 +3,7 @@
 const NS='http://www.w3.org/2000/svg',root=document.getElementById('article'),reduce=matchMedia('(prefers-reduced-motion: reduce)'),scenes=[...document.querySelectorAll('.scene')];
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,t)=>a+(b-a)*t;
 let data,all=reduce.matches,raf=0;const renderers=new Map();
-const colors={'AI supply chain':'#35e7ff','GAFA':'#ffe84a','Wintel':'#b985ff','IBM':'#ff70de','Model labs':'#63ff91','Apps':'#ffe84a','Foundation models':'#39ffc1','Hosting':'#b985ff','Chips':'#63ff91'};
+const colors={'AI supply chain':'#35e7ff','Big Tech':'#ffe84a','Wintel':'#b985ff','IBM':'#ff70de','Model labs':'#63ff91','Apps':'#ffe84a','Foundation models':'#39ffc1','Hosting':'#b985ff','Chips':'#63ff91'};
 function node(tag,attrs={},parent,text){const n=document.createElementNS(NS,tag);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;parent.appendChild(n);return n;}
 function label(parent,x,y,text,anchor='start',cls=''){return node('text',{x,y,'text-anchor':anchor,class:cls},parent,text);}
 function svgBase(scene){const svg=scene.querySelector('svg'),r=scene.querySelector('.plot-wrap').getBoundingClientRect(),W=Math.max(280,r.width),H=Math.max(250,r.height);svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);node('title',{},svg,scene.querySelector('h3').textContent);return {svg,W,H,small:W<600};}
@@ -345,7 +345,7 @@ function update(){raf=0;for(const scene of scenes){const p=sceneProgress(scene);
 function request(){if(!raf)raf=requestAnimationFrame(update);}
 function toggle(){document.body.classList.toggle('all-mode',all);request();}
 reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});
-try{const res=await fetch('/posts/ai2026-pt1/charts.json');if(!res.ok)throw new Error('Chart data unavailable');data=await res.json();
+try{const res=await fetch('/posts/ai2026-pt1/charts.json?v=big-tech-1');if(!res.ok)throw new Error('Chart data unavailable');data=await res.json();
  const draw=scene=>{const kind=scene.dataset.kind;const fn=kind==='roi'?drawROI:kind==='investment'||kind==='construction'?drawLines:kind==='chips'?drawChips:kind==='revenue'?drawRevenue:kind==='margin'||kind==='profit'?drawProfit:kind==='marketcap'?drawMarketcap:kind==='capacity'?drawCapacity:kind==='centers'?drawCenters:kind==='permits'?drawPermits:kind==='electricity'?drawElectricity:kind==='share'?drawShare:kind==='units'?drawUnits:drawEras;renderers.set(scene,fn(scene));request();};
  for(const scene of scenes){if(['chapter','statement','fulltext','scrolltext'].includes(scene.dataset.kind))renderers.set(scene,()=>{});else if(['panorama','city'].includes(scene.dataset.kind))renderers.set(scene,setupPhoto(scene));else if(scene.dataset.kind==='buildingreturn')renderers.set(scene,setupBuildingReturn(scene));else if(scene.dataset.kind==='meme')renderers.set(scene,setupMeme(scene));else if(scene.dataset.kind==='video')renderers.set(scene,setupVideo(scene));else if(scene.dataset.kind==='sidevideo')renderers.set(scene,setupSideVideo(scene));else{draw(scene);new ResizeObserver(()=>draw(scene)).observe(scene.querySelector('.plot-wrap'));}}
  window.addEventListener('prepare-share-poster',event=>{const id=String(event.detail.step),passage=document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');if(!scene)return;const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=Math.max(0,steps.indexOf(id));let p=(index+.96)/steps.length;if(scene.dataset.kind==='revenue')p=id==='9'?.99:.64;renderers.get(scene)?.(p);});

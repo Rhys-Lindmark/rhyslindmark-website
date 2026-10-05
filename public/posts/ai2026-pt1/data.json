@@ -2,7 +2,7 @@
   "meta": {
     "profitBasis": "GAAP net income, adjusted to 2026 dollars with CPI-U",
     "targetCPI": 330.873,
-    "aggregation": "Wintel = Microsoft + Intel; GAFA = Alphabet/Google + Apple + Meta + Amazon",
+    "aggregation": "Wintel = Microsoft + Intel; Big Tech = Alphabet/Google + Apple + Meta + Amazon",
     "marginNote": "Rounded period-weighted operating-margin estimates copied from the original chart; not derived from the net-income series.",
     "provenance": "Original chart from Find current Nvidia margins, August 28, 2026. Prototype reuses its data without a fresh financial audit."
   },
@@ -170,7 +170,7 @@
       "color": "#38cad7"
     },
     {
-      "id": "GAFA",
+      "id": "Big Tech",
       "start": 2007,
       "end": 2025,
       "data": [
