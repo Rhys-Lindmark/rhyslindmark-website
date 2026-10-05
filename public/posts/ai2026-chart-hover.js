@@ -7,6 +7,14 @@ const mobile=matchMedia('(max-width:760px)');
 let dismissCurrent=null;
 function svgNode(tag,attrs,parent){const el=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(attrs))el.setAttribute(k,v);parent.append(el);return el;}
 function localPoint(svg,event){const p=svg.createSVGPoint();p.x=event.clientX;p.y=event.clientY;return p.matrixTransform(svg.getScreenCTM().inverse());}
+// Use the renderer's actual clip frontier, including independently revealed series.
+function revealedX(clip,x){return Number(clip.rect.getAttribute('width'))>0&&Number(clip.g.style.opacity||1)>0&&x<=Number(clip.rect.getAttribute('x'))+Number(clip.rect.getAttribute('width'))+.001;}
+// Dash reveals advance by path distance, not by the number of observations.
+function revealedPoints(points,amount,x,y){
+ if(amount<=0)return [];if(amount>=1)return points;
+ const distances=[0];for(let i=1;i<points.length;i++)distances.push(distances[i-1]+Math.hypot(x(points[i][0])-x(points[i-1][0]),y(points[i][1])-y(points[i-1][1])));
+ const limit=distances.at(-1)*amount;return points.filter((_,i)=>distances[i]<=limit+.001);
+}
 function attach(svg,options){
  instances.get(svg)?.destroy();
  const wrap=svg.closest('.plot-wrap,.benchmark-figure,.native-plot,.usage-chart,.epoch-plot,.rd-plot');if(!wrap)return null;
@@ -25,18 +33,20 @@ function attach(svg,options){
  let active=false,index=0,last=null,pointerFocus=false,panelFocus=false;
  const keyboard=options.keyboard?.length?options.keyboard:Array.from({length:21},(_,i)=>({x:bounds.left+(bounds.right-bounds.left)*i/20,y:(bounds.top+bounds.bottom)/2}));
  function hide(){active=false;tip.hidden=true;overlay.style.display='none';live.textContent='';if(dismissCurrent===hide)dismissCurrent=null;}
- function available(){
-  const scene=svg.closest('.scene'),sticky=scene?.querySelector('.sticky');
-  if(!document.body.classList.contains('all-mode')&&sticky&&getComputedStyle(sticky).position==='sticky'&&Number(scene.dataset.progress||0)<.9999)return false;
+ function available(point){
   const matrix=svg.getScreenCTM();if(!matrix)return false;
-  const corners=[[bounds.left,bounds.top],[bounds.right,bounds.top],[bounds.left,bounds.bottom],[bounds.right,bounds.bottom]].map(([x,y])=>new DOMPoint(x,y).matrixTransform(matrix));
+  const position=new DOMPoint(point.x,point.y).matrixTransform(matrix);
   const viewport=window.visualViewport,top=viewport?.offsetTop||0,bottom=top+(viewport?.height||innerHeight);
   const headerBottom=Math.max(top,document.querySelector('header')?.getBoundingClientRect().bottom||0);
-  return Math.min(...corners.map(p=>p.y))>=headerBottom-2&&Math.max(...corners.map(p=>p.y))<=bottom+2&&Math.min(...corners.map(p=>p.x))>=-2&&Math.max(...corners.map(p=>p.x))<=innerWidth+2;
+  return position.y>=headerBottom-2&&position.y<=bottom+2&&position.x>=-2&&position.x<=innerWidth+2;
  }
  function show(point){
-  if(!available()){hide();return;}
-  const datum=options.get(point);if(!datum||!datum.items?.length){hide();return;}
+  if(!available(point)){hide();return;}
+  const result=options.get(point);if(!result||!result.items?.length){hide();return;}
+  const positioned=result.items.filter(item=>Number.isFinite(item.x)&&Number.isFinite(item.y));
+  const visible=positioned.filter(item=>available(item));
+  if(positioned.length&&!visible.length){hide();return;}
+  const datum={...result,items:result.items.filter(item=>!positioned.includes(item)||visible.includes(item))};
   if(dismissCurrent&&dismissCurrent!==hide)dismissCurrent();dismissCurrent=hide;
   active=true;last={point,datum};overlay.style.display='';dots.replaceChildren();
   const gx=datum.x??point.x,gy=datum.y??point.y;
@@ -72,5 +82,5 @@ function attach(svg,options){
  const destroy=()=>{hide();svg.removeEventListener('pointerenter',enter);svg.removeEventListener('pointermove',move);svg.removeEventListener('pointerdown',down);svg.removeEventListener('pointerleave',leave);svg.removeEventListener('keydown',key);svg.removeEventListener('focus',focus);svg.removeEventListener('blur',blur);svg.removeEventListener('contextmenu',context);window.removeEventListener('scroll',hide);document.removeEventListener('pointerdown',outside);window.removeEventListener('resize',hide);window.visualViewport?.removeEventListener('resize',hide);window.visualViewport?.removeEventListener('scroll',hide);tip.remove();live.remove();overlay.remove();};
  const api={destroy,hide,refresh(){if(active&&last)show(last.point);}};instances.set(svg,api);return api;
 }
-window.AIChartHover={attach};
+window.AIChartHover={attach,revealedX,revealedPoints};
 })();

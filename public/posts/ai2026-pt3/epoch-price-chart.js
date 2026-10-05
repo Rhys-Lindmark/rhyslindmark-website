@@ -96,7 +96,7 @@
     const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     if(!reduced&&stage!==4&&stage!==5)return null;
     const candidates=[];
-    if(reduced||stage===4)historical.forEach((series,i)=>{const amount=reduced?1:historicalProgress(local,i),count=Math.ceil(series.points.length*amount);series.points.slice(0,count).forEach(p=>candidates.push({name:series.name,color:series.color,p}));});
+    if(reduced||stage>=4)historical.forEach((series,i)=>{const amount=reduced||stage>4?1:historicalProgress(local,i);window.AIChartHover.revealedPoints(series.points,amount,x,y).forEach(p=>candidates.push({name:series.name,color:series.color,p}));});
     if(reduced||stage===5){const amount=reduced?1:aiProgress(local);if(amount>0){const year=5*amount;candidates.push({name:'AI · estimate',color:'#009da3',p:[year,aiLog(year)]});}}
     if(!candidates.length)return null;
     const hit=candidates.reduce((best,item)=>{const score=(x(item.p[0])-point.x)**2+(y(item.p[1])-point.y)**2;return !best||score<best.score?{...item,score}:best},null);

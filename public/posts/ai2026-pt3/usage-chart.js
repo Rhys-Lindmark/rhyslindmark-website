@@ -77,7 +77,7 @@
       const workers=reduced||stage>0?1:ease(local/.35);if(workers<=0)return null;
       const amount=reduced||stage>1?1:stage===0?0:ease((local-(mark.coding?.12:0))/(mark.coding?.45:.28));
       const workerValue=mark.row.workers*workers,items=[{label:'U.S. workers',value:`${workerValue.toFixed(1)}%`,color:'#a5bdca',x:x(workerValue),y:mark.y}];
-      if(stage>0||reduced){const claude=mark.row.workers+(mark.row.claude-mark.row.workers)*amount;items.push({label:'Claude conversations',value:`${claude.toFixed(1)}%`,color:'#ff914f',x:x(claude),y:mark.y});}
+      if(amount>0){const claude=mark.row.workers+(mark.row.claude-mark.row.workers)*amount;items.push({label:'Claude conversations',value:`${claude.toFixed(1)}%`,color:'#ff914f',x:x(claude),y:mark.y});}
       return{title:mark.row.job,guide:'y',y:mark.y,items};
     }});
     render();
