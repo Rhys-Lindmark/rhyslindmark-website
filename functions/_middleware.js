@@ -119,6 +119,8 @@ async function proxyAISite(request, url, prefix, origin) {
 	if (prefix === '/bubble') {
 		body = body
 			.replaceAll('"/api/', '"/bubble/api/').replaceAll("'/api/", "'/bubble/api/")
+			.replaceAll('`/api/', '`/bubble/api/').replaceAll('`/appendix', '`/bubble/appendix')
+			.replaceAll('"_next/static/', '"bubble/_next/static/').replaceAll('`_next/static/', '`bubble/_next/static/')
 			.replaceAll('"/appendix', '"/bubble/appendix').replaceAll("'/appendix", "'/bubble/appendix")
 			.replaceAll("'/_next/", "'/bubble/_next/").replaceAll('url(/_next/', 'url(/bubble/_next/');
 		const preload = headers.get('link');

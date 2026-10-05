@@ -175,12 +175,14 @@ test('bubble proxy keeps dashboard, appendix, client APIs and preloads under its
 
 test('bubble rewrites hydrated links and CSS font paths as well as refresh calls', async () => {
  const oldFetch=globalThis.fetch;
- globalThis.fetch=async()=>new Response('const href="/appendix#sources";fetch(\'/api/context\');url(/_next/static/font.woff2)',{headers:{'content-type':'application/javascript'}});
+ globalThis.fetch=async()=>new Response('const href="/appendix#sources";fetch(\'/api/context\');url(/_next/static/font.woff2);read(`/api/dashboard`);const deps=["_next/static/chunks/view.js"]',{headers:{'content-type':'application/javascript'}});
  try {
   const result=await onRequest({request:new Request('https://ai.rhyslindmark.com/bubble/_next/static/app.js'),next:()=>{throw new Error('should proxy')}});
   const body=await result.text();
   assert(body.includes('href="/bubble/appendix#sources"'));
   assert(body.includes("fetch('/bubble/api/context')"));
   assert(body.includes('url(/bubble/_next/static/font.woff2)'));
+  assert(body.includes('read(`/bubble/api/dashboard`)'));
+  assert(body.includes('"bubble/_next/static/chunks/view.js"'));
  } finally {globalThis.fetch=oldFetch;}
 });
