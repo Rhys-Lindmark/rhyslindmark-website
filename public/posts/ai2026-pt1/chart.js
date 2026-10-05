@@ -214,9 +214,9 @@ function drawCapacity(scene){
 
  legend(scene,[{name:'NVIDIA · 70%',color:'#63ff91'},{name:'Other · 30%',color:'#7293a9'}]);
  const capacityRows=[{title:'2020',x:x0,y:baseY,items:[{label:'Capacity added',value:'0 GW',color:'#7b95a7',x:x0,y:baseY}]},{title:'2025',x:x1,y:a.y(d.builtGW),items:[{label:'NVIDIA',value:`${(d.builtGW*d.nvidiaShare).toFixed(1)} GW`,color:'#63ff91',x:x1,y:a.y(d.builtGW*d.nvidiaShare/2)},{label:'Other',value:`${(d.builtGW*(1-d.nvidiaShare)).toFixed(1)} GW`,color:'#7293a9',x:x1,y:a.y(d.builtGW*(d.nvidiaShare+(1-d.nvidiaShare)/2))}]},{title:`${d.longTermYear} scenario`,x:x2,y:a.y(d.targetGW),items:[{label:'Capacity added',value:`${d.targetGW} GW`,color:'#b985ff',x:x2,y:a.y(d.targetGW)}]}];
- let capacityIndex=0,currentEpochGW=0,currentPermittedGW=0,currentFutureGW=0;
+ let capacityIndex=0,currentEpochGW=0,currentPermittedGW=0,currentFutureGW=0,currentBuiltGW=0;
  window.AIChartHover?.attach(svg,{bounds:{left:a.m.l,right:a.m.l+a.iw,top:a.m.t,bottom:a.m.t+a.ih},keyboard:[...capacityRows.map(r=>({x:r.x,y:r.y})),...(comparison?[{x:epochX,y:a.y(22)}]:[])],get:point=>{
-  const rows=capacityRows.slice(0,2);if(currentFutureGW>0&&future.style.visibility!=='hidden')rows.push({...capacityRows[2],y:a.y(currentFutureGW),items:[{label:'Capacity added',value:`${currentFutureGW.toFixed(1)} GW`,color:'#b985ff',x:x2,y:a.y(currentFutureGW)}]});
+  const rows=capacityRows.slice(0,1);if(currentBuiltGW>0)rows.push({...capacityRows[1],y:a.y(currentBuiltGW),items:[{label:'NVIDIA',value:`${(currentBuiltGW*d.nvidiaShare).toFixed(1)} GW`,color:'#63ff91',x:x1,y:a.y(currentBuiltGW*d.nvidiaShare/2)},{label:'Other',value:`${(currentBuiltGW*(1-d.nvidiaShare)).toFixed(1)} GW`,color:'#7293a9',x:x1,y:a.y(currentBuiltGW*(d.nvidiaShare+(1-d.nvidiaShare)/2))}]});if(currentFutureGW>0&&future.style.visibility!=='hidden')rows.push({...capacityRows[2],y:a.y(currentFutureGW),items:[{label:'Capacity added',value:`${currentFutureGW.toFixed(1)} GW`,color:'#b985ff',x:x2,y:a.y(currentFutureGW)}]});
   if(comparison&&capacityIndex>0&&currentEpochGW>0){
    const permits=capacityIndex===3,year=capacityIndex===1?d.epochYear:d.permittedYear;
    const items=permits?[{label:'Permitted',value:`${currentPermittedGW.toFixed(1)} GW`,color:'#63ff91',x:epochX,y:a.y(currentPermittedGW/2)},{label:'Shortfall',value:`${(currentEpochGW-currentPermittedGW).toFixed(1)} GW`,color:'#ff70de',x:epochX,y:a.y((currentEpochGW+currentPermittedGW)/2)}]:[{label:'Capacity added',value:`${currentEpochGW.toFixed(1)} GW`,color:'#b985ff',x:epochX,y:a.y(currentEpochGW)}];
@@ -224,10 +224,10 @@ function drawCapacity(scene){
   }
   return rows.reduce((best,row)=>Math.abs(row.x-point.x)<Math.abs(best.x-point.x)?row:best,rows[0]);
  }});
- return p=>{const {step,index,local}=passageStage(scene,p),built=d.builtGW,n=built*d.nvidiaShare;
-  capacityIndex=index;
-  nvidia.setAttribute('y',a.y(n));nvidia.setAttribute('height',baseY-a.y(n));other.setAttribute('y',a.y(built));other.setAttribute('height',a.y(n)-a.y(built));builtLabel.style.opacity=1;
-  // The opening passage keeps the existing 12 GW bar; the forecast starts next.
+ return p=>{const {step,index,local}=passageStage(scene,p),built=d.builtGW*(all||comparison||index>0?1:clamp(local/.7)),n=built*d.nvidiaShare;
+  capacityIndex=index;currentBuiltGW=built;
+  nvidia.setAttribute('y',a.y(n));nvidia.setAttribute('height',baseY-a.y(n));other.setAttribute('y',a.y(built));other.setAttribute('height',a.y(n)-a.y(built));builtLabel.setAttribute('y',a.y(built)-12);builtLabel.style.opacity=built>0?1:0;
+  // Grow the 12 GW bar in the opening passage, then retain it as the forecast starts.
   const steps=scene.dataset.steps.split(',').map(Number),opening=!comparison;
   const show=all||!opening||step!==steps[0],unknown=false,target=d.targetGW,year=d.longTermYear,progress=all||!opening||step===steps.at(-1)?1:clamp(local/.7),v=unknown?0:target*progress;
   currentFutureGW=show?v:0;future.style.visibility=show&&!unknown?'visible':'hidden';future.setAttribute('y',a.y(v));future.setAttribute('height',baseY-a.y(v));futureYear.textContent=show?String(year):'';futureLabel.textContent=!show?'':unknown?'?':`${target} GW`;futureLabel.setAttribute('y',unknown?a.y(55):a.y(target)-12);futureLabel.style.fill='#b985ff';
