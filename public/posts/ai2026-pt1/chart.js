@@ -203,7 +203,7 @@ function setupPhoto(scene){
 function drawCapacity(scene){
  const {svg,W,H,small}=svgBase(scene),d=data.opportunity,comparison=scene.hasAttribute('data-capacity-comparison'),a=axes(svg,W,H,{xd:[0,3],yd:[0,110],xt:[],yt:[0,20,40,60,80,100],yfmt:v=>`${v}`,yTitle:'CAPACITY ADDED SINCE 2020 · GW',xTitle:'YEAR'}),bw=Math.min(120,a.iw*(comparison?.13:.17)),x0=a.x(comparison?.35:.5),x1=a.x(comparison?1:1.5),x2=a.x(2.5),baseY=a.y(0);
  label(svg,x0,baseY+22,'2020','middle');label(svg,x1,baseY+22,'2025','middle');const futureYear=label(svg,x2,baseY+22,'','middle');
- node('line',{x1:x0-bw/2,x2:x0+bw/2,y1:baseY,y2:baseY,stroke:'#7b95a7','stroke-width':3},svg);label(svg,x0,baseY-12,'Baseline','middle','value');
+ node('line',{x1:x0-bw/2,x2:x0+bw/2,y1:baseY,y2:baseY,stroke:'#7b95a7','stroke-width':3},svg);
  const nvidia=node('rect',{x:x1-bw/2,y:baseY,width:bw,height:0,fill:'#63ff91'},svg),other=node('rect',{x:x1-bw/2,y:baseY,width:bw,height:0,fill:'#7293a9'},svg),builtLabel=label(svg,x1,a.y(12)-12,'12 GW','middle','value'),future=node('rect',{x:x2-bw/2,y:baseY,width:bw,height:0,fill:'#b985ff','fill-opacity':.35,stroke:'#b985ff','stroke-width':2,'stroke-dasharray':'7 5'},svg),futureLabel=label(svg,x2,a.y(100)-12,'','middle','value');
  const epochX=a.x(1.75),epoch=node('rect',{x:epochX-bw/2,y:baseY,width:bw,height:0,fill:'#b985ff','fill-opacity':.65,stroke:'#b985ff','stroke-width':2},svg),epochLabel=label(svg,epochX,0,'','middle','value'),epochYear=label(svg,epochX,baseY+22,'','middle');epochLabel.style.fill='#b985ff';
  const permitGroup=node('g',{},svg),permitData=data.permits;
@@ -212,7 +212,7 @@ function drawCapacity(scene){
  for(const t of [plannedText,permittedText,gapText])if(small)t.style.fontSize='8px';
 
  legend(scene,[{name:'NVIDIA · 70%',color:'#63ff91'},{name:'Other · 30%',color:'#7293a9'}]);
- const capacityRows=[{title:'2020 baseline',x:x0,y:baseY,items:[{label:'Capacity added',value:'0 GW',color:'#7b95a7',x:x0,y:baseY}]},{title:'2025',x:x1,y:a.y(d.builtGW),items:[{label:'NVIDIA',value:`${(d.builtGW*d.nvidiaShare).toFixed(1)} GW`,color:'#63ff91',x:x1,y:a.y(d.builtGW*d.nvidiaShare/2)},{label:'Other',value:`${(d.builtGW*(1-d.nvidiaShare)).toFixed(1)} GW`,color:'#7293a9',x:x1,y:a.y(d.builtGW*(d.nvidiaShare+(1-d.nvidiaShare)/2))}]},{title:`${d.longTermYear} scenario`,x:x2,y:a.y(d.targetGW),items:[{label:'Capacity added',value:`${d.targetGW} GW`,color:'#b985ff',x:x2,y:a.y(d.targetGW)}]}];
+ const capacityRows=[{title:'2020',x:x0,y:baseY,items:[{label:'Capacity added',value:'0 GW',color:'#7b95a7',x:x0,y:baseY}]},{title:'2025',x:x1,y:a.y(d.builtGW),items:[{label:'NVIDIA',value:`${(d.builtGW*d.nvidiaShare).toFixed(1)} GW`,color:'#63ff91',x:x1,y:a.y(d.builtGW*d.nvidiaShare/2)},{label:'Other',value:`${(d.builtGW*(1-d.nvidiaShare)).toFixed(1)} GW`,color:'#7293a9',x:x1,y:a.y(d.builtGW*(d.nvidiaShare+(1-d.nvidiaShare)/2))}]},{title:`${d.longTermYear} scenario`,x:x2,y:a.y(d.targetGW),items:[{label:'Capacity added',value:`${d.targetGW} GW`,color:'#b985ff',x:x2,y:a.y(d.targetGW)}]}];
  let capacityIndex=0,currentEpochGW=0,currentPermittedGW=0;
  window.AIChartHover?.attach(svg,{bounds:{left:a.m.l,right:a.m.l+a.iw,top:a.m.t,bottom:a.m.t+a.ih},keyboard:[...capacityRows.map(r=>({x:r.x,y:r.y})),...(comparison?[{x:epochX,y:a.y(22)}]:[])],get:point=>{
   const rows=[...capacityRows];
@@ -240,7 +240,7 @@ function drawCapacity(scene){
 function drawPermits(scene){
  const {svg,W,H,small}=svgBase(scene),d=data.permits,o=data.opportunity,a=axes(svg,W,H,{xd:[0,3],yd:[0,110],xt:[],yt:[0,20,40,60,80,100],yTitle:'CAPACITY ADDED SINCE 2020 · GW',xTitle:'YEAR'}),bw=Math.min(120,a.iw*.13),base=a.y(0),x0=a.x(.35),x1=a.x(1),x2=a.x(1.75),x3=a.x(2.5);
  [2020,2025,2028,2040].forEach((year,i)=>label(svg,[x0,x1,x2,x3][i],base+22,String(year),'middle'));
- node('line',{x1:x0-bw/2,x2:x0+bw/2,y1:base,y2:base,stroke:'#7b95a7','stroke-width':3},svg);label(svg,x0,base-12,'Baseline','middle','value');
+ node('line',{x1:x0-bw/2,x2:x0+bw/2,y1:base,y2:base,stroke:'#7b95a7','stroke-width':3},svg);
  const n=o.builtGW*o.nvidiaShare;
  node('rect',{x:x1-bw/2,y:a.y(n),width:bw,height:base-a.y(n),fill:'#63ff91'},svg);
  node('rect',{x:x1-bw/2,y:a.y(o.builtGW),width:bw,height:a.y(n)-a.y(o.builtGW),fill:'#7293a9'},svg);label(svg,x1,a.y(o.builtGW)-12,`${o.builtGW} GW`,'middle','value');
