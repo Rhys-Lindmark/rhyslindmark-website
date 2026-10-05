@@ -304,6 +304,14 @@ function drawUnits(scene){
  return p=>{const {index,local}=passageStage(scene,p),expanded=index||all,count=expanded?Math.max(1,Math.ceil(clamp(local/.8)*100)):1;units.forEach((u,i)=>{u.style.visibility=all||i<count?'visible':'hidden';});total.style.visibility=expanded?'visible':'hidden';firstValue.style.visibility=expanded?'hidden':'visible';scene.querySelector('.readout').textContent='$20B / GW';};
 }
 
+// Reveal the supplied artwork from the nearest data centers to the sun.
+function setupAwakening(scene){
+ return p=>{
+  const reveal=clamp(p/.88);
+  scene.style.setProperty('--light-front',`${108-reveal*124}%`);
+ };
+}
+
 function setupBuildingReturn(scene){
  const building=scene.querySelector('ai-building-intro');
  customElements.whenDefined('ai-building-intro').then(()=>{const root=building.shadowRoot;if(!root)return;const style=document.createElement('style');style.textContent=':host,.pin,.controls{background:#070b10!important}';root.appendChild(style);});
@@ -344,7 +352,7 @@ function followSlideLink(){
  }
  const scene=entry.el,id=entry.internal;
  setSlideAddress(entry.id);
- const progress=scene.dataset.kind==='revenue'?(id==='9'?.796:.264):scene.dataset.kind==='eras'?.088:['fulltext','chapter','statement'].includes(scene.dataset.kind)?0:(entry.index+.4)/entry.count;
+ const progress=scene.dataset.kind==='revenue'?(id==='9'?.796:.264):scene.dataset.kind==='eras'?.088:['fulltext','chapter','statement','awakening'].includes(scene.dataset.kind)?0:(entry.index+.4)/entry.count;
  const timing=window.AIScrollExit.timing(scene),travel=timing.travel,top=window.scrollY+scene.getBoundingClientRect().top+(all?0:progress*travel-(timing.active?timing.top:0));
  window.scrollTo({top,behavior:'instant'});request();
 }
@@ -369,7 +377,7 @@ function toggle(){document.body.classList.toggle('all-mode',all);request();}
 reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});
 try{const res=await fetch('/posts/ai2026-pt1/charts.json?v=big-tech-1');if(!res.ok)throw new Error('Chart data unavailable');data=await res.json();
  const draw=scene=>{const kind=scene.dataset.kind;const fn=kind==='investment'||kind==='construction'?drawLines:kind==='chips'?drawChips:kind==='revenue'?drawRevenue:kind==='margin'||kind==='profit'?drawProfit:kind==='marketcap'?drawMarketcap:kind==='capacity'?drawCapacity:kind==='centers'?drawCenters:kind==='permits'?drawPermits:kind==='electricity'?drawElectricity:kind==='share'?drawShare:kind==='units'?drawUnits:drawEras;renderers.set(scene,fn(scene));request();};
- for(const scene of scenes){if(['chapter','statement','fulltext','scrolltext'].includes(scene.dataset.kind))renderers.set(scene,()=>{});else if(['panorama','city'].includes(scene.dataset.kind))renderers.set(scene,setupPhoto(scene));else if(scene.dataset.kind==='buildingreturn')renderers.set(scene,setupBuildingReturn(scene));else if(scene.dataset.kind==='meme')renderers.set(scene,setupMeme(scene));else if(scene.dataset.kind==='video')renderers.set(scene,setupVideo(scene));else if(scene.dataset.kind==='sidevideo')renderers.set(scene,setupSideVideo(scene));else{draw(scene);new ResizeObserver(()=>draw(scene)).observe(scene.querySelector('.plot-wrap'));}}
+ for(const scene of scenes){if(['chapter','statement','fulltext','scrolltext'].includes(scene.dataset.kind))renderers.set(scene,()=>{});else if(['panorama','city'].includes(scene.dataset.kind))renderers.set(scene,setupPhoto(scene));else if(scene.dataset.kind==='awakening')renderers.set(scene,setupAwakening(scene));else if(scene.dataset.kind==='buildingreturn')renderers.set(scene,setupBuildingReturn(scene));else if(scene.dataset.kind==='meme')renderers.set(scene,setupMeme(scene));else if(scene.dataset.kind==='video')renderers.set(scene,setupVideo(scene));else if(scene.dataset.kind==='sidevideo')renderers.set(scene,setupSideVideo(scene));else{draw(scene);new ResizeObserver(()=>draw(scene)).observe(scene.querySelector('.plot-wrap'));}}
  window.addEventListener('prepare-share-poster',event=>{const id=String(event.detail.step),passage=document.querySelector(`[data-passage="${id}"]`),scene=passage?.closest('.scene');if(!scene)return;const steps=(scene.dataset.steps||scene.dataset.step).split(','),index=Math.max(0,steps.indexOf(id));let p=(index+.96)/steps.length;if(scene.dataset.kind==='revenue')p=id==='9'?.99:.64;renderers.get(scene)?.(p);});
  toggle();window.addEventListener('hashchange',followSlideLink);window.addEventListener('popstate',followSlideLink);if('scrollRestoration' in history)history.scrollRestoration='manual';requestAnimationFrame(followSlideLink);/* The rAF fires before images and charts have laid the page out, so the scroll can be
    clobbered. Re-apply once everything has loaded, unless the reader already moved. */

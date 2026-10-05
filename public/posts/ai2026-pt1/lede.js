@@ -7,10 +7,10 @@ const counters=[...document.querySelectorAll('[data-day-count]')];if(!counters.l
 const now=new Date();
 const days=Math.max(1,Math.round((new Date(now.getFullYear(),now.getMonth(),now.getDate())-new Date(2026,0,1))/864e5));
 const reduce=matchMedia('(prefers-reduced-motion: reduce)');
-counters.forEach(el=>{
-const show=v=>{const n=String(Math.max(1,Math.round(v)));if(el.textContent!==n)el.textContent=n;};
+((el)=>{
+const show=v=>{const n=String(Math.max(1,Math.round(v)));counters.forEach(counter=>{if(counter.textContent!==n)counter.textContent=n;});};
 if(reduce.matches){show(days);return;}
-el.textContent='1';
+show(days);
 
 const SENS=.25;   // days per pixel of scroll
 const DRIFT=180;  // furthest it ever wanders from today
@@ -54,7 +54,7 @@ const io=new IntersectionObserver(entries=>{
  started=true;io.disconnect();countUp();
 },{threshold:1,rootMargin:'0px 0px -25% 0px'});
 io.observe(el);
-});
+})(counters[0]);
 
 /* The opening image fades up and away across slide one. */
 const apparition=document.querySelector('[data-lede-apparition]'),slideOne=document.querySelector('.lede-one');
