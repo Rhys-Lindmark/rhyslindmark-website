@@ -311,10 +311,17 @@ body:not(.all-mode) .scene:not(.chapter):not(.statement):not(.fulltext) .passage
 .lede-jensen{position:fixed;inset:0;width:100vw;height:100dvh;object-fit:cover;opacity:0;pointer-events:none;z-index:8;will-change:opacity}
 @media(prefers-reduced-motion:reduce){.lede-jensen{display:none}}
 
+/* Two electricity runs, each with the original amount of scroll travel. */
+.scene.city{height:350svh}
+@media(max-width:760px){.scene.city{height:340svh}}
+.all-mode .scene.city{height:auto}
+
 /* Codex: electricity overlay on the city scene. */
 .city-electricity{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;overflow:hidden}
 .city-electricity .electric-trace{fill:none;stroke:#72efff;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:.055 .945;filter:url(#city-electric-glow)}
 .city-electricity .electric-spark{fill:#e9fdff;stroke:#72efff;stroke-width:1.5;filter:url(#city-electric-glow)}
+/* Avoid repainting ten blurred SVG filters on every mobile scroll frame. */
+@media(max-width:760px),(hover:none) and (pointer:coarse){.city-electricity .electric-trace,.city-electricity .electric-spark{filter:none}}
 
 /* The meme caption is live text over the untouched frame, so it stays sharp at
    any size. Until bugs-bunny.jpg exists the old flattened JPEG stands in. */

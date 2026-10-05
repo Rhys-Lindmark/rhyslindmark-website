@@ -158,18 +158,38 @@ function setupPhoto(scene){
   ].map((d,i)=>{
    const trace=node('path',{d,class:'electric-trace',pathLength:1,'vector-effect':'non-scaling-stroke'},overlay);
    const spark=node('circle',{r:i<6?3.1:2.7,class:'electric-spark','vector-effect':'non-scaling-stroke'},overlay);
-   return {trace,spark,length:0,delay:(i%5)*.065+Math.floor(i/5)*.025};
+   return {trace,spark,samples:null,delay:(i%5)*.065+Math.floor(i/5)*.025};
   });
-  const measure=()=>paths.forEach(item=>item.length=item.trace.getTotalLength());
+  let previousProgress=-1,previousAll;
+  // Sample each wire once; scrolling only interpolates cached coordinates.
+  const sampleCount=64;
+  const measure=()=>{
+   paths.forEach(item=>{
+    const length=item.trace.getTotalLength();
+    item.samples=new Float32Array((sampleCount+1)*2);
+    for(let i=0;i<=sampleCount;i++){
+     const point=item.trace.getPointAtLength(length*i/sampleCount);
+     item.samples[i*2]=point.x;item.samples[i*2+1]=point.y;
+    }
+   });
+   previousProgress=-1;request();
+  };
   img.complete?requestAnimationFrame(measure):img.addEventListener('load',()=>requestAnimationFrame(measure),{once:true});
   electricity=p=>{
-   const active=all?0:clamp(p/.11)*clamp((1-p)/.11);
-   paths.forEach((item,i)=>{
-    if(!item.length)return;
-    const phase=(p*1.3+item.delay)%1,point=item.trace.getPointAtLength(item.length*phase),pulse=Math.sin(Math.PI*phase)*active;
+   if(p===previousProgress&&all===previousAll)return;
+   previousProgress=p;previousAll=all;
+   const scaled=clamp(p)*2,cycle=Math.min(1,Math.floor(scaled)),local=scaled-cycle;
+   scene.dataset.animationCycle=String(cycle+1);
+   const active=all?0:clamp(local/.11)*clamp((1-local)/.11);
+   overlay.style.visibility=active?'visible':'hidden';
+   if(!active)return;
+   paths.forEach(item=>{
+    if(!item.samples)return;
+    const phase=(local*1.3+item.delay)%1,sample=phase*sampleCount,index=Math.floor(sample),mix=sample-index;
+    const x=lerp(item.samples[index*2],item.samples[(index+1)*2],mix),y=lerp(item.samples[index*2+1],item.samples[(index+1)*2+1],mix),pulse=Math.sin(Math.PI*phase)*active;
     item.trace.style.strokeDashoffset=String(-phase);
     item.trace.style.opacity=String(.16*pulse);
-    item.spark.setAttribute('cx',point.x);item.spark.setAttribute('cy',point.y);item.spark.style.opacity=String(.92*pulse);
+    item.spark.setAttribute('cx',x);item.spark.setAttribute('cy',y);item.spark.style.opacity=String(.92*pulse);
    });
   };
  }
@@ -343,7 +363,8 @@ function syncSlideAddress(){
  if(entry)setSlideAddress(entry.id);
 }
 function sceneProgress(scene){if(all)return 1;return window.AIScrollExit.timing(scene).progress;}
-function update(){raf=0;for(const scene of scenes){const p=sceneProgress(scene);/* A "series" scene reads its card into place first, holds it there, and only then spends the rest of the scroll drawing the chart. */const series=Number(scene.dataset.cardSeries||0);renderers.get(scene)?.(series?clamp((p-series)/(1-series)):p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight);const steps=scene.dataset.steps?.split(',')||[...card.querySelectorAll('[data-passage]')].map(el=>el.dataset.passage),final=!scene.dataset.currentStep||scene.dataset.currentStep===steps.at(-1);const fallback=series?lerp(viewportHeight,26,clamp(p/series)):lerp(viewportHeight,-card.offsetHeight,clamp(cp));card.style.setProperty('--card-shift',`${all?0:window.AIScrollExit.shift(scene,series?clamp(p/series):cp,final,fallback)}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);}syncSlideAddress();}
+// Keep every scene’s scroll layout ready, but only redraw visible scenes.
+function update(){raf=0;for(const scene of scenes){const p=sceneProgress(scene);if(!all){const rect=scene.getBoundingClientRect();if(rect.bottom<=0||rect.top>=innerHeight){scene.dataset.progress=p.toFixed(4);continue;}}/* A "series" scene reads its card into place first, holds it there, and only then spends the rest of the scroll drawing the chart. */const series=Number(scene.dataset.cardSeries||0);renderers.get(scene)?.(series?clamp((p-series)/(1-series)):p);const card=scene.querySelector('.passage'),cp=scene.dataset.cardProgress!==undefined?Number(scene.dataset.cardProgress):scene.dataset.kind==='meme'?clamp(p/.4):scene.dataset.kind==='revenue'?(p<.66?p/.66:(p-.66)/.34):p;const viewportHeight=Math.min(scene.querySelector('.sticky').offsetHeight,innerHeight);const steps=scene.dataset.steps?.split(',')||[...card.querySelectorAll('[data-passage]')].map(el=>el.dataset.passage),final=!scene.dataset.currentStep||scene.dataset.currentStep===steps.at(-1);const fallback=series?lerp(viewportHeight,26,clamp(p/series)):lerp(viewportHeight,-card.offsetHeight,clamp(cp));card.style.setProperty('--card-shift',`${all?0:window.AIScrollExit.shift(scene,series?clamp(p/series):cp,final,fallback)}px`);card.style.setProperty('--card-opacity','1');scene.querySelector('.track span').style.width=`${p*100}%`;scene.dataset.progress=p.toFixed(4);}syncSlideAddress();}
 function request(){if(!raf)raf=requestAnimationFrame(update);}
 function toggle(){document.body.classList.toggle('all-mode',all);request();}
 reduce.addEventListener('change',()=>{all=reduce.matches;toggle();});
