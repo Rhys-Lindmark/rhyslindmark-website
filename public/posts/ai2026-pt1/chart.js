@@ -201,7 +201,7 @@ function setupPhoto(scene){
  };
 }
 function drawCapacity(scene){
- const {svg,W,H,small}=svgBase(scene),d=data.opportunity,comparison=Number(scene.dataset.step)===21,a=axes(svg,W,H,{xd:[0,3],yd:[0,110],xt:[],yt:[0,20,40,60,80,100],yfmt:v=>`${v}`,yTitle:'CAPACITY ADDED SINCE 2020 · GW',xTitle:'YEAR'}),bw=Math.min(120,a.iw*(comparison?.13:.17)),x0=a.x(comparison?.35:.5),x1=a.x(comparison?1:1.5),x2=a.x(2.5),baseY=a.y(0);
+ const {svg,W,H,small}=svgBase(scene),d=data.opportunity,comparison=scene.hasAttribute('data-capacity-comparison'),a=axes(svg,W,H,{xd:[0,3],yd:[0,110],xt:[],yt:[0,20,40,60,80,100],yfmt:v=>`${v}`,yTitle:'CAPACITY ADDED SINCE 2020 · GW',xTitle:'YEAR'}),bw=Math.min(120,a.iw*(comparison?.13:.17)),x0=a.x(comparison?.35:.5),x1=a.x(comparison?1:1.5),x2=a.x(2.5),baseY=a.y(0);
  label(svg,x0,baseY+22,'2020','middle');label(svg,x1,baseY+22,'2025','middle');const futureYear=label(svg,x2,baseY+22,'','middle');
  node('line',{x1:x0-bw/2,x2:x0+bw/2,y1:baseY,y2:baseY,stroke:'#7b95a7','stroke-width':3},svg);label(svg,x0,baseY-12,'Baseline','middle','value');
  const nvidia=node('rect',{x:x1-bw/2,y:baseY,width:bw,height:0,fill:'#63ff91'},svg),other=node('rect',{x:x1-bw/2,y:baseY,width:bw,height:0,fill:'#7293a9'},svg),builtLabel=label(svg,x1,a.y(12)-12,'12 GW','middle','value'),future=node('rect',{x:x2-bw/2,y:baseY,width:bw,height:0,fill:'#b985ff','fill-opacity':.35,stroke:'#b985ff','stroke-width':2,'stroke-dasharray':'7 5'},svg),futureLabel=label(svg,x2,a.y(100)-12,'','middle','value');
@@ -213,16 +213,27 @@ function drawCapacity(scene){
 
  legend(scene,[{name:'NVIDIA · 70%',color:'#63ff91'},{name:'Other · 30%',color:'#7293a9'}]);
  const capacityRows=[{title:'2020 baseline',x:x0,y:baseY,items:[{label:'Capacity added',value:'0 GW',color:'#7b95a7',x:x0,y:baseY}]},{title:'2025',x:x1,y:a.y(d.builtGW),items:[{label:'NVIDIA',value:`${(d.builtGW*d.nvidiaShare).toFixed(1)} GW`,color:'#63ff91',x:x1,y:a.y(d.builtGW*d.nvidiaShare/2)},{label:'Other',value:`${(d.builtGW*(1-d.nvidiaShare)).toFixed(1)} GW`,color:'#7293a9',x:x1,y:a.y(d.builtGW*(d.nvidiaShare+(1-d.nvidiaShare)/2))}]},{title:`${d.longTermYear} scenario`,x:x2,y:a.y(d.targetGW),items:[{label:'Capacity added',value:`${d.targetGW} GW`,color:'#b985ff',x:x2,y:a.y(d.targetGW)}]}];
- window.AIChartHover?.attach(svg,{bounds:{left:a.m.l,right:a.m.l+a.iw,top:a.m.t,bottom:a.m.t+a.ih},keyboard:capacityRows.map(r=>({x:r.x,y:r.y})),get:point=>capacityRows.reduce((best,row)=>Math.abs(row.x-point.x)<Math.abs(best.x-point.x)?row:best,capacityRows[0])});
- return p=>{const {step,local}=passageStage(scene,p),first=Number(scene.dataset.step)===14,t=first&&step===14&&!all?clamp(.08+local/.75):1,built=d.builtGW*t,n=built*d.nvidiaShare;
-  nvidia.setAttribute('y',a.y(n));nvidia.setAttribute('height',baseY-a.y(n));other.setAttribute('y',a.y(built));other.setAttribute('height',a.y(n)-a.y(built));builtLabel.style.opacity=t>.1?1:0;
+ let capacityIndex=0,currentEpochGW=0,currentPermittedGW=0;
+ window.AIChartHover?.attach(svg,{bounds:{left:a.m.l,right:a.m.l+a.iw,top:a.m.t,bottom:a.m.t+a.ih},keyboard:[...capacityRows.map(r=>({x:r.x,y:r.y})),...(comparison?[{x:epochX,y:a.y(22)}]:[])],get:point=>{
+  const rows=[...capacityRows];
+  if(comparison&&capacityIndex>0){
+   const permits=capacityIndex===3,year=capacityIndex===1?d.epochYear:d.permittedYear;
+   const items=permits?[{label:'Permitted',value:`${currentPermittedGW.toFixed(1)} GW`,color:'#63ff91',x:epochX,y:a.y(currentPermittedGW/2)},{label:'Shortfall',value:`${(currentEpochGW-currentPermittedGW).toFixed(1)} GW`,color:'#ff70de',x:epochX,y:a.y((currentEpochGW+currentPermittedGW)/2)}]:[{label:'Capacity added',value:`${currentEpochGW.toFixed(1)} GW`,color:'#b985ff',x:epochX,y:a.y(currentEpochGW)}];
+   rows.push({title:`${year}${permits?' · planned capacity':''}`,x:epochX,y:a.y(currentEpochGW),items});
+  }
+  return rows.reduce((best,row)=>Math.abs(row.x-point.x)<Math.abs(best.x-point.x)?row:best,rows[0]);
+ }});
+ return p=>{const {step,index,local}=passageStage(scene,p),built=d.builtGW,n=built*d.nvidiaShare;
+  capacityIndex=index;
+  nvidia.setAttribute('y',a.y(n));nvidia.setAttribute('height',baseY-a.y(n));other.setAttribute('y',a.y(built));other.setAttribute('height',a.y(n)-a.y(built));builtLabel.style.opacity=1;
   // The opening passage keeps the existing 12 GW bar; the forecast starts next.
-  const steps=scene.dataset.steps.split(',').map(Number),opening=scene===document.querySelector('.scene.capacity');
+  const steps=scene.dataset.steps.split(',').map(Number),opening=!comparison;
   const show=all||!opening||step!==steps[0],unknown=false,target=d.targetGW,year=d.longTermYear,progress=all||!opening||step===steps.at(-1)?1:clamp(local/.7),v=unknown?0:target*progress;
   future.style.visibility=show&&!unknown?'visible':'hidden';future.setAttribute('y',a.y(v));future.setAttribute('height',baseY-a.y(v));futureYear.textContent=show?String(year):'';futureLabel.textContent=!show?'':unknown?'?':`${target} GW`;futureLabel.setAttribute('y',unknown?a.y(55):a.y(target)-12);futureLabel.style.fill='#b985ff';
-  const epochShow=comparison&&step!==25&&(step>=22||all),epochTarget=step===23?d.permittedGW:d.targetGW,epochProgress=all?1:clamp(local/.7),epochValue=step===23?lerp(d.targetGW,d.permittedGW,epochProgress):epochTarget*epochProgress;epoch.style.visibility=epochShow?'visible':'hidden';epoch.setAttribute('y',a.y(epochValue));epoch.setAttribute('height',baseY-a.y(epochValue));epochLabel.textContent=epochShow?`${Math.round(epochValue)} GW`:'';epochLabel.setAttribute('y',a.y(epochValue)-12);epochYear.textContent=epochShow?String(step===23?d.permittedYear:d.epochYear):'';
-  const permitsActive=comparison&&step===25;permitGroup.style.visibility=permitsActive?'visible':'hidden';
-  if(permitsActive){const t=all?1:clamp(local/.7),total=lerp(d.permittedGW,permitData.plannedGW,t),permitted=lerp(d.permittedGW,permitData.permittedGW,t);permitBase.setAttribute('y',a.y(permitted));permitBase.setAttribute('height',baseY-a.y(permitted));permitGap.setAttribute('y',a.y(total));permitGap.setAttribute('height',a.y(permitted)-a.y(total));plannedText.setAttribute('y',a.y(total)-12);permittedText.setAttribute('y',a.y(permitted/2));gapText.setAttribute('y',a.y(permitted+(total-permitted)/2));for(const label of [plannedText,permittedText,gapText])label.style.opacity=t>.9?1:0;epochYear.textContent='2028';}
+  const epochShow=comparison&&(index===1||index===2),epochProgress=all?1:clamp(local/.7),epochValue=index===2?lerp(d.targetGW,d.permittedGW,epochProgress):d.targetGW*epochProgress;epoch.style.visibility=epochShow?'visible':'hidden';epoch.setAttribute('y',a.y(epochValue));epoch.setAttribute('height',baseY-a.y(epochValue));epochLabel.textContent=epochShow?`${Math.round(epochValue)} GW`:'';epochLabel.setAttribute('y',a.y(epochValue)-12);epochYear.textContent=epochShow?String(index===2?d.permittedYear:d.epochYear):'';
+  currentEpochGW=epochValue;
+  const permitsActive=comparison&&index===3;permitGroup.style.visibility=permitsActive?'visible':'hidden';
+  if(permitsActive){const t=all?1:clamp(local/.7),total=lerp(d.permittedGW,permitData.plannedGW,t),permitted=lerp(d.permittedGW,permitData.permittedGW,t);currentEpochGW=total;currentPermittedGW=permitted;permitBase.setAttribute('y',a.y(permitted));permitBase.setAttribute('height',baseY-a.y(permitted));permitGap.setAttribute('y',a.y(total));permitGap.setAttribute('height',a.y(permitted)-a.y(total));plannedText.setAttribute('y',a.y(total)-12);permittedText.setAttribute('y',a.y(permitted/2));gapText.setAttribute('y',a.y(permitted+(total-permitted)/2));for(const label of [plannedText,permittedText,gapText])label.style.opacity=t>.9?1:0;epochYear.textContent=String(d.permittedYear);}
   scene.querySelector('.readout').textContent=show?(unknown?'2040?':`${year} · ${target} GW`):'2025 · 12 GW';
  };
 }
