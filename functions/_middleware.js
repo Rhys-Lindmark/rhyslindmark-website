@@ -12,6 +12,7 @@ const AI_SITES = {
 	'/music': 'https://songs-for-self.rhyslindmark.chatgpt.site',
 	'/games': 'https://ai-games-accelerator.rhyslindmark.chatgpt.site',
 	'/claims': 'https://ai-claims-accelerator.rhyslindmark.chatgpt.site',
+	'/bubble': 'https://ai-bubble-observatory.rhyslindmark.chatgpt.site',
 };
 
 const SENSITIVE_UPSTREAM_HEADERS = [
@@ -113,6 +114,16 @@ async function proxyAISite(request, url, prefix, origin) {
 		.replaceAll('src="/_next/', `src="${prefix}/_next/`)
 		.replaceAll('"/_next/', `"${prefix}/_next/`)
 		.replaceAll('"/data/', `"${prefix}/data/`);
+
+	// Bubble clients refresh dated evidence through same-origin API endpoints.
+	if (prefix === '/bubble') {
+		body = body
+			.replaceAll('"/api/', '"/bubble/api/').replaceAll("'/api/", "'/bubble/api/")
+			.replaceAll('"/appendix', '"/bubble/appendix').replaceAll("'/appendix", "'/bubble/appendix")
+			.replaceAll("'/_next/", "'/bubble/_next/").replaceAll('url(/_next/', 'url(/bubble/_next/');
+		const preload = headers.get('link');
+		if (preload) headers.set('link', preload.replaceAll('</', '</bubble/'));
+	}
 
 	headers.delete('content-length');
 	headers.delete('content-encoding');

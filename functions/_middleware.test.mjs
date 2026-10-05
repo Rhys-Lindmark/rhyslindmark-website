@@ -147,3 +147,40 @@ test('article middleware changes only successful HTML GET requests and preserves
  const asset=await run(`${articlePath}charts.json?slide=22`,new Response('{"ok":true}',{headers:{'content-type':'application/json'}}));assert.equal(await asset.text(),'{"ok":true}');
  const fallback=await run('/missing-post',new Response('missing',{status:404}));assert.equal(fallback.status,301);assert.equal(fallback.headers.get('location'),'https://rhyslindmark.substack.com/p/missing-post');
 });
+
+test('bubble proxy keeps dashboard, appendix, client APIs and preloads under its prefix', async () => {
+ const oldFetch = globalThis.fetch;
+ const seen=[];
+ globalThis.fetch=async request=>{
+  seen.push(request.url);
+  return new Response('<a href="/appendix">Evidence</a><script src="/_next/static/app.js"></script>fetch("/api/dashboard");read(\'/api/market\');',{headers:{'content-type':'text/html','link':'</_next/static/app.js>; rel=preload','set-cookie':'private=value'}});
+ };
+ try {
+  const result=await onRequest({request:new Request('https://ai.rhyslindmark.com/bubble?x=1'),next:()=>{throw new Error('should proxy')}});
+  assert.equal(seen[0],'https://ai-bubble-observatory.rhyslindmark.chatgpt.site/?x=1');
+  const body=await result.text();
+  assert(body.includes('href="/bubble/appendix"'));
+  assert(body.includes('src="/bubble/_next/static/app.js"'));
+  assert(body.includes('fetch("/bubble/api/dashboard")'));
+  assert(body.includes("read('/bubble/api/market')"));
+  assert.equal(result.headers.get('link'),'</bubble/_next/static/app.js>; rel=preload');
+  assert.equal(result.headers.get('set-cookie'),null);
+  await onRequest({request:new Request('https://ai.rhyslindmark.com/bubble/api/dashboard'),next:()=>{throw new Error('should proxy')}});
+  assert.equal(seen[1],'https://ai-bubble-observatory.rhyslindmark.chatgpt.site/api/dashboard');
+  const denied=await onRequest({request:new Request('https://ai.rhyslindmark.com/bubble/api/dashboard',{method:'POST'}),next:()=>{throw new Error('should reject')}});
+  assert.equal(denied.status,405);
+ } finally {globalThis.fetch=oldFetch;}
+});
+
+
+test('bubble rewrites hydrated links and CSS font paths as well as refresh calls', async () => {
+ const oldFetch=globalThis.fetch;
+ globalThis.fetch=async()=>new Response('const href="/appendix#sources";fetch(\'/api/context\');url(/_next/static/font.woff2)',{headers:{'content-type':'application/javascript'}});
+ try {
+  const result=await onRequest({request:new Request('https://ai.rhyslindmark.com/bubble/_next/static/app.js'),next:()=>{throw new Error('should proxy')}});
+  const body=await result.text();
+  assert(body.includes('href="/bubble/appendix#sources"'));
+  assert(body.includes("fetch('/bubble/api/context')"));
+  assert(body.includes('url(/bubble/_next/static/font.woff2)'));
+ } finally {globalThis.fetch=oldFetch;}
+});
