@@ -6,9 +6,6 @@ const projects = [
 		url: 'https://ai.rhyslindmark.com/givebetter',
 		github: 'https://github.com/Rhys-Lindmark/market-for-impact',
 	},
-];
-
-const roughDrafts = [
 	{
 		url: 'https://ai.rhyslindmark.com/bubble',
 		github: 'https://github.com/Rhys-Lindmark/ai-bubble-observatory',
@@ -44,14 +41,6 @@ const roughDrafts = [
 			</li>
 		))}
 	</ul>
-	<h2>Rough drafts:</h2>
-	<ul class="accelerator">
-		{roughDrafts.map((project) => (
-			<li>
-				<a href={project.url}>{project.url}</a> (<a href={project.github}>GitHub</a>)
-			</li>
-		))}
-	</ul>
 </Layout>
 
 <style>
@@ -59,16 +48,6 @@ const roughDrafts = [
 		margin: 0;
 		padding: 2rem 0;
 		padding-left: 1.25rem;
-	}
-
-	h2 {
-		margin: 0;
-		font-family: var(--font-sans);
-		font-size: 1rem;
-	}
-
-	ul.accelerator {
-		padding-top: 0.75rem;
 	}
 
 	li {
