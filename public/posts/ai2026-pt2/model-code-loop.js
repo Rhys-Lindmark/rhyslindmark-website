@@ -18,6 +18,16 @@
     const redwoodFrame = scene.querySelector('.loop-redwood-reveal');
     const redwoodArt = redwoodFrame.querySelector('.loop-redwood-art');
     if (!model || !code) return () => {};
+    scene._loopImageObserver?.disconnect();
+    // Decode the stitched artwork before its reveal, rather than during the pan.
+    const loadArt=()=>redwoodArt.querySelectorAll('img').forEach(img=>{img.loading='eager';img.decode().catch(()=>{});});
+    if (reducedMotion()) loadArt();
+    else {
+      scene._loopImageObserver=new IntersectionObserver(entries=>{
+        if (entries.some(entry=>entry.isIntersecting)) {loadArt();scene._loopImageObserver.disconnect();}
+      },{rootMargin:'100% 0px'});
+      scene._loopImageObserver.observe(scene);
+    }
     scene.classList.remove('loop-ready');
     model.replaceChildren();
     code.replaceChildren();
@@ -43,7 +53,6 @@
     edgeLayer.className = 'loop-edge-layer';
     model.append(edgeLayer);
     let edgeMappings = null;
-    let edgeSize = '';
     let visibleModelCount = 0;
     const shuffle = () => {
       const order = [0, 1, 2];
@@ -77,15 +86,15 @@
         edge.style.transform = `rotate(${Math.atan2(to.y - from.y, to.x - from.x)}rad)`;
         return edge;
       }));
-      edgeSize = `${model.clientWidth}x${model.clientHeight}x${visibleModelCount}`;
     };
     const trainModel = () => {
       edgeMappings = Array.from({length: rows / 3}, () => [shuffle(), shuffle()]);
       paintEdges();
     };
     let tick = 0;
+    const mobile = matchMedia('(max-width:760px)');
     const changeCode = () => {
-      if (reducedMotion()) return;
+      if (reducedMotion() || !scene.classList.contains('loop-ready') || (mobile.matches && Number(scene.dataset.stage) === 2)) return;
       tick++;
       codeRows.forEach((line, row) => {
         if (line.classList.contains('is-built')) line.textContent = codeText(row, tick);
@@ -96,39 +105,55 @@
     if (scene._loopChangeCode) zap.removeEventListener('animationiteration', scene._loopChangeCode);
     zap.addEventListener('animationiteration', changeCode);
     scene._loopChangeCode = changeCode;
-    let previousStage = -1;
+    let previousStage = -1, previousCodeCount = -1, previousState = '', imageSize = '', imageTravel = 0, previousSize = '';
+    const values = new Map();
+    const setProperty = (name, value) => {
+      if (values.get(name) === value) return;
+      values.set(name, value);scene.style.setProperty(name, value);
+    };
+    redwoodArt.querySelectorAll('img').forEach(img => img.addEventListener('load', () => {imageSize='';previousState='';}, {once:true}));
     return () => {
+      const bounds=scene.getBoundingClientRect();
+      if (!reducedMotion() && (bounds.bottom<=0 || bounds.top>=innerHeight)) {
+        scene.classList.remove('loop-ready');previousState='';return;
+      }
       const stage = Number(scene.dataset.stage || 0);
       const local = clamp(Number(scene.dataset.localProgress || 0));
       const done = reducedMotion();
+      const size=`${innerWidth}:${innerHeight}`;
+      const state=`${stage}:${local.toFixed(3)}:${done}:${size}`;
+      if (state===previousState) return;
+      previousState=state;
+      // Read image geometry before scroll-driven writes; refresh only on resize/load.
+      if (size!==imageSize) {imageTravel=Math.max(0,redwoodArt.offsetHeight-redwoodFrame.clientHeight);imageSize=size;}
       const growth = stage === 2 ? clamp(local / .16) : 0;
       const growthStep = stage === 2 ? Math.min(31, Math.floor(growth * 31)) : 0;
       const modelCount = done ? rows : stage === 0 ? 1 : stage === 1 ? 3 : Math.min(rows, 3 + Math.floor(growthStep / 2));
       const codeCount = done ? rows : stage < 2 ? 2 : Math.min(rows, 2 + Math.ceil(growthStep / 2));
-      modelRows.forEach((row, index) => row.classList.toggle('is-built', index < modelCount));
-      codeRows.forEach((row, index) => row.classList.toggle('is-built', index < codeCount));
+      if (modelCount!==visibleModelCount) modelRows.forEach((row, index) => row.classList.toggle('is-built', index < modelCount));
+      if (codeCount!==previousCodeCount) codeRows.forEach((row, index) => row.classList.toggle('is-built', index < codeCount));
+      previousCodeCount=codeCount;
       const modelCountChanged = modelCount !== visibleModelCount;
       visibleModelCount = modelCount;
       scene.dataset.direction = stage === 0 ? 'forward' : stage === 1 ? 'back' : 'still';
-      scene.querySelector('.loop-link-caption').textContent = stage === 0 ? 'WRITES' : stage === 1 ? 'TRAINS' : '↔';
-      scene.style.setProperty('--loop-speed', `${(stage === 2 ? 1.55 - local * .55 : 1.8).toFixed(2)}s`);
+      if (stage!==previousStage) scene.querySelector('.loop-link-caption').textContent = stage === 0 ? 'WRITES' : stage === 1 ? 'TRAINS' : '↔';
+      setProperty('--loop-speed', `${(stage === 2 ? 1.55 - local * .55 : 1.8).toFixed(2)}s`);
       const redwood = done ? 1 : stage === 2 ? clamp((local - .16) / .12) : 0;
       const pan = stage === 2 ? clamp((local - .28) / .6) : 0;
       const linger = stage === 2 ? clamp((local - .88) / .12) : 0;
       const fade = done ? 0 : stage === 2 ? clamp((local - .82) / .18) : 0;
       const easedFade = fade * fade * (3 - 2 * fade);
-      const imageTravel = Math.max(0, redwoodArt.offsetHeight - redwoodFrame.clientHeight);
-      scene.style.setProperty('--redwood-opacity', redwood.toFixed(3));
-      scene.style.setProperty('--scene-fade', easedFade.toFixed(3));
-      scene.style.setProperty('--redwood-pan', `${(imageTravel * (1 - pan)).toFixed(1)}px`);
-      scene.style.setProperty('--tower-opacity', (1 - redwood).toFixed(3));
-      scene.style.setProperty('--tower-scale', (1 - redwood * .06).toFixed(3));
-      scene.style.setProperty('--redwood-scale', (1 + linger * .02).toFixed(3));
+      setProperty('--redwood-opacity', redwood.toFixed(3));
+      setProperty('--scene-fade', easedFade.toFixed(3));
+      setProperty('--redwood-pan', `${(imageTravel * (1 - pan)).toFixed(1)}px`);
+      setProperty('--tower-opacity', (1 - redwood).toFixed(3));
+      setProperty('--tower-scale', (1 - redwood * .06).toFixed(3));
+      setProperty('--redwood-scale', (1 + linger * .02).toFixed(3));
       if (stage >= 1 && !done) {
         if (!edgeMappings || previousStage === 0) trainModel();
-        else if (modelCountChanged || `${model.clientWidth}x${model.clientHeight}x${visibleModelCount}` !== edgeSize) paintEdges();
+        else if (modelCountChanged || size !== previousSize) paintEdges();
       }
-      previousStage = stage;
+      previousStage = stage;previousSize=size;
       scene.classList.add('loop-ready');
     };
   };

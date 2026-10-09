@@ -688,10 +688,10 @@
     const travel=window.AIScrollExit.timing(scene).travel;
     // The scene gained scroll length only for the rapid "Nothing to see here" build.
     // Recover the original first two passages so their pacing stays unchanged.
-    const originalHeight=(travel+sticky.offsetHeight)*(mobile?1000/1384:1040/1440);
+    const originalHeight=(travel+sticky.offsetHeight)*(mobile?1000/892:1040/1440);
     const intro=Math.max(1,(originalHeight-sticky.offsetHeight)/6);
     const ending=Math.max(1,travel-2*intro);
-    const build=Math.min(ending*.95,4*intro*.16*5);
+    const build=Math.min(ending*.95,4*intro*.16*(mobile?2.5:5));
     return{travel,intro,ending,build};
   }
   function update() {

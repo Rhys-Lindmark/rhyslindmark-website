@@ -101,6 +101,22 @@ body:not(.all-mode) .scene.model-code-loop .loop-visual{position:absolute;inset:
 @keyframes loop-zap-forward{0%,55%{left:0;opacity:0;box-shadow:0 0 8px 3px #39ffc1}58%{opacity:1}96%{left:100%;opacity:1;box-shadow:0 0 8px 3px #43a9ff}100%{left:100%;opacity:0}}
 @keyframes loop-zap-back{0%,55%{left:100%;opacity:0;box-shadow:0 0 8px 3px #43a9ff}58%{opacity:1}96%{left:0;opacity:1;box-shadow:0 0 8px 3px #39ffc1}100%{left:0;opacity:0}}
 @media(max-width:760px){.loop-growth{inset:7% 4% 8%;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);gap:3px}.model-code-loop[data-stage="2"] .loop-growth{inset:0 4% 5%}.loop-stack{height:calc(100% - 28px)}.loop-label{height:24px;line-height:24px;font-size:10px}.loop-model-row,.loop-code-row{height:clamp(13px,2.7vh,21px)}.loop-model-row{padding:0 2px}.loop-model-row::before{left:8px;right:8px}.loop-code-row{font-size:clamp(5px,1.55vw,9px);letter-spacing:0}.loop-link{height:calc(100% - 24px)}.loop-link-caption{height:24px;line-height:24px;font-size:10px}.loop-link::before{bottom:calc(24px + clamp(6px,1.35vh,10px))}.loop-zap{bottom:calc(24px + clamp(1px,.7vh,5px))}}
-@media(max-width:760px){.loop-redwood-art img{height:80svh;object-fit:fill}.loop-redwood-art img+img{-webkit-mask-image:linear-gradient(to bottom,transparent,#000 6.25vw);mask-image:linear-gradient(to bottom,transparent,#000 6.25vw)}}
+/* Crop the landscape artwork into the phone viewport without distorting trees. */
+@media(max-width:760px){
+ body:not(.all-mode) .scene.model-code-loop{height:892svh}
+ body:not(.all-mode) .scene.model-code-loop>.sticky{height:100dvh;min-height:0}
+ .loop-redwood-art{left:50%;width:max(100%,90svh);margin-left:min(-50%,-45svh)}
+ .loop-redwood-art img{height:auto;object-fit:contain}
+ .loop-redwood-art img+img{margin-top:-6.25%;-webkit-mask-image:linear-gradient(to bottom,transparent,#000 9.375%);mask-image:linear-gradient(to bottom,transparent,#000 9.375%)}
+ .loop-edge,.loop-node{box-shadow:none;animation:none!important}
+ .loop-code-row{ text-shadow:none }
+ .model-code-loop[data-stage="1"] .loop-code-row.is-built{animation:none}
+ .model-code-loop.loop-ready[data-stage="2"] .loop-zap{animation:none}
+ .redwood-breathing-room{display:none}
+}
 @media(prefers-reduced-motion:reduce){.loop-model-row.is-built,.loop-code-row.is-built,.loop-model-row:first-child .loop-node,.loop-zap,.loop-edge{animation:none!important}.loop-zap{left:50%;opacity:1}}
 @media print{.loop-growth{inset:5% 8% 7%}.loop-model-row,.loop-code-row{display:flex;opacity:1;animation:none!important}.loop-redwood-reveal{opacity:1}}
+
+.model-code-loop:not(.loop-ready) :is(.loop-node,.loop-code-row,.loop-zap,.loop-edge){animation-play-state:paused!important}
+
+.model-code-loop.loop-ready[data-stage="2"] .loop-redwood-art{will-change:transform}
