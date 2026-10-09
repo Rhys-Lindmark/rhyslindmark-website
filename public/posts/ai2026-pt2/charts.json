@@ -399,27 +399,18 @@
     }
   ],
   "business": [
-    {
-      "name": "Inference",
-      "value": 30,
-      "color": "#995b34"
-    },
-    {
-      "name": "Training compute",
-      "value": 27,
-      "color": "#bf703d"
-    },
-    {
-      "name": "People + other opex",
-      "value": 40,
-      "color": "#df8146"
-    },
-    {
-      "name": "EBIT",
-      "value": 3,
-      "color": "#ff914f"
-    }
+    {"name": "Inference", "value": 30, "color": "#995b34"},
+    {"name": "Training + research compute", "value": 40, "color": "#bf703d"},
+    {"name": "Cash compensation", "value": 8, "color": "#d77b40"},
+    {"name": "Other opex + stock compensation", "value": 19, "color": "#e98a4b"},
+    {"name": "Operating profit", "value": 3, "color": "#ff914f"}
   ],
+  "businessEstimate": {
+    "basis": "Illustrative expense shares applied to $100B annualized revenue; not reported current spending.",
+    "trainingShare": 0.60,
+    "cashCompensationShare": 0.12,
+    "otherShare": 0.28
+  },
   "expansion": [
     {
       "name": "Amazon",

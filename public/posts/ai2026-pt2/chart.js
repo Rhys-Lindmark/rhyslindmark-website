@@ -134,17 +134,19 @@
       const revenueValue=label(comparison,x(revenue)+8,topY+5,'$50B','start');
       const grossValue=label(comparison,x(inference+gross/2),topY+5,'$19.5B');grossValue.style.fill='#071018';
       if(small){grossValue.setAttribute('y',topY+bh/2+21);grossValue.style.fill='#35e7ff';}
-      const rows=[{name:'Inference',value:inference,color:'#197486'},{name:'Training + people + other opex',value:opex,color:'#28aabe'}];
-      label(expenses,left,bottomY-bh/2-12,'TOTAL EXPENSES · $111B','start');
+      // Illustrative central estimates of ex-SBC opex: 65% research, 7% cash pay, 28% other.
+      const rows=[{name:'Inference',value:inference,color:'#197486'},{name:'Training + research compute',value:52.3,color:'#2296a9'},{name:'Cash compensation',value:5.7,color:'#28bace'},{name:'Other opex',value:22.5,color:'#35e7ff'}];
+      label(expenses,left,bottomY-bh/2-12,small?'EST. COSTS · $111B · EX-STOCK COMP':'ILLUSTRATIVE EXPENSES · $111B · EX-STOCK COMPENSATION','start');
       let total=0;
       const parts=rows.map(row=>{
         const start=x(total),bw=row.value/spending*width;
         const bar=node('rect',{x:start,y:bottomY-bh/2,width:bw-3,height:bh,fill:row.color},expenses);
         const value=label(expenses,start+bw/2,bottomY+5,`$${row.value.toFixed(1)}B`);value.style.fill=row.name==='Inference'?'#e6edf3':'#071018';value.style.fontWeight='700';
+        if(small&&bw<60){value.setAttribute('y',bottomY+bh/2+20);value.style.fill=row.color;}
         total+=row.value;return {row,bar,y:bottomY};
       });
       node('line',{x1:x(revenue),x2:x(revenue),y1:topY+bh/2+30,y2:bottomY+bh/2+24,stroke:'#dbe6ed','stroke-dasharray':'4 5'},expenses);
-      const lossY=bottomY+bh/2+38;
+      const lossY=bottomY+bh/2+(small?52:38);
       node('line',{x1:x(revenue),x2:x(spending),y1:lossY,y2:lossY,stroke:'#35e7ff','stroke-width':3},expenses);
       label(expenses,(x(revenue)+x(spending))/2,lossY+24,'$61B OPERATING LOSS').style.fill='#35e7ff';
       label(svg,left+width/2,H-15,'USD BILLIONS');legend(scene,rows);
@@ -250,17 +252,17 @@
       const revenueTotal=rows.reduce((sum,row)=>sum+row.value,0);
       const sentences=[...scene.querySelectorAll('.business-sentence')];
       const top=H*.28, bh=Math.min(180,H*.32), segments=[];
-      label(svg,left+width/2,top+bh+52,small?'~$100B TOTAL · USD BILLIONS':'REVENUE ALLOCATION · USD BILLIONS · ~$100B TOTAL');
+      label(svg,left+width/2,top+bh+52,small?'ILLUSTRATIVE · $100B TOTAL':'ILLUSTRATIVE REVENUE ALLOCATION · USD BILLIONS · $100B TOTAL');
       let total=0,segmentRows=[];
       rows.forEach((row,i)=>{
         const x=left+total/revenueTotal*width,bw=row.value/revenueTotal*width;
         const g=node('g',{},svg),rect=node('rect',{x,y:top,width:Math.max(0,bw-3),height:bh,fill:row.color},g);
         const t=label(g,x+bw/2,top+bh/2+5,`$${row.value}B`);t.style.fill=i===0?'#e6edf3':'#071018';t.style.fontWeight='700';
-        if(small&&row.value/revenueTotal<.06){t.setAttribute('y',top+bh+24);t.style.fill=row.color;}
+        if(small&&row.value/revenueTotal<.10){t.setAttribute('y',top+bh+24);t.style.fill=row.color;}
         segments.push(g);segmentRows.push({row,rect,x:x+Math.max(0,bw-3)/2,y:top+bh/2});total+=row.value;
       });
       legend(scene,rows);
-      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.find(item=>insideBar(item.rect,point));if(!segment)return null;return{title:'~$100B total revenue',x:point.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:point.x,y:segment.y}]};}});
+      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.find(item=>insideBar(item.rect,point));if(!segment)return null;return{title:'Anthropic · illustrative expense shares',x:point.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:point.x,y:segment.y}]};}});
       renderers.set(scene,p=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
         const sentenceCount=stage===0?0:stage===2?2:local<.25?1:2;
@@ -269,11 +271,11 @@
           sentence.classList.toggle('is-visible',visible);
           sentence.setAttribute('aria-hidden',String(!visible));
         });
-        // Let the second passage enter before focusing its three expense segments.
-        const focus=stage===2?3:stage===0?-1:local<.25?0:'investment';
-        segments.forEach((g,i)=>g.style.opacity=reduce.matches||focus<0||i===focus||(focus==='investment'&&(i===1||i===2))?'1':'.45');
+        // Focus inference, then the three opex segments, then profit.
+        const focus=stage===2?rows.length-1:stage===0?-1:local<.25?0:'investment';
+        segments.forEach((g,i)=>g.style.opacity=reduce.matches||focus<0||i===focus||(focus==='investment'&&i>0&&i<rows.length-1)?'1':'.45');
         scene.querySelectorAll('.legend span').forEach((el,i)=>{
-          el.style.opacity=reduce.matches||focus<0||i===focus||(focus==='investment'&&(i===1||i===2))?'1':'.45';
+          el.style.opacity=reduce.matches||focus<0||i===focus||(focus==='investment'&&i>0&&i<rows.length-1)?'1':'.45';
         });
       });
     } else if (kind === 'expansion') {
@@ -692,7 +694,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=company-shades-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=expense-estimates-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=first-principles-1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};
