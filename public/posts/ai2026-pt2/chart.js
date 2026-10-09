@@ -350,17 +350,21 @@
       window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.find(item=>insideBar(item.rect,point));if(!segment)return null;return{title:'Anthropic · CY2026 estimates',x:point.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:point.x,y:segment.y}]};}});
       renderers.set(scene,p=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
-        const sentenceCount=stage===0?0:stage===2?2:local<.25?1:2;
+        const sentenceCount=stage===0?0:stage>=2?2:local<.25?1:2;
         sentences.forEach((sentence,i)=>{
           const visible=reduce.matches||i<sentenceCount;
           sentence.classList.toggle('is-visible',visible);
           sentence.setAttribute('aria-hidden',String(!visible));
         });
-        // Focus inference, then the cash opex segments, then adjusted profit.
-        const focus=stage===2?rows.length-1:stage===0?-1:local<.25?0:'investment';
-        segments.forEach((g,i)=>g.style.opacity=reduce.matches||focus<0||i===focus||(focus==='investment'&&i>0&&i<rows.length-1)?'1':'.45');
+        // Focus inference, cash opex, training compute, then adjusted profit.
+        const focus=stage===0?-1:stage===1?(local<.25?0:1):stage===2?2:rows.length-1;
+        segments.forEach((g,i)=>{
+          g.style.opacity=focus<0||i===focus?'1':'.35';
+          segmentRows[i].rect.setAttribute('stroke',stage===2&&i===focus?'#ffe1cd':'none');
+          segmentRows[i].rect.setAttribute('stroke-width',stage===2&&i===focus?'3':'0');
+        });
         scene.querySelectorAll('.legend span').forEach((el,i)=>{
-          el.style.opacity=reduce.matches||focus<0||i===focus||(focus==='investment'&&i>0&&i<rows.length-1)?'1':'.45';
+          el.style.opacity=focus<0||i===focus?'1':'.35';
         });
       });
     } else if (kind === 'expansion') {
