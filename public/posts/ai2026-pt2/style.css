@@ -175,3 +175,10 @@ blockquote.pullquote{font-size:24px;line-height:1.5}
  .body-copy,.quoted-source,.scene.models.source-graph .passage h2{font-size:20px;line-height:1.5}
  blockquote.pullquote{font-size:22px}
 }
+
+/* Three scroll boxes: revenue comparison, Nvidia focus, revenue allocation. */
+.scene.models.margins-story{height:720svh}
+.scene.models.margins-story .legend{padding-left:24px}
+.scene.models.margins-story figcaption{font-size:10px;line-height:1.5}
+.scene.models.margins-story .revenue-source-note{display:block;max-width:850px;margin:auto}
+.all-mode .scene.models.margins-story{height:auto}

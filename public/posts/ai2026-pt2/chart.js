@@ -121,7 +121,55 @@
     const iw = W-m.l-m.r, ih = H-m.t-m.b;
     svg._hoverCleanup?.(); svg._hoverCleanup=null; svg.replaceChildren(); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     node('title', {}, svg, svg.getAttribute('aria-label'));
-    if(kind==='metr') {
+    if(kind==='margins-story') {
+      const left=small?24:100, right=small?52:80, width=W-left-right;
+      const top=H*.18, bottom=H*.78, bh=Math.min(small?46:70,(bottom-top)/5);
+      const rows=[{name:'Nvidia',value:385,color:'#39ffc1'},{name:'OpenAI',value:50,color:'#35a4ff'},{name:'Anthropic',value:100,color:'#bb86ff'}];
+      const comparison=node('g',{},svg), allocation=node('g',{opacity:0},svg);
+      const axis=label(comparison,left+width/2,H-15,'ANNUALIZED REVENUE · USD BILLIONS');
+      const bars=rows.map((row,i)=>{
+        const g=node('g',{},comparison), cy=top+(bottom-top)*(i+.5)/3;
+        const name=label(g,left,cy-bh/2-10,row.name,'start');
+        const bar=node('rect',{x:left,y:cy-bh/2,width:0,height:bh,fill:row.color},g);
+        const value=label(g,left,cy+5,`$${row.value}B`,'start');value.classList.add('value');
+        return {g,bar,name,value,row,cy};
+      });
+      const segments=[{name:'Hardware · COGS',value:25,color:'#35a4ff'},{name:'Salaries + other opex',value:7,color:'#bb86ff'},{name:'Operating profit',value:68,color:'#39ffc1'}];
+      const cy=H*.48, height=Math.min(180,H*.32), parts=[];
+      label(allocation,left,cy-height/2-22,'NVIDIA · PER $100B OF REVENUE','start');
+      let total=0;
+      segments.forEach(row=>{
+        const x=left+total/100*width, bw=row.value/100*width;
+        const bar=node('rect',{x,y:cy-height/2,width:Math.max(0,bw-3),height,fill:row.color},allocation);
+        const t=label(allocation,x+bw/2,cy+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
+        if(small&&row.value===7){t.setAttribute('y',cy+height/2+24);t.style.fill=row.color;}
+        parts.push({bar,row,cy}); total+=row.value;
+      });
+      label(allocation,left+width/2,H-15,'GROSS MARGIN 75% · OPERATING MARGIN 68%');
+      legend(scene,segments);
+      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top:0,bottom:H},keyboard:[...bars.map(b=>({x:left+2,y:b.cy})),...parts.map(b=>({x:Number(b.bar.getAttribute('x'))+2,y:cy}))],get:point=>{
+        const stage=Number(scene.dataset.stage||0);
+        const entry=stage===2?parts.find(b=>insideBar(b.bar,point)):bars.find((b,i)=>(stage===0||i===0)&&insideBar(b.bar,point));
+        if(!entry)return null;
+        return{title:stage===2?'Nvidia · per $100B revenue':entry.row.name,x:point.x,y:point.y,guide:false,items:[{label:stage===2?entry.row.name:'Annualized revenue',value:`$${entry.row.value}B`,color:entry.row.color}]};
+      }});
+      renderers.set(scene,()=>{
+        const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
+        const zoom=stage===0?0:stage===1?(reduce.matches?1:clamp(local/.4)):1;
+        comparison.style.opacity=stage===2?'0':'1';allocation.style.opacity=stage===2?'1':'0';
+        const show=stage===0?(reduce.matches?1:clamp(local/.6)):1;
+        bars.forEach(({g,bar,name,value,row,cy},i)=>{
+          const y=i===0?cy+(H*.48-cy)*zoom:cy;
+          const bw=width*row.value/385*show;
+          g.style.opacity=i===0?'1':String(1-zoom);
+          bar.setAttribute('y',y-bh/2);bar.setAttribute('width',bw);
+          name.setAttribute('y',y-bh/2-10);value.setAttribute('x',left+bw+8);value.setAttribute('y',y+5);
+          value.style.opacity=show===1?'1':'0';
+        });
+        axis.textContent=stage===1?'NVIDIA · ANNUALIZED REVENUE · USD BILLIONS':'ANNUALIZED REVENUE · USD BILLIONS';
+        scene.querySelector('.legend').style.visibility=stage===2?'visible':'hidden';
+      });
+    } else     if(kind==='metr') {
       const left=small?75:100,right=small?25:70,top=35,bottom=H-55;
       const x=v=>left+(Date.parse(v)-Date.parse('2019-01-01'))/(Date.parse('2026-09-01')-Date.parse('2019-01-01'))*(W-left-right);
       const y=v=>bottom-(Math.log10(v/.008)/Math.log10(600/.008))*(bottom-top);
@@ -460,7 +508,7 @@
       });
       renderers.set(scene,p=>bars.forEach(({a,b,t,row})=>{const t1=reduce.matches?1:clamp(p/.35),t2=reduce.matches?1:clamp((p-.35)/.4);a.setAttribute('width',width*60/240*t1);b.setAttribute('width',width*row.training/240*t2);t.style.opacity=t2===1?'1':'0';}));
     }
-    svg.hidden = false; svg.removeAttribute('hidden'); scene.querySelector('.fallback').hidden = true;
+    svg.hidden = false; svg.removeAttribute('hidden'); const fallback=scene.querySelector('.fallback'); if(fallback)fallback.hidden = true;
   }
   const slideEntries=[];
   let continuation=false,nextSlide=20,slideLinksReady=false;
