@@ -399,10 +399,9 @@
     }
   ],
   "business": [
-    {"name": "Inference", "value": 30, "color": "#995b34"},
-    {"name": "Training + research compute", "value": 40, "color": "#bf703d"},
-    {"name": "Cash compensation", "value": 8, "color": "#d77b40"},
-    {"name": "Other opex + stock compensation", "value": 19, "color": "#e98a4b"},
+    {"name": "Inference · COGS", "value": 30, "color": "#995b34"},
+    {"name": "Salaries + other opex", "value": 27, "color": "#bf703d"},
+    {"name": "Training R&D · compute", "value": 40, "color": "#e98a4b"},
     {"name": "Operating profit", "value": 3, "color": "#ff914f"}
   ],
   "businessEstimate": {

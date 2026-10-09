@@ -126,17 +126,14 @@
       const inference=revenue*(1-grossMargin), gross=revenue*grossMargin;
       const opex=gross-revenue*operatingMargin, loss=-revenue*operatingMargin, spending=inference+opex;
       const left=small?24:100,right=small?24:80,width=W-left-right;
-      const x=v=>left+v/spending*width,bh=Math.min(small?55:90,H*.13);
-      const topY=H*.28,bottomY=H*.56,comparison=node('g',{},svg),expenses=node('g',{},svg);
+      const x=v=>left+v/spending*width,bh=Math.min(180,H*.32);
+      const topY=H*.48,bottomY=H*.48,comparison=node('g',{},svg),expenses=node('g',{},svg);
       const revenueName=label(comparison,left,topY-bh/2-12,'OPENAI · REVENUE','start');
       const revenueBar=node('rect',{x:left,y:topY-bh/2,width:x(revenue)-left,height:bh,fill:'#35e7ff'},comparison);
-      const inferenceTop=node('rect',{x:left,y:topY-bh/2,width:x(inference)-left,height:bh,fill:'#197486',opacity:0},comparison);
       const revenueValue=label(comparison,x(revenue)+8,topY+5,'$50B','start');
-      const grossValue=label(comparison,x(inference+gross/2),topY+5,'$19.5B');grossValue.style.fill='#071018';
-      if(small){grossValue.setAttribute('y',topY+bh/2+21);grossValue.style.fill='#35e7ff';}
       // Illustrative central estimates of ex-SBC opex: 65% research, 7% cash pay, 28% other.
-      const rows=[{name:'Inference',value:inference,color:'#197486'},{name:'Training + research compute',value:52.3,color:'#2296a9'},{name:'Cash compensation',value:5.7,color:'#28bace'},{name:'Other opex',value:22.5,color:'#35e7ff'}];
-      label(expenses,left,bottomY-bh/2-12,small?'EST. COSTS · $111B · EX-STOCK COMP':'ILLUSTRATIVE EXPENSES · $111B · EX-STOCK COMPENSATION','start');
+      const rows=[{name:'Inference · COGS',value:inference,color:'#197486'},{name:'Salaries + other opex',value:28.2,color:'#2296a9'},{name:'Training R&D · compute',value:52.3,color:'#28bace'}];
+      label(expenses,left,bottomY-bh/2-12,'OPENAI · $50B REVENUE · $111B COSTS','start');
       let total=0;
       const parts=rows.map(row=>{
         const start=x(total),bw=row.value/spending*width;
@@ -145,15 +142,16 @@
         if(small&&bw<60){value.setAttribute('y',bottomY+bh/2+20);value.style.fill=row.color;}
         total+=row.value;return {row,bar,y:bottomY};
       });
-      node('line',{x1:x(revenue),x2:x(revenue),y1:topY+bh/2+30,y2:bottomY+bh/2+24,stroke:'#dbe6ed','stroke-dasharray':'4 5'},expenses);
+      node('line',{x1:x(revenue),x2:x(revenue),y1:topY-bh/2-8,y2:bottomY+bh/2+24,stroke:'#dbe6ed','stroke-dasharray':'4 5'},expenses);
       const lossY=bottomY+bh/2+(small?52:38);
-      node('line',{x1:x(revenue),x2:x(spending),y1:lossY,y2:lossY,stroke:'#35e7ff','stroke-width':3},expenses);
-      label(expenses,(x(revenue)+x(spending))/2,lossY+24,'$61B OPERATING LOSS').style.fill='#35e7ff';
-      label(svg,left+width/2,H-15,'USD BILLIONS');legend(scene,rows);
-      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top:0,bottom:H},keyboard:parts.map(p=>({x:Number(p.bar.getAttribute('x'))+2,y:bottomY})),get:point=>{
+      const lossBar=node('rect',{x:x(revenue),y:lossY,width:x(spending)-x(revenue),height:small?32:42,fill:'#35e7ff'},expenses);
+      const lossValue=label(expenses,(x(revenue)+x(spending))/2,lossY+(small?21:27),'−$61B');lossValue.style.fill='#071018';lossValue.style.fontWeight='700';
+      parts.push({row:{name:'Operating loss',value:-loss,color:'#35e7ff'},bar:lossBar,y:lossY+20});
+      label(svg,left+width/2,H-15,small?'ILLUSTRATIVE · EX-STOCK COMP':'ILLUSTRATIVE ALLOCATION · USD BILLIONS · EX-STOCK COMPENSATION');legend(scene,parts.map(part=>part.row));
+      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top:0,bottom:H},keyboard:parts.map(p=>({x:Number(p.bar.getAttribute('x'))+2,y:p.y})),get:point=>{
         if(Number(scene.dataset.stage||0)!==1)return null;
         const part=parts.find(p=>insideBar(p.bar,point));if(!part)return null;
-        return{title:'OpenAI · illustrative annualized costs',x:point.x,y:point.y,guide:false,items:[{label:part.row.name,value:`$${part.row.value.toFixed(1)}B`,color:part.row.color}]};
+        return{title:'OpenAI · illustrative annualized costs',x:point.x,y:point.y,guide:false,items:[{label:part.row.name,value:`${part.row.value<0?'−':''}$${Math.abs(part.row.value).toFixed(1)}B`,color:part.row.color}]};
       }});
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
@@ -161,7 +159,7 @@
         const y=showCosts?topY:H*.45;
         revenueBar.setAttribute('y',y-bh/2);revenueBar.setAttribute('width',(x(revenue)-left)*show);
         revenueName.setAttribute('y',y-bh/2-12);revenueValue.setAttribute('y',y+5);revenueValue.style.opacity=show===1?'1':'0';
-        inferenceTop.style.opacity=showCosts?'1':'0';grossValue.style.opacity=showCosts?'1':'0';expenses.style.opacity=showCosts?'1':'0';
+        comparison.style.opacity=showCosts?'0':'1';expenses.style.opacity=showCosts?'1':'0';
         scene.querySelector('.legend').style.visibility=showCosts?'visible':'hidden';
       });
     } else     if(kind==='margins-story') {
@@ -177,7 +175,8 @@
         const value=label(g,left,cy+5,`$${row.value}B`,'start');value.classList.add('value');
         return {g,bar,name,value,row,cy};
       });
-      const segments=[{name:'Hardware · COGS',value:25,color:'#1b8064'},{name:'Salaries + other opex',value:7,color:'#2bb48b'},{name:'Operating profit',value:68,color:'#39ffc1'}];
+      // Split the illustrative $7B opex using Nvidia Q2 FY2027's R&D / SG&A mix.
+      const segments=[{name:'Hardware · COGS',value:25,color:'#1b8064'},{name:'Other opex · SG&A',value:1.1,color:'#249775'},{name:'R&D · includes research salaries',value:5.9,color:'#2bb48b'},{name:'Operating profit',value:68,color:'#39ffc1'}];
       const cy=H*.48, height=Math.min(180,H*.32), parts=[];
       label(allocation,left,cy-height/2-22,'NVIDIA · PER $100B OF REVENUE','start');
       let total=0;
@@ -185,7 +184,7 @@
         const x=left+total/100*width, bw=row.value/100*width;
         const bar=node('rect',{x,y:cy-height/2,width:Math.max(0,bw-3),height,fill:row.color},allocation);
         const t=label(allocation,x+bw/2,cy+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
-        if(small&&row.value===7){t.setAttribute('y',cy+height/2+24);t.style.fill=row.color;}
+        if(bw<60){t.setAttribute('y',cy+height/2+(row.value===1.1?24:42));t.style.fill=row.color;}
         parts.push({bar,label:t,row,cy}); total+=row.value;
       });
       legend(scene,segments);
@@ -212,7 +211,7 @@
         scene.querySelector('.legend').style.visibility=stage>=2?'visible':'hidden';
         const employeeFocus=stage===3;
         parts.forEach(({bar,label,row},i)=>{
-          const focused=i===1;
+          const focused=i===1||i===2;
           const opacity=employeeFocus&&!focused?'.2':'1';
           bar.style.opacity=opacity;label.style.opacity=opacity;
           bar.setAttribute('stroke',employeeFocus&&focused?'#f1dcff':'none');
@@ -693,7 +692,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=expense-estimates-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=aligned-rd-categories-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=first-principles-1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};
