@@ -188,7 +188,6 @@
         if(small&&row.value===7){t.setAttribute('y',cy+height/2+24);t.style.fill=row.color;}
         parts.push({bar,label:t,row,cy}); total+=row.value;
       });
-      label(allocation,left+width/2,H-15,'GROSS MARGIN 75% · OPERATING MARGIN 68%');
       legend(scene,segments);
       window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top:0,bottom:H},keyboard:[...bars.map(b=>({x:left+2,y:b.cy})),...parts.map(b=>({x:Number(b.bar.getAttribute('x'))+2,y:cy}))],get:point=>{
         const stage=Number(scene.dataset.stage||0);
