@@ -77,18 +77,21 @@
       const box=scene.querySelector('.plot-wrap').getBoundingClientRect();
       const W=Math.max(280,box.width),H=Math.max(300,box.height),cx=W/2,cy=H*.51;
       const radius=Math.min(W*.32,H*.29),small=W<600;
+      const touch=matchMedia('(pointer: coarse)').matches||W<760;
       svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
       node('title',{},svg,'AI capability grows through a field of human tasks');
       const defs=node('defs',{},svg);
       const grid=node('pattern',{id:'frontier-grid',width:44,height:44,patternUnits:'userSpaceOnUse'},defs);
       node('path',{d:'M 44 0 L 0 0 0 44',fill:'none',stroke:'#8f66db','stroke-opacity':.15,'stroke-width':.7},grid);
-      const warp=node('filter',{id:'frontier-warp',x:'-20%',y:'-20%',width:'140%',height:'140%'},defs);
-      node('feTurbulence',{type:'fractalNoise',baseFrequency:'.009 .021',numOctaves:2,seed:11,result:'noise'},warp);
-      node('feDisplacementMap',{in:'SourceGraphic',in2:'noise',scale:Math.max(7,radius*.065),xChannelSelector:'R',yChannelSelector:'B'},warp);
+      if(!touch){
+        const warp=node('filter',{id:'frontier-warp',x:'-20%',y:'-20%',width:'140%',height:'140%'},defs);
+        node('feTurbulence',{type:'fractalNoise',baseFrequency:'.009 .021',numOctaves:2,seed:11,result:'noise'},warp);
+        node('feDisplacementMap',{in:'SourceGraphic',in2:'noise',scale:Math.max(7,radius*.065),xChannelSelector:'R',yChannelSelector:'B'},warp);
+      }
       node('rect',{width:W,height:H,fill:'#080a10'},svg);
       node('rect',{width:W,height:H,fill:'url(#frontier-grid)'},svg);
       const halo=node('circle',{cx,cy,r:radius,fill:'#91e9f2','fill-opacity':.035,stroke:'#94e7ef','stroke-width':1.5},svg);
-      const shape=node('path',{fill:'#ed7966',stroke:'#ff8a78','stroke-width':1.5,'stroke-linejoin':'round',filter:'url(#frontier-warp)'},svg);
+      const shape=node('path',{fill:'#ed7966',stroke:'#ff8a78','stroke-width':1.5,'stroke-linejoin':'round'},svg);
       const outline=node('circle',{cx,cy,r:radius,fill:'none',stroke:'#a4e8ef','stroke-width':1.5,'stroke-dasharray':'3 6'},svg);
       const ticks=node('g',{stroke:'#8ee8ed','stroke-opacity':.5},svg);
       for(let i=0;i<32;i++){const a=i*Math.PI/16;node('line',{x1:cx+Math.cos(a)*(radius+7),y1:cy+Math.sin(a)*(radius+7),x2:cx+Math.cos(a)*(radius+12),y2:cy+Math.sin(a)*(radius+12)},ticks);}
@@ -96,19 +99,32 @@
       const ai=label(svg,cx,cy+5,'AI');
       for(const el of [human,ai]){el.style.fontSize=small?'12px':'14px';el.style.letterSpacing='.12em';el.style.fill='#e6edf3';}
       ai.style.fontSize=small?'16px':'19px';ai.style.fontWeight='700';ai.style.paintOrder='stroke';ai.style.stroke='#941744';ai.style.strokeWidth='5px';
+      const finish=node('rect',{width:W,height:H,fill:'#ed7966',opacity:0,'aria-hidden':'true','data-frontier-finish':''},svg);
+      const samples=Array.from({length:touch?160:240},(_,i)=>{
+        const a=i/(touch?160:240)*Math.PI*2;
+        return{a,x:Math.cos(a),y:Math.sin(a),texture:Math.max(.16,.72+.28*Math.sin(a*5+.9)+.18*Math.cos(a*11)+.1*Math.sin(a*23+1.4))};
+      });
+      let previous=-1;
       renderers.set(scene,p=>{
         const t=reduce.matches?.58:clamp((p-.06)/.88);
+        if(t===previous)return;
+        previous=t;
+        const complete=t>=.92;
+        finish.setAttribute('opacity',clamp((t-.82)/.1));
+        shape.style.display=complete?'none':'';
+        // Never rasterize a displacement filter across an enlarged, offscreen path.
+        if(!touch&&t<.6)shape.setAttribute('filter','url(#frontier-warp)');
+        else shape.removeAttribute('filter');
+        if(complete){for(const el of [human,ai,outline,ticks,halo])el.style.opacity=0;return;}
         const ease=v=>v*v*(3-2*v);
         const late=clamp((t-.45)/.55);
         const coreGrowth=.16+.54*ease(clamp(t/.7))+Math.pow(late,3)*Math.hypot(W,H)/radius*4.5;
         let d='';
-        for(let i=0;i<240;i++){
-          const a=i/240*Math.PI*2;
-          const texture=Math.max(.16,.72+.28*Math.sin(a*5+.9)+.18*Math.cos(a*11)+.1*Math.sin(a*23+1.4));
+        samples.forEach(({a,x,y,texture},i)=>{
           const pulse=1+.09*Math.sin(a*3+t*7)+.06*Math.cos(a*17-t*5);
           const r=radius*coreGrowth*texture*pulse;
-          d+=`${i?'L':'M'}${(cx+Math.cos(a)*r).toFixed(2)},${(cy+Math.sin(a)*r).toFixed(2)}`;
-        }
+          d+=`${i?'L':'M'}${(cx+x*r).toFixed(2)},${(cy+y*r).toFixed(2)}`;
+        });
         shape.setAttribute('d',d+'Z');
         const humanFade=1-clamp((t-.57)/.2),aiFade=1-clamp((t-.8)/.17);
         for(const el of [human,outline,ticks,halo])el.style.opacity=humanFade;
