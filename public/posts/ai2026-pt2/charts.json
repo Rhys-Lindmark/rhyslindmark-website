@@ -1,6 +1,95 @@
 {
   "notes": "Revenue and growth lines are approximate samples redrawn from the author-supplied charts, not a new audit. Annualized revenue is a run rate, not revenue already earned in a year. Growth compares inflation-adjusted revenue rebased to approximately $10B. Margin figures are transcribed from the supplied chart; operating margin excludes stock-based compensation. Slide 5 uses the rounded figures in the author\u2019s text.",
   "source": "https://docs.google.com/document/d/1hhf525UL1k_EU9YSgqtvQXsSvSVbcqejB8OSE6WMp68/edit?tab=t.0",
+  "rsiIndex": {
+    "source": "https://www.vals.ai/benchmarks/rsi_index",
+    "asOf": "2026-10-01",
+    "note": "Source overall scores and registry release dates. Linear least-squares trends use all measured points per provider, as in Vals. Index scores are not the fraction of training automated; 50% matches frozen references. The 2030 forecast is the author\u2019s interpretation.",
+    "series": [
+      {
+        "name": "Anthropic",
+        "color": "#ff914f",
+        "points": [
+          {
+            "model": "Claude Opus 4.5 (Nonthinking)",
+            "date": "2025-11-24",
+            "score": 14.82
+          },
+          {
+            "model": "Claude Opus 4.7",
+            "date": "2026-04-16",
+            "score": 19.08
+          },
+          {
+            "model": "Claude Opus 4.8",
+            "date": "2026-05-28",
+            "score": 23.98
+          },
+          {
+            "model": "Claude Fable 5",
+            "date": "2026-06-09",
+            "score": 24.32
+          },
+          {
+            "model": "Claude Opus 5",
+            "date": "2026-07-22",
+            "score": 33.02
+          },
+          {
+            "model": "Claude Fable 5.1",
+            "date": "2026-09-01",
+            "score": 36.09
+          },
+          {
+            "model": "Claude Opus 5.5",
+            "date": "2026-09-22",
+            "score": 37.31
+          }
+        ]
+      },
+      {
+        "name": "OpenAI",
+        "color": "#35e7ff",
+        "points": [
+          {
+            "model": "GPT 5.2",
+            "date": "2025-12-11",
+            "score": 15.8
+          },
+          {
+            "model": "GPT 5.4",
+            "date": "2026-03-05",
+            "score": 15.48
+          },
+          {
+            "model": "GPT 5.5",
+            "date": "2026-04-23",
+            "score": 16.48
+          },
+          {
+            "model": "GPT-5.6 Sol",
+            "date": "2026-07-09",
+            "score": 23.88
+          },
+          {
+            "model": "GPT-6 Astra",
+            "date": "2026-09-03",
+            "score": 27.07
+          },
+          {
+            "model": "GPT-6 Sol",
+            "date": "2026-09-22",
+            "score": 28.11
+          },
+          {
+            "model": "GPT-6.1 Sol",
+            "date": "2026-09-29",
+            "score": 26.62
+          }
+        ]
+      }
+    ]
+  },
   "workloadShare": {
     "source": "https://x.com/socialcapital/status/2107239666781208693",
     "note": "Transcribed from the supplied Social Capital chart, citing SemiAnalysis Tokenomics Model. Q4 2026 is an estimate. Rounded shares can sum to 99% or 101%; bar geometry is normalized to 100%, while labels retain the supplied percentages.",

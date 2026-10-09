@@ -73,6 +73,9 @@
     if (kind === 'labor-value') {
       renderers.set(scene,window.drawLaborValueChart(scene,()=>reduce.matches));return;
     }
+    if (kind === 'rsi-index') {
+      renderers.set(scene,window.drawRSIChart(scene,data.rsiIndex,()=>reduce.matches));return;
+    }
     if (kind === 'workload-share') {
       const box=scene.querySelector('.plot-wrap').getBoundingClientRect();
       const W=Math.max(280,box.width),H=Math.max(260,box.height),small=W<600;
@@ -661,8 +664,7 @@
   let publicSlide=0;
   slideEntries.forEach(entry=>{
     entry.legacyId=entry.id;
-    if(entry.index===0&&entry.el.dataset.slideId==='66')publicSlide=66;
-    else publicSlide++;
+    publicSlide++;
     entry.id=String(publicSlide);
   });
   function setSlideAddress(id){
@@ -768,7 +770,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=workload-share-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=rsi-index-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=first-principles-1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};
