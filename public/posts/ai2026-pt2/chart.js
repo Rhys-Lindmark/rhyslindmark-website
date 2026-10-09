@@ -175,8 +175,7 @@
         const value=label(g,left,cy+5,`$${row.value}B`,'start');value.classList.add('value');
         return {g,bar,name,value,row,cy};
       });
-      // Split the illustrative $7B opex using Nvidia Q2 FY2027's R&D / SG&A mix.
-      const segments=[{name:'Hardware · COGS',value:25,color:'#1b8064'},{name:'Other opex · SG&A',value:1.1,color:'#249775'},{name:'R&D · includes research salaries',value:5.9,color:'#2bb48b'},{name:'Operating profit',value:68,color:'#39ffc1'}];
+      const segments=[{name:'Hardware · COGS',value:25,color:'#1b8064'},{name:'Salaries & opex',value:7,color:'#2bb48b'},{name:'Operating profit',value:68,color:'#39ffc1'}];
       const cy=H*.48, height=Math.min(180,H*.32), parts=[];
       label(allocation,left,cy-height/2-22,'NVIDIA · PER $100B OF REVENUE','start');
       let total=0;
@@ -184,7 +183,7 @@
         const x=left+total/100*width, bw=row.value/100*width;
         const bar=node('rect',{x,y:cy-height/2,width:Math.max(0,bw-3),height,fill:row.color},allocation);
         const t=label(allocation,x+bw/2,cy+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
-        if(bw<60){t.setAttribute('y',cy+height/2+(row.value===1.1?24:42));t.style.fill=row.color;}
+        if(small&&row.value===7){t.setAttribute('y',cy+height/2+24);t.style.fill=row.color;}
         parts.push({bar,label:t,row,cy}); total+=row.value;
       });
       legend(scene,segments);
@@ -211,7 +210,7 @@
         scene.querySelector('.legend').style.visibility=stage>=2?'visible':'hidden';
         const employeeFocus=stage===3;
         parts.forEach(({bar,label,row},i)=>{
-          const focused=i===1||i===2;
+          const focused=i===1;
           const opacity=employeeFocus&&!focused?'.2':'1';
           bar.style.opacity=opacity;label.style.opacity=opacity;
           bar.setAttribute('stroke',employeeFocus&&focused?'#f1dcff':'none');
