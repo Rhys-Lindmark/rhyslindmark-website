@@ -213,9 +213,9 @@
       const topY=H*.48,bottomY=H*.48,comparison=node('g',{},svg),expenses=node('g',{},svg);
       const revenueName=label(comparison,left,topY-bh/2-12,'OPENAI · REVENUE','start');
       const revenueBar=node('rect',{x:left,y:topY-bh/2,width:x(revenue)-left,height:bh,fill:'#35e7ff'},comparison);
-      const revenueValue=label(comparison,x(revenue)+8,topY+5,'$50B','start');
+      const revenueValue=label(comparison,x(revenue)+8,topY+5,`$${revenue}B`,'start');
       const revenueCategory=barCategory(comparison,x(revenue)+24,topY+23,'Revenue',small,'#9aafbf');
-      label(expenses,left,bottomY-bh/2-12,small?'OPENAI · $69B MODELED COSTS':`OPENAI · $${revenue}B REVENUE · $${spending}B MODELED COSTS`,'start');
+      label(expenses,left,bottomY-bh/2-12,small?`OPENAI · $${spending}B COSTS`:`OPENAI · $${revenue}B REVENUE · $${spending}B COSTS`,'start');
       let total=0;
       const parts=rows.map(row=>{
         const start=x(total),bw=row.value/spending*width;
@@ -229,13 +229,13 @@
       const lossY=bottomY+bh/2+78;
       const lossBar=node('rect',{x:x(revenue),y:lossY,width:x(spending)-x(revenue),height:small?48:60,fill:'#35e7ff'},expenses);
       const lossValue=label(expenses,(x(revenue)+x(spending))/2,lossY+(small?21:27),`−$${loss}B`);lossValue.style.fill='#071018';lossValue.style.fontWeight='700';
-      barCategory(expenses,(x(revenue)+x(spending))/2,lossY+(small?37:45),'Funding gap',small);
-      parts.push({row:{name:'Modeled funding gap',value:-loss,color:'#35e7ff'},bar:lossBar,y:lossY+20});
-      label(svg,left+width/2,28,small?'ANNUALIZED SCENARIO · EX-STOCK COMP':'ANNUALIZED SCENARIO · EXCLUDES STOCK COMPENSATION');legend(scene,parts.map(part=>part.row));
+      barCategory(expenses,(x(revenue)+x(spending))/2,lossY+(small?37:45),'Adjusted loss',small);
+      parts.push({row:{name:'Adjusted loss',value:-loss,color:'#35e7ff'},bar:lossBar,y:lossY+20});
+      label(svg,left+width/2,28,small?'CY2026 · NET PARTNER SHARE':'CY2026 ESTIMATES · NET OF PARTNER REVENUE SHARE');legend(scene,parts.map(part=>part.row));
       window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top:0,bottom:H},keyboard:parts.map(p=>({x:Number(p.bar.getAttribute('x'))+2,y:p.y})),get:point=>{
         if(Number(scene.dataset.stage||0)!==1)return null;
         const part=parts.find(p=>insideBar(p.bar,point));if(!part)return null;
-        return{title:'OpenAI · annualized scenario',x:point.x,y:point.y,guide:false,items:[{label:part.row.name,value:`${part.row.value<0?'−':''}$${Math.abs(part.row.value)}B`,color:part.row.color}]};
+        return{title:'OpenAI · CY2026 estimates',x:point.x,y:point.y,guide:false,items:[{label:part.row.name,value:`${part.row.value<0?'−':''}$${Math.abs(part.row.value)}B`,color:part.row.color}]};
       }});
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
@@ -335,19 +335,19 @@
       const revenueTotal=rows.reduce((sum,row)=>sum+row.value,0);
       const sentences=[...scene.querySelectorAll('.business-sentence')];
       const top=H*.28, bh=Math.min(180,H*.32), segments=[];
-      label(svg,left+width/2,28,small?'ANNUALIZED SCENARIO · $100B REVENUE':'ANTHROPIC · ANNUALIZED SCENARIO · $100B REVENUE');
-      label(svg,left+width/2,top+bh+90,'EXCLUDES STOCK COMPENSATION');
+      label(svg,left+width/2,28,small?`CY2026 · $${revenueTotal}B REVENUE`:`ANTHROPIC · CY2026 ESTIMATES · $${revenueTotal}B REVENUE`);
+      label(svg,left+width/2,top+bh+90,'NET OF PARTNER REVENUE SHARE');
       let total=0,segmentRows=[];
       rows.forEach((row,i)=>{
         const x=left+total/revenueTotal*width,bw=row.value/revenueTotal*width;
         const g=node('g',{},svg),rect=node('rect',{x,y:top,width:Math.max(0,bw-3),height:bh,fill:row.color},g);
         const t=label(g,x+bw/2,top+bh/2+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
-        if(bw<65){t.setAttribute('y',top-56);t.style.fill=row.color;}
+        if(bw<65){t.setAttribute('y',row.name.includes('profit')?top+bh+24:top-56);t.style.fill=row.color;}
         barCategory(g,x+bw/2,Number(t.getAttribute('y'))+18,row.name,small,bw<65?row.color:'#071018');
         segments.push(g);segmentRows.push({row,rect,x:x+Math.max(0,bw-3)/2,y:top+bh/2});total+=row.value;
       });
       legend(scene,rows);
-      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.find(item=>insideBar(item.rect,point));if(!segment)return null;return{title:'Anthropic · annualized scenario',x:point.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:point.x,y:segment.y}]};}});
+      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.find(item=>insideBar(item.rect,point));if(!segment)return null;return{title:'Anthropic · CY2026 estimates',x:point.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:point.x,y:segment.y}]};}});
       renderers.set(scene,p=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
         const sentenceCount=stage===0?0:stage===2?2:local<.25?1:2;
@@ -356,7 +356,7 @@
           sentence.classList.toggle('is-visible',visible);
           sentence.setAttribute('aria-hidden',String(!visible));
         });
-        // Focus inference, then the three opex segments, then unallocated revenue.
+        // Focus inference, then the cash opex segments, then adjusted profit.
         const focus=stage===2?rows.length-1:stage===0?-1:local<.25?0:'investment';
         segments.forEach((g,i)=>g.style.opacity=reduce.matches||focus<0||i===focus||(focus==='investment'&&i>0&&i<rows.length-1)?'1':'.45');
         scene.querySelectorAll('.legend span').forEach((el,i)=>{
@@ -778,7 +778,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=rsi-scroll-2');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=cy2026-labs-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=first-principles-1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};

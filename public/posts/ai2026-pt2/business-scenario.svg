@@ -1,12 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 340" role="img" aria-label="Anthropic annualized scenario: $100B revenue, $20B inference, $3B cash salaries and benefits, $20B training compute, $10B other costs and $47B unallocated before stock compensation">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 340" role="img" aria-label="Anthropic CY2026 estimates net of partner revenue share: $51B revenue, $12B inference, $7B salaries and other cash opex, $30B training compute, $2B adjusted profit">
 <g font-family="monospace" text-anchor="middle" fill="#071018">
-<text x="500" y="28" fill="#9aafbf" font-size="15">ANTHROPIC · ANNUALIZED SCENARIO · $100B REVENUE</text>
-<rect x="20" y="65" width="189" height="155" fill="#995b34"/>
-<rect x="212" y="65" width="25.8" height="155" fill="#bf703d"/>
-<rect x="241.8" y="65" width="189" height="155" fill="#d67d43"/>
-<rect x="433.8" y="65" width="93" height="155" fill="#e98a4b"/>
-<rect x="529.8" y="65" width="448.2" height="155" fill="#ff914f"/>
-<g font-size="18" font-weight="bold"><text x="115" y="143">$20B</text><text x="225" y="245" fill="#bf703d">$3B</text><text x="336" y="143">$20B</text><text x="480" y="143">$10B</text><text x="755" y="143">$47B</text></g>
-<g font-size="14"><text x="115" y="165">COGS</text><text x="225" y="265" fill="#bf703d">Salaries</text><text x="225" y="282" fill="#bf703d">&amp; benefits</text><text x="336" y="165">R&amp;D compute</text><text x="480" y="165">Other opex</text><text x="755" y="165">Unallocated</text></g>
-<text x="500" y="322" fill="#9aafbf" font-size="14">EXCLUDES STOCK COMPENSATION · REMAINDER IS NOT VERIFIED PROFIT</text>
+<text x="500" y="28" fill="#9aafbf" font-size="15">ANTHROPIC · CY2026 ESTIMATES · $51B REVENUE</text>
+<rect x="20" y="65" width="223" height="155" fill="#995b34"/>
+<rect x="246" y="65" width="129" height="155" fill="#bf703d"/>
+<rect x="378" y="65" width="562" height="155" fill="#e98a4b"/>
+<rect x="943" y="65" width="37" height="155" fill="#ff914f"/>
+<g font-size="18" font-weight="bold"><text x="132" y="143">$12B</text><text x="310" y="143">$7B</text><text x="658" y="143">$30B</text><text x="960" y="247" fill="#ff914f">$2B</text></g>
+<g font-size="14"><text x="132" y="165">COGS</text><text x="310" y="165">Salaries</text><text x="310" y="183">&amp; opex</text><text x="658" y="165">R&amp;D compute</text><text x="960" y="269" fill="#ff914f">Profit</text></g>
+<text x="500" y="322" fill="#9aafbf" font-size="14">NET OF PARTNER REVENUE SHARE · ADJUSTED PROFIT</text>
 </g></svg>
