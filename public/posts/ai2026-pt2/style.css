@@ -203,3 +203,7 @@ blockquote.pullquote{font-size:24px;line-height:1.5}
 
 .scene.models.rsi-index{height:520svh}
 .all-mode .scene.models.rsi-index{height:auto}
+
+.jev-demo-mobile{display:none}
+.jev-demo-mobile img{display:block;width:100%;height:auto;aspect-ratio:16/9}
+@media(max-width:760px){.jev-demo video{display:none}.jev-demo-mobile{display:block}}
