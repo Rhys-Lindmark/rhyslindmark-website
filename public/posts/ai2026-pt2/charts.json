@@ -1,5 +1,5 @@
 {
-  "notes": "Revenue and growth lines are approximate samples redrawn from the author-supplied charts, not a new audit. Annualized revenue is a run rate, not revenue already earned in a year. Growth compares inflation-adjusted revenue rebased to approximately $10B. Margin figures are transcribed from the supplied chart; operating margin excludes stock-based compensation. Slide 5 uses the rounded figures in the author\u2019s text.",
+  "notes": "Revenue and growth lines are approximate samples redrawn from the author-supplied charts, not a new audit. The latest AI endpoints use author-supplied CY2026 revenue estimates net of partner revenue share: Anthropic $51B, OpenAI $29B. Earlier revenue samples are annualized snapshots, so the endpoint changes accounting basis. Annualized revenue is a run rate, not revenue already earned in a year. Growth compares inflation-adjusted revenue rebased to approximately $10B. Margin figures are transcribed from the supplied chart; operating margin excludes stock-based compensation. Slide 5 uses the rounded figures in the author\u2019s text.",
   "source": "https://docs.google.com/document/d/1hhf525UL1k_EU9YSgqtvQXsSvSVbcqejB8OSE6WMp68/edit?tab=t.0",
   "rsiIndex": {
     "source": "https://www.vals.ai/benchmarks/rsi_index",
@@ -142,8 +142,8 @@
           20
         ],
         [
-          2026.62,
-          40
+          2026.99,
+          29
         ]
       ]
     },
@@ -184,8 +184,8 @@
           47
         ],
         [
-          2026.6,
-          65
+          2026.99,
+          51
         ]
       ]
     }
@@ -449,7 +449,7 @@
         ],
         [
           1.17,
-          39.5
+          29
         ]
       ]
     },
@@ -471,7 +471,7 @@
         ],
         [
           0.54,
-          74
+          51
         ]
       ]
     }

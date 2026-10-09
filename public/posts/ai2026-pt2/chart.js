@@ -250,9 +250,9 @@
     } else     if(kind==='margins-story') {
       const left=small?24:100, right=small?52:80, width=W-left-right;
       const top=H*.18, bottom=H*.78, bh=Math.min(small?46:70,(bottom-top)/5);
-      const rows=[{name:'Nvidia',value:385,color:'#39ffc1'},{name:'Anthropic',value:100,color:'#ff914f'},{name:'OpenAI',value:50,color:'#35e7ff'}];
+      const rows=[{name:'Nvidia',value:385,color:'#39ffc1'},{name:'Anthropic',value:data.businessEstimate.revenue,color:'#ff914f'},{name:'OpenAI',value:data.openaiBusiness.revenue,color:'#35e7ff'}];
       const comparison=node('g',{},svg), allocation=node('g',{opacity:0},svg);
-      const axis=label(comparison,left+width/2,H-15,'ANNUALIZED REVENUE · USD BILLIONS');
+      const axis=label(comparison,left+width/2,H-15,'REVENUE · USD BILLIONS');
       const bars=rows.map((row,i)=>{
         const g=node('g',{},comparison), cy=top+(bottom-top)*(i+.5)/3;
         const name=label(g,left,cy-bh/2-10,row.name,'start');
@@ -277,7 +277,7 @@
         const stage=Number(scene.dataset.stage||0);
         const entry=stage>=2?parts.find(b=>insideBar(b.bar,point)):bars.find((b,i)=>(stage===0||i===0)&&insideBar(b.bar,point));
         if(!entry)return null;
-        return{title:stage>=2?'Nvidia · per $100B revenue':entry.row.name,x:point.x,y:point.y,guide:false,items:[{label:stage>=2?entry.row.name:'Annualized revenue',value:`$${entry.row.value}B`,color:entry.row.color}]};
+        return{title:stage>=2?'Nvidia · per $100B revenue':entry.row.name,x:point.x,y:point.y,guide:false,items:[{label:stage>=2?entry.row.name:entry.row.name==='Nvidia'?'Annualized revenue':'CY2026 net revenue estimate',value:`$${entry.row.value}B`,color:entry.row.color}]};
       }});
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
@@ -292,7 +292,7 @@
           name.setAttribute('y',y-bh/2-10);value.setAttribute('x',left+bw+8);value.setAttribute('y',y+5);
           value.style.opacity=show===1?'1':'0';
         });
-        axis.textContent=stage===1?'NVIDIA · ANNUALIZED REVENUE · USD BILLIONS':'ANNUALIZED REVENUE · USD BILLIONS';
+        axis.textContent=stage===1?'NVIDIA · ANNUALIZED REVENUE · USD BILLIONS':'REVENUE · USD BILLIONS';
         scene.querySelector('.legend').style.visibility=stage>=2?'visible':'hidden';
         const employeeFocus=stage===3;
         parts.forEach(({bar,label,category,row},i)=>{
@@ -432,7 +432,7 @@
         label(svg,m.l-9,y(v)+4,revenue&&v<1?'$100M':`$${v}B`,'end');
       });
       label(svg,m.l+iw/2,H-7,revenue?'YEAR':'YEARS SINCE ≈$10B REVENUE');
-      verticalTitle(svg,m.t+ih/2,revenue?'ANNUALIZED REVENUE · USD (LOG SCALE)':'REVENUE · INFLATION-ADJUSTED USD');
+      verticalTitle(svg,m.t+ih/2,revenue?'REVENUE · USD (LOG SCALE)':'REVENUE · INFLATION-ADJUSTED USD');
       const defs=node('defs',{},svg), clip=node('clipPath',{id:`reveal-${kind}`},defs);
       const rect=node('rect',{x:m.l-3,y:0,width:iw+6,height:H},clip);
       const g=node('g',{'clip-path':`url(#reveal-${kind})`},svg);
@@ -778,7 +778,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=cy2026-labs-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=opening-cy2026-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=first-principles-1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};
