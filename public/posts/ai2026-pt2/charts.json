@@ -1,6 +1,24 @@
 {
   "notes": "Revenue and growth lines are approximate samples redrawn from the author-supplied charts, not a new audit. Annualized revenue is a run rate, not revenue already earned in a year. Growth compares inflation-adjusted revenue rebased to approximately $10B. Margin figures are transcribed from the supplied chart; operating margin excludes stock-based compensation. Slide 5 uses the rounded figures in the author\u2019s text.",
   "source": "https://docs.google.com/document/d/1hhf525UL1k_EU9YSgqtvQXsSvSVbcqejB8OSE6WMp68/edit?tab=t.0",
+  "workloadShare": {
+    "source": "https://x.com/socialcapital/status/2107239666781208693",
+    "note": "Transcribed from the supplied Social Capital chart, citing SemiAnalysis Tokenomics Model. Q4 2026 is an estimate. Rounded shares can sum to 99% or 101%; bar geometry is normalized to 100%, while labels retain the supplied percentages.",
+    "quarters": [
+      {"quarter":"1Q24","pretraining":67,"rl":4,"inference":29},
+      {"quarter":"2Q24","pretraining":63,"rl":5,"inference":32},
+      {"quarter":"3Q24","pretraining":57,"rl":6,"inference":38},
+      {"quarter":"4Q24","pretraining":55,"rl":7,"inference":39},
+      {"quarter":"1Q25","pretraining":53,"rl":9,"inference":38},
+      {"quarter":"2Q25","pretraining":50,"rl":14,"inference":36},
+      {"quarter":"3Q25","pretraining":40,"rl":24,"inference":36},
+      {"quarter":"4Q25","pretraining":32,"rl":36,"inference":32},
+      {"quarter":"1Q26","pretraining":23,"rl":42,"inference":34},
+      {"quarter":"2Q26","pretraining":13,"rl":50,"inference":37},
+      {"quarter":"3Q26","pretraining":10,"rl":53,"inference":37},
+      {"quarter":"4Q26","pretraining":7,"rl":55,"inference":38,"estimated":true}
+    ]
+  },
   "revenue": [
     {
       "name": "OpenAI",

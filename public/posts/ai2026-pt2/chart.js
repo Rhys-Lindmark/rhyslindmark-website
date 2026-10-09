@@ -73,6 +73,57 @@
     if (kind === 'labor-value') {
       renderers.set(scene,window.drawLaborValueChart(scene,()=>reduce.matches));return;
     }
+    if (kind === 'workload-share') {
+      const box=scene.querySelector('.plot-wrap').getBoundingClientRect();
+      const W=Math.max(280,box.width),H=Math.max(260,box.height),small=W<600;
+      const left=small?40:80,right=small?10:36,top=24,bottom=H-(small?66:52);
+      const width=W-left-right,height=bottom-top,rows=data.workloadShare.quarters;
+      const step=width/rows.length,bw=step*.72;
+      const series=[{key:'pretraining',name:'Pre-training',color:'#707780',text:'#fff'},{key:'rl',name:'Post-training / RL',color:'#a743ff',text:'#fff'},{key:'inference',name:'Inference',color:'#d9b3ff',text:'#071018'}];
+      svg.replaceChildren();svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+      node('title',{},svg,'Share of frontier lab compute by workload, 2024–2026');
+      [0,25,50,75,100].forEach(value=>{
+        const y=bottom-height*value/100;
+        node('line',{x1:left,x2:W-right,y1:y,y2:y,stroke:'#2a3a47'},svg);
+        label(svg,left-8,y+4,`${value}%`,'end');
+      });
+      const columns=rows.map((row,i)=>{
+        const x=left+step*(i+.14),total=series.reduce((sum,s)=>sum+row[s.key],0);
+        const pieces=series.map(s=>{
+          const bar=node('rect',{x,y:bottom,width:bw,height:0,fill:s.color},svg);
+          const value=label(svg,x+bw/2,bottom,`${row[s.key]}%`);
+          value.style.fill=s.text;value.style.fontSize=small?'9px':'12px';
+          return {bar,value,share:row[s.key]/total};
+        });
+        const text=`${row.quarter}${row.estimated?(small?'*':' est.'):''}`;
+        const tick=label(svg,x+bw/2,bottom+19,text,small?'end':'middle');
+        if(small){tick.setAttribute('transform',`rotate(-55 ${x+bw/2} ${bottom+19})`);tick.style.fontSize='10px';}
+        return {row,x,pieces};
+      });
+      const divider=left+step*(rows.length-1);
+      node('line',{x1:divider,x2:divider,y1:top-8,y2:bottom+8,stroke:'#9aafbf','stroke-dasharray':'4 5'},svg);
+      label(svg,left+width/2,H-4,'QUARTER');
+      legend(scene,[series[2],series[1],series[0]]);
+      window.AIChartHover?.attach(svg,{bounds:{left,right:W-right,top,bottom},keyboard:columns.map(c=>({x:c.x+bw/2,y:top+height/2})),get:point=>{
+        const i=Math.min(rows.length-1,Math.max(0,Math.floor((point.x-left)/step))),row=rows[i];
+        return{title:`${row.quarter}${row.estimated?' · estimate':''}`,x:columns[i].x+bw/2,items:[series[2],series[1],series[0]].map(s=>({label:s.name,value:`${row[s.key]}%`,color:s.color}))};
+      }});
+      let previous=-1;
+      renderers.set(scene,p=>{
+        const reveal=reduce.matches?1:clamp(p/.38);
+        if(reveal===previous)return;previous=reveal;
+        columns.forEach(({pieces})=>{
+          let base=bottom;
+          pieces.forEach(({bar,value,share})=>{
+            const h=height*share*reveal;
+            bar.setAttribute('y',base-h);bar.setAttribute('height',h);
+            value.setAttribute('y',base-h/2+3);value.style.opacity=h>13&&reveal>.45?'1':'0';
+            base-=h;
+          });
+        });
+      });
+      svg.hidden=false;return;
+    }
     if (kind === 'frontier') {
       const box=scene.querySelector('.plot-wrap').getBoundingClientRect();
       const W=Math.max(280,box.width),H=Math.max(300,box.height),cx=W/2,cy=H*.51;
@@ -717,7 +768,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=financial-scenario-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=workload-share-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=first-principles-1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};
