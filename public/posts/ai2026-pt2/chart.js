@@ -143,20 +143,20 @@
         const bar=node('rect',{x,y:cy-height/2,width:Math.max(0,bw-3),height,fill:row.color},allocation);
         const t=label(allocation,x+bw/2,cy+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
         if(small&&row.value===7){t.setAttribute('y',cy+height/2+24);t.style.fill=row.color;}
-        parts.push({bar,row,cy}); total+=row.value;
+        parts.push({bar,label:t,row,cy}); total+=row.value;
       });
       label(allocation,left+width/2,H-15,'GROSS MARGIN 75% · OPERATING MARGIN 68%');
       legend(scene,segments);
       window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top:0,bottom:H},keyboard:[...bars.map(b=>({x:left+2,y:b.cy})),...parts.map(b=>({x:Number(b.bar.getAttribute('x'))+2,y:cy}))],get:point=>{
         const stage=Number(scene.dataset.stage||0);
-        const entry=stage===2?parts.find(b=>insideBar(b.bar,point)):bars.find((b,i)=>(stage===0||i===0)&&insideBar(b.bar,point));
+        const entry=stage>=2?parts.find(b=>insideBar(b.bar,point)):bars.find((b,i)=>(stage===0||i===0)&&insideBar(b.bar,point));
         if(!entry)return null;
-        return{title:stage===2?'Nvidia · per $100B revenue':entry.row.name,x:point.x,y:point.y,guide:false,items:[{label:stage===2?entry.row.name:'Annualized revenue',value:`$${entry.row.value}B`,color:entry.row.color}]};
+        return{title:stage>=2?'Nvidia · per $100B revenue':entry.row.name,x:point.x,y:point.y,guide:false,items:[{label:stage>=2?entry.row.name:'Annualized revenue',value:`$${entry.row.value}B`,color:entry.row.color}]};
       }});
       renderers.set(scene,()=>{
         const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
         const zoom=stage===0?0:stage===1?(reduce.matches?1:clamp(local/.4)):1;
-        comparison.style.opacity=stage===2?'0':'1';allocation.style.opacity=stage===2?'1':'0';
+        comparison.style.opacity=stage>=2?'0':'1';allocation.style.opacity=stage>=2?'1':'0';
         const show=stage===0?(reduce.matches?1:clamp(local/.6)):1;
         bars.forEach(({g,bar,name,value,row,cy},i)=>{
           const y=i===0?cy+(H*.48-cy)*zoom:cy;
@@ -167,7 +167,16 @@
           value.style.opacity=show===1?'1':'0';
         });
         axis.textContent=stage===1?'NVIDIA · ANNUALIZED REVENUE · USD BILLIONS':'ANNUALIZED REVENUE · USD BILLIONS';
-        scene.querySelector('.legend').style.visibility=stage===2?'visible':'hidden';
+        scene.querySelector('.legend').style.visibility=stage>=2?'visible':'hidden';
+        const employeeFocus=stage===3;
+        parts.forEach(({bar,label,row},i)=>{
+          const focused=i===1;
+          const opacity=employeeFocus&&!focused?'.2':'1';
+          bar.style.opacity=opacity;label.style.opacity=opacity;
+          bar.setAttribute('stroke',employeeFocus&&focused?'#f1dcff':'none');
+          bar.setAttribute('stroke-width',employeeFocus&&focused?'3':'0');
+        });
+        scene.querySelectorAll('.legend span').forEach((el,i)=>el.style.opacity=employeeFocus&&i!==1?'.35':'1');
       });
     } else     if(kind==='metr') {
       const left=small?75:100,right=small?25:70,top=35,bottom=H-55;
