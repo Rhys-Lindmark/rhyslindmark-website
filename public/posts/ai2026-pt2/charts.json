@@ -399,16 +399,35 @@
     }
   ],
   "business": [
-    {"name": "Inference · COGS", "value": 30, "color": "#995b34"},
-    {"name": "Salaries + other opex", "value": 27, "color": "#bf703d"},
-    {"name": "Training R&D · compute", "value": 40, "color": "#e98a4b"},
-    {"name": "Operating profit", "value": 3, "color": "#ff914f"}
+    {"name": "Inference · COGS", "value": 20, "color": "#995b34"},
+    {"name": "Salaries & benefits", "value": 3, "color": "#bf703d"},
+    {"name": "Training R&D · compute", "value": 20, "color": "#d67d43"},
+    {"name": "Other opex", "value": 10, "color": "#e98a4b"},
+    {"name": "Available for additional costs or profit", "value": 47, "color": "#ff914f"}
   ],
   "businessEstimate": {
-    "basis": "Illustrative expense shares applied to $100B annualized revenue; not reported current spending.",
-    "trainingShare": 0.60,
-    "cashCompensationShare": 0.12,
-    "otherShare": 0.28
+    "basis": "Annualized scenario at $100B revenue, excluding stock compensation. Each expense is an explicit assumption, not reported current spending. Remaining revenue is not verified profit.",
+    "revenue": 100,
+    "inference": "20% of revenue, conservatively anchored to reported gross margin above 80% before distribution fees and training.",
+    "cashCompensation": "5,000 employees times $600,000 annual cash employment cost, including benefits and employer taxes.",
+    "trainingCompute": "A $20B scenario allowance, above the earlier $12B 2026 budget. Current training-only spending is undisclosed; the $6B Q2 total-compute plan supplies context, not a disclosed training split.",
+    "other": "$8B distribution fees, assuming half of revenue uses partners charging 16%, plus a $2B assumption for non-payroll, non-compute operating expenses. The partner assumptions are anchored to 2025 reporting, not current disclosures.",
+    "remaining": "$47B is available for stock compensation, further spending or profit, not an estimate of reported operating profit."
+  },
+  "openaiBusiness": {
+    "revenue": 50,
+    "costs": [
+      {"name": "Inference · COGS", "value": 30, "color": "#197486"},
+      {"name": "Salaries & benefits", "value": 3, "color": "#2296a9"},
+      {"name": "Training R&D · compute", "value": 25, "color": "#28bace"},
+      {"name": "Other opex", "value": 11, "color": "#35d3eb"}
+    ],
+    "basis": "Annualized scenario at $50B revenue, excluding stock compensation. Cost assumptions do not apply Q1 operating-margin percentages to September revenue.",
+    "inference": "$30B rounds 61% of $50B, using Q1 gross margin as a scenario assumption, not a current margin disclosure.",
+    "cashCompensation": "6,000 average employees times $500,000 annual cash employment cost. Headcount is an assumption between the reported 4,500 March staff and 8,000 year-end hiring plan.",
+    "trainingCompute": "$25B annualizes the Q1 research-compute estimate of $5.8B per quarter ($23.2B), adds a small growth allowance and rounds. It does not scale the Q1 expense share with later revenue.",
+    "other": "$11B annualizes the Q1 $2.75B estimated residual after compute, cash compensation and stock compensation. Its composition and current spending are undisclosed.",
+    "gap": "$69B modeled expenses less $50B revenue is a $19B funding gap before stock compensation; it is not reported current operating loss."
   },
   "expansion": [
     {
