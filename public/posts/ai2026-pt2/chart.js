@@ -121,7 +121,48 @@
     const iw = W-m.l-m.r, ih = H-m.t-m.b;
     svg._hoverCleanup?.(); svg._hoverCleanup=null; svg.replaceChildren(); svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
     node('title', {}, svg, svg.getAttribute('aria-label'));
-    if(kind==='margins-story') {
+    if(kind==='openai-business') {
+      const revenue=50, grossMargin=.39, operatingMargin=-1.22;
+      const inference=revenue*(1-grossMargin), gross=revenue*grossMargin;
+      const opex=gross-revenue*operatingMargin, loss=-revenue*operatingMargin, spending=inference+opex;
+      const left=small?24:100,right=small?24:80,width=W-left-right;
+      const x=v=>left+v/spending*width,bh=Math.min(small?55:90,H*.13);
+      const topY=H*.28,bottomY=H*.56,comparison=node('g',{},svg),expenses=node('g',{},svg);
+      const revenueName=label(comparison,left,topY-bh/2-12,'OPENAI · REVENUE','start');
+      const revenueBar=node('rect',{x:left,y:topY-bh/2,width:x(revenue)-left,height:bh,fill:'#39ffc1'},comparison);
+      const inferenceTop=node('rect',{x:left,y:topY-bh/2,width:x(inference)-left,height:bh,fill:'#43a9ff',opacity:0},comparison);
+      const revenueValue=label(comparison,x(revenue)+8,topY+5,'$50B','start');
+      const grossValue=label(comparison,x(inference+gross/2),topY+5,'$19.5B');grossValue.style.fill='#071018';
+      if(small){grossValue.setAttribute('y',topY+bh/2+21);grossValue.style.fill='#39ffc1';}
+      const rows=[{name:'Inference',value:inference,color:'#43a9ff'},{name:'Training + people + other opex',value:opex,color:'#b985ff'}];
+      label(expenses,left,bottomY-bh/2-12,'TOTAL EXPENSES · $111B','start');
+      let total=0;
+      const parts=rows.map(row=>{
+        const start=x(total),bw=row.value/spending*width;
+        const bar=node('rect',{x:start,y:bottomY-bh/2,width:bw-3,height:bh,fill:row.color},expenses);
+        const value=label(expenses,start+bw/2,bottomY+5,`$${row.value.toFixed(1)}B`);value.style.fill='#071018';value.style.fontWeight='700';
+        total+=row.value;return {row,bar,y:bottomY};
+      });
+      node('line',{x1:x(revenue),x2:x(revenue),y1:topY+bh/2+30,y2:bottomY+bh/2+24,stroke:'#dbe6ed','stroke-dasharray':'4 5'},expenses);
+      const lossY=bottomY+bh/2+38;
+      node('line',{x1:x(revenue),x2:x(spending),y1:lossY,y2:lossY,stroke:'#ff914f','stroke-width':3},expenses);
+      label(expenses,(x(revenue)+x(spending))/2,lossY+24,'$61B OPERATING LOSS').style.fill='#ff914f';
+      label(svg,left+width/2,H-15,'USD BILLIONS');legend(scene,rows);
+      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top:0,bottom:H},keyboard:parts.map(p=>({x:Number(p.bar.getAttribute('x'))+2,y:bottomY})),get:point=>{
+        if(Number(scene.dataset.stage||0)!==1)return null;
+        const part=parts.find(p=>insideBar(p.bar,point));if(!part)return null;
+        return{title:'OpenAI · illustrative annualized costs',x:point.x,y:point.y,guide:false,items:[{label:part.row.name,value:`$${part.row.value.toFixed(1)}B`,color:part.row.color}]};
+      }});
+      renderers.set(scene,()=>{
+        const stage=Number(scene.dataset.stage||0),local=Number(scene.dataset.localProgress||0);
+        const showCosts=stage===1,show=showCosts||reduce.matches?1:clamp(local/.5);
+        const y=showCosts?topY:H*.45;
+        revenueBar.setAttribute('y',y-bh/2);revenueBar.setAttribute('width',(x(revenue)-left)*show);
+        revenueName.setAttribute('y',y-bh/2-12);revenueValue.setAttribute('y',y+5);revenueValue.style.opacity=show===1?'1':'0';
+        inferenceTop.style.opacity=showCosts?'1':'0';grossValue.style.opacity=showCosts?'1':'0';expenses.style.opacity=showCosts?'1':'0';
+        scene.querySelector('.legend').style.visibility=showCosts?'visible':'hidden';
+      });
+    } else     if(kind==='margins-story') {
       const left=small?24:100, right=small?52:80, width=W-left-right;
       const top=H*.18, bottom=H*.78, bh=Math.min(small?46:70,(bottom-top)/5);
       const rows=[{name:'Nvidia',value:385,color:'#39ffc1'},{name:'OpenAI',value:50,color:'#35a4ff'},{name:'Anthropic',value:100,color:'#bb86ff'}];
