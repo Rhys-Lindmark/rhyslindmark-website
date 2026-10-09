@@ -63,6 +63,14 @@
       renderers.set(scene, window.drawModelCodeLoop(scene, () => reduce.matches));
       return;
     }
+    if (kind === 'awakening') {
+      // Match Part 1: light travels from foreground data centers to the horizon.
+      renderers.set(scene,p=>{
+        const reveal=clamp((reduce.matches?1:p)/.88);
+        scene.style.setProperty('--light-front',`${108-reveal*124}%`);
+      });
+      return;
+    }
     if (!svg) return;
     if (kind === 'native-continuation') {
       renderers.set(scene,window.drawContinuationChart(scene,data.continuation,()=>reduce.matches));return;
