@@ -402,17 +402,17 @@
     {
       "name": "Inference",
       "value": 30,
-      "color": "#43a9ff"
+      "color": "#995b34"
     },
     {
       "name": "Training compute",
       "value": 27,
-      "color": "#39ffc1"
+      "color": "#bf703d"
     },
     {
       "name": "People + other opex",
       "value": 40,
-      "color": "#b985ff"
+      "color": "#df8146"
     },
     {
       "name": "EBIT",
