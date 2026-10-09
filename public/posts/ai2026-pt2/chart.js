@@ -778,7 +778,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=rsi-index-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=rsi-scroll-2');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=first-principles-1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};

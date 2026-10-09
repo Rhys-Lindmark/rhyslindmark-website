@@ -4,7 +4,7 @@
   "rsiIndex": {
     "source": "https://www.vals.ai/benchmarks/rsi_index",
     "asOf": "2026-10-01",
-    "note": "Source overall scores and registry release dates. Linear least-squares trends use all measured points per provider, as in Vals. Index scores are not the fraction of training automated; 50% matches frozen references. The 2030 forecast is the author\u2019s interpretation.",
+    "note": "Source overall scores and registry release dates. Linear least-squares slopes use all measured points per provider, as in Vals; the displayed projections extend those slopes from the latest observed score. Index scores are not the fraction of training automated; 50% matches frozen references. The 2030 forecast is the author\u2019s interpretation.",
     "series": [
       {
         "name": "Anthropic",
