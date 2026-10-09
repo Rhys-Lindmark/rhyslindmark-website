@@ -45,7 +45,7 @@
       const yy = y(value);
       bar.setAttribute('y', yy);
       bar.setAttribute('height', Math.max(0, bottom - yy));
-      text.setAttribute('y', Math.max(top + 15, yy - 10));
+      text.setAttribute('y', yy - 10);
       text.textContent = format(value);
     };
     return () => {
