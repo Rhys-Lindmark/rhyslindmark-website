@@ -165,7 +165,7 @@
     } else     if(kind==='margins-story') {
       const left=small?24:100, right=small?52:80, width=W-left-right;
       const top=H*.18, bottom=H*.78, bh=Math.min(small?46:70,(bottom-top)/5);
-      const rows=[{name:'Nvidia',value:385,color:'#39ffc1'},{name:'OpenAI',value:50,color:'#35a4ff'},{name:'Anthropic',value:100,color:'#bb86ff'}];
+      const rows=[{name:'Nvidia',value:385,color:'#39ffc1'},{name:'OpenAI',value:50,color:'#35e7ff'},{name:'Anthropic',value:100,color:'#ff914f'}];
       const comparison=node('g',{},svg), allocation=node('g',{opacity:0},svg);
       const axis=label(comparison,left+width/2,H-15,'ANNUALIZED REVENUE · USD BILLIONS');
       const bars=rows.map((row,i)=>{
@@ -692,7 +692,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=anthropic-total-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=company-colors-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=first-principles-1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};

@@ -42,7 +42,7 @@
     },
     {
       "name": "Anthropic",
-      "color": "#ff70de",
+      "color": "#ff914f",
       "points": [
         [
           2024,
@@ -166,7 +166,7 @@
     },
     {
       "name": "NVIDIA",
-      "color": "#91d830",
+      "color": "#39ffc1",
       "points": [
         [
           0,
@@ -330,7 +330,7 @@
     },
     {
       "name": "OpenAI",
-      "color": "#43a9ff",
+      "color": "#35e7ff",
       "points": [
         [
           0,
@@ -348,7 +348,7 @@
     },
     {
       "name": "Anthropic",
-      "color": "#39ffc1",
+      "color": "#ff914f",
       "points": [
         [
           0,
@@ -789,7 +789,7 @@
     },
     {
       "name": "NVIDIA",
-      "color": "#ffe84a",
+      "color": "#39ffc1",
       "points": [
         [
           2008,
