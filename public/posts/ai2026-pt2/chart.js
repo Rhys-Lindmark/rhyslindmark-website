@@ -165,7 +165,7 @@
     } else     if(kind==='margins-story') {
       const left=small?24:100, right=small?52:80, width=W-left-right;
       const top=H*.18, bottom=H*.78, bh=Math.min(small?46:70,(bottom-top)/5);
-      const rows=[{name:'Nvidia',value:385,color:'#39ffc1'},{name:'OpenAI',value:50,color:'#35e7ff'},{name:'Anthropic',value:100,color:'#ff914f'}];
+      const rows=[{name:'Nvidia',value:385,color:'#39ffc1'},{name:'Anthropic',value:100,color:'#ff914f'},{name:'OpenAI',value:50,color:'#35e7ff'}];
       const comparison=node('g',{},svg), allocation=node('g',{opacity:0},svg);
       const axis=label(comparison,left+width/2,H-15,'ANNUALIZED REVENUE · USD BILLIONS');
       const bars=rows.map((row,i)=>{
