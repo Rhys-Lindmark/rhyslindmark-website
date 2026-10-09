@@ -141,7 +141,7 @@
       const parts=rows.map(row=>{
         const start=x(total),bw=row.value/spending*width;
         const bar=node('rect',{x:start,y:bottomY-bh/2,width:bw-3,height:bh,fill:row.color},expenses);
-        const value=label(expenses,start+bw/2,bottomY+5,`$${row.value.toFixed(1)}B`);value.style.fill=row.name==='Inference'?'#e6edf3':'#071018';value.style.fontWeight='700';
+        const value=label(expenses,start+bw/2,bottomY+5,`$${row.value.toFixed(1)}B`);value.style.fill='#071018';value.style.fontWeight='700';
         if(small&&bw<60){value.setAttribute('y',bottomY+bh/2+20);value.style.fill=row.color;}
         total+=row.value;return {row,bar,y:bottomY};
       });
@@ -184,7 +184,7 @@
       segments.forEach(row=>{
         const x=left+total/100*width, bw=row.value/100*width;
         const bar=node('rect',{x,y:cy-height/2,width:Math.max(0,bw-3),height,fill:row.color},allocation);
-        const t=label(allocation,x+bw/2,cy+5,`$${row.value}B`);t.style.fill=row.name==='Hardware · COGS'?'#e6edf3':'#071018';t.style.fontWeight='700';
+        const t=label(allocation,x+bw/2,cy+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
         if(small&&row.value===7){t.setAttribute('y',cy+height/2+24);t.style.fill=row.color;}
         parts.push({bar,label:t,row,cy}); total+=row.value;
       });
@@ -257,7 +257,7 @@
       rows.forEach((row,i)=>{
         const x=left+total/revenueTotal*width,bw=row.value/revenueTotal*width;
         const g=node('g',{},svg),rect=node('rect',{x,y:top,width:Math.max(0,bw-3),height:bh,fill:row.color},g);
-        const t=label(g,x+bw/2,top+bh/2+5,`$${row.value}B`);t.style.fill=i===0?'#e6edf3':'#071018';t.style.fontWeight='700';
+        const t=label(g,x+bw/2,top+bh/2+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
         if(small&&row.value/revenueTotal<.10){t.setAttribute('y',top+bh+24);t.style.fill=row.color;}
         segments.push(g);segmentRows.push({row,rect,x:x+Math.max(0,bw-3)/2,y:top+bh/2});total+=row.value;
       });
