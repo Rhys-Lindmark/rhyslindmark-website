@@ -13,6 +13,12 @@
     parent.append(el); return el;
   }
   const label = (svg, x, y, text, anchor = 'middle') => node('text', {x, y, 'text-anchor': anchor}, svg, text);
+  function barCategory(svg, x, y, name, small, color='#071018') {
+    const group=node('g', {transform:`translate(${x},${y})`}, svg);
+    const lines=name.includes('COGS')?['COGS']:name.includes('R&D')?['R&D']:name.includes('Salaries')?['Salaries','& opex']:name.includes('profit')?['Profit']:name.includes('loss')?['Loss']:['Revenue'];
+    lines.forEach((text,i)=>{const t=label(group,0,i*(small?12:14),text);t.style.fontSize=small?'10px':'12px';t.style.fill=color;});
+    return group;
+  }
   function verticalTitle(svg, y, text) {
     return node('text', {x: 14, y, 'text-anchor': 'middle', class: 'axis-title', transform: `rotate(-90 14 ${y})`}, svg, text);
   }
@@ -131,6 +137,7 @@
       const revenueName=label(comparison,left,topY-bh/2-12,'OPENAI · REVENUE','start');
       const revenueBar=node('rect',{x:left,y:topY-bh/2,width:x(revenue)-left,height:bh,fill:'#35e7ff'},comparison);
       const revenueValue=label(comparison,x(revenue)+8,topY+5,'$50B','start');
+      const revenueCategory=barCategory(comparison,x(revenue)+24,topY+23,'Revenue',small,'#9aafbf');
       // Illustrative central estimates of ex-SBC opex: 65% research, 7% cash pay, 28% other.
       const rows=[{name:'Inference · COGS',value:inference,color:'#197486'},{name:'Salaries + other opex',value:28.2,color:'#2296a9'},{name:'Training R&D · compute',value:52.3,color:'#28bace'}];
       label(expenses,left,bottomY-bh/2-12,'OPENAI · $50B REVENUE · $111B COSTS','start');
@@ -140,12 +147,14 @@
         const bar=node('rect',{x:start,y:bottomY-bh/2,width:bw-3,height:bh,fill:row.color},expenses);
         const value=label(expenses,start+bw/2,bottomY+5,`$${row.value.toFixed(1)}B`);value.style.fill='#071018';value.style.fontWeight='700';
         if(small&&bw<60){value.setAttribute('y',bottomY+bh/2+20);value.style.fill=row.color;}
+        barCategory(expenses,start+bw/2,Number(value.getAttribute('y'))+18,row.name,small,small&&bw<60?row.color:'#071018');
         total+=row.value;return {row,bar,y:bottomY};
       });
       node('line',{x1:x(revenue),x2:x(revenue),y1:topY-bh/2-8,y2:bottomY+bh/2+24,stroke:'#dbe6ed','stroke-dasharray':'4 5'},expenses);
       const lossY=bottomY+bh/2+(small?52:38);
-      const lossBar=node('rect',{x:x(revenue),y:lossY,width:x(spending)-x(revenue),height:small?32:42,fill:'#35e7ff'},expenses);
+      const lossBar=node('rect',{x:x(revenue),y:lossY,width:x(spending)-x(revenue),height:small?48:60,fill:'#35e7ff'},expenses);
       const lossValue=label(expenses,(x(revenue)+x(spending))/2,lossY+(small?21:27),'−$61B');lossValue.style.fill='#071018';lossValue.style.fontWeight='700';
+      barCategory(expenses,(x(revenue)+x(spending))/2,lossY+(small?37:45),'Operating loss',small);
       parts.push({row:{name:'Operating loss',value:-loss,color:'#35e7ff'},bar:lossBar,y:lossY+20});
       label(svg,left+width/2,H-15,small?'ILLUSTRATIVE · EX-STOCK COMP':'ILLUSTRATIVE ALLOCATION · USD BILLIONS · EX-STOCK COMPENSATION');legend(scene,parts.map(part=>part.row));
       window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top:0,bottom:H},keyboard:parts.map(p=>({x:Number(p.bar.getAttribute('x'))+2,y:p.y})),get:point=>{
@@ -159,6 +168,7 @@
         const y=showCosts?topY:H*.45;
         revenueBar.setAttribute('y',y-bh/2);revenueBar.setAttribute('width',(x(revenue)-left)*show);
         revenueName.setAttribute('y',y-bh/2-12);revenueValue.setAttribute('y',y+5);revenueValue.style.opacity=show===1?'1':'0';
+        revenueCategory.setAttribute('transform',`translate(${x(revenue)+24},${y+23})`);revenueCategory.style.opacity=show===1?'1':'0';
         comparison.style.opacity=showCosts?'0':'1';expenses.style.opacity=showCosts?'1':'0';
         scene.querySelector('.legend').style.visibility=showCosts?'visible':'hidden';
       });
@@ -184,7 +194,8 @@
         const bar=node('rect',{x,y:cy-height/2,width:Math.max(0,bw-3),height,fill:row.color},allocation);
         const t=label(allocation,x+bw/2,cy+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
         if(small&&row.value===7){t.setAttribute('y',cy+height/2+24);t.style.fill=row.color;}
-        parts.push({bar,label:t,row,cy}); total+=row.value;
+        const category=barCategory(allocation,x+bw/2,Number(t.getAttribute('y'))+18,row.name,small,small&&row.value===7?row.color:'#071018');
+        parts.push({bar,label:t,category,row,cy}); total+=row.value;
       });
       legend(scene,segments);
       window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top:0,bottom:H},keyboard:[...bars.map(b=>({x:left+2,y:b.cy})),...parts.map(b=>({x:Number(b.bar.getAttribute('x'))+2,y:cy}))],get:point=>{
@@ -209,10 +220,10 @@
         axis.textContent=stage===1?'NVIDIA · ANNUALIZED REVENUE · USD BILLIONS':'ANNUALIZED REVENUE · USD BILLIONS';
         scene.querySelector('.legend').style.visibility=stage>=2?'visible':'hidden';
         const employeeFocus=stage===3;
-        parts.forEach(({bar,label,row},i)=>{
+        parts.forEach(({bar,label,category,row},i)=>{
           const focused=i===1;
           const opacity=employeeFocus&&!focused?'.2':'1';
-          bar.style.opacity=opacity;label.style.opacity=opacity;
+          bar.style.opacity=opacity;label.style.opacity=opacity;category.style.opacity=opacity;
           bar.setAttribute('stroke',employeeFocus&&focused?'#f1dcff':'none');
           bar.setAttribute('stroke-width',employeeFocus&&focused?'3':'0');
         });
@@ -256,6 +267,7 @@
         const g=node('g',{},svg),rect=node('rect',{x,y:top,width:Math.max(0,bw-3),height:bh,fill:row.color},g);
         const t=label(g,x+bw/2,top+bh/2+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
         if(small&&row.value/revenueTotal<.10){t.setAttribute('y',top+bh+24);t.style.fill=row.color;}
+        barCategory(g,x+bw/2,Number(t.getAttribute('y'))+18,row.name,small,small&&row.value/revenueTotal<.10?row.color:'#071018');
         segments.push(g);segmentRows.push({row,rect,x:x+Math.max(0,bw-3)/2,y:top+bh/2});total+=row.value;
       });
       legend(scene,rows);
