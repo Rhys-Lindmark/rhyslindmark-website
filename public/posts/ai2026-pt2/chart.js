@@ -206,32 +206,33 @@
     } else
     if (kind === 'business') {
       const rows=data.business, left=small?24:70, width=W-left*2;
+      const revenueTotal=rows.reduce((sum,row)=>sum+row.value,0);
       const sentences=[...scene.querySelectorAll('.business-sentence')];
       const top=H*.28, bh=Math.min(180,H*.32), segments=[];
-      label(svg,left+width/2,top+bh+52,'REVENUE ALLOCATION · USD BILLIONS / GW');
+      label(svg,left+width/2,top+bh+52,small?'~$100B TOTAL · USD BILLIONS':'REVENUE ALLOCATION · USD BILLIONS · ~$100B TOTAL');
       let total=0,segmentRows=[];
       rows.forEach((row,i)=>{
-        const x=left+total/30*width,bw=row.value/30*width;
+        const x=left+total/revenueTotal*width,bw=row.value/revenueTotal*width;
         const g=node('g',{},svg),rect=node('rect',{x,y:top,width:Math.max(0,bw-3),height:bh,fill:row.color},g);
         const t=label(g,x+bw/2,top+bh/2+5,`$${row.value}B`);t.style.fill='#071018';t.style.fontWeight='700';
-        if(small&&row.value===1){t.setAttribute('y',top+bh+24);t.style.fill=row.color;}
+        if(small&&row.value/revenueTotal<.06){t.setAttribute('y',top+bh+24);t.style.fill=row.color;}
         segments.push(g);segmentRows.push({row,rect,x:x+Math.max(0,bw-3)/2,y:top+bh/2});total+=row.value;
       });
       legend(scene,rows);
-      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.find(item=>insideBar(item.rect,point));if(!segment)return null;return{title:'$30B revenue per GW',x:point.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:point.x,y:segment.y}]};}});
+      window.AIChartHover?.attach(svg,{bounds:{left,right:left+width,top,bottom:top+bh},keyboard:segmentRows.map(r=>({x:r.x,y:r.y})),get:point=>{const segment=segmentRows.find(item=>insideBar(item.rect,point));if(!segment)return null;return{title:'~$100B total revenue',x:point.x,y:segment.y,guide:false,items:[{label:segment.row.name,value:`$${segment.row.value}B`,color:segment.row.color,x:point.x,y:segment.y}]};}});
       renderers.set(scene,p=>{
         const stage=Number(scene.dataset.stage||0), local=Number(scene.dataset.localProgress||0);
-        const sentenceCount=stage===0?0:stage===2?3:local<.25?1:local<.5?2:3;
+        const sentenceCount=stage===0?0:stage===2?2:local<.25?1:2;
         sentences.forEach((sentence,i)=>{
           const visible=reduce.matches||i<sentenceCount;
           sentence.classList.toggle('is-visible',visible);
           sentence.setAttribute('aria-hidden',String(!visible));
         });
         // Let the second passage enter before focusing its three expense segments.
-        const focus=stage===2?3:stage===0||local<.25?-1:Math.min(2,Math.floor((local-.25)/.25));
-        segments.forEach((g,i)=>g.style.opacity=reduce.matches||focus<0||i===focus?'1':'.45');
+        const focus=stage===2?3:stage===0?-1:local<.25?0:'investment';
+        segments.forEach((g,i)=>g.style.opacity=reduce.matches||focus<0||i===focus||(focus==='investment'&&(i===1||i===2))?'1':'.45');
         scene.querySelectorAll('.legend span').forEach((el,i)=>{
-          el.style.opacity=reduce.matches||focus<0||i===focus?'1':'.45';
+          el.style.opacity=reduce.matches||focus<0||i===focus||(focus==='investment'&&(i===1||i===2))?'1':'.45';
         });
       });
     } else if (kind === 'expansion') {
@@ -650,7 +651,7 @@
     slideLinksReady=true;request();
   }
   try {
-    const response=await fetch('/posts/ai2026-pt2/charts.json?v=native-bars');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
+    const response=await fetch('/posts/ai2026-pt2/charts.json?v=anthropic-total-1');if(!response.ok)throw Error('Chart data unavailable');data=await response.json();
     const metrResponse=await fetch('/posts/ai2026-pt2/metr.json');if(!metrResponse.ok)throw Error('METR data unavailable');data.metr=await metrResponse.json();
     const continuationResponse=await fetch('/posts/ai2026-pt2/continuation-charts.json?v=company-workforce-2020');if(!continuationResponse.ok)throw Error('Continuation data unavailable');data.continuation=await continuationResponse.json();
     const workforceResponse=await fetch('/posts/ai2026-pt2/digital-workforce.json?v=first-principles-1');if(!workforceResponse.ok)throw Error('Digital workforce data unavailable');const workforceData=await workforceResponse.json();data.labor={'machine-tiers':{title:workforceData.title,note:workforceData.note,data:workforceData}};

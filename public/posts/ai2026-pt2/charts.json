@@ -401,22 +401,22 @@
   "business": [
     {
       "name": "Inference",
-      "value": 9,
+      "value": 30,
       "color": "#43a9ff"
     },
     {
       "name": "Training compute",
-      "value": 8,
+      "value": 27,
       "color": "#39ffc1"
     },
     {
       "name": "People + other opex",
-      "value": 12,
+      "value": 40,
       "color": "#b985ff"
     },
     {
       "name": "EBIT",
-      "value": 1,
+      "value": 3,
       "color": "#ff914f"
     }
   ],
