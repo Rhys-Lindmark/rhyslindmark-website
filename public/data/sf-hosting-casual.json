@@ -1,0 +1,659 @@
+{
+  "updated": "2026-10-13",
+  "venues": [
+    {
+      "id": "casements",
+      "name": "Casements",
+      "category": "drinks",
+      "neighborhood": "Mission District",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://casementsbar.com/",
+      "source": "https://casementsbar.com/new-gallery-1",
+      "inquiry": "https://casementsbar.com/reservations",
+      "address": "2351 Mission St, San Francisco, CA 94110",
+      "zipCode": "94110",
+      "lat": 37.7592748,
+      "lng": -122.4188989,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": null,
+      "private": false,
+      "semiPrivate": false,
+      "buyout": false,
+      "rooms": [
+        {
+          "name": "Back patio & beer garden",
+          "privacy": "Group reservation",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Large outdoor space; ask about reserved tables, group size, and event terms.",
+          "source": "https://casementsbar.com/reservations"
+        }
+      ],
+      "details": "Irish cocktail bar with a large back patio and beer garden. The venue explicitly welcomes gatherings, meetups, and large groups; contact reservations@casementsbar.com to arrange space.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": "https://images.squarespace-cdn.com/content/v1/5dc315db6f48182b4d7d63df/1684885069700-2I3Y46P3LML3M1DED3HA/patiomn.jpg?format=1000w",
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    },
+    {
+      "id": "teeth",
+      "name": "Teeth",
+      "category": "drinks",
+      "neighborhood": "Mission District",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://www.teethbarsf.com/",
+      "source": "https://www.teethbarsf.com/",
+      "inquiry": "https://www.teethbarsf.com/",
+      "address": "2323 Mission St, San Francisco, CA 94110",
+      "zipCode": "94110",
+      "lat": 37.7598643,
+      "lng": -122.4188149,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": null,
+      "private": false,
+      "semiPrivate": true,
+      "buyout": true,
+      "rooms": [
+        {
+          "name": "Back patio",
+          "privacy": "Semi-private / buyout",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Table reservations, semi-private sections, and full patio buyouts; confirm capacity and minimums.",
+          "source": "https://www.teethbarsf.com/"
+        },
+        {
+          "name": "Indoor booths",
+          "privacy": "Group reservation",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Indoor booth reservations are also available.",
+          "source": "https://www.teethbarsf.com/"
+        }
+      ],
+      "details": "Neighborhood bar with a large back patio and pub food. Offers table reservations, semi-private areas, and full buyouts for birthdays, happy hours, and company parties.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    },
+    {
+      "id": "mothership",
+      "name": "Mothership",
+      "category": "drinks",
+      "neighborhood": "Bernal Heights",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://www.mothershipbar.com/",
+      "source": "https://www.mothershipbar.com/reserve-book",
+      "inquiry": "https://www.mothershipbar.com/reserve-book",
+      "address": "3152 Mission St, San Francisco, CA 94110",
+      "zipCode": "94110",
+      "lat": 37.7469519,
+      "lng": -122.4194042,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": null,
+      "private": false,
+      "semiPrivate": false,
+      "buyout": true,
+      "rooms": [
+        {
+          "name": "Patio tables",
+          "privacy": "Group reservation",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Patio reservations for 6–50 guests. This is the reservation range, not a full venue capacity.",
+          "source": "https://www.mothershipbar.com/reserve-book"
+        },
+        {
+          "name": "Private party / buyout",
+          "privacy": "Full buyout",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "For 60+ guests, use the private-party form; confirm the final capacity.",
+          "source": "https://www.mothershipbar.com/reserve-book"
+        }
+      ],
+      "details": "Neighborhood cocktail bar with reservable patio tables for groups of 6–50. For 60+ guests, inquire about a buyout. Outside food welcome; large groups incur a $30–$50 trash fee. Everyone must be 21+.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true,
+      "groupSizeHint": 60
+    },
+    {
+      "id": "finnegans-wake",
+      "name": "Finnegans Wake",
+      "category": "drinks",
+      "neighborhood": "Cole Valley",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://www.finneganssf.com/",
+      "source": "https://www.finneganssf.com/",
+      "inquiry": "https://www.finneganssf.com/#parties",
+      "address": "937 Cole St, San Francisco, CA 94117",
+      "zipCode": "94117",
+      "lat": 37.7652958,
+      "lng": -122.4501519,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": null,
+      "private": false,
+      "semiPrivate": false,
+      "buyout": false,
+      "rooms": [
+        {
+          "name": "Back beer garden",
+          "privacy": "Group reservation",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Send your party details so the bar can set space aside and plan staffing; capacity on request.",
+          "source": "https://www.finneganssf.com/#parties"
+        }
+      ],
+      "details": "Neighborhood bar with a back beer garden. The venue sets space aside for birthdays, reunions, and game-day groups. Outside food welcome; a 20% tip is added to tabs for groups over 10. Ages 21+.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    },
+    {
+      "id": "pilsner-inn",
+      "name": "Pilsner Inn",
+      "category": "drinks",
+      "neighborhood": "Castro / Duboce Triangle",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://www.pilsnerinn.com/",
+      "source": "https://www.pilsnerinn.com/events",
+      "inquiry": "https://www.pilsnerinn.com/events",
+      "address": "225 Church St, San Francisco, CA 94114",
+      "zipCode": "94114",
+      "lat": 37.7671224,
+      "lng": -122.4285544,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": null,
+      "private": false,
+      "semiPrivate": false,
+      "buyout": true,
+      "rooms": [
+        {
+          "name": "Garden patio",
+          "privacy": "Group gathering",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Ask the venue to confirm space and guest count.",
+          "source": "https://www.pilsnerinn.com/events"
+        },
+        {
+          "name": "Whole bar",
+          "privacy": "Full buyout",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Full buyouts are offered; date-dependent pricing and capacity on request.",
+          "source": "https://www.pilsnerinn.com/events"
+        }
+      ],
+      "details": "LGBTQ+ neighborhood beer bar with a garden patio. Available for group events and full buyouts; smaller groups should give the bar a heads-up for staffing. Buyout pricing depends on date.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    },
+    {
+      "id": "wild-side-west",
+      "name": "Wild Side West",
+      "category": "drinks",
+      "neighborhood": "Bernal Heights",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://www.wildsidewest.com/",
+      "source": "https://www.wildsidewest.com/",
+      "inquiry": "https://www.wildsidewest.com/",
+      "address": "424 Cortland Ave, San Francisco, CA 94110",
+      "zipCode": "94110",
+      "lat": 37.7389759,
+      "lng": -122.4171586,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": null,
+      "private": false,
+      "semiPrivate": false,
+      "buyout": false,
+      "rooms": [
+        {
+          "name": "Ground-level patio",
+          "privacy": "Shared outdoor space",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Shared patio; dedicated group reservations are not published.",
+          "source": "https://www.wildsidewest.com/"
+        },
+        {
+          "name": "Sculpture beer garden",
+          "privacy": "Shared outdoor space",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Downstairs outdoor garden; confirm accessibility and group arrangements.",
+          "source": "https://www.wildsidewest.com/"
+        }
+      ],
+      "details": "Long-running neighborhood bar with two outdoor spaces: a ground-level patio and a sculpture-filled beer garden downstairs. A relaxed option for casual drinks; ask the bar before bringing a larger group.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": false,
+      "casualDropIn": true
+    },
+    {
+      "id": "the-sycamore",
+      "name": "The Sycamore",
+      "category": "drinks",
+      "neighborhood": "Mission District",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://thesycamoresf.com/",
+      "source": "https://www.tagvenue.com/us/rooms/san-francisco/47674/the-sycamore/patio",
+      "inquiry": "https://thesycamoresf.com/events",
+      "address": "2140 Mission St, San Francisco, CA 94110",
+      "zipCode": "94110",
+      "lat": 37.7627849,
+      "lng": -122.4197335,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": 800,
+      "fullBookingKind": "Patio hire fee from $800; $2,000 Fri–Sat, per session. Food/drink additional.",
+      "maxGuests": 50,
+      "private": true,
+      "semiPrivate": false,
+      "buyout": false,
+      "rooms": [
+        {
+          "name": "Private back patio",
+          "privacy": "Private patio",
+          "seated": 31,
+          "standing": 50,
+          "minimum": null,
+          "fee": 800,
+          "note": "Tagvenue lists hire fees from $800 Sunday–Thursday or $2,000 Friday–Saturday, per session. Confirm what is included.",
+          "source": "https://www.tagvenue.com/us/rooms/san-francisco/47674/the-sycamore/patio"
+        }
+      ],
+      "details": "Casual neighborhood bar with a private back patio for parties. The patio listing specifies 31 seated or 50 standing; hire fees start at $800 Sunday–Thursday and $2,000 Friday–Saturday. Food and drink are additional; verify the quote.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    },
+    {
+      "id": "620-jones",
+      "name": "620 Jones",
+      "category": "drinks",
+      "neighborhood": "Union Square",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://620-jones.com/",
+      "source": "https://620-jones.com/private-events-space-union-square-sf/",
+      "inquiry": "https://620-jones.com/private-events-space-union-square-sf/",
+      "address": "620 Jones St, San Francisco, CA 94102",
+      "zipCode": "94102",
+      "lat": 37.7871841,
+      "lng": -122.4129378,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": null,
+      "private": false,
+      "semiPrivate": false,
+      "buyout": true,
+      "rooms": [
+        {
+          "name": "Heated garden patio",
+          "privacy": "Event area / buyout",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Outdoor patio sections and buyouts are available; confirm layout, capacity, and spend.",
+          "source": "https://620-jones.com/private-events-space-union-square-sf/"
+        },
+        {
+          "name": "Indoor lounge",
+          "privacy": "Event area",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Indoor space can be combined with the patio for events.",
+          "source": "https://620-jones.com/private-events-space-union-square-sf/"
+        }
+      ],
+      "details": "Heated rooftop-style garden patio, indoor lounge, and multiple bars. Offers hosted happy hours, mixers, private celebrations, and full patio buyouts. Ask which area and layout fits your group.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    },
+    {
+      "id": "woods-outbound",
+      "name": "Woods Outbound",
+      "category": "drinks",
+      "neighborhood": "Outer Sunset",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://www.woodsbeer.com/outbound",
+      "source": "https://www.woodsbeer.com/privateparties",
+      "inquiry": "https://www.woodsbeer.com/privateparties",
+      "address": "4045 Judah St, San Francisco, CA 94122",
+      "zipCode": "94122",
+      "lat": 37.7603397,
+      "lng": -122.5053547,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": 100,
+      "private": true,
+      "semiPrivate": false,
+      "buyout": true,
+      "rooms": [
+        {
+          "name": "Back patio & fireplace",
+          "privacy": "Private patio",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Exclusive use of the patio and fireplace for up to 50 guests. Layout and pricing on request.",
+          "source": "https://www.woodsbeer.com/privateparties"
+        },
+        {
+          "name": "Full bar & backyard",
+          "privacy": "Full buyout",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Exclusive use of the bar and fireplace backyard for up to 100 guests.",
+          "source": "https://www.woodsbeer.com/privateparties"
+        }
+      ],
+      "details": "Beachside beer and natural-wine clubhouse with a private back patio and fireplace. The patio hosts up to 50 guests; a full bar buyout hosts up to 100. Let the venue know before bringing a large unbooked group.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    },
+    {
+      "id": "the-halfway-club",
+      "name": "The Halfway Club",
+      "category": "drinks",
+      "neighborhood": "Excelsior",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://halfwayclub.com/",
+      "source": "https://halfwayclub.com/party",
+      "inquiry": "https://halfwayclub.com/party",
+      "address": "1166 Geneva Ave, San Francisco, CA 94112",
+      "zipCode": "94112",
+      "lat": 37.7142648,
+      "lng": -122.4370007,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": 110,
+      "private": false,
+      "semiPrivate": false,
+      "buyout": false,
+      "rooms": [
+        {
+          "name": "Patio",
+          "privacy": "Group reservation",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Outdoor party space; room-specific capacity on request.",
+          "source": "https://halfwayclub.com/party"
+        },
+        {
+          "name": "Back dining room",
+          "privacy": "Group reservation",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Book separately or combine with other areas.",
+          "source": "https://halfwayclub.com/party"
+        },
+        {
+          "name": "Lounge",
+          "privacy": "Group reservation",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Indoor lounge for parties. The 110-person figure applies across the venue, not this room.",
+          "source": "https://halfwayclub.com/party"
+        }
+      ],
+      "details": "Neighborhood bar and restaurant with a patio, lounge, and back dining room. Hosts groups of 6–110 across its spaces. The venue says most events have no fees or minimums; confirm the terms for your gathering.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    },
+    {
+      "id": "the-patio",
+      "name": "The Patio",
+      "category": "drinks",
+      "neighborhood": "Marina",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://www.patiosf.com/",
+      "source": "https://www.patiosf.com/events",
+      "inquiry": "https://www.patiosf.com/events",
+      "address": "3232 Scott St, San Francisco, CA 94123",
+      "zipCode": "94123",
+      "lat": 37.7997641,
+      "lng": -122.4407753,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": null,
+      "private": false,
+      "semiPrivate": false,
+      "buyout": false,
+      "rooms": [
+        {
+          "name": "Outdoor patio",
+          "privacy": "Group reservation",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Use the event inquiry form to confirm a reserved area, guest count, and event terms.",
+          "source": "https://www.patiosf.com/events"
+        }
+      ],
+      "details": "Wine lounge and kitchen with a sheltered outdoor patio and party booking form. A useful option for wine, bites, and a hosted gathering; request the patio layout, capacity, and minimum spend.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": "https://images.squarespace-cdn.com/content/v1/5fd82a07cffabb140c4d12d9/e2730b0e-4b43-4585-8f2e-cdcc32d88691/cheriseparty.sm.2.jpg?format=1000w",
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    },
+    {
+      "id": "harmonic-thrive-city",
+      "name": "Harmonic Brewing — Thrive City",
+      "category": "drinks",
+      "neighborhood": "Mission Bay",
+      "cuisine": "Cocktails / Beer",
+      "website": "https://harmonicbrewing.com/thrive-city",
+      "source": "https://harmonicbrewing.com/events",
+      "inquiry": "https://harmonicbrewing.com/events",
+      "address": "7 Warriors Way, San Francisco, CA 94158",
+      "zipCode": "94158",
+      "lat": 37.7688169,
+      "lng": -122.3875581,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": 300,
+      "private": false,
+      "semiPrivate": true,
+      "buyout": true,
+      "rooms": [
+        {
+          "name": "Patio / reserved tables",
+          "privacy": "Group reservation",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Table reservations and semi-private arrangements; space-specific capacity on request.",
+          "source": "https://harmonicbrewing.com/events"
+        },
+        {
+          "name": "Full taproom buyout",
+          "privacy": "Full buyout",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Venue advertises groups up to 300; confirm the event layout and Chase Center calendar.",
+          "source": "https://harmonicbrewing.com/events"
+        }
+      ],
+      "details": "Beer taproom with a large patio at Chase Center. Offers table reservations, semi-private events, and full buyouts for groups of 20–300. Reservations are generally unavailable within 2.5 hours of major Chase Center events.",
+      "verified": "2026-10-13",
+      "sources": [
+        "Venue hosting research (October 2026)"
+      ],
+      "image": null,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": true
+    }
+  ],
+  "patioVenueIds": [
+    "anina",
+    "biergarten",
+    "el-rio",
+    "lost-resort",
+    "southern-pacific-brewing",
+    "spark-social-sf",
+    "the-ramp",
+    "woods-lowside",
+    "zeitgeist"
+  ],
+  "venueUpdates": {
+    "woods-lowside": {
+      "website": "https://www.woodsbeer.com/lowside",
+      "source": "https://www.woodsbeer.com/privateparties",
+      "inquiry": "https://www.woodsbeer.com/privateparties",
+      "maxGuests": 150,
+      "private": true,
+      "buyout": true,
+      "groupHosting": true,
+      "patio": true,
+      "verified": "2026-10-13",
+      "details": "Beer and natural-wine bar with a private back patio. Current venue information lists a patio buyout for up to 25 guests, or a full bar and backyard buyout for up to 150; prices on request.",
+      "rooms": [
+        {
+          "name": "Private back patio",
+          "privacy": "Private patio",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Exclusive patio use for up to 25 guests; tables and chairs available. Confirm layout and minimums.",
+          "source": "https://www.woodsbeer.com/privateparties"
+        },
+        {
+          "name": "Full bar & backyard",
+          "privacy": "Full buyout",
+          "seated": null,
+          "standing": null,
+          "minimum": null,
+          "fee": null,
+          "note": "Exclusive bar and private backyard for up to 150 guests; sound system and two private restrooms.",
+          "source": "https://www.woodsbeer.com/privateparties"
+        }
+      ]
+    }
+  }
+}
