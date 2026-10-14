@@ -63,6 +63,12 @@ body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px)
 .waymo-mosaic-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr))}
 .waymo-mosaic-grid video{display:block;width:100%;height:100%;min-width:0;min-height:0;object-fit:cover;background:#05080d}
 .waymo-mosaic-poster{display:none;position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+@media(max-width:760px) and (orientation:portrait){
+ .waymo-mosaic-grid{inset:0 0 auto;top:50%;transform:translateY(-50%);grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto;gap:2px}
+ .waymo-mosaic-grid video{height:auto;aspect-ratio:16/9;object-fit:contain}
+ .waymo-mosaic-grid video:last-child{grid-column:2}
+ .waymo-mosaic-poster{object-fit:contain}
+}
 @media(prefers-reduced-motion:reduce){.waymo-mosaic-grid{display:none}.waymo-mosaic-poster{display:block}}
 .article-visual{display:block;width:min(850px,calc(100% - 40px));margin:32px auto 65px}
 .article-visual img{display:block;width:100%;height:auto;max-height:75svh;object-fit:contain}
