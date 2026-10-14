@@ -311,6 +311,80 @@
       ]
     }
   },
+  "textile-pipeline": {
+    "kind": "mechanization",
+    "title": "The textile factory",
+    "note": "Illustrative fixed-output scenario. Original shares and reductions are assumptions, not measured historical time-use statistics. Dates are milestones, not dates at which the modeled savings were achieved. See mechanization-methodology.html.",
+    "data": {
+      "stages": [
+        {
+          "label": "Picking cotton",
+          "original": 20,
+          "remaining": 2,
+          "manual": "Picking cotton bolls by hand",
+          "technology": "Mechanical cotton harvester · 1943"
+        },
+        {
+          "label": "Removing seeds",
+          "original": 10,
+          "remaining": 0.5,
+          "manual": "Separating seeds from cotton by hand",
+          "technology": "Cotton gin · 1794"
+        },
+        {
+          "label": "Spinning thread",
+          "original": 50,
+          "remaining": 6.25,
+          "manual": "Turning fiber into yarn by hand",
+          "technology": "Spinning jenny · c. 1764–1765"
+        },
+        {
+          "label": "Weaving clothes",
+          "original": 20,
+          "remaining": 2,
+          "manual": "Weaving cloth on a hand loom",
+          "technology": "Power loom patent · 1785"
+        }
+      ]
+    }
+  },
+  "agriculture-pipeline": {
+    "kind": "mechanization",
+    "title": "The grain farm",
+    "note": "Illustrative fixed-output scenario. Original shares and reductions are assumptions, not measured historical time-use statistics. Dates are milestones, not dates at which the modeled savings were achieved. See mechanization-methodology.html.",
+    "data": {
+      "stages": [
+        {
+          "label": "Preparing soil",
+          "original": 25,
+          "remaining": 2.5,
+          "manual": "Plowing and preparing fields",
+          "technology": "Steel plow · 1837; Fordson tractor · 1917"
+        },
+        {
+          "label": "Sowing seeds",
+          "original": 15,
+          "remaining": 1.5,
+          "manual": "Broadcasting seed by hand",
+          "technology": "Seed drill · 1701; later tractor-drawn drills"
+        },
+        {
+          "label": "Reaping grain",
+          "original": 30,
+          "remaining": 1.5,
+          "manual": "Cutting and gathering grain by hand",
+          "technology": "McCormick reaper · 1834; later combines"
+        },
+        {
+          "label": "Threshing grain",
+          "original": 30,
+          "remaining": 1.5,
+          "manual": "Beating grain to separate it from the stalk",
+          "technology": "Meikle thresher · 1786; later combines"
+        }
+      ]
+    }
+  },
   "software-pipeline": {
     "kind": "pipeline",
     "title": "The software factory",

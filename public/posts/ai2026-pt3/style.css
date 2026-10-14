@@ -13,13 +13,13 @@ body:not(.all-mode) #article #assistant-social .assistant-social-figure img{obje
 .body-copy{width:min(740px,calc(100% - 48px));margin:0 auto;padding:28px 0;font-size:17px;line-height:1.55}
 .body-copy[data-slide="6"]{padding-block:clamp(96px,16svh,160px)}
 .body-copy p{margin:0}.body-copy a,.passage a{color:#8bdeec;text-decoration:underline}
-.body-copy:is([data-slide="8"],[data-slide="63"]) p+p{margin-top:1em}
+.body-copy:is([data-slide="8"],[data-slide="67"]) p+p{margin-top:1em}
 .body-copy[data-slide="8"]{padding-bottom:.5em}
 .body-copy[data-slide="9"]{padding-top:.5em}
 .body-copy[data-slide="11"]{padding-top:clamp(64px,10svh,96px)}
 .body-copy[data-slide="12"]{padding-bottom:clamp(64px,10svh,96px)}
-.body-copy[data-slide="20"]{padding-top:clamp(64px,10svh,96px)}
-.body-copy[data-slide="23"]{padding-bottom:clamp(64px,10svh,96px)}
+.body-copy[data-slide="24"]{padding-top:clamp(64px,10svh,96px)}
+.body-copy[data-slide="27"]{padding-bottom:clamp(64px,10svh,96px)}
 .coding-universe-section{padding:clamp(80px,12svh,150px) 0 clamp(100px,15svh,180px)}
 .coding-universe-copy{text-align:left;padding:0 0 clamp(45px,7svh,85px)}
 .coding-universe-copy p+p{margin-top:1.4em}
@@ -52,10 +52,10 @@ body:not(.all-mode) #article .scene.agents .passage{position:absolute;top:0;left
 #claude-usage .card-copy[data-slide="4"] p+p{margin-top:1em}
 #claude-usage .card-copy[data-slide="5"] p+p{margin-top:1em}
 #omarchy .card-copy[data-slide="10"] p+p{margin-top:1em}
-#code-future .card-copy:is([data-slide="28"],[data-slide="29"],[data-slide="31"]) p+p{margin-top:1em}
-#experience-curves .card-copy[data-slide="34"] p+p{margin-top:1em}
-#waymo-share .card-copy[data-slide="69"] p+p{margin-top:1em}
-#robot-data .card-copy[data-slide="83"] p+p{margin-top:1em}
+#code-future .card-copy:is([data-slide="32"],[data-slide="33"],[data-slide="35"]) p+p{margin-top:1em}
+#experience-curves .card-copy[data-slide="38"] p+p{margin-top:1em}
+#waymo-share .card-copy[data-slide="73"] p+p{margin-top:1em}
+#robot-data .card-copy[data-slide="87"] p+p{margin-top:1em}
 body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(21px,1.62vw,26px);line-height:1.4}
 .card-copy[hidden]{display:none}
 .scene.agents .track{flex:none}
@@ -310,3 +310,9 @@ body:not(.all-mode) .scene.agents .card-copy p{font-size:clamp(22px,1.62vw,26px)
  body:not(.all-mode) .scene.agents .card-copy p,
  body:not(.all-mode) #article #domain-benchmarks .passage .card-copy p{font-size:20px;line-height:1.5}
 }
+
+/* Fixed-output mechanization models: readable stage labels on phones. */
+.mechanization-scene .mechanization-total{font-size:clamp(14px,1.7vw,24px);font-weight:600;fill:#e6edf3}
+.mechanization-scene .mechanization-note{font-size:clamp(10px,1vw,13px);fill:#91a6b5}
+.mechanization-scene .mechanization-label,.mechanization-scene .mechanization-value{font-size:clamp(12px,1.2vw,17px);fill:#e6edf3}
+.mechanization-scene .mechanization-technology{font-size:clamp(10px,1vw,14px);fill:#91a6b5}
