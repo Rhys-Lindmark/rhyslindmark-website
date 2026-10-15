@@ -12,5 +12,17 @@ const html = marked.parse(raw) as string;
 ---
 
 <Layout title="Work With Me">
-	<div set:html={html} />
+	<div class="work-with-me" set:html={html} />
 </Layout>
+
+<style>
+	.work-with-me :global(a) {
+		text-decoration-color: #aaa;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+	}
+
+	.work-with-me :global(a:hover) {
+		text-decoration-color: currentColor;
+	}
+</style>
