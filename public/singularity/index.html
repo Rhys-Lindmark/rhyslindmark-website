@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Today is Day N of the singularity. Counting from January 1, 2026.">
+  <link rel="canonical" href="https://ai.rhyslindmark.com/singularity">
+  <title>Day of the singularity</title>
+  <style>
+    :root { color-scheme: light; font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; color: #1a1a1a; background: #fff; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-align: center; }
+    h1 { max-width: 22ch; margin: 0; font-size: clamp(2.25rem, 7vw, 5rem); line-height: 1.15; font-weight: 400; text-wrap: balance; }
+    #day { font-variant-numeric: tabular-nums; }
+    .year { margin: 1.25rem 0 0; font-size: clamp(1.25rem, 3vw, 1.75rem); color: #666; }
+    footer { margin-top: 3rem; font: .875rem/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #666; }
+    footer p { margin: 0; }
+    a { color: inherit; text-underline-offset: 3px; }
+    a:hover { color: #1a1a1a; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Today is Day <span id="day">…</span> of the singularity.</h1>
+    <p class="year">Year <span id="year">…</span></p>
+    <footer>
+      <p>Counting from January 1, 2026.</p>
+      <p><a href="https://www.rhyslindmark.com/posts/ai2026-pt3/">AI 2026 · Part 3, Agents</a></p>
+    </footer>
+    <noscript><p>Enable JavaScript to see today’s count.</p></noscript>
+  </main>
+  <script>
+    // Local calendar dates, converted to UTC for arithmetic unaffected by DST.
+    function singularityCount(now) {
+      const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      return {
+        day: Math.floor((today - Date.UTC(2026, 0, 1)) / 86400000) + 1,
+        year: now.getFullYear() - 2025
+      };
+    }
+    function update() {
+      const { day, year } = singularityCount(new Date());
+      document.getElementById('day').textContent = String(day);
+      document.getElementById('year').textContent = String(year);
+      document.title = `Day ${day} of the singularity`;
+    }
+    update();
+    setInterval(update, 1000);
+    document.addEventListener('visibilitychange', update);
+  </script>
+</body>
+</html>
