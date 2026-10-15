@@ -13,6 +13,9 @@
     main { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1.5rem; text-align: center; }
     h1 { max-width: 22ch; margin: 0; font-size: clamp(2.25rem, 7vw, 5rem); line-height: 1.15; font-weight: 400; text-wrap: balance; }
     #day { font-variant-numeric: tabular-nums; }
+    .source { margin: 1.25rem 0 0; font: .875rem/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    .source a { color: #666; text-underline-offset: 3px; }
+    .source a:hover { color: #1a1a1a; }
     .year { margin: 1.25rem 0 0; font-size: clamp(1.25rem, 3vw, 1.75rem); color: #666; }
   </style>
 </head>
@@ -20,6 +23,7 @@
   <main>
     <h1>Today is Day <span id="day">…</span> of the singularity.</h1>
     <p class="year">Year <span id="year">…</span></p>
+    <p class="source"><a href="https://x.com/a16z/status/2109396266585334038">a16z on the singularity ↗</a></p>
     <noscript><p>Enable JavaScript to see today’s count.</p></noscript>
   </main>
   <script>
@@ -31,13 +35,60 @@
         year: now.getFullYear() - 2025
       };
     }
+    const counter = document.getElementById('day');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+    let today, offset = 0, frame = 0, live = false, lastX, lastY, previousTime;
+    const show = value => { counter.textContent = String(Math.max(1, Math.round(value))); };
     function update() {
       const { day, year } = singularityCount(new Date());
-      document.getElementById('day').textContent = String(day);
+      today = day;
       document.getElementById('year').textContent = String(year);
       document.title = `Day ${day} of the singularity`;
+      counter.setAttribute('aria-label', String(day));
+      if (live && !frame) show(today);
     }
+    function settle(time) {
+      const elapsed = previousTime === undefined ? 1000 / 60 : Math.min(100, time - previousTime);
+      previousTime = time;
+      offset *= Math.pow(.94, elapsed / (1000 / 60));
+      if (Math.abs(offset) < .5) {
+        offset = 0; frame = 0; previousTime = undefined; show(today); return;
+      }
+      show(today + offset);
+      frame = requestAnimationFrame(settle);
+    }
+    function countUp() {
+      const start = performance.now();
+      show(1);
+      function tick(time) {
+        if (reduce.matches) { live = true; show(today); return; }
+        const progress = Math.min(1, (time - start) / 2600);
+        show(1 + (today - 1) * (1 - Math.pow(1 - progress, 2.2)));
+        if (progress < 1) requestAnimationFrame(tick);
+        else { live = true; show(today); }
+      }
+      requestAnimationFrame(tick);
+    }
+    // Moving up/right raises the count; down/left lowers it. At rest it
+    // eases back to the real date, just like Part 3's scroll interaction.
+    addEventListener('pointermove', event => {
+      const dx = lastX === undefined ? 0 : event.clientX - lastX;
+      const dy = lastY === undefined ? 0 : event.clientY - lastY;
+      lastX = event.clientX; lastY = event.clientY;
+      if (!live || reduce.matches || event.pointerType === 'touch') return;
+      offset = Math.max(-180, Math.min(180, offset + (dx - dy) * .25));
+      show(today + offset);
+      if (!frame && offset) frame = requestAnimationFrame(settle);
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', () => { lastX = lastY = undefined; });
+    reduce.addEventListener('change', () => {
+      if (reduce.matches) {
+        cancelAnimationFrame(frame); frame = 0; offset = 0;
+        previousTime = undefined; live = true; show(today);
+      }
+    });
     update();
+    if (reduce.matches) { live = true; show(today); } else countUp();
     setInterval(update, 1000);
     document.addEventListener('visibilitychange', update);
   </script>
