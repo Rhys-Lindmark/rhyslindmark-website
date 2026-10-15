@@ -100,3 +100,15 @@ const html = htmlParts.join('\n');
 		<div class="bio-text" set:html={html} />
 	</div>
 </Layout>
+
+<style>
+	.bio :global(a) {
+		text-decoration-color: #aaa;
+		text-decoration-thickness: 1px;
+		text-underline-offset: 3px;
+	}
+
+	.bio :global(a:hover) {
+		text-decoration-color: currentColor;
+	}
+</style>
