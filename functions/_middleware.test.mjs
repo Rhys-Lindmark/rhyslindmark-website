@@ -186,3 +186,34 @@ test('bubble rewrites hydrated links and CSS font paths as well as refresh calls
   assert(body.includes('"bubble/_next/static/chunks/view.js"'));
  } finally {globalThis.fetch=oldFetch;}
 });
+
+
+test('SF Hosting redirects both old hosts and slash variants while preserving venue links', async () => {
+ for (const host of ['www.rhyslindmark.com', 'rhyslindmark.com']) {
+  for (const path of ['/tools/sf-hosting', '/tools/sf-hosting/']) {
+   for (const method of ['GET', 'HEAD']) {
+    const response = await onRequest({
+     request: new Request(`https://${host}${path}?venue=test-venue`, {method}),
+     next: () => {throw new Error('old hosting URL must redirect');},
+    });
+    assert.equal(response.status, 301);
+    assert.equal(response.headers.get('location'), `https://ai.rhyslindmark.com${path}?venue=test-venue`);
+   }
+  }
+ }
+});
+
+test('SF Hosting on AI and shared assets continue to the static site', async () => {
+ for (const host of ['ai.rhyslindmark.com', 'www.rhyslindmark.com']) {
+  const paths = ['/tools/sf-hosting.js', '/tools/sf-hosting.css', '/data/sf-hosting.json', '/vendor/leaflet/leaflet.js'];
+  if (host === 'ai.rhyslindmark.com') paths.push('/tools/sf-hosting', '/tools/sf-hosting/');
+  for (const path of paths) {
+   const response = await onRequest({
+    request: new Request(`https://${host}${path}`),
+    next: async () => new Response('static content'),
+   });
+   assert.equal(response.status, 200);
+   assert.equal(await response.text(), 'static content');
+  }
+ }
+});

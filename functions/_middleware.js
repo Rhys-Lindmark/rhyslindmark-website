@@ -200,6 +200,13 @@ export function withSlideMetadata(html, slide) {
 export async function onRequest(context) {
 	const url = new URL(context.request.url);
 
+	// Move the hosting guide without redirecting its shared scripts or data.
+	if (['www.rhyslindmark.com', 'rhyslindmark.com'].includes(url.hostname)
+		&& ['/tools/sf-hosting', '/tools/sf-hosting/'].includes(url.pathname)) {
+		url.hostname = 'ai.rhyslindmark.com';
+		return Response.redirect(url.toString(), 301);
+	}
+
 	if (url.hostname === 'ai.rhyslindmark.com') {
 		const path = url.pathname.replace(/\/$/, '') || '/';
 
