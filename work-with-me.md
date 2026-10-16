@@ -2,9 +2,11 @@
 
 📍 San Francisco, CA
 
-**I like believing in folks, growing technical communities, and helping people spend money on good things.**
+**I'm an energizer bunny & founder type who likes captaining teams to do great work at the frontier.**
 
-Part Nerd Herder, part Glue Guy, part Info Sponge.
+Technical generalist who is in the details. Likes getting things done. Good with people.
+
+Part Nerd Herder, part Info Sponge, part Annoying Product Guy.
 
 Currently:
 - Mapping the technological frontier ([1](https://www.rhyslindmark.com/posts/ai2026-pt1/), [2](https://www.rhyslindmark.com/posts/ai2026-pt2), [3](https://www.rhyslindmark.com/posts/ai2026-pt3/))
