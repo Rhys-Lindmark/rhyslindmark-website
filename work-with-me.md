@@ -4,7 +4,7 @@
 
 **I'm an energizer bunny & founder type who likes captaining teams to do great work at the frontier.**
 
-Technical generalist who is in the details. Likes getting things done. Good with people.
+Technical generalist is in the details. Likes getting things done. Good with people.
 
 Part <span class="bio-tooltip"><button type="button" aria-describedby="nerd-herder-tip">Nerd Herder</button><span role="tooltip" id="nerd-herder-tip">Builds communities, relationships, teams.</span></span>, part <span class="bio-tooltip"><button type="button" aria-describedby="info-sponge-tip">Info Sponge</button><span role="tooltip" id="info-sponge-tip">Turns context &amp; research into content &amp; direction.</span></span>, part <span class="bio-tooltip"><button type="button" aria-describedby="product-guy-tip">Annoying Product Guy</button><span role="tooltip" id="product-guy-tip">Makes nice things by caring about small things a little too much.</span></span>.
 
