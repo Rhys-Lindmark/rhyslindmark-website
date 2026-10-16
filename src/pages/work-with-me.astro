@@ -15,7 +15,89 @@ const html = marked.parse(raw) as string;
 	<div class="work-with-me" set:html={html} />
 </Layout>
 
+<script>
+	const tooltips = document.querySelectorAll<HTMLElement>('.bio-tooltip');
+	const closeTooltips = () => tooltips.forEach((tip) => tip.removeAttribute('data-open'));
+	tooltips.forEach((tip) => {
+		const positionTooltip = () => {
+			const bubble = tip.querySelector<HTMLElement>('[role="tooltip"]');
+			if (!bubble) return;
+			const left = tip.getBoundingClientRect().left;
+			const clampedLeft = Math.max(12, Math.min(left, window.innerWidth - bubble.offsetWidth - 12));
+			bubble.style.left = `${clampedLeft - left}px`;
+		};
+		tip.querySelector('button')?.addEventListener('click', () => {
+			const wasOpen = tip.hasAttribute('data-open');
+			closeTooltips();
+			tip.toggleAttribute('data-open', !wasOpen);
+			tip.removeAttribute('data-dismissed');
+			positionTooltip();
+		});
+		const reveal = () => {
+			tip.removeAttribute('data-dismissed');
+			positionTooltip();
+		};
+		tip.addEventListener('pointerenter', reveal);
+		tip.addEventListener('focusin', reveal);
+		tip.addEventListener('focusout', () => tip.removeAttribute('data-open'));
+		window.addEventListener('resize', positionTooltip);
+	});
+	document.addEventListener('click', (event) => {
+		if (event.target instanceof Element && !event.target.closest('.bio-tooltip')) closeTooltips();
+	});
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') {
+			closeTooltips();
+			tooltips.forEach((tip) => tip.setAttribute('data-dismissed', ''));
+		}
+	});
+</script>
+
 <style>
+	.work-with-me :global(.bio-tooltip) {
+		position: relative;
+		display: inline-block;
+	}
+	.work-with-me :global(.bio-tooltip button) {
+		font: inherit;
+		color: inherit;
+		background: none;
+		border: 0;
+		padding: 0;
+		text-decoration: underline dotted #aaa;
+		text-underline-offset: 4px;
+		cursor: help;
+	}
+	.work-with-me :global(.bio-tooltip button:focus-visible) {
+		outline: 2px solid currentColor;
+		outline-offset: 3px;
+		border-radius: 2px;
+	}
+	.work-with-me :global([role='tooltip']) {
+		position: absolute;
+		bottom: 100%;
+		left: 0;
+		z-index: 10;
+		width: max-content;
+		max-width: min(16rem, calc(100vw - 3rem));
+		padding: .65rem .8rem;
+		border-radius: 6px;
+		background: #1a1a1a;
+		color: #fff;
+		font-family: var(--font-sans);
+		font-size: .85rem;
+		line-height: 1.45;
+		box-shadow: 0 3px 12px #0002;
+		visibility: hidden;
+		opacity: 0;
+	}
+	.work-with-me :global(.bio-tooltip:not([data-dismissed]):hover [role='tooltip']),
+	.work-with-me :global(.bio-tooltip:not([data-dismissed]) button:focus-visible + [role='tooltip']),
+	.work-with-me :global(.bio-tooltip[data-open] [role='tooltip']) {
+		visibility: visible;
+		opacity: 1;
+	}
+
 	.work-with-me :global(a) {
 		text-decoration-color: #aaa;
 		text-decoration-thickness: 1px;

@@ -6,7 +6,7 @@
 
 Technical generalist who is in the details. Likes getting things done. Good with people.
 
-Part Nerd Herder, part Info Sponge, part Annoying Product Guy.
+Part <span class="bio-tooltip"><button type="button" aria-describedby="nerd-herder-tip">Nerd Herder</button><span role="tooltip" id="nerd-herder-tip">Builds communities, relationships, teams.</span></span>, part <span class="bio-tooltip"><button type="button" aria-describedby="info-sponge-tip">Info Sponge</button><span role="tooltip" id="info-sponge-tip">Turns context &amp; research into content &amp; direction.</span></span>, part <span class="bio-tooltip"><button type="button" aria-describedby="product-guy-tip">Annoying Product Guy</button><span role="tooltip" id="product-guy-tip">Makes nice things by caring about small things a little too much.</span></span>.
 
 Currently:
 - Mapping the technological frontier ([1](https://www.rhyslindmark.com/posts/ai2026-pt1/), [2](https://www.rhyslindmark.com/posts/ai2026-pt2), [3](https://www.rhyslindmark.com/posts/ai2026-pt3/))
