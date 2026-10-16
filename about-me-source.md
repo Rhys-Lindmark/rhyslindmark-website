@@ -1,7 +1,7 @@
 
 Hi! Rhys here. 👋 
 
-I like believing in folks, growing technical communities, and helping people spend money on good things.
+I'm an energizer bunny & founder type who likes captaining teams to do great work at the frontier.
 
 Currently mapping the frontier ([AI 2026](https://www.rhyslindmark.com/posts/ai2026-pt1/)) & helping technical ecosystems ([RenPhil](https://www.renaissancephilanthropy.org/), [Topology](https://www.topology.vc/)) as I find my next role.
 [Work with me](https://www.rhyslindmark.com/work-with-me/).
