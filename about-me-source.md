@@ -5,6 +5,8 @@ I'm an energizer bunny & founder type who likes captaining teams to do great wor
 
 Currently mapping & helping technical ecosystems as I find my next role. ([AI 2026](https://www.rhyslindmark.com/posts/ai2026-pt1/), [RenPhil](https://www.renaissancephilanthropy.org/), [Topology](https://www.topology.vc/).)
 
+I think abundant intelligence is a big deal. More like the emergence of sapiens than the internet.
+
 [Work with me](https://www.rhyslindmark.com/work-with-me/).
 
 ***
