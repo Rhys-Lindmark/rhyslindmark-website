@@ -13,6 +13,8 @@ Currently:
 - [Multiplexing agents](https://ai.rhyslindmark.com/) to do my bidding.
 - Helping technical communities as I find my next role. ([RenPhil](https://www.renaissancephilanthropy.org/), [Topology](https://www.topology.vc/).)
 
+I think abundant intelligence is a big deal. More like the emergence of sapiens than the internet.
+
 ## **How I can help**
 
 - Give founders loans of conviction<br>
