@@ -34,9 +34,15 @@ function isBYOWBuildAPI(url, prefix) {
 	return prefix === '/byow' && url.pathname === '/byow/api/build';
 }
 
+// GiveBetter's read-only MCP server speaks JSON-RPC over POST, with CORS preflight.
+function isGiveBetterMCP(url, prefix) {
+	return prefix === '/givebetter' && url.pathname === '/givebetter/api/mcp';
+}
+
 function proxyMethodAllowed(request, url, prefix) {
 	if (request.method === 'GET' || request.method === 'HEAD') return true;
 	if (isBYOWBuildAPI(url, prefix)) return request.method === 'POST';
+	if (isGiveBetterMCP(url, prefix)) return request.method === 'POST' || request.method === 'OPTIONS';
 	if (!isClaimsRequestAPI(url, prefix)) return false;
 	if (request.method === 'OPTIONS') return true;
 	return request.method === 'POST' && url.pathname === `${prefix}/api/v1/analysis-requests`;
@@ -74,7 +80,7 @@ async function proxyAISite(request, url, prefix, origin) {
 	if (!upstreamRequest) {
 		return new Response('Method not allowed', {
 			status: 405,
-			headers: { allow: isClaimsRequestAPI(url, prefix) ? 'GET, HEAD, POST, OPTIONS' : isBYOWBuildAPI(url, prefix) ? 'GET, HEAD, POST' : 'GET, HEAD' },
+			headers: { allow: isClaimsRequestAPI(url, prefix) || isGiveBetterMCP(url, prefix) ? 'GET, HEAD, POST, OPTIONS' : isBYOWBuildAPI(url, prefix) ? 'GET, HEAD, POST' : 'GET, HEAD' },
 		});
 	}
 	const response = await fetch(upstreamRequest);

@@ -94,6 +94,32 @@ test('proxy forwards only the BYOW builder POST beneath the BYOW route', async (
 	assert.equal(buildUpstreamRequest(new Request(pageURL, { method: 'POST' }), pageURL, '/byow', byowOrigin), null);
 });
 
+test('proxy forwards only the GiveBetter MCP POST and preflight beneath the GiveBetter route', async () => {
+	const gbOrigin = 'https://givebetter.rhyslindmark.workers.dev';
+	const mcpURL = new URL('https://ai.rhyslindmark.com/givebetter/api/mcp');
+	const otherURL = new URL('https://ai.rhyslindmark.com/givebetter/api/open-botec');
+	const nestedURL = new URL('https://ai.rhyslindmark.com/givebetter/api/mcp/extra');
+	const request = new Request(mcpURL, {
+		method: 'POST',
+		headers: { authorization: 'Bearer secret', cookie: 'session=secret', 'content-type': 'application/json' },
+		body: '{"jsonrpc":"2.0","id":1,"method":"tools/list"}',
+	});
+	const upstream = buildUpstreamRequest(request, mcpURL, '/givebetter', gbOrigin);
+
+	assert.ok(upstream);
+	assert.equal(upstream.url, `${gbOrigin}/api/mcp`);
+	assert.equal(upstream.headers.has('authorization'), false);
+	assert.equal(upstream.headers.has('cookie'), false);
+	assert.equal(await upstream.text(), '{"jsonrpc":"2.0","id":1,"method":"tools/list"}');
+	assert.ok(buildUpstreamRequest(new Request(mcpURL, { method: 'OPTIONS' }), mcpURL, '/givebetter', gbOrigin));
+	assert.equal(buildUpstreamRequest(new Request(mcpURL, { method: 'PUT' }), mcpURL, '/givebetter', gbOrigin), null);
+	assert.equal(buildUpstreamRequest(new Request(mcpURL, { method: 'DELETE' }), mcpURL, '/givebetter', gbOrigin), null);
+	assert.equal(buildUpstreamRequest(new Request(otherURL, { method: 'POST' }), otherURL, '/givebetter', gbOrigin), null);
+	assert.equal(buildUpstreamRequest(new Request(nestedURL, { method: 'POST' }), nestedURL, '/givebetter', gbOrigin), null);
+	const byowURL = new URL('https://ai.rhyslindmark.com/byow/api/mcp');
+	assert.equal(buildUpstreamRequest(new Request(byowURL, { method: 'POST' }), byowURL, '/byow', 'https://byow.rhyslindmark.chatgpt.site'), null);
+});
+
 test('accelerator routes preserve an upstream base path when one is configured', () => {
 	const acceleratorOrigin = 'https://example.com/base';
 	const incoming = new URL('https://ai.rhyslindmark.com/games/_next/static/example.js?v=1');
