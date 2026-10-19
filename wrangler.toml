@@ -6,3 +6,17 @@ pages_build_output_dir = "dist"
 RHYSBOT_MODAL_URL = "https://rhys-lindmark--rhysbot-serving-api.us-east.modal.run"
 RHYSBOT_TURNSTILE_SITE_KEY = "0x4AAAAAAFbFqVlmDZgVCLAG"
 RHYSBOT_ENABLED_MODELS = "qwen,nanochat"
+RHYSBOT_TRAIN_SANDBOX_QUOTA = "1"
+
+[ai]
+binding = "AI"
+
+[[d1_databases]]
+binding = "RHYSBOT_DB"
+database_name = "rhysbot-platform"
+database_id = "c2f5b3ad-87cd-4e17-9e07-da810454a53c"
+
+[[d1_databases]]
+binding = "RHYSBOT_TRAIN_DB"
+database_name = "rhysbot-platform"
+database_id = "c2f5b3ad-87cd-4e17-9e07-da810454a53c"
