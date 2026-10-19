@@ -4,6 +4,7 @@ import { createHmac } from 'node:crypto';
 import { onRequest } from './train.js';
 import { onRequest as upload } from './train-upload.js';
 import { validateCorpus, verifyStripeSignature, MAX_BYTES } from './train-core.js';
+import { verifiedArtifactBlob } from '../../../public/rhysbot/train/artifact.js';
 
 // Deployment-package smoke tests; comprehensive SQL/concurrency tests live in
 // the canonical rhysbot/platform/train.test.mjs. All calls are local mocks.
@@ -27,4 +28,13 @@ test('packaged core rejects unsafe JSONL and validates signature over original r
   const signature = createHmac('sha256', secret).update(`${now}.${raw}`).digest('hex');
   assert.equal(await verifyStripeSignature(enc.encode(raw), `t=${now},v1=${signature}`, secret, now), true);
   assert.equal(await verifyStripeSignature(enc.encode('{"body":"exact"}'), `t=${now},v1=${signature}`, secret, now), false);
+});
+test('packaged download helper refuses missing metadata, truncation and hash corruption', async () => {
+  const raw = new TextEncoder().encode('PKxx');
+  const digest = [...new Uint8Array(await crypto.subtle.digest('SHA-256', raw))].map(n=>n.toString(16).padStart(2,'0')).join('');
+  const make = text => new Response(text,{headers:{'Content-Type':'application/zip','X-Rhysbot-Artifact-Bytes':'4','X-Rhysbot-Artifact-SHA256':digest}});
+  assert.equal(await (await verifiedArtifactBlob(make('PKxx'))).text(),'PKxx');
+  await assert.rejects(()=>verifiedArtifactBlob(make('PKx')),/Incomplete/);
+  await assert.rejects(()=>verifiedArtifactBlob(make('PKxy')),/hash mismatch/);
+  await assert.rejects(()=>verifiedArtifactBlob(new Response('PKxx',{headers:{'Content-Type':'application/zip'}})),/metadata/);
 });
