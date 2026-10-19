@@ -131,6 +131,12 @@ function successfulResult(payload, request) {
     'input_tokens', 'output_tokens', 'latency_seconds', 'tools_executed'].map(key => [key, payload[key]]));
 }
 
+function publicAvailability(payload) {
+  if (payload?.ok !== true || !['available', 'busy', 'recovery_required'].includes(payload.state)) throw new Failure(502, 'invalid_status_response');
+  return { ok: true, state: payload.state, operator_action_required: payload.state === 'recovery_required',
+    retry_after_seconds: payload.state === 'busy' ? 10 : null };
+}
+
 // Injectable transport/timeouts enable finite Node tests without cloud calls.
 // Production onRequest below always uses the fixed defaults.
 export function createRhysbotHandler({ fetcher = globalThis.fetch, upstreamTimeoutMs = 230000,
@@ -146,8 +152,24 @@ export function createRhysbotHandler({ fetcher = globalThis.fetch, upstreamTimeo
     } });
     if (!['GET', 'POST'].includes(request.method)) return json({ error: 'method_not_allowed' }, 405, cors, { Allow: 'GET, POST, OPTIONS' });
     const config = configured(env);
-    if (request.method === 'GET') return json({ enabled_models: config?.models || [], turnstile_site_key: config?.sitekey || null }, 200, cors);
+    if (request.method === 'GET' && new URL(request.url).searchParams.get('status') !== '1') return json({ enabled_models: config?.models || [], turnstile_site_key: config?.sitekey || null }, 200, cors);
     if (!config) return json({ error: 'inference_not_configured' }, 503, cors);
+    if (request.method === 'GET') {
+      try {
+        const client = await clientIdentity(clientIP(request), env.RHYSBOT_CLIENT_SALT);
+        const url = new URL(config.url); url.pathname = '/status';
+        const payload = await deadline(10000, async signal => {
+          const response = await abortable(fetcher(url.href, { method: 'GET', redirect: 'manual', signal,
+            headers: { Origin: ORIGIN, 'X-Rhysbot-Client': client,
+              'Modal-Key': env.MODAL_PROXY_KEY, 'Modal-Secret': env.MODAL_PROXY_SECRET } }), signal);
+          if (!response.ok || response.redirected) throw new Failure(503, 'status_unavailable');
+          return boundedJSON(response, BODY_LIMIT, signal, 502);
+        });
+        return json(publicAvailability(payload), 200, cors);
+      } catch (error) {
+        return json({ error: error instanceof Failure ? error.code : 'status_unavailable' }, error instanceof Failure ? error.status : 503, cors);
+      }
+    }
     if ((request.headers.get('Content-Type') || '').split(';')[0].trim().toLowerCase() !== 'application/json') return json({ error: 'json_required' }, 415, cors);
     try {
       const ip = clientIP(request);

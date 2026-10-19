@@ -62,6 +62,21 @@ test('GET returns only public configuration and makes no outbound call', async (
   assert.deepEqual(await disabled.json(), { enabled_models: [], turnstile_site_key: null });
 });
 
+test('status makes only one authenticated read and strips all provider identifiers', async () => {
+  for (const state of ['available', 'busy', 'recovery_required']) {
+    const { handler, calls } = transport({ result: { ok: true, state, provider_call_id: 'secret', request_id: 'private' } });
+    const response = await run(handler, request(null, {}, 'GET', `${ORIGIN}/api/rhysbot?status=1`));
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { ok: true, state, operator_action_required: state === 'recovery_required', retry_after_seconds: state === 'busy' ? 10 : null });
+    assert.equal(calls.length, 1); assert.equal(calls[0].url, `${ENV.RHYSBOT_MODAL_URL}/status`);
+    assert.equal(calls[0].init.method, 'GET'); assert.equal(calls[0].init.body, undefined);
+    assert.equal(calls[0].init.headers['Modal-Key'], ENV.MODAL_PROXY_KEY);
+    assert.match(calls[0].init.headers['X-Rhysbot-Client'], /^[a-f0-9]{64}$/);
+  }
+  const bad = transport({ result: { ok: true, state: 'https://private.invalid' } });
+  assert.equal((await run(bad.handler, request(null, {}, 'GET', `${ORIGIN}/api/rhysbot?status=1`))).status, 502);
+});
+
 test('fails closed for every missing binding and unsupported deployment configuration', async () => {
   const { handler, calls } = transport();
   for (const name of Object.keys(ENV)) {
