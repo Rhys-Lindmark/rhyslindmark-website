@@ -243,3 +243,30 @@ test('SF Hosting on AI and shared assets continue to the static site', async () 
   }
  }
 });
+
+test('Lean Coffee forwards bounded meeting API writes and host credentials', async () => {
+ const origin='https://lean-coffee-together.rhyslindmark.chatgpt.site';
+ const url=new URL('https://ai.rhyslindmark.com/tools/lean-coffee/api/rooms');
+ const req=new Request(url,{method:'POST',headers:{Origin:url.origin,'X-Host':'facilitator-token','X-Participant':'participant','Content-Type':'application/json'},body:JSON.stringify({title:'Coffee'})});
+ const proxied=buildUpstreamRequest(req,url,'/tools/lean-coffee',origin);
+ assert.equal(proxied.url,origin+'/api/rooms');
+ assert.equal(proxied.headers.get('origin'),origin);
+ assert.equal(proxied.headers.get('X-Host'),'facilitator-token');
+ assert.deepEqual(await proxied.json(),{title:'Coffee'});
+ const bad=new Request(url,{method:'POST',headers:{Origin:'https://evil.example'},body:'{}'});
+ assert.equal(buildUpstreamRequest(bad,url,'/tools/lean-coffee',origin),null);
+ const unrelated=new URL('https://ai.rhyslindmark.com/tools/lean-coffee/other');
+ assert.equal(buildUpstreamRequest(new Request(unrelated,{method:'POST'}),unrelated,'/tools/lean-coffee',origin),null);
+});
+
+test('Lean Coffee rewrites client paths while preserving participant JSON text', async () => {
+ const {onRequest}=await import('./_middleware.js');const saved=globalThis.fetch;
+ try{
+ globalThis.fetch=async()=>new Response("<script>request('/api/rooms');location.origin+'/?room=';location.href='/'</script>",{headers:{'Content-Type':'text/html'}});
+ let response=await onRequest({request:new Request('https://ai.rhyslindmark.com/tools/lean-coffee'),next:()=>{throw new Error('should proxy')}});
+ const html=await response.text();assert.ok(html.includes("request('/tools/lean-coffee/api/rooms')"));assert.ok(html.includes("location.origin+'/tools/lean-coffee?room='"));assert.ok(html.includes("location.href='/tools/lean-coffee'"));
+ const notes={notes:"'/api/rooms and https://lean-coffee-together.rhyslindmark.chatgpt.site stay literal"};
+ globalThis.fetch=async()=>Response.json(notes);
+ response=await onRequest({request:new Request('https://ai.rhyslindmark.com/tools/lean-coffee/api/rooms/aaaaaaaaaaaaaaaa'),next:()=>{throw new Error('should proxy')}});assert.deepEqual(await response.json(),notes);
+ }finally{globalThis.fetch=saved}
+});

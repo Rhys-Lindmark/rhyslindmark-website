@@ -6,6 +6,7 @@
 // path genuinely doesn't exist here.
 
 const AI_SITES = {
+	'/tools/lean-coffee': 'https://lean-coffee-together.rhyslindmark.chatgpt.site',
 	'/byow': 'https://byow.rhyslindmark.chatgpt.site',
 	'/domestication': 'https://visualizing-reality.rhyslindmark.chatgpt.site',
 	'/givebetter': 'https://givebetter.rhyslindmark.workers.dev',
@@ -39,8 +40,13 @@ function isGiveBetterMCP(url, prefix) {
 	return prefix === '/givebetter' && url.pathname === '/givebetter/api/mcp';
 }
 
+function isCoffeeAPI(url, prefix) {
+	return prefix === '/tools/lean-coffee' && /^\/tools\/lean-coffee\/api\/rooms(?:\/[a-f0-9]{16})?$/.test(url.pathname);
+}
+
 function proxyMethodAllowed(request, url, prefix) {
 	if (request.method === 'GET' || request.method === 'HEAD') return true;
+	if (isCoffeeAPI(url, prefix)) return request.method === 'POST';
 	if (isBYOWBuildAPI(url, prefix)) return request.method === 'POST';
 	if (isGiveBetterMCP(url, prefix)) return request.method === 'POST' || request.method === 'OPTIONS';
 	if (!isClaimsRequestAPI(url, prefix)) return false;
@@ -63,6 +69,10 @@ export function buildUpstreamRequest(request, url, prefix, origin) {
 	if (!proxyMethodAllowed(request, url, prefix)) return null;
 	const headers = new Headers(request.headers);
 	for (const name of SENSITIVE_UPSTREAM_HEADERS) headers.delete(name);
+	if (prefix === '/tools/lean-coffee' && headers.has('origin')) {
+		if (headers.get('origin') !== url.origin) return null;
+		headers.set('origin', new URL(origin).origin);
+	}
 	const init = {
 		method: request.method,
 		headers,
@@ -80,7 +90,7 @@ async function proxyAISite(request, url, prefix, origin) {
 	if (!upstreamRequest) {
 		return new Response('Method not allowed', {
 			status: 405,
-			headers: { allow: isClaimsRequestAPI(url, prefix) || isGiveBetterMCP(url, prefix) ? 'GET, HEAD, POST, OPTIONS' : isBYOWBuildAPI(url, prefix) ? 'GET, HEAD, POST' : 'GET, HEAD' },
+			headers: { allow: isClaimsRequestAPI(url, prefix) || isGiveBetterMCP(url, prefix) ? 'GET, HEAD, POST, OPTIONS' : isBYOWBuildAPI(url, prefix) || isCoffeeAPI(url, prefix) ? 'GET, HEAD, POST' : 'GET, HEAD' },
 		});
 	}
 	const response = await fetch(upstreamRequest);
@@ -105,7 +115,8 @@ async function proxyAISite(request, url, prefix, origin) {
 		contentType.includes('javascript') ||
 		contentType.includes('json');
 
-	if (!isText) {
+	// Meeting JSON contains user text; only rewrite the HTML application shell.
+	if (!isText || (prefix === '/tools/lean-coffee' && !contentType.includes('text/html'))) {
 		return new Response(response.body, {
 			status: response.status,
 			statusText: response.statusText,
@@ -120,6 +131,13 @@ async function proxyAISite(request, url, prefix, origin) {
 		.replaceAll('src="/_next/', `src="${prefix}/_next/`)
 		.replaceAll('"/_next/', `"${prefix}/_next/`)
 		.replaceAll('"/data/', `"${prefix}/data/`);
+
+	if (prefix === '/tools/lean-coffee') {
+		body = body
+			.replaceAll("'/api/", "'/tools/lean-coffee/api/")
+			.replaceAll("location.origin+'/?room='", "location.origin+'/tools/lean-coffee?room='")
+			.replaceAll("location.href='/'", "location.href='/tools/lean-coffee'");
+	}
 
 	// Bubble clients refresh dated evidence through same-origin API endpoints.
 	if (prefix === '/bubble') {
