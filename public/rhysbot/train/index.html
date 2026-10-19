@@ -6,7 +6,7 @@
 <p class="notice"><strong>Test mode only. No real charge.</strong> Stripe test Checkout uses test payment details. Sandbox checkout is a local confirmation with no card form or Stripe payment. Both share one lifetime training slot across this pilot.</p>
 <p>Upload text you have permission to process. This private upload is separate from Rhys’s public corpus. It will not be added to that corpus or used to change existing checkpoints.</p>
 <p id="availability" role="status">Checking configuration…</p>
-<section><h2>1. Upload</h2><p>UTF-8 TXT or JSONL, up to 5 MiB. Each JSONL row must contain only <code>{"text":"…"}</code>. No ZIPs, remote URLs or executable files. Text is data; training must never execute instructions in it.</p>
+<section><h2>1. Upload</h2><p>UTF-8 TXT or JSONL, up to 5 MiB. Use at least a few pages (the training recipe requires 512 tokenized tokens). Each JSONL row must contain only <code>{"text":"…"}</code>. No ZIPs, remote URLs or executable files. Text is data; training must never execute instructions in it.</p>
 <label>Corpus <input id="file" type="file" accept=".txt,.jsonl,text/plain,application/x-ndjson"></label>
 <label><input id="consent" type="checkbox"> I have permission to process this text and understand it is an experimental training job.</label>
 <div id="human"></div><button id="upload" disabled>Upload privately</button>

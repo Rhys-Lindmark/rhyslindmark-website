@@ -7,6 +7,8 @@ RHYSBOT_MODAL_URL = "https://rhys-lindmark--rhysbot-serving-api.us-east.modal.ru
 RHYSBOT_TURNSTILE_SITE_KEY = "0x4AAAAAAFbFqVlmDZgVCLAG"
 RHYSBOT_ENABLED_MODELS = "qwen,nanochat"
 RHYSBOT_TRAIN_SANDBOX_QUOTA = "1"
+RHYSBOT_PLATFORM_URL = "https://rhys-lindmark--rhysbot-platform-api.us-east.modal.run"
+RHYSBOT_TRAIN_BRIDGE_URL = "https://rhys-lindmark--rhysbot-platform-api.us-east.modal.run"
 
 [ai]
 binding = "AI"
