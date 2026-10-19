@@ -20,7 +20,9 @@ test('packaged core rejects unsafe JSONL and validates signature over original r
   const enc = new TextEncoder();
   assert.throws(() => validateCorpus(enc.encode('{"url":"https://evil.invalid/file"}'), 'jsonl'));
   assert.throws(() => validateCorpus(enc.encode('{"text":"\\u0000"}'), 'jsonl'));
-  validateCorpus(enc.encode('{"text":"Educational example."}\n'), 'jsonl');
+  assert.throws(() => validateCorpus(enc.encode('hi'), 'txt'), /200/);
+  assert.throws(() => validateCorpus(enc.encode('{"text":"hi"}'), 'jsonl'), /200/);
+  validateCorpus(enc.encode(JSON.stringify({text:'Educational example. '.repeat(15)})+'\n'), 'jsonl');
   const now = 1800000000, secret = 'whsec_local_test', raw = '{ "body": "exact" }';
   const signature = createHmac('sha256', secret).update(`${now}.${raw}`).digest('hex');
   assert.equal(await verifyStripeSignature(enc.encode(raw), `t=${now},v1=${signature}`, secret, now), true);
