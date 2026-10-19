@@ -12,6 +12,8 @@ const PROMPT_LIMIT = 1600;
 const TOKEN_LIMIT = 64;
 const DEFAULT_TOKENS = 32;
 const ALLOWED_MODELS = ['nanochat', 'qwen'];
+// Exact regional hostname returned by this deployment's Modal metadata.
+const REGIONAL_MODAL_HOST = 'rhys-lindmark--rhysbot-serving-api.us-east.modal.run';
 
 class Failure extends Error {
   constructor(status, code) { super(code); this.status = status; this.code = code; }
@@ -29,7 +31,7 @@ function configured(env) {
     const models = String(env.RHYSBOT_ENABLED_MODELS || '').split(',').map(x => x.trim());
     if (!models.length || new Set(models).size !== models.length || models.some(x => !ALLOWED_MODELS.includes(x))) return null;
     const url = new URL(env.RHYSBOT_MODAL_URL);
-    if (url.protocol !== 'https:' || !/^[a-z0-9-]+\.modal\.run$/.test(url.hostname)
+    if (url.protocol !== 'https:' || (!/^[a-z0-9-]+\.modal\.run$/.test(url.hostname) && url.hostname !== REGIONAL_MODAL_HOST)
         || url.port || url.username || url.password || url.search || url.hash
         || !['/', '/generate'].includes(url.pathname)) return null;
     url.pathname = '/generate';

@@ -82,6 +82,17 @@ test('accepts configured /generate URL without appending duplicate path', async 
   assert.equal(calls[1].url, `${ENV.RHYSBOT_MODAL_URL}/generate`);
 });
 
+test('supports the verified regional deployment without permitting arbitrary regional hosts', async () => {
+  const { handler, calls } = transport();
+  const url = 'https://rhys-lindmark--rhysbot-serving-api.us-east.modal.run';
+  assert.equal((await run(handler, request(), { ...ENV, RHYSBOT_MODAL_URL: url })).status, 200);
+  assert.equal(calls[1].url, `${url}/generate`);
+  for (const value of ['https://other--api.us-east.modal.run', `${url}.evil.invalid`, `${url}:444`]) {
+    assert.equal((await run(handler, request(), { ...ENV, RHYSBOT_MODAL_URL: value })).status, 503);
+  }
+  assert.equal(calls.length, 2);
+});
+
 test('requires exact origin and production hostname; methods and preflight are bounded', async () => {
   const { handler, calls } = transport();
   for (const origin of ['https://evil.invalid', 'https://ai.rhyslindmark.com.evil.invalid', 'null', '']) {
