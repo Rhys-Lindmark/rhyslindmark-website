@@ -21,12 +21,12 @@ export function imageInput(uri){
 }
 export async function visionValue(value){
  const stream=value?.getReader?value:value?.body?.getReader?value.body:null;
- if(!stream)return value;
+ if(!stream)return value?.result??value;
  const reader=stream.getReader(),decoder=new TextDecoder('utf-8',{fatal:true});let text='',bytes=0,timer;
  const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>{reader.cancel().catch(()=>{});reject(new ChatFailure(504,'image_response_timeout'));},30000);});
  try{
   for(;;){const row=await Promise.race([reader.read(),deadline]);if(row.done)break;bytes+=row.value.byteLength;if(bytes>131072)throw new ChatFailure(502,'invalid_image_response');text+=decoder.decode(row.value,{stream:true});}
-  text+=decoder.decode();return JSON.parse(text);
+  text+=decoder.decode();const parsed=JSON.parse(text);return parsed?.result??parsed;
  }catch(e){if(e instanceof ChatFailure)throw e;throw new ChatFailure(502,'invalid_image_response');}
  finally{clearTimeout(timer);try{await reader.cancel();}catch{}reader.releaseLock();}
 }
