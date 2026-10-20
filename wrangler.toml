@@ -1,5 +1,6 @@
 name = "rhyslindmark-website"
 compatibility_date = "2026-07-20"
+compatibility_flags = ["enable_request_signal"]
 pages_build_output_dir = "dist"
 
 [vars]

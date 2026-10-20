@@ -27,11 +27,15 @@ export function createVoiceStreamHandler({fetcher=fetch}={}){return async({reque
   if(!claim)throw new ChatFailure(409,'voice_already_dispatched');
   const endpoint=new URL(env.RHYSBOT_VOICE_STREAM_URL);endpoint.pathname='/stream';endpoint.search='';endpoint.hash='';
   const nonce=[key.slice(0,8),key.slice(8,12),key.slice(12,16),key.slice(16,20),key.slice(20,32)].join('-');
-  const abort=new AbortController(),signal=AbortSignal.any([abort.signal,request.signal,AbortSignal.timeout(90000)]);
-  const upstream=await fetcher(endpoint,{method:'POST',redirect:'error',signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+env.RHYSBOT_TRAIN_BRIDGE_SECRET,'Modal-Key':env.MODAL_PROXY_KEY,'Modal-Secret':env.MODAL_PROXY_SECRET},body:JSON.stringify({request_id:nonce,text:body.text})});
-  if(!upstream.ok||!upstream.body||!upstream.headers.get('Content-Type')?.startsWith('text/event-stream')){abort.abort();throw new ChatFailure(upstream.status===429?429:503,upstream.status===429?'voice_busy':'voice_stream_unavailable');}
-  let bytes=0;
-  const bounded=upstream.body.pipeThrough(new TransformStream({transform(chunk,c){bytes+=chunk.byteLength;if(bytes>12*1024*1024){abort.abort();throw Error('voice_stream_too_large');}c.enqueue(chunk);}}));
+  const abort=new AbortController();let incoming;
+  try{incoming=request.signal;}catch{} // Older Workers require enable_request_signal.
+  const disconnected=()=>abort.abort();incoming?.addEventListener('abort',disconnected,{once:true});
+  const timer=setTimeout(()=>abort.abort(),90000);const clean=()=>{clearTimeout(timer);incoming?.removeEventListener('abort',disconnected);};
+  const signal=abort.signal;if(incoming?.aborted)abort.abort();
+  let upstream;try{upstream=await fetcher(endpoint,{method:'POST',redirect:'error',signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+env.RHYSBOT_TRAIN_BRIDGE_SECRET,'Modal-Key':env.MODAL_PROXY_KEY,'Modal-Secret':env.MODAL_PROXY_SECRET},body:JSON.stringify({request_id:nonce,text:body.text})});}catch(e){clean();throw e;}
+  if(!upstream.ok||!upstream.body||!upstream.headers.get('Content-Type')?.startsWith('text/event-stream')){abort.abort();clean();throw new ChatFailure(upstream.status===429?429:503,upstream.status===429?'voice_busy':'voice_stream_upstream_'+upstream.status);}
+  let bytes=0;const reader=upstream.body.getReader();
+  const bounded=new ReadableStream({async pull(c){try{const {value,done}=await reader.read();if(done){clean();c.close();return;}bytes+=value.byteLength;if(bytes>12*1024*1024)throw Error('voice_stream_too_large');c.enqueue(value);}catch(e){abort.abort();clean();c.error(e);}},async cancel(){abort.abort();clean();try{await reader.cancel();}catch{}}});
   return new Response(bounded,{headers:{'Content-Type':'text/event-stream','Cache-Control':'no-store, no-transform','X-Content-Type-Options':'nosniff','X-Rhysbot-Voice':'AI-generated authorized Rhys voice','X-Rhysbot-Sample-Rate':'24000',...(auth.cookie?{'Set-Cookie':auth.cookie}:{})}});
  }catch(e){return reply({error:e instanceof ChatFailure?e.code:'voice_stream_unavailable'},e.status||503);}
 };}
