@@ -9,7 +9,9 @@ RHYSBOT_TURNSTILE_SITE_KEY = "0x4AAAAAAFbFqVlmDZgVCLAG"
 RHYSBOT_ENABLED_MODELS = "qwen,nanochat"
 RHYSBOT_TRAIN_SANDBOX_QUOTA = "1"
 RHYSBOT_PLATFORM_URL = "https://rhys-lindmark--rhysbot-platform-api.us-east.modal.run"
-RHYSBOT_VOICE_STREAM_URL = "https://rhys-lindmark--rhysbot-pocket-voice-pocketvoice-api.us-east.modal.run"
+RHYSBOT_VOICE_STREAM_URL = "https://rhys-lindmark--rhysbot-pocket-voice-v4-pocketvoice-api.us-east.modal.run"
+RHYSBOT_CPU_STANDBY_ENABLED = "1"
+RHYSBOT_CPU_STANDBY_SINCE = "2026-10-20T03:10:00Z"
 RHYSBOT_TRAIN_BRIDGE_URL = "https://rhys-lindmark--rhysbot-platform-api.us-east.modal.run"
 
 [ai]

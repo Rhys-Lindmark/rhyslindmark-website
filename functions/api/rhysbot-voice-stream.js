@@ -15,9 +15,10 @@ export function createVoiceStreamHandler({fetcher=fetch}={}){return async({reque
   await db.prepare('DELETE FROM rb_voice WHERE expires<?').bind(now).run();
   const inserted=await db.prepare("INSERT INTO rb_voice(id,text_sha,state,expires) VALUES(?,?,'reserving',?) ON CONFLICT(id) DO NOTHING RETURNING id").bind(key,hash,now+86400).first();
   if(inserted){
-   // Covers two bounded 90s CPU inputs, 60s startup and 60s idle per attempt,
-   // at <=4 physical cores and <=2GiB. Conservative; actual usage is metered.
-   try{await charge(env,auth.client,50000);}catch(e){await db.prepare("UPDATE rb_voice SET state='blocked' WHERE id=?").bind(key).run();throw e;}
+   // Standby baseline is reserved by charge(); $0.02 additionally covers two
+   // bounded 90s inputs plus 60s startup each at <=4 cores/768MiB (<$0.017).
+   // Without standby, $0.05 also covers bounded scale-to-zero idle time.
+   try{await charge(env,auth.client,env.RHYSBOT_CPU_STANDBY_ENABLED==='1'?20000:50000);}catch(e){await db.prepare("UPDATE rb_voice SET state='blocked' WHERE id=?").bind(key).run();throw e;}
    await db.prepare("UPDATE rb_voice SET state='stream_charged' WHERE id=?").bind(key).run();
   }
   stage='dispatch_claim';const row=await db.prepare('SELECT text_sha,state,expires FROM rb_voice WHERE id=?').bind(key).first();
