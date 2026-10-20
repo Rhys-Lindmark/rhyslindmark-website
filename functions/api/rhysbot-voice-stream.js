@@ -6,7 +6,7 @@ export function streamConfigured(env){
 }
 export function createVoiceStreamHandler({fetcher=fetch}={}){return async({request,env})=>{
  let stage='validate';try{
-  if(request.method!=='POST')return reply({error:'method_not_allowed'},405);
+  if(request.method!=='POST')return reply({error:'method_not_allowed',bridge:'cpu-stream-v4'},405);
   const body=await boundedJSON(request,16000),id=body.request_id;
   if(!/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(id||'')||typeof body.text!=='string'||!body.text.trim()||[...body.text].length>2000||new TextEncoder().encode(body.text).length>8000)throw new ChatFailure(400,'invalid_voice_request');
   stage='authorize';const auth=await authorize(request,env,body,fetcher);
@@ -32,7 +32,7 @@ export function createVoiceStreamHandler({fetcher=fetch}={}){return async({reque
   const disconnected=()=>abort.abort();incoming?.addEventListener('abort',disconnected,{once:true});
   const timer=setTimeout(()=>abort.abort(),90000);const clean=()=>{clearTimeout(timer);incoming?.removeEventListener('abort',disconnected);};
   const signal=abort.signal;if(incoming?.aborted)abort.abort();
-  stage='provider_fetch';let upstream;try{upstream=await fetcher(endpoint,{method:'POST',redirect:'error',signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+env.RHYSBOT_TRAIN_BRIDGE_SECRET,'Modal-Key':env.MODAL_PROXY_KEY,'Modal-Secret':env.MODAL_PROXY_SECRET},body:JSON.stringify({request_id:nonce,text:body.text})});}catch(e){clean();throw e;}
+  stage='provider_fetch';let upstream;try{upstream=await fetcher(endpoint,{method:'POST',redirect:'manual',signal,headers:{'Content-Type':'application/json',Authorization:'Bearer '+env.RHYSBOT_TRAIN_BRIDGE_SECRET,'Modal-Key':env.MODAL_PROXY_KEY,'Modal-Secret':env.MODAL_PROXY_SECRET},body:JSON.stringify({request_id:nonce,text:body.text})});}catch(e){clean();throw e;}
   stage='provider_response';if(!upstream.ok||!upstream.body||!upstream.headers.get('Content-Type')?.startsWith('text/event-stream')){abort.abort();clean();throw new ChatFailure(upstream.status===429?429:503,upstream.status===429?'voice_busy':'voice_stream_upstream_'+upstream.status);}
   let bytes=0;const reader=upstream.body.getReader();
   const bounded=new ReadableStream({async pull(c){try{const {value,done}=await reader.read();if(done){clean();c.close();return;}bytes+=value.byteLength;if(bytes>12*1024*1024)throw Error('voice_stream_too_large');c.enqueue(value);}catch(e){abort.abort();clean();c.error(e);}},async cancel(){abort.abort();clean();try{await reader.cancel();}catch{}}});
@@ -42,6 +42,6 @@ export function createVoiceStreamHandler({fetcher=fetch}={}){return async({reque
    let message=String(e.message||'').slice(0,400);for(const [k,v] of Object.entries(env))if(typeof v==='string'&&v.length>=8&&/SECRET|KEY|SALT/.test(k))message=message.replaceAll(v,'[redacted]');
    debug={stage,kind:e.name,message};
   }
-  return reply({error:e instanceof ChatFailure?e.code:'voice_stream_unavailable',...(debug?{debug}:{})},e.status||503);}
+  return reply({error:e instanceof ChatFailure?e.code:'voice_stream_unavailable',stage,...(debug?{debug}:{})},e.status||503,{'X-Rhysbot-Voice-Bridge':'cpu-stream-v4'});}
 };}
 export const onRequest=createVoiceStreamHandler();
