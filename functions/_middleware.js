@@ -1,9 +1,6 @@
-// Ghost -> Substack migration fallback.
-// Cloudflare Pages redirects always take precedence over static assets, so a
-// static wildcard rule (e.g. /:slug -> substack) would swallow every new page
-// added to this site, requiring a manual opt-out per page. Instead: try to
-// serve the request normally first, and only fall back to Substack if the
-// path genuinely doesn't exist here.
+// Serve local pages first. Only explicitly verified legacy article paths on the
+// main site may redirect to Substack; unknown URLs keep their local 404.
+import { LEGACY_POST_SLUGS } from './_legacy/posts.js';
 
 const AI_SITES = {
 	'/tools/lean-coffee': 'https://lean-coffee-together.rhyslindmark.chatgpt.site',
@@ -260,10 +257,14 @@ export async function onRequest(context) {
 		return new Response(withSlideMetadata(html, slide), { status: response.status, statusText: response.statusText, headers });
 	}
 
-	if (response.status === 404) {
-		const slug = new URL(context.request.url).pathname.replace(/^\/|\/$/g, '');
-		if (slug && !slug.includes('/')) {
-			return Response.redirect(`https://rhyslindmark.substack.com/p/${slug}`, 301);
+	if (response.status === 404
+		&& ['GET', 'HEAD'].includes(context.request.method)
+		&& ['rhyslindmark.com', 'www.rhyslindmark.com'].includes(url.hostname)) {
+		const slug = url.pathname.match(/^\/([^/]+)\/?$/)?.[1];
+		if (LEGACY_POST_SLUGS.has(slug)) {
+			const destination = new URL(`https://rhyslindmark.substack.com/p/${slug}`);
+			destination.search = url.search;
+			return Response.redirect(destination.toString(), 301);
 		}
 	}
 

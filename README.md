@@ -11,7 +11,7 @@ src/
 ├── assets/images/     # page imagery
 └── styles/            # global styles
 functions/
-└── _middleware.js     # Cloudflare Pages function: 404s fall back to Substack
+└── _middleware.js     # Cloudflare Pages function: verified legacy article redirects
 public/                # static assets served as-is (e.g. resume.pdf)
 *.md                   # long-form source content pulled into pages (about-me, date-me, us, work-with-me, etc.)
 ```
@@ -34,4 +34,4 @@ npm run dev       # localhost:4321
 
 ## Deployment
 
-Deployed via Cloudflare Pages (`wrangler.toml`). The `functions/_middleware.js` function redirects any unmatched route to the corresponding post on [rhyslindmark.substack.com](https://rhyslindmark.substack.com), as a fallback for content migrated from Ghost.
+Deployed via Cloudflare Pages (`wrangler.toml`). After trying local pages, `functions/_middleware.js` redirects only the verified article slugs in `functions/_legacy/posts.js` to their Substack posts. These redirects apply to GET/HEAD requests on the main domain only. Unknown paths and missing AI routes return local 404s. Verify a destination before adding a legacy slug.

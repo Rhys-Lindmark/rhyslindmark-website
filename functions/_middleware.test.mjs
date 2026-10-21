@@ -165,13 +165,13 @@ test('slide metadata safely reduces overlapping markup to escaped plain text', (
  assert.equal(result.includes('content="Safe <script'), false);
 });
 
-test('article middleware changes only successful HTML GET requests and preserves fallback', async () => {
+test('article middleware changes only successful HTML GET requests and preserves unknown 404s', async () => {
  const run = async (path, response, method='GET') => onRequest({request:new Request(`https://www.rhyslindmark.com${path}`,{method}),next:async()=>response});
  const response=await run(`${articlePath}?slide=22`,new Response(slideHTML,{headers:{'content-type':'text/html','etag':'stale','content-length':'12'}}));
  assert((await response.text()).includes('share/22.jpg'));assert.equal(response.headers.get('etag'),null);assert.equal(response.headers.get('content-length'),null);
  const invalid=await run(`${articlePath}?slide=24`,new Response(slideHTML,{headers:{'content-type':'text/html'}}));assert.equal(await invalid.text(),slideHTML);
  const asset=await run(`${articlePath}charts.json?slide=22`,new Response('{"ok":true}',{headers:{'content-type':'application/json'}}));assert.equal(await asset.text(),'{"ok":true}');
- const fallback=await run('/missing-post',new Response('missing',{status:404}));assert.equal(fallback.status,301);assert.equal(fallback.headers.get('location'),'https://rhyslindmark.substack.com/p/missing-post');
+ const missing=await run('/missing-post',new Response('missing',{status:404}));assert.equal(missing.status,404);assert.equal(missing.headers.get('location'),null);
 });
 
 test('bubble proxy keeps dashboard, appendix, client APIs and preloads under its prefix', async () => {

@@ -3,9 +3,9 @@
 # take precedence over a matching static file/page (Cloudflare Pages behavior).
 # https://developers.cloudflare.com/pages/configuration/redirects/
 #
-# The old Ghost-slug -> Substack fallback now lives in functions/_middleware.js
-# instead of a static wildcard here, so it only fires on a real 404 and new
-# pages don't need a manual opt-out.
+# Verified legacy article redirects live in functions/_legacy/posts.js and
+# functions/_middleware.js. They apply only to missing pages on the main domain;
+# unknown paths and missing AI routes keep their local 404.
 
 # --- Resume: rewrite extension-less URL to the static PDF asset ---
 /resume /resume.pdf 200
