@@ -46,7 +46,7 @@ His potential is off the charts for a place that values what he has to offer.</e
 
 ## **What I'm looking for**
 
-* Ecosystem GTM, DevRel, PM, Chief of Staff, or Societal Impacts roles at an AI org
+* People, Ecosystem GTM, DevRel, Chief of Staff, or Societal Impacts roles at an AI org
 
 * Platform roles at a venture firm
 
