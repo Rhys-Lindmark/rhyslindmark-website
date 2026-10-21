@@ -39,7 +39,11 @@ const html = marked.parse(raw) as string;
 		};
 		tip.addEventListener('pointerenter', reveal);
 		tip.addEventListener('focusin', reveal);
-		tip.addEventListener('focusout', () => tip.removeAttribute('data-open'));
+		tip.addEventListener('focusout', (event) => {
+			if (!(event.relatedTarget instanceof Node) || !tip.contains(event.relatedTarget)) {
+				tip.removeAttribute('data-open');
+			}
+		});
 		window.addEventListener('resize', positionTooltip);
 	});
 	document.addEventListener('click', (event) => {
@@ -92,10 +96,14 @@ const html = marked.parse(raw) as string;
 		opacity: 0;
 	}
 	.work-with-me :global(.bio-tooltip:not([data-dismissed]):hover [role='tooltip']),
-	.work-with-me :global(.bio-tooltip:not([data-dismissed]) button:focus-visible + [role='tooltip']),
+	.work-with-me :global(.bio-tooltip:not([data-dismissed]):focus-within [role='tooltip']),
 	.work-with-me :global(.bio-tooltip[data-open] [role='tooltip']) {
 		visibility: visible;
 		opacity: 1;
+	}
+
+	.work-with-me :global([role='tooltip'] a) {
+		color: inherit;
 	}
 
 	.work-with-me :global(a) {
