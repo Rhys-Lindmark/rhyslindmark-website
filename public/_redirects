@@ -7,11 +7,6 @@
 # functions/_middleware.js. They apply only to missing pages on the main domain;
 # unknown paths and missing AI routes keep their local 404.
 
-# --- Resume: rewrite extension-less URL to the static PDF asset ---
-/resume /resume.pdf 200
-/resume/ /resume.pdf 200
-/resume.pdf /resume.pdf 200
-
 # --- Known non-post single-segment paths (there is no /p/all-posts on Substack) ---
 /all-posts/ / 302
 /all-posts / 302

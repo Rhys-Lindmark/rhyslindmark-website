@@ -1,0 +1,150 @@
+---
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { marked } from 'marked';
+import Layout from '../layouts/Layout.astro';
+
+// Renders straight from resume.md at the project root —
+// edit that file and refresh, no manual transcription needed.
+const mdPath = resolve(process.cwd(), 'resume.md');
+const raw = readFileSync(mdPath, 'utf-8').trim();
+// A role heading ends in "· <dates>"; split the dates off so they can sit right-aligned.
+const html = (marked.parse(raw) as string).replace(
+	/<h3([^>]*)>(.*) · ([^<]+)<\/h3>/g,
+	'<h3$1><span>$2</span><span class="dates">$3</span></h3>',
+);
+---
+
+<Layout title="Resume" description="Rhys Lindmark's resume: founder, chief of staff and ecosystem lead.">
+	<p class="resume-pdf"><a href="/resume.pdf">Download PDF</a></p>
+	<div class="resume" set:html={html} />
+</Layout>
+
+<style>
+	:global(main:has(.resume)) {
+		max-width: 46rem;
+	}
+
+	.resume-pdf {
+		font-family: var(--font-sans);
+		font-size: .85rem;
+		text-align: right;
+		margin: 0;
+	}
+
+	.resume :global(h1) {
+		margin: 0 0 .25rem;
+	}
+
+	.resume :global(h1 + p) {
+		font-family: var(--font-sans);
+		font-size: .9rem;
+		color: var(--muted);
+	}
+
+	.resume :global(h2) {
+		font-family: var(--font-sans);
+		font-size: .8rem;
+		font-weight: 600;
+		letter-spacing: .08em;
+		text-transform: uppercase;
+		color: var(--muted);
+		border-bottom: 1px solid var(--rule);
+		padding-bottom: .35rem;
+		margin: 2.5rem 0 1.25rem;
+	}
+
+	.resume :global(h3) {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 0 1rem;
+		font-size: 1.1rem;
+		margin: 1.75rem 0 .15rem;
+	}
+
+	.resume :global(h3 .dates) {
+		font-family: var(--font-sans);
+		font-size: .85rem;
+		color: var(--muted);
+		white-space: nowrap;
+		align-self: baseline;
+	}
+
+	.resume :global(h3 + p) {
+		margin-bottom: .5rem;
+	}
+
+	.resume :global(li) {
+		margin-bottom: .3rem;
+	}
+
+	.resume :global(a) {
+		text-decoration-color: #aaa;
+		text-decoration-thickness: 1px;
+	}
+
+	.resume :global(a:hover) {
+		text-decoration-color: currentColor;
+	}
+
+	@page {
+		size: letter;
+		margin: .5in .6in;
+	}
+
+	@media print {
+		:global(body) {
+			font-size: 9.5pt;
+			line-height: 1.4;
+		}
+
+		:global(main:has(.resume)) {
+			max-width: none;
+			padding: 0;
+		}
+
+		.resume-pdf {
+			display: none;
+		}
+
+		.resume :global(h1) {
+			font-size: 18pt;
+		}
+
+		.resume :global(h2) {
+			font-size: 8pt;
+			margin: 1rem 0 .5rem;
+		}
+
+		.resume :global(h3) {
+			font-size: 10.5pt;
+			margin: .75rem 0 0;
+			break-after: avoid;
+		}
+
+		.resume :global(h3 .dates) {
+			font-size: 8.5pt;
+		}
+
+		.resume :global(p) {
+			margin-bottom: .5rem;
+		}
+
+		.resume :global(ul) {
+			margin: 0;
+		}
+
+		.resume :global(li) {
+			margin-bottom: .1rem;
+		}
+
+		.resume :global(blockquote) {
+			margin: .75rem 0 0;
+		}
+
+		.resume :global(a) {
+			text-decoration: none;
+		}
+	}
+</style>
