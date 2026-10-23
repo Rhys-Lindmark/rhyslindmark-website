@@ -2,9 +2,9 @@
 
 rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · San Francisco, CA
 
-**4x founder, developer community leader & educator | Building ecosystems & teams at the AI frontier | Working towards abundant, safe intelligence**
-
-**Founded Roote (250+ fellows, $1M raised) · Head of Community at MIT (1000s of students) · Co-founded ETHDenver (1,500-hacker hackathon, $600k raised) · Ex-CTO (CS degree)**
+**4x founder, educator & developer community leader**
+**Founded the Roote Fellowship (250+ fellows), Head of Community at MIT, co-founded ETHDenver (1,500 hackers); ex-CTO.**
+**Building ecosystems & teams at the AI frontier · Working towards abundant, safe intelligence**
 
 ## Experience
 
