@@ -7,20 +7,20 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 *$5M+ raised · 25+ hires · 10,000+ community members reached<br>*
 *Building ecosystems & teams at the AI frontier · Working towards abundant, safe intelligence*
 
-## Experience
+## Work Experience
 
 ### Independent — San Francisco, CA · Jul 2026 – Present
 
 *Fractional Chief of Staff & Ecosystem Lead*
 
-- Contracting with [Renaissance Philanthropy](https://www.renaissancephilanthropy.org/) & [Topology Ventures](https://www.topology.vc/) to run 10+ events, develop AI database automations with Claude Code to save hundreds of hours, coach dozens of founders & fellows, and make high EV intros.
-- Shipping 10+ AI experiments like [AI 2026](https://www.rhyslindmark.com/posts/ai2026-pt1/), a 100-page report on AI's trajectory, & [RhysBot](https://ai.rhyslindmark.com/rhysbot/), a multimodal model fine-tuned on me.
+- Run 10+ events, coach dozens of founders and fellows, and make intros for orgs like [Renaissance Philanthropy](https://www.renaissancephilanthropy.org/) & [Topology Ventures](https://www.topology.vc/); built AI automations with Claude Code that save the teams tens of hours a week.
+- Shipping 10+ AI experiments, including [GiveBetter](https://ai.rhyslindmark.com/givebetter), an agentic database rating hundreds of nonprofits on cost-effectiveness; [AI 2026](https://www.rhyslindmark.com/posts/ai2026-pt1/), a 100-page report on AI's trajectory; and [RhysBot](https://ai.rhyslindmark.com/rhysbot/), an open-source model trained on a 22 MB personal corpus (nanochat from scratch + Qwen fine-tune).
 
 ### [Roote](https://www.roote.co/) — San Francisco, CA · Jan 2022 – May 2026
 
 *Founder & Executive Director*
 
-- Founded a 501(c)(3), raised $1M from five funders, built a startup studio team, then refocused on education.
+- Founded a 501(c)(3) and raised $1M from five funders; built and ran a startup studio, then narrowed strategy to education, our highest-impact program.
 - Launched the Roote Fellowship & scaled to 250+ ambitious young fellows across 9 cohorts.<br>
   Early fellow successes: Daylight Computer, The Residency, White House OSTP, 3 YC, 10+ full-rides to T20 colleges.
 - Launched the How Everything Evolved YouTube channel & grew it to 89 videos, 17k subs, and 700k views.
@@ -39,17 +39,17 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 
 - Built my Ethereum network from scratch (founders, protocol teams and VCs) to launch the flagship hackathon in a few months: 1,500 hackers, 100+ speakers and $600K in sponsorships.
 - Ran the hackathon end to end with a team of 20 organizers and volunteers, owning the budget & run of show
-- Helped expand Ethereum from 1k to 5k developers by helping various community programs: MC'ing for ETHGlobal, university ambassador programs, hosting a podcast, and helping run the Systems & Society track at Devcon
+- Helped expand Ethereum from 1k to 5k developers by helping various community programs: MC'ing for ETHGlobal, empowering university ambassador programs, hosting a podcast, and running the Systems & Society track at Devcon
 
 ### [Edify Technologies](https://app.musiquest.com/welcome) — Denver, CO · May 2012 – Apr 2017
 
 *Co-Founder & CTO*
 
 - Grew a college summer project into a startup—hired and led an engineering & GTM team, which shipped four music apps with 300,000+ downloads, 2 million+ songs created, and features by Google & Apple.
-- Synthesized 500+ customer conversations & Mixpanel analytics data to ship dozens of updates on a product roadmap
+- Synthesized 500+ customer conversations, user feedback and Mixpanel data to ship dozens of product roadmap updates.
 - Earned $900,000 in NSF grants, raised $550,000 from VCs, and selected for the 2015 Techstars Boulder class.
 
-## Education & Other
+## Education
 
 ### Carleton College — Northfield, MN · Class of 2013
 
@@ -63,4 +63,4 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 > “How you do anything is how you do everything.”<br>
 > “The frontier is closer than you think.”
 
-Skills: Developer community · Developer relations · Hackathons, meetups & workshops · Community & fellowship programs · Ecosystem partnerships · Event budgets & operations · Content & public speaking · AI agents, Codex & Claude Code · Computer science
+Skills: Developer community · Developer relations · Hackathons, meetups & workshops · Community & fellowship programs · Ecosystem partnerships · Event budgets & operations · Content & public speaking · AI agents, LLMs, Codex & Claude Code · Computer science
