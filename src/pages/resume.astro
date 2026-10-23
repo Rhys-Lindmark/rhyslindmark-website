@@ -46,14 +46,6 @@ const html = (marked.parse(raw) as string)
 		color: var(--muted);
 	}
 
-	.resume :global(header + p) {
-		font-style: italic;
-	}
-
-	.resume :global(header + p strong) {
-		font-weight: 400;
-	}
-
 	.resume :global(h2) {
 		display: flex;
 		align-items: center;
@@ -102,11 +94,6 @@ const html = (marked.parse(raw) as string)
 
 	.resume :global(h3 + p) {
 		margin-bottom: .5rem;
-	}
-
-	.resume :global(h3 + p strong) {
-		font-style: italic;
-		font-weight: 400;
 	}
 
 	.resume :global(li),
