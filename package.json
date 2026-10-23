@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "resume:pdf": "astro build && node scripts/build-resume-pdf.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

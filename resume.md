@@ -1,6 +1,6 @@
 # Rhys Lindmark
 
-rhyslindmark@gmail.com · San Francisco, CA
+rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · San Francisco, CA
 
 **Energizer bunny & founder type who likes captaining teams to do great work at the frontier.**
 

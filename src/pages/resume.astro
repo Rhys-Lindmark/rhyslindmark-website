@@ -8,11 +8,14 @@ import Layout from '../layouts/Layout.astro';
 // edit that file and refresh, no manual transcription needed.
 const mdPath = resolve(process.cwd(), 'resume.md');
 const raw = readFileSync(mdPath, 'utf-8').trim();
-// A role heading ends in "· <dates>"; split the dates off so they can sit right-aligned.
-const html = (marked.parse(raw) as string).replace(
-	/<h3([^>]*)>(.*) · ([^<]+)<\/h3>/g,
-	'<h3$1><span>$2</span><span class="dates">$3</span></h3>',
-);
+// A role heading reads "Org — Location · Dates"; split it so each part can be styled.
+// The name and the contact line after it are wrapped so they can share a row.
+const html = (marked.parse(raw) as string)
+	.replace(/<h3([^>]*)>(.*) · ([^<]+)<\/h3>/g, (_, attrs, place, dates) => {
+		const [org, loc = ''] = place.split(' — ');
+		return `<h3${attrs}><span class="org">${org}</span><span class="loc">${loc}</span><span class="dates">${dates}</span></h3>`;
+	})
+	.replace(/<h1([^>]*)>[\s\S]*?<\/h1>\s*<p>[\s\S]*?<\/p>/, '<header>$&</header>');
 ---
 
 <Layout title="Resume" description="Rhys Lindmark's resume: founder, chief of staff and ecosystem lead.">
@@ -33,50 +36,105 @@ const html = (marked.parse(raw) as string).replace(
 	}
 
 	.resume :global(h1) {
+		font-size: 2rem;
 		margin: 0 0 .25rem;
 	}
 
-	.resume :global(h1 + p) {
+	.resume :global(header p) {
 		font-family: var(--font-sans);
 		font-size: .9rem;
 		color: var(--muted);
 	}
 
+	.resume :global(header + p) {
+		font-style: italic;
+	}
+
+	.resume :global(header + p strong) {
+		font-weight: 400;
+	}
+
 	.resume :global(h2) {
+		display: flex;
+		align-items: center;
+		gap: .75rem;
 		font-family: var(--font-sans);
-		font-size: .8rem;
+		font-size: .75rem;
 		font-weight: 600;
-		letter-spacing: .08em;
+		letter-spacing: .12em;
 		text-transform: uppercase;
-		color: var(--muted);
-		border-bottom: 1px solid var(--rule);
-		padding-bottom: .35rem;
-		margin: 2.5rem 0 1.25rem;
+		margin: 2.5rem 0 1rem;
+	}
+
+	.resume :global(h2::after) {
+		content: '';
+		flex: 1;
+		border-top: 1px solid var(--rule);
 	}
 
 	.resume :global(h3) {
 		display: flex;
 		flex-wrap: wrap;
-		justify-content: space-between;
-		gap: 0 1rem;
+		align-items: baseline;
 		font-size: 1.1rem;
-		margin: 1.75rem 0 .15rem;
+		margin: 1.75rem 0 .1rem;
+	}
+
+	.resume :global(h3 .org) {
+		font-weight: 600;
+	}
+
+	.resume :global(h3 .loc) {
+		margin-left: .5em;
+		color: var(--muted);
+		font-size: .9em;
 	}
 
 	.resume :global(h3 .dates) {
+		margin-left: auto;
+		padding-left: 1rem;
 		font-family: var(--font-sans);
-		font-size: .85rem;
+		font-size: .8rem;
+		font-variant-numeric: tabular-nums;
 		color: var(--muted);
 		white-space: nowrap;
-		align-self: baseline;
 	}
 
 	.resume :global(h3 + p) {
 		margin-bottom: .5rem;
 	}
 
+	.resume :global(h3 + p strong) {
+		font-style: italic;
+		font-weight: 400;
+	}
+
+	.resume :global(li),
+	.resume :global(p) {
+		text-wrap: pretty;
+	}
+
 	.resume :global(li) {
 		margin-bottom: .3rem;
+	}
+
+	.resume :global(li::marker) {
+		color: var(--muted);
+	}
+
+	.resume :global(p:has(+ blockquote)) {
+		font-family: var(--font-sans);
+		font-size: .85rem;
+		color: var(--muted);
+		text-align: center;
+		margin-top: 1.5rem;
+	}
+
+	.resume :global(blockquote) {
+		border: 0;
+		padding: 0;
+		text-align: center;
+		font-style: italic;
 	}
 
 	.resume :global(a) {
@@ -88,63 +146,101 @@ const html = (marked.parse(raw) as string).replace(
 		text-decoration-color: currentColor;
 	}
 
+	/* Zero page margins leave Chrome no room for its date/URL header and footer;
+	   main's padding supplies the margin instead. */
 	@page {
 		size: letter;
-		margin: .5in .6in;
+		margin: 0;
 	}
 
 	@media print {
 		:global(body) {
-			font-size: 9.5pt;
+			font-size: 9.8pt;
 			line-height: 1.4;
 		}
 
 		:global(main:has(.resume)) {
 			max-width: none;
-			padding: 0;
+			padding: .5in .65in;
 		}
 
 		.resume-pdf {
 			display: none;
 		}
 
+		.resume :global(header) {
+			display: flex;
+			justify-content: space-between;
+			align-items: baseline;
+			border-bottom: 1.5px solid var(--text);
+			padding-bottom: .4rem;
+			margin-bottom: .55rem;
+		}
+
 		.resume :global(h1) {
-			font-size: 18pt;
+			font-size: 23pt;
+			margin: 0;
+		}
+
+		.resume :global(header p) {
+			font-size: 8.5pt;
+			margin: 0;
+		}
+
+		.resume :global(header + p) {
+			font-size: 10.5pt;
+			margin-bottom: .2rem;
 		}
 
 		.resume :global(h2) {
-			font-size: 8pt;
-			margin: 1rem 0 .5rem;
+			font-size: 7.5pt;
+			margin: 1.4rem 0 .15rem;
 		}
 
 		.resume :global(h3) {
-			font-size: 10.5pt;
-			margin: .75rem 0 0;
+			font-size: 11pt;
+			margin: .85rem 0 .05rem;
 			break-after: avoid;
 		}
 
 		.resume :global(h3 .dates) {
-			font-size: 8.5pt;
+			font-size: 8pt;
 		}
 
 		.resume :global(p) {
-			margin-bottom: .5rem;
+			margin-bottom: .35rem;
+		}
+
+		.resume :global(h3 + p) {
+			margin-bottom: .1rem;
 		}
 
 		.resume :global(ul) {
 			margin: 0;
+			padding-left: 1.1rem;
 		}
 
 		.resume :global(li) {
-			margin-bottom: .1rem;
+			margin-bottom: .12rem;
+		}
+
+		.resume :global(p:has(+ blockquote)) {
+			font-size: 8pt;
+			margin-top: .8rem;
 		}
 
 		.resume :global(blockquote) {
-			margin: .75rem 0 0;
+			margin: .5rem 0 0;
 		}
 
-		.resume :global(a) {
+		.resume :global(h3 .org a) {
 			text-decoration: none;
+		}
+
+		/* Keep links visible in the PDF without the screen's heavier underline. */
+		.resume :global(a) {
+			text-decoration-color: #c4c4c4;
+			text-underline-offset: 2px;
 		}
 	}
 </style>

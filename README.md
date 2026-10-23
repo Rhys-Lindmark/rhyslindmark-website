@@ -30,6 +30,7 @@ npm run dev       # localhost:4321
 | `npm run dev`     | Start local dev server                       |
 | `npm run build`   | Build production site to `./dist/`           |
 | `npm run preview` | Preview the production build locally         |
+| `npm run resume:pdf` | Rebuild and print `/resume` to `public/resume.pdf` (needs Chrome) |
 | `npm run astro`   | Run any Astro CLI command                    |
 
 ## Deployment
