@@ -4,7 +4,7 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 
 **4x founder, developer community leader, and educator with 15+ years of experience building & growing technical ecosystems from scratch.** <br>
 
-*$5M+ raised, 10,000+ community members reached<br>*
+*$5M+ raised · 10,000+ community members reached<br>*
 *Building ecosystems & teams at the AI frontier · Working towards abundant, safe intelligence*
 
 ## Experience
@@ -13,8 +13,8 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 
 *Fractional Chief of Staff & Ecosystem Lead*
 
-- Contracting with [Renaissance Philanthropy](https://www.renaissancephilanthropy.org/) & [Topology Ventures](https://www.topology.vc/) to run 10+ events, develop AI database automations to save hundreds of hours of time, coach dozens of founders & fellows, and make high EV intros.
-- Shipping 10+ AI experiments like [AI 2026](https://www.rhyslindmark.com/posts/ai2026-pt1/), a 100-page report, & [RhysBot](https://ai.rhyslindmark.com/rhysbot/), a multimodal model fine-tuned on me.
+- Contracting with [Renaissance Philanthropy](https://www.renaissancephilanthropy.org/) & [Topology Ventures](https://www.topology.vc/) to run 10+ events, develop AI database automations with Claude Code to save hundreds of hours, coach dozens of founders & fellows, and make high EV intros.
+- Shipping 10+ AI experiments like [AI 2026](https://www.rhyslindmark.com/posts/ai2026-pt1/), a 100-page report on AI's trajectory, & [RhysBot](https://ai.rhyslindmark.com/rhysbot/), a multimodal model fine-tuned on me.
 
 ### [Roote](https://www.roote.co/) — San Francisco, CA · Jan 2022 – May 2026
 
@@ -38,13 +38,16 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 
 *Co-Founder & Ecosystem Lead*
 
-- Created the flagship ETH event in just a few months—built a network on the tech frontier to attract top engineering talent & VCs, drawing 1,500 hackers, $600,000 in sponsorships, and 100+ speakers. Ran the event end to end.
+- Launched the flagship Ethereum hackathon in a few months: built a network on the tech frontier to attract 1,500 hackers, $600,000 in protocol & VC sponsorships, 100+ speakers
+- Ran the hackathon end to end with a team of 20 organizers and volunteers, owning the run of show
+- Helped expand Ethereum from 1k to 5k developers by helping various community programs: MC'ing for ETHGlobal, running a podcast, and helping run the Systems & Society track at Devcon
 
 ### [Edify Technologies](https://app.musiquest.com/welcome) — Denver, CO · May 2012 – Apr 2017
 
 *Co-Founder & CTO*
 
 - Grew a college summer project into a startup—hired and led an engineering & GTM team, which shipped four music apps with 300,000+ downloads, 2 million+ songs created, and features by Google & Apple.
+- Synthesized 500+ customer conversations & Mixpanel analytics data to ship dozens of updates on a product roadmap
 - Earned $900,000 in NSF grants, raised $550,000 from VCs, and selected for the 2015 Techstars Boulder class.
 
 ## Education & Other
@@ -60,3 +63,5 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 
 > “How you do anything is how you do everything.”<br>
 > “The frontier is closer than you think.”
+
+Skills: Developer community · Developer relations · Hackathons, meetups & workshops · Community & fellowship programs · Ecosystem partnerships · Event budgets & operations · Content & public speaking · AI agents, Codex & Claude Code · Computer science
