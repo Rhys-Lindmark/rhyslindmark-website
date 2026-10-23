@@ -4,7 +4,7 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 
 **4x founder, developer community leader, and educator with 15+ years of experience building & growing technical ecosystems from scratch.** <br>
 
-*$5M+ raised · 10,000+ community members reached<br>*
+*$5M+ raised · 25+ hires · 10,000+ community members reached<br>*
 *Building ecosystems & teams at the AI frontier · Working towards abundant, safe intelligence*
 
 ## Experience
@@ -21,26 +21,25 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 *Founder & Executive Director*
 
 - Founded a 501(c)(3), raised $1M from five funders, built a startup studio team, then refocused on education.
-- Launched the Roote Fellowship & scaled to 250+ ambitious young fellows.<br>
+- Launched the Roote Fellowship & scaled to 250+ ambitious young fellows across 9 cohorts.<br>
   Early fellow successes: Daylight Computer, The Residency, White House OSTP, 3 YC, 10+ full-rides to T20 colleges.
 - Launched the How Everything Evolved YouTube channel & grew it to 89 videos, 17k subs, and 700k views.
 
 ### [MIT Media Lab, Digital Currency Initiative](https://dci.mit.edu/) — Cambridge, MA · Sep 2018 – Dec 2019
 
-*Head of Community & Societal Impact (served as Executive Director’s Chief of Staff)*
+*Head of Community & Societal Impact*
 
-- Co-led fundraising ($2M annually, +25%) and ran org operations (offsites, OKRs).
-- Initiated and co-taught the first-ever class on Blockchain Ethics to 20 graduate students from MIT and Harvard.
-- Founded an academic journal with MIT Press, then hired and supervised a managing editor.
-- Grew community by running four 500-person events; started newsletter & X from scratch to 3,000+ subscribers.
+- Founded the Cryptoeconomic Systems journal (MIT Press) and its conference, a bitcoin security initiative, and MIT’s first Blockchain Ethics class (co-taught to 20 MIT and Harvard grad students).
+- Grew the developer, research and student community: four 500-person events, weekly research meetings, and a newsletter and X account (0 → 3,000+ subscribers); helped run the MIT Bitcoin Club and student blockchain and Effective Altruism clubs.
+- Served as de facto chief of staff to the Executive Director: ran org operations (offsites, OKRs, funder comms) and co-led $2M/yr in fundraising (+25%).
 
 ### [ETHDenver](https://ethdenver.com/) — Denver, CO · Jun 2017 – Aug 2018
 
 *Co-Founder & Ecosystem Lead*
 
-- Launched the flagship Ethereum hackathon in a few months: built a network on the tech frontier to attract 1,500 hackers, $600,000 in protocol & VC sponsorships, 100+ speakers
-- Ran the hackathon end to end with a team of 20 organizers and volunteers, owning the run of show
-- Helped expand Ethereum from 1k to 5k developers by helping various community programs: MC'ing for ETHGlobal, running a podcast, and helping run the Systems & Society track at Devcon
+- Built my Ethereum network from scratch (founders, protocol teams and VCs) to launch the flagship hackathon in a few months: 1,500 hackers, 100+ speakers and $600K in sponsorships.
+- Ran the hackathon end to end with a team of 20 organizers and volunteers, owning the budget & run of show
+- Helped expand Ethereum from 1k to 5k developers by helping various community programs: MC'ing for ETHGlobal, university ambassador programs, hosting a podcast, and helping run the Systems & Society track at Devcon
 
 ### [Edify Technologies](https://app.musiquest.com/welcome) — Denver, CO · May 2012 – Apr 2017
 
