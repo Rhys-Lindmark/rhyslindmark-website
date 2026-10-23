@@ -55,6 +55,8 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 
 *B.A. in Computer Science, Magna Cum Laude*
 
+## Other
+
 [Reading](https://www.goodreads.com/review/list/64812667-rhys-lindmark?shelf=read&sort=rating&view=table&ref=rhyslindmark.com). I love reading. I read dozens of books each year. I remember their ideas with flashcards. I’ve made 20k thus far.<br>
 [Writing](https://www.rhyslindmark.com/). I love writing. My blog posts have over 100,000 views. I am turning How Everything Evolved into a book.
 
