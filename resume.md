@@ -63,6 +63,9 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 > “How you do anything is how you do everything.”<br>
 > “The frontier is closer than you think.”
 
+> "Rhys is entrepreneurial and creative, with P99 general intelligence, P99 people-person-ness, and P99 low ego. His potential is off the charts for a place that values what he has to offer." – Michael, Lead Product Manager
+
+
 Skills: Developer relations & community · Hackathons, meetups & workshops · Community & fellowship programs · Ecosystem partnerships · Content & public speaking · AI agents & LLMs (Claude Code, Codex) · Founder coaching · Hiring & onboarding · Budgets & fundraising · OKRs, offsites & board communications
 
 [Pangram](https://www.pangram.com/history/2467d360-3391-4495-92a5-836e5fca0f93) AI detector: 100% human-written
