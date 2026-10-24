@@ -7,7 +7,7 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 *$5M+ raised | 25+ hires | 10,000+ community members reached<br>*
 *Building ecosystems & teams at the AI frontier | Working towards abundant, safe intelligence*<br>
 
-"Rhys is entrepreneurial and creative, with P99 general intelligence, P99 people-person-ness, and P99 low ego. His potential is off the charts for a place that values what he has to offer." – Michael, Lead PM at Uber
+*"Rhys is entrepreneurial and creative, with P99 general intelligence, P99 people-person-ness, and P99 low ego. His potential is off the charts for a place that values what he has to offer."* – Michael, Lead PM at Uber
 
 ## Work Experience
 
