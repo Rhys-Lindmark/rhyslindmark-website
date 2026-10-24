@@ -119,6 +119,7 @@ const html = (marked.parse(raw) as string)
 	}
 
 	.resume :global([data-section='other'] > p) {
+		text-wrap: balance;
 		font-family: var(--font-sans);
 		font-size: .85rem;
 		color: var(--muted);
@@ -149,13 +150,13 @@ const html = (marked.parse(raw) as string)
 
 	@media print {
 		:global(body) {
-			font-size: 9.8pt;
-			line-height: 1.4;
+			font-size: 9pt;
+			line-height: 1.28;
 		}
 
 		:global(main:has(.resume)) {
 			max-width: none;
-			padding: .5in .65in;
+			padding: .28in .58in 0;
 		}
 
 		.resume-pdf {
@@ -168,11 +169,11 @@ const html = (marked.parse(raw) as string)
 			align-items: baseline;
 			border-bottom: 1.5px solid var(--text);
 			padding-bottom: .4rem;
-			margin-bottom: .55rem;
+			margin-bottom: .45rem;
 		}
 
 		.resume :global(h1) {
-			font-size: 23pt;
+			font-size: 19.5pt;
 			margin: 0;
 		}
 
@@ -181,19 +182,25 @@ const html = (marked.parse(raw) as string)
 			margin: 0;
 		}
 
+		/* The intro lines between the header and the first section. */
+		.resume > :global(p) {
+			font-size: 8.8pt;
+			margin-bottom: .25rem;
+		}
+
 		.resume :global(header + p) {
-			font-size: 10.5pt;
+			font-size: 9.8pt;
 			margin-bottom: .2rem;
 		}
 
 		.resume :global(h2) {
 			font-size: 7.5pt;
-			margin: 1.4rem 0 .15rem;
+			margin: .75rem 0 .1rem;
 		}
 
 		.resume :global(h3) {
-			font-size: 11pt;
-			margin: .85rem 0 .05rem;
+			font-size: 10.4pt;
+			margin: .45rem 0 .05rem;
 			break-after: avoid;
 		}
 
@@ -211,15 +218,22 @@ const html = (marked.parse(raw) as string)
 		}
 
 		.resume :global(li) {
-			margin-bottom: .12rem;
+			margin-bottom: 0;
 		}
 
 		.resume :global([data-section='other'] > p) {
-			font-size: 8pt;
+			font-size: 7.6pt;
+			margin-bottom: .2rem;
 		}
 
 		.resume :global(blockquote) {
-			margin: .5rem 0 0;
+			margin: .15rem 0;
+			font-size: 8.4pt;
+		}
+
+		/* Run the two mottos side by side to save a line on the page. */
+		.resume :global([data-section='other'] blockquote br) {
+			display: none;
 		}
 
 		.resume :global(h3 .org a) {
