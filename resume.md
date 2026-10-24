@@ -56,11 +56,9 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 
 ## Other
 
-[Reading](https://www.goodreads.com/review/list/64812667-rhys-lindmark?shelf=read&sort=rating&view=table&ref=rhyslindmark.com). I love reading. I read dozens of books each year. I remember their ideas with flashcards. I’ve made 20k thus far.<br>
-[Writing](https://rhyslindmark.substack.com/). I love writing. My blog posts have over 100,000 views. I am turning How Everything Evolved into a book.
-
+250+ books read · 20k+ Anki cards · 200+ blog posts <br>
 1,000+ miles backpacked · 1,000+ days of meditation <br>
-3x frisbee captain & champion · 15k+ albums listened to
+5 group houses · 3x frisbee captain & champion · 15k+ albums listened to
 
 > “How you do anything is how you do everything.”<br>
 > “The frontier is closer than you think.”
