@@ -60,11 +60,12 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 [Reading](https://www.goodreads.com/review/list/64812667-rhys-lindmark?shelf=read&sort=rating&view=table&ref=rhyslindmark.com). I love reading. I read dozens of books each year. I remember their ideas with flashcards. I’ve made 20k thus far.<br>
 [Writing](https://www.rhyslindmark.com/). I love writing. My blog posts have over 100,000 views. I am turning How Everything Evolved into a book.
 
-1,000+ miles backpacked · 1,000+ days of meditation · 3x frisbee captain & champion · 15k+ albums listened to
+1,000+ miles backpacked · 1,000+ days of meditation <br>
+3x frisbee captain & champion · 15k+ albums listened to
 
 > “How you do anything is how you do everything.”<br>
 > “The frontier is closer than you think.”
 
-Skills: Developer community · Developer relations · Hackathons, meetups & workshops · Community & fellowship programs · Ecosystem partnerships · Event budgets & operations · Content & public speaking · AI agents, LLMs, Codex & Claude Code · Computer science · Founder coaching · Hiring & onboarding · Budgets & fundraising · OKRs, planning & offsites · Board & funder communications
+Skills: Developer relations & community · Hackathons, meetups & workshops · Community & fellowship programs · Ecosystem partnerships · Content & public speaking · AI agents & LLMs (Claude Code, Codex) · Founder coaching · Hiring & onboarding · Budgets & fundraising · OKRs, offsites & board communications
 
 [Pangram](https://www.pangram.com/history/2467d360-3391-4495-92a5-836e5fca0f93) AI detector: 100% human-written
