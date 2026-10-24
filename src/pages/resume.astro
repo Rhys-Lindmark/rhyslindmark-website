@@ -10,7 +10,12 @@ const mdPath = resolve(process.cwd(), 'resume.md');
 const raw = readFileSync(mdPath, 'utf-8').trim();
 // A role heading reads "Org — Location · Dates"; split it so each part can be styled.
 // The name and the contact line after it are wrapped so they can share a row.
+// Each "## Section" and what follows it becomes <section data-section="slug">, so a whole section can be styled.
 const html = (marked.parse(raw) as string)
+	.replace(/<h2([^>]*)>([\s\S]*?)<\/h2>([\s\S]*?)(?=<h2|$)/g, (_, attrs, title, body) => {
+		const slug = title.replace(/<[^>]+>/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+		return `<section data-section="${slug}"><h2${attrs}>${title}</h2>${body}</section>`;
+	})
 	.replace(/<h3([^>]*)>(.*) · ([^<]+)<\/h3>/g, (_, attrs, place, dates) => {
 		const [org, loc = ''] = place.split(' — ');
 		return `<h3${attrs}><span class="org">${org}</span><span class="loc">${loc}</span><span class="dates">${dates}</span></h3>`;
@@ -108,17 +113,15 @@ const html = (marked.parse(raw) as string)
 		color: var(--muted);
 	}
 
-	/* The closing lines around the quotes (stats, skills, Pangram) are small print. */
-	.resume :global(p:has(+ blockquote)),
-	.resume :global(blockquote ~ p) {
-		font-family: var(--font-sans);
-		font-size: .85rem;
-		color: var(--muted);
+	/* Everything under "## Other" is centered small print; quotes there keep their italic style. */
+	.resume :global([data-section='other']) {
 		text-align: center;
 	}
 
-	.resume :global(p:has(+ blockquote)) {
-		margin-top: 1.5rem;
+	.resume :global([data-section='other'] > p) {
+		font-family: var(--font-sans);
+		font-size: .85rem;
+		color: var(--muted);
 	}
 
 	.resume :global(blockquote) {
@@ -211,13 +214,8 @@ const html = (marked.parse(raw) as string)
 			margin-bottom: .12rem;
 		}
 
-		.resume :global(p:has(+ blockquote)),
-		.resume :global(blockquote ~ p) {
+		.resume :global([data-section='other'] > p) {
 			font-size: 8pt;
-		}
-
-		.resume :global(p:has(+ blockquote)) {
-			margin-top: .8rem;
 		}
 
 		.resume :global(blockquote) {
