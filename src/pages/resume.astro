@@ -85,8 +85,7 @@ const html = (marked.parse(raw) as string)
 	.resume :global(h3 .dates) {
 		margin-left: auto;
 		padding-left: 1rem;
-		font-family: var(--font-sans);
-		font-size: .8rem;
+		font-size: .9em;
 		font-variant-numeric: tabular-nums;
 		color: var(--muted);
 		white-space: nowrap;
@@ -188,10 +187,6 @@ const html = (marked.parse(raw) as string)
 			font-size: 11pt;
 			margin: .85rem 0 .05rem;
 			break-after: avoid;
-		}
-
-		.resume :global(h3 .dates) {
-			font-size: 8pt;
 		}
 
 		.resume :global(p) {
