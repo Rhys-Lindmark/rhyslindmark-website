@@ -39,13 +39,13 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 
 - Built my Ethereum network from scratch (founders, protocol teams and VCs) to launch the flagship hackathon in a few months: 1,500 hackers, 100+ speakers & workshops, and $600K in sponsors & partnerships.
 - Ran the hackathon end to end with a team of 20 organizers and volunteers, owning the budget & run of show.
-- Helped drive Ethereum developer adoption from 1k to 5k engineers by helping various community programs: MC'ing & speaking for ETHGlobal, empowering university ambassador programs, hosting a podcast, running Telegram & Discord channels, and leading the Systems & Society track at Devcon.
+- Helped drive Ethereum developer adoption from 1k to 5k engineers through various community programs: MC'ing & speaking for ETHGlobal, empowering university ambassador programs, hosting a podcast, running Telegram & Discord channels, and leading the Systems & Society track at Devcon.
 
 ### [Edify Technologies](https://app.musiquest.com/welcome) — Denver, CO · May 2012 – Apr 2017
 
 *Co-Founder & CTO*
 
-- Grew a college summer project into a startup—hired and led a cross-functional engineering & GTM team, which shipped four music apps with 300,000+ downloads, 2 million+ songs created, and features by Google & Apple.
+- Grew a college summer project into a startup—hired and led a cross-functional engineering, marketing & GTM team, which shipped four music apps with 300,000+ downloads, 2 million+ songs created, and features by Google & Apple.
 - Synthesized 500+ customer conversations, user feedback and Mixpanel data to ship dozens of product roadmap updates.
 - Earned $900,000 in NSF grants, raised $550,000 from VCs, and selected for the 2015 Techstars Boulder accelerator class.
 
@@ -66,3 +66,5 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 > “The frontier is closer than you think.”
 
 Skills: Developer community · Developer relations · Hackathons, meetups & workshops · Community & fellowship programs · Ecosystem partnerships · Event budgets & operations · Content & public speaking · AI agents, LLMs, Codex & Claude Code · Computer science
+
+[Pangram](https://www.pangram.com/history/2467d360-3391-4495-92a5-836e5fca0f93) AI detector: 100% human-written
