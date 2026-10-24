@@ -21,8 +21,7 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · S
 *Founder & Executive Director*
 
 - Founded a 501(c)(3) and raised $1M from five funders; managed a $250K/yr budget and ran board meetings & funder updates; built and hired a 10-person startup studio, then narrowed strategy to education.
-- Launched the Roote Fellowship & scaled to 250+ ambitious young fellows across 9 cohorts.<br>
-  Early fellow successes: Daylight Computer, The Residency accelerator, White House OSTP, The Curve Conference, 3 YC, 10+ full-rides to T20 colleges.
+- Launched the Roote Fellowship & scaled to 250+ ambitious young fellows across 9 cohorts. Early fellow successes: Daylight Computer, The Residency accelerator, White House OSTP, The Curve Conference, 3 YC, 10+ full-rides to T20 colleges.
 - Launched the How Everything Evolved YouTube channel & grew it to 89 videos, 17k subs, and 700k views.
 
 ### [MIT Media Lab, Digital Currency Initiative](https://dci.mit.edu/) — Cambridge, MA · Sep 2018 – Dec 2019
