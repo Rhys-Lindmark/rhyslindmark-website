@@ -108,11 +108,16 @@ const html = (marked.parse(raw) as string)
 		color: var(--muted);
 	}
 
-	.resume :global(p:has(+ blockquote)) {
+	/* The closing lines around the quotes (stats, skills, Pangram) are small print. */
+	.resume :global(p:has(+ blockquote)),
+	.resume :global(blockquote ~ p) {
 		font-family: var(--font-sans);
 		font-size: .85rem;
 		color: var(--muted);
 		text-align: center;
+	}
+
+	.resume :global(p:has(+ blockquote)) {
 		margin-top: 1.5rem;
 	}
 
@@ -206,8 +211,12 @@ const html = (marked.parse(raw) as string)
 			margin-bottom: .12rem;
 		}
 
-		.resume :global(p:has(+ blockquote)) {
+		.resume :global(p:has(+ blockquote)),
+		.resume :global(blockquote ~ p) {
 			font-size: 8pt;
+		}
+
+		.resume :global(p:has(+ blockquote)) {
 			margin-top: .8rem;
 		}
 
