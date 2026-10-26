@@ -1340,17 +1340,17 @@
     "data/search/zy.json": "4654c24e5b670b1026fb91294cd57548a83f5d57e0046d091e37c59ea5d248a5",
     "data/search/zz.json": "e14a2947176043d7bb998a4c1ab92066fe0866bb0cb53d9fd8da1c6baf111675",
     "dates.js": "4a2d917caa0f77d4eab9848b9d6db1d46254592db697b70c50336945c9e3c40a",
-    "index.html": "564b230e389589eda4a2f4074d36f0d867fb237d62a0b484ff56144633798940",
+    "index.html": "4cba72b557fc98916f32fd5cab35890fb8701ecd6b044af00f73edf18561035b",
     "library-client.js": "f07892721bce05b8239c9ae1535889ca17b5894775dcc6ac6d5a7008616af4aa",
     "library-worker.js": "b1d02189ee1becc3f78a9f5ee107b50693f0311e90f1308569c47ae66a0fe907",
     "pdf.js": "af6be22f01220eaf72c678c1ae18254466b8e81a88bdb874c09eb4f3a59df2fd",
     "print.js": "bc2a043f83d8a549079703fd2b45b536b95af9dd1326aefb5a94c0cd28e20cc8",
     "quotes.json": "c27a1f66f2ff00a5cc5c05543a7de3d825b68fe9632a25b3ff44517215869d34",
-    "style.css": "b6285942e4e25ad160324a0f347f5eedde74fc7bfedd00eb7794004e0e8bb719",
+    "style.css": "d420adb6fef97ccc6bff0e751bfc53ac6cac2a4c83e8e5f5b2df1778a52264fd",
     "vendor/jspdf-LICENSE.txt": "dc388ec35ff463288cdde3588a36fd4ed12a45deff053243b37309acc9ef583b",
     "vendor/jspdf.umd.min.js": "0e2ca540064bc064b338700e82e1507772297a5ebf66bb85b83d7890abfa5131"
   },
   "generated_by": "commonplace-static-export-v1",
-  "source_commit": "1082690b3caf738359c7de79a14ae2e430e74588",
+  "source_commit": "84e2eb6c35e50f74073792b0e429976ce509bf33",
   "source_repository": "https://github.com/Rhys-Lindmark/commonplace"
 }

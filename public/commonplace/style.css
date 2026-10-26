@@ -20,3 +20,6 @@
 .date-sort-note{font-size:9px;line-height:1.7;color:#718064;margin:0 0 14px}.author-details span{line-height:1.6}
 
 .shelf-heading-actions{display:flex;flex-wrap:wrap;gap:10px}
+
+.search-row>.add-quote{flex:none;white-space:nowrap;min-height:43px;padding:10px 12px;font-size:11px}
+@media(max-width:600px){.search-row{flex-wrap:wrap}.search-row>.search-wrap{flex-basis:100%}.search-row>select{flex:1;width:auto}.search-row>.add-quote{margin-left:auto}}
