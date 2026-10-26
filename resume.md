@@ -1,6 +1,6 @@
 # Rhys Lindmark
 
-rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · San Francisco, CA
+rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · [LinkedIn](https://www.linkedin.com/in/rhyslindmark) · [X](https://x.com/RhysLindmark) · San Francisco, CA
 
 **4x founder, developer community leader, and educator with 15+ years of experience building technical ecosystems & teams from scratch.** <br>
 
