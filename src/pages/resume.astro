@@ -209,7 +209,7 @@ const html = (marked.parse(raw) as string)
 			align-items: baseline;
 			border-bottom: 1.5px solid var(--text);
 			padding-bottom: .4rem;
-			margin-bottom: .45rem;
+			margin-bottom: .75rem;
 		}
 
 		.resume :global(h1) {
@@ -232,17 +232,22 @@ const html = (marked.parse(raw) as string)
 		/* The intro lines between the header and the first section. */
 		.resume > :global(p) {
 			font-size: 8.8pt;
-			margin-bottom: .25rem;
+			margin-bottom: .6rem;
 		}
 
 		.resume :global(header + p) {
 			font-size: 9.8pt;
-			margin-bottom: .2rem;
+			margin-bottom: .55rem;
 		}
 
 		.resume :global(h2) {
 			font-size: 7.5pt;
 			margin: .75rem 0 .1rem;
+		}
+
+		/* Extra air between the intro and Work Experience. */
+		.resume > :global(section:first-of-type > h2) {
+			margin-top: 1.2rem;
 		}
 
 		.resume :global(h3) {
