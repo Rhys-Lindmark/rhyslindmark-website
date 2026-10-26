@@ -47,11 +47,8 @@ His potential is off the charts for a place that values what he has to offer.</e
 
 ## **What I'm looking for**
 
-* People, Ecosystem GTM, DevRel, Chief of Staff, or Societal Impacts roles at an AI org
-
-* Platform roles at a venture firm
-
-* Program Officer roles at a foundation
+A generalist tech+people role in a well-run, growth-stage AI org.<br>
+Roles like: Ecosystem GTM, DevRel, Chief of Staff, Product Ops, People, or Societal Impacts.
 
 Open to part-time & full-time roles. Curious to work together to see if I can be helpful.
 
