@@ -62,11 +62,11 @@ His potential is off the charts for a place that values what he has to offer."* 
 
 250+ books read · 20k+ Anki cards · 200+ blog posts <br>
 1,000+ miles backpacked · 1,000+ days of meditation <br>
-5 group houses · 3x frisbee captain & champion · 15k+ albums listened to
+5 group houses · 3x frisbee captain & champion · 15k+ albums
 
 Skills: Developer relations · Hackathons & workshops · Fellowships <br>
-Ecosystem partnerships · Content · Public speaking · AI agents <br>
-Founder coaching · Hiring · Budgets & fundraising · OKRs, offsites & board comms
+Partnerships · Content · Public speaking · AI agents <br>
+Founder coaching · Hiring · Budgets & fundraising · OKRs & offsites
 
 > "How you do anything is how you do everything."<br>
 > "The frontier is closer than you think."
