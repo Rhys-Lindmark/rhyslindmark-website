@@ -1340,7 +1340,7 @@
     "data/search/zy.json": "4654c24e5b670b1026fb91294cd57548a83f5d57e0046d091e37c59ea5d248a5",
     "data/search/zz.json": "e14a2947176043d7bb998a4c1ab92066fe0866bb0cb53d9fd8da1c6baf111675",
     "dates.js": "4a2d917caa0f77d4eab9848b9d6db1d46254592db697b70c50336945c9e3c40a",
-    "index.html": "54216c1ca27b477d814450ad37e6d434715b2cbe3e5800d253ffe834d3a448a8",
+    "index.html": "5695821b89a9bed95d2a09f9b482770c01168d8d0e6c617610bed8623caaeba3",
     "library-client.js": "f07892721bce05b8239c9ae1535889ca17b5894775dcc6ac6d5a7008616af4aa",
     "library-worker.js": "b1d02189ee1becc3f78a9f5ee107b50693f0311e90f1308569c47ae66a0fe907",
     "pdf.js": "af6be22f01220eaf72c678c1ae18254466b8e81a88bdb874c09eb4f3a59df2fd",
@@ -1351,6 +1351,6 @@
     "vendor/jspdf.umd.min.js": "0e2ca540064bc064b338700e82e1507772297a5ebf66bb85b83d7890abfa5131"
   },
   "generated_by": "commonplace-static-export-v1",
-  "source_commit": "af6bc6b1500ee83c5de6437461d2d2aec9a58cda",
+  "source_commit": "321999c1d865eb6e473b83fc421fcf102bba926b",
   "source_repository": "https://github.com/Rhys-Lindmark/commonplace"
 }
