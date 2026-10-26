@@ -132,6 +132,11 @@ const html = (marked.parse(raw) as string)
 		font-style: italic;
 	}
 
+	.resume :global([data-section='other'] blockquote) {
+		font-size: .85rem;
+		color: var(--muted);
+	}
+
 	.resume :global(a) {
 		text-decoration-color: #aaa;
 		text-decoration-thickness: 1px;
@@ -226,9 +231,9 @@ const html = (marked.parse(raw) as string)
 			margin-bottom: .2rem;
 		}
 
-		.resume :global(blockquote) {
+		.resume :global([data-section='other'] blockquote) {
 			margin: .15rem 0;
-			font-size: 8.4pt;
+			font-size: 7.6pt;
 		}
 
 		/* Run the two mottos side by side to save a line on the page. */
