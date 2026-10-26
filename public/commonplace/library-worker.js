@@ -49,9 +49,9 @@
       for (const [id, record] of custom) {
         if (collection === 'goodreads' && record.popularity?.source !== 'Goodreads') continue;
         if (topicActive && !(record.topics || []).includes(topic) || Number(record.minAge || 0) > maxAge || collection === 'favorites' && !favorites.has(id)) continue;
-        const haystack = tokens([record.text, record.author, ...(record.topics || []), record.source, record.year ?? ''].join(' '));
+        const haystack = tokens([record.text, record.author, ...(record.topics || []), record.source, record.year ?? '', record.chronology?.label || '', record.chronology?.startYear ?? '', record.chronology?.endYear ?? ''].join(' '));
         if (!terms.every(term => haystack.some(word => word.startsWith(term)))) continue;
-        rows.push({ record, id, order: rows.length, importance: ratings.get(id) ?? record.importance ?? 0, length: record.text.length, year: record.year ?? 32767, likes: record.likes ?? -1 });
+        rows.push({ record, id, order: rows.length, importance: ratings.get(id) ?? record.importance ?? 0, length: record.text.length, year: record.chronology?.version===1&&record.chronology.kind!=='unknown'&&Number.isInteger(record.chronology.startYear)?record.chronology.startYear:record.year===0?32767:record.year ?? 32767, likes: record.likes ?? -1 });
       }
       if (collection !== 'mine' && (!topicActive || topicIndex >= 0 && topicIndex < 64)) {
         const found = terms.length ? await candidates(terms) : null;
