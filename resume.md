@@ -64,9 +64,9 @@ His potential is off the charts for a place that values what he has to offer."* 
 1,000+ miles backpacked · 1,000+ days of meditation <br>
 5 group houses · 3x frisbee captain & champion · 15k+ albums listened to
 
-Skills: Developer relations & community · Hackathons, meetups & workshops · Community & fellowship programs · Ecosystem partnerships · Content & public speaking · AI agents & LLMs (Claude Code, Codex) · Founder coaching · Hiring & onboarding · Budgets & fundraising · OKRs, offsites & board communications
+Skills: Developer relations · Hackathons & workshops · Fellowships <br>
+Ecosystem partnerships · Content · Public speaking · AI agents <br>
+Founder coaching · Hiring · Budgets & fundraising · OKRs, offsites & board comms
 
 > "How you do anything is how you do everything."<br>
 > "The frontier is closer than you think."
-
-[Pangram](https://www.pangram.com/history/2467d360-3391-4495-92a5-836e5fca0f93) AI detector: 100% human-written
