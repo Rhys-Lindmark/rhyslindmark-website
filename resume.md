@@ -64,8 +64,8 @@ His potential is off the charts for a place that values what he has to offer."* 
 1,000+ miles backpacked · 1,000+ days of meditation <br>
 5 group houses · 3x frisbee captain & champion · 15k+ albums
 
-Skills: Developer relations · Hackathons & workshops · Fellowships <br>
-Partnerships · Content · Public speaking · AI agents <br>
+Skills: Developer relations · Hackathons & workshops <br>
+Fellowships · Partnerships · Content · Public speaking · AI agents <br>
 Founder coaching · Hiring · Budgets & fundraising · OKRs & offsites
 
 > "How you do anything is how you do everything."<br>
