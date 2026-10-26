@@ -129,13 +129,32 @@ const html = (marked.parse(raw) as string)
 		color: var(--muted);
 	}
 
-	/* Everything under "## Other" is centered small print; quotes there keep their italic style. */
+	/* "## Other" is small print: the first block sits left and the last sits right
+	   (side by side when they fit, stacked when not); quotes run centered underneath. */
 	.resume :global([data-section='other']) {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: flex-start;
+		column-gap: 2rem;
 		text-align: center;
 	}
 
+	.resume :global([data-section='other'] > h2),
+	.resume :global([data-section='other'] > blockquote) {
+		flex-basis: 100%;
+	}
+
+	.resume :global([data-section='other'] > p:first-of-type) {
+		text-align: left;
+	}
+
+	.resume :global([data-section='other'] > p:last-of-type) {
+		margin-left: auto;
+		text-align: right;
+	}
+
 	.resume :global([data-section='other'] > p) {
-		text-wrap: balance;
 		font-family: var(--font-sans);
 		font-size: .85rem;
 		color: var(--muted);
