@@ -31,9 +31,9 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · [
 
 *Head of Community & Societal Impact*
 
+- Served as de facto chief of staff to the Executive Director: ran leadership meetings, OKRs and offsites, drafted executive communication to funders, and co-led $2M/yr in fundraising partnerships (+25%).
 - Founded the Cryptoeconomic Systems journal (MIT Press) and its conference, a bitcoin security initiative, and MIT’s first Blockchain Ethics class (co-taught to 20 MIT and Harvard grad students).
 - Grew the developer, research and student community: four 500-person events, weekly research meetings, and a newsletter and X account (0 → 3,000+ subscribers); helped run the MIT Bitcoin Club and student blockchain and Effective Altruism clubs.
-- Served as de facto chief of staff to the Executive Director: ran leadership meetings, OKRs and offsites, drafted executive communication to funders, and co-led $2M/yr in fundraising partnerships (+25%).
 
 ### [ETHDenver](https://ethdenver.com/) — Denver, CO · Jun 2017 – Aug 2018
 
