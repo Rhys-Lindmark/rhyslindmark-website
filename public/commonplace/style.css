@@ -23,3 +23,5 @@
 
 .search-row>.add-quote{flex:none;white-space:nowrap;min-height:43px;padding:10px 12px;font-size:11px}
 @media(max-width:600px){.search-row{flex-wrap:wrap}.search-row>.search-wrap{flex-basis:100%}.search-row>select{flex:1;width:auto}.search-row>.add-quote{margin-left:auto}}
+
+#library-view>.workbench{margin-top:24px}
