@@ -1,7 +1,7 @@
 {
   "base_path": "/commonplace/",
   "files": {
-    "app.js": "f82030745c2e36dc67f52ca8d9de5baf71d4bb4e0c9ebc53aa8599968416c184",
+    "app.js": "1bf886a5688087ddbd0ba4fe0e55f175dc3631990739df5c8f7e359b00bc0dc1",
     "assets/FALLBACK-FONT-LICENSE.txt": "0dab92d0544f7b233403f14b84a663bdbfa746982eda629e7f4f9ffe1b036feb",
     "assets/FONT-LICENSE.txt": "3624eddd4c8f8a908130a417ae7cd089c9da69899c4e0ca1a5217d0a6fae16fd",
     "assets/SANS-LICENSE.txt": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1",
@@ -1340,7 +1340,7 @@
     "data/search/zy.json": "4654c24e5b670b1026fb91294cd57548a83f5d57e0046d091e37c59ea5d248a5",
     "data/search/zz.json": "e14a2947176043d7bb998a4c1ab92066fe0866bb0cb53d9fd8da1c6baf111675",
     "dates.js": "4a2d917caa0f77d4eab9848b9d6db1d46254592db697b70c50336945c9e3c40a",
-    "index.html": "27cc8aa7bac51d13247cdacc25ecba7ee3fd89ccefc022e8721999b4a8f16f49",
+    "index.html": "f0ba86fa40d2b71b188f15bfbb06592d17c05dca30901537d838b1ad78c47293",
     "library-client.js": "f07892721bce05b8239c9ae1535889ca17b5894775dcc6ac6d5a7008616af4aa",
     "library-worker.js": "b1d02189ee1becc3f78a9f5ee107b50693f0311e90f1308569c47ae66a0fe907",
     "pdf.js": "af6be22f01220eaf72c678c1ae18254466b8e81a88bdb874c09eb4f3a59df2fd",
@@ -1351,6 +1351,6 @@
     "vendor/jspdf.umd.min.js": "0e2ca540064bc064b338700e82e1507772297a5ebf66bb85b83d7890abfa5131"
   },
   "generated_by": "commonplace-static-export-v1",
-  "source_commit": "6908f96912a4546a5e71d2d901325380462b8b9a",
+  "source_commit": "1e2d88bd1e24cdc44bb5dc0a01b4a76b430bb7d4",
   "source_repository": "https://github.com/Rhys-Lindmark/commonplace"
 }
