@@ -15,7 +15,7 @@ $('clear').addEventListener('click',()=>{$('claim').value='';$('evidence').value
 let widgetId, verificationToken = '', busy = false;
 window.jevTurnstileReady = () => {
   widgetId = window.turnstile.render('#human-check', {
-    sitekey: '0x4AAAAAAFbFqVlmDZgVCLAG', action: 'jev_check', theme: 'light',
+    sitekey: '0x4AAAAAAFoxX_DwyD2--6xP', action: 'jev_check', theme: 'light',
     callback: token => { verificationToken = token; $('run').disabled = busy || !token; },
     'expired-callback': () => { verificationToken = ''; $('run').disabled = true; },
     'error-callback': () => { verificationToken = ''; $('run').disabled = true; $('error').textContent = 'Human verification unavailable. Reload to try again.'; $('error').hidden = false; }

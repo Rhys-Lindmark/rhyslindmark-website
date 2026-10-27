@@ -71,12 +71,13 @@ test('missing key, database, salt, feature flag, trusted IP or available databas
 });
 
 test('one-time provisioning encrypts the key, rejects other keys, and cannot overwrite it',async()=>{
-  const {onRequest:setup}=await import('./jev-setup.js');
+  const {createSetupHandler}=await import('./jev-setup.js');
+  const setup=createSetupHandler(async()=>Response.json({success:false,'error-codes':['invalid-input-response']}));
   const {loadKey}=await import('../_lib/jev-key.js');
   const db=database();try{
     const key='owner-test-key-not-a-real-credential';
     const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(key))),n=>n.toString(16).padStart(2,'0')).join('');
-    const env={JEV_DB:db,JEV_KEY_SECRET:'test-encryption-secret',JEV_SETUP_KEY_SHA256:digest};
+    const env={JEV_DB:db,JEV_KEY_SECRET:'test-encryption-secret',JEV_TURNSTILE_SECRET:'test-turnstile-secret',JEV_SETUP_KEY_SHA256:digest};
     const req=value=>new Request('https://ai.rhyslindmark.com/api/jev-setup',{method:'POST',headers:{Origin:'https://ai.rhyslindmark.com','Content-Type':'application/json'},body:JSON.stringify({key:value})});
     assert.equal((await setup({request:req(key),env:{...env,JEV_SETUP_KEY_SHA256:''}})).status,404);
     assert.equal((await setup({request:req('unapproved-test-key'),env})).status,403);
