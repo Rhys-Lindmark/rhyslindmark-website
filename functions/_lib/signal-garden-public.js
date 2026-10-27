@@ -6,14 +6,15 @@ export const RESERVE_SQL = `INSERT OR IGNORE INTO signal_garden_spend (request_i
 SELECT ?, ?, ?, ?
 WHERE (SELECT COUNT(*) FROM signal_garden_spend) < 100
 AND (SELECT COUNT(*) FROM signal_garden_spend WHERE client_hash = ? AND day = ?) < 5`;
-const reply = (error, status) => Response.json({error}, {status, headers:{'cache-control':'no-store','x-content-type-options':'nosniff'}});
+const reply = (error, status, extra = {}) => Response.json({error, ...extra}, {status, headers:{'cache-control':'no-store','x-content-type-options':'nosniff'}});
 
 export async function handlePublicSearch({ request, env }) {
   const url = new URL(request.url);
   if (url.hostname !== 'ai.rhyslindmark.com') return reply('Not found.',404);
   if (request.method !== 'POST') return reply('Use POST.',405);
   if (request.headers.get('origin') !== url.origin) return reply('Same-origin requests only.',403);
-  if (env.SIGNAL_GARDEN_ENABLED !== '1' || !env.SIGNAL_GARDEN_EXA_API_KEY || !env.SIGNAL_GARDEN_TURNSTILE_SECRET || !env.RHYSBOT_DB) return reply('Sponsored search is paused.',503);
+  const unavailable = [env.SIGNAL_GARDEN_ENABLED !== '1' && 'enabled', !env.SIGNAL_GARDEN_EXA_API_KEY && 'serverKey', !env.SIGNAL_GARDEN_TURNSTILE_SECRET && 'verification', !env.RHYSBOT_DB && 'usageLedger'].filter(Boolean);
+  if (unavailable.length) return reply('Sponsored search is paused.',503,{unavailable});
   let body;
   try { body = await readBounded(request); } catch { return reply('Send valid JSON under 16 KB.',400); }
   if (typeof body.query !== 'string' || body.query.trim().length < 3 || body.query.length > 600 || !['research','practice','counterpoints'].includes(body.lens) || !['all','month','year'].includes(body.period)) return reply('Enter a topic and choose a valid search lens and date range.',400);
