@@ -2,8 +2,10 @@
 // stores only AES-GCM ciphertext and cannot overwrite an existing credential.
 import { readJSON } from './jev.js';
 import { sealKey } from '../_lib/jev-key.js';
+import { databaseFor } from '../_lib/jev-database.js';
 export function createSetupHandler(fetcher = (...args) => fetch(...args)) {
 return async function setup({request,env}) {
+  env = { ...env, JEV_DB: databaseFor(env) };
   const reply = (body,status=200)=>Response.json(body,{status,headers:{'Cache-Control':'no-store','Referrer-Policy':'no-referrer'}});
   if (!/^[a-f0-9]{64}$/.test(env.JEV_SETUP_KEY_SHA256 || '')) return reply({error:'Not found'},404);
   if (request.method!=='POST' || request.headers.get('Origin')!=='https://ai.rhyslindmark.com' || new URL(request.url).hostname!=='ai.rhyslindmark.com') return reply({error:'Forbidden'},403);

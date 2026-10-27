@@ -20,10 +20,8 @@ RHYSBOT_TRAIN_BRIDGE_URL = "https://rhys-lindmark--rhysbot-platform-api.us-east.
 [ai]
 binding = "AI"
 
-[[d1_databases]]
-binding = "JEV_DB"
-database_name = "rhysbot-platform"
-database_id = "c2f5b3ad-87cd-4e17-9e07-da810454a53c"
+[durable_objects]
+bindings = [{ name = "JEV_STATE", class_name = "JevLedger", script_name = "jev-ledger" }]
 
 [[d1_databases]]
 binding = "RHYSBOT_DB"

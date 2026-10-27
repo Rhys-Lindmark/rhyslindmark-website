@@ -1,5 +1,6 @@
 import { MODEL, reserve, clientIdentity } from '../_lib/jev-access.js';
 import { loadKey } from '../_lib/jev-key.js';
+import { databaseFor } from '../_lib/jev-database.js';
 const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
 const labels = ['supported', 'contradicted', 'insufficient'];
 const probability = value => typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 1;
@@ -35,6 +36,7 @@ export async function readJSON(request) {
 }
 export function createHandler(fetcher = (...args) => fetch(...args)) {
   return async ({ request, env = {} }) => {
+    env = { ...env, JEV_DB: databaseFor(env) };
     if (request.method !== 'POST') return json({ error: 'Use POST.' }, 405);
     const origin = request.headers.get('Origin');
     if (origin !== 'https://ai.rhyslindmark.com' || new URL(request.url).hostname !== 'ai.rhyslindmark.com') return json({ error: 'Open Claim Check on this site to run a check.' }, 403);
