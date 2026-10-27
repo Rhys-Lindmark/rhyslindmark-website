@@ -16,6 +16,10 @@ const html = (marked.parse(raw) as string)
 		const slug = title.replace(/<[^>]+>/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 		return `<section data-section="${slug}"><h2${attrs}>${title}</h2>${body}</section>`;
 	})
+	// The small-print blocks use separators when their print line breaks are hidden.
+	.replace(/(<section data-section="other">[\s\S]*?)(?=<blockquote>)/, (_, blocks) =>
+		blocks.replace(/<br\s*\/?>/g, '<span class="screen-separator" aria-hidden="true"> · </span><br>'),
+	)
 	.replace(/<h3([^>]*)>(.*) · ([^<]+)<\/h3>/g, (_, attrs, place, dates) => {
 		const [org, loc = ''] = place.split(' — ');
 		return `<h3${attrs}><span class="org">${org}</span><span class="loc">${loc}</span><span class="dates">${dates}</span></h3>`;
@@ -129,32 +133,30 @@ const html = (marked.parse(raw) as string)
 		color: var(--muted);
 	}
 
-	/* "## Other" is small print: the first block sits left and the last sits right
-	   (side by side when they fit, stacked when not); quotes run centered underneath. */
+	/* Stable columns keep the two blocks aligned even when their text wraps. */
 	.resume :global([data-section='other']) {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		align-items: flex-start;
-		column-gap: 2rem;
-		text-align: center;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+		align-items: start;
+		gap: .75rem 1.5rem;
 	}
 
 	.resume :global([data-section='other'] > h2),
 	.resume :global([data-section='other'] > blockquote) {
-		flex-basis: 100%;
+		grid-column: 1 / -1;
 	}
 
-	.resume :global([data-section='other'] > p:first-of-type) {
-		text-align: left;
+	.resume :global([data-section='other'] > h2) {
+		margin-bottom: 0;
 	}
 
 	.resume :global([data-section='other'] > p:last-of-type) {
-		margin-left: auto;
 		text-align: right;
 	}
 
 	.resume :global([data-section='other'] > p) {
+		min-width: 0;
+		margin: 0;
 		font-family: var(--font-sans);
 		font-size: .85rem;
 		color: var(--muted);
@@ -168,8 +170,38 @@ const html = (marked.parse(raw) as string)
 	}
 
 	.resume :global([data-section='other'] blockquote) {
+		margin: 0;
 		font-size: .85rem;
 		color: var(--muted);
+	}
+
+	.resume :global([data-section='other'] blockquote p) {
+		margin: 0;
+	}
+
+	.resume :global(.screen-separator) {
+		display: none;
+	}
+
+	@media screen {
+		.resume :global(.screen-separator) {
+			display: inline;
+		}
+
+		/* Let screen text wrap naturally; retain the compact print line breaks. */
+		.resume :global([data-section='other'] > p br) {
+			display: none;
+		}
+	}
+
+	@media screen and (max-width: 600px) {
+		.resume :global([data-section='other']) {
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.resume :global([data-section='other'] > p:last-of-type) {
+			text-align: left;
+		}
 	}
 
 	.resume :global(a) {
@@ -273,6 +305,11 @@ const html = (marked.parse(raw) as string)
 			margin-bottom: 0;
 		}
 
+		.resume :global([data-section='other']) {
+			row-gap: .1rem;
+			break-inside: avoid;
+		}
+
 		.resume :global([data-section='other'] > p) {
 			font-size: 7.6pt;
 			margin-bottom: .2rem;
@@ -281,11 +318,6 @@ const html = (marked.parse(raw) as string)
 		.resume :global([data-section='other'] blockquote) {
 			margin: .15rem 0;
 			font-size: 7.6pt;
-		}
-
-		/* Run the two mottos side by side to save a line on the page. */
-		.resume :global([data-section='other'] blockquote br) {
-			display: none;
 		}
 
 		.resume :global(h3 .org a) {
