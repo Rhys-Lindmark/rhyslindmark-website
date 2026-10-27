@@ -47,9 +47,11 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     if (!ip || ip.length > 45) return json({ error: 'Human verification is required.' }, 403);
     if (env.JEV_ENABLED !== '1' || !env.JEV_TURNSTILE_SECRET || !env.JEV_KEY_SECRET || !env.JEV_DB) return json({ error: 'Claim Check is temporarily unavailable.' }, 503);
     let apiKey;
+    let accessStage = 'load_key';
     try {
       apiKey = await loadKey(env);
       if (typeof apiKey !== 'string' || !/^[\x21-\x7e]{8,512}$/.test(apiKey)) return json({ error: 'Claim Check is temporarily unavailable.' }, 503);
+      accessStage = 'verify_human';
       const verification = await fetcher('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
         method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: new URLSearchParams({ secret: env.JEV_TURNSTILE_SECRET, response: body.verification_token, remoteip: ip }),
@@ -58,9 +60,11 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
       if (!verification.ok) return json({ error: 'Human verification failed. Please try again.' }, 403);
       const verified = await readJSON(verification);
       if (verified?.success !== true || verified.hostname !== 'ai.rhyslindmark.com' || verified.action !== 'jev_check') return json({ error: 'Human verification failed. Please try again.' }, 403);
+      accessStage = 'reserve_allowance';
       const limited = await reserve(env.JEV_DB, await clientIdentity(ip, env.JEV_KEY_SECRET));
       if (limited) return json({ error: limited }, 429);
-    } catch {
+    } catch (error) {
+      console.error(JSON.stringify({event:'jev_access_failure',stage:accessStage,name:error?.name,message:String(error?.message || 'Unknown error').slice(0,200)}));
       return json({ error: 'Verification or usage limits could not be checked. Please try again.' }, 503);
     }
     const started = Date.now();
