@@ -45,20 +45,20 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     if (typeof body.verification_token !== 'string' || !body.verification_token || body.verification_token.length > 2048) return json({ error: 'Complete the human verification.' }, 403);
     const ip = request.headers.get('CF-Connecting-IP');
     if (!ip || ip.length > 45) return json({ error: 'Human verification is required.' }, 403);
-    if (env.JEV_ENABLED !== '1' || !env.RHYSBOT_TURNSTILE_SECRET || !env.RHYSBOT_CLIENT_SALT || !env.RHYSBOT_DB) return json({ error: 'Claim Check is temporarily unavailable.' }, 503);
+    if (env.JEV_ENABLED !== '1' || !env.JEV_TURNSTILE_SECRET || !env.JEV_KEY_SECRET || !env.JEV_DB) return json({ error: 'Claim Check is temporarily unavailable.' }, 503);
     let apiKey;
     try {
       apiKey = await loadKey(env);
       if (typeof apiKey !== 'string' || !/^[\x21-\x7e]{8,512}$/.test(apiKey)) return json({ error: 'Claim Check is temporarily unavailable.' }, 503);
       const verification = await fetcher('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
         method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ secret: env.RHYSBOT_TURNSTILE_SECRET, response: body.verification_token, remoteip: ip }),
+        body: new URLSearchParams({ secret: env.JEV_TURNSTILE_SECRET, response: body.verification_token, remoteip: ip }),
         signal: AbortSignal.timeout(10000), redirect: 'manual'
       });
       if (!verification.ok) return json({ error: 'Human verification failed. Please try again.' }, 403);
       const verified = await readJSON(verification);
       if (verified?.success !== true || verified.hostname !== 'ai.rhyslindmark.com' || verified.action !== 'jev_check') return json({ error: 'Human verification failed. Please try again.' }, 403);
-      const limited = await reserve(env.RHYSBOT_DB, await clientIdentity(ip, env.RHYSBOT_CLIENT_SALT));
+      const limited = await reserve(env.JEV_DB, await clientIdentity(ip, env.JEV_KEY_SECRET));
       if (limited) return json({ error: limited }, 429);
     } catch {
       return json({ error: 'Verification or usage limits could not be checked. Please try again.' }, 503);

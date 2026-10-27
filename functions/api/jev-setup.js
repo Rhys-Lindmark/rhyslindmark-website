@@ -13,9 +13,9 @@ export async function onRequest({request,env}) {
     const digest = await crypto.subtle.digest('SHA-256',new TextEncoder().encode(body.key));
     const hex = Array.from(new Uint8Array(digest),n=>n.toString(16).padStart(2,'0')).join('');
     if (hex!==env.JEV_SETUP_KEY_SHA256) return reply({error:'Forbidden'},403);
-    if (!env.RHYSBOT_DB || !env.RHYSBOT_CLIENT_SALT) return reply({error:'Unavailable'},503);
-    const sealed = await sealKey(body.key,env.RHYSBOT_CLIENT_SALT);
-    const row = await env.RHYSBOT_DB.prepare('INSERT OR IGNORE INTO jev_credentials(id,iv,ciphertext) VALUES(1,?,?) RETURNING id').bind(sealed.iv,sealed.ciphertext).first();
+    if (!env.JEV_DB || !env.JEV_KEY_SECRET) return reply({error:'Unavailable'},503);
+    const sealed = await sealKey(body.key,env.JEV_KEY_SECRET);
+    const row = await env.JEV_DB.prepare('INSERT OR IGNORE INTO jev_credentials(id,iv,ciphertext) VALUES(1,?,?) RETURNING id').bind(sealed.iv,sealed.ciphertext).first();
     return row ? reply({configured:true}) : reply({error:'Already configured'},409);
   } catch {return reply({error:'Setup failed'},503);}
 }

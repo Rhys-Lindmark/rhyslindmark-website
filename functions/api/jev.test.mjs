@@ -6,7 +6,7 @@ import { createHandler as rawCreateHandler } from './jev.js';
 const createHandler = fetcher => {
   const h = rawCreateHandler((url, init) => url.includes('/siteverify') ? Response.json({success:true,hostname:'ai.rhyslindmark.com',action:'jev_check'}) : fetcher(url,init));
   const db = {prepare(){return {bind(){return {async first(){return {uses:1,reserved_micros:10000}},async run(){return {}}}}}}};
-  return context => h({...context,env:{JEV_ENABLED:'1',JEV_API_KEY:'test-key-placeholder',RHYSBOT_TURNSTILE_SECRET:'test-turnstile-secret',RHYSBOT_CLIENT_SALT:'test-client-salt',RHYSBOT_DB:db}});
+  return context => h({...context,env:{JEV_ENABLED:'1',JEV_API_KEY:'test-key-placeholder',JEV_TURNSTILE_SECRET:'test-turnstile-secret',JEV_KEY_SECRET:'test-client-salt',JEV_DB:db}});
 };
 const url='https://ai.rhyslindmark.com/api/jev';
 const make=(body={claim:'Participation doubled.',evidence:'Participation grew 20%.',verification_token:'test-human-token'},headers={})=>new Request(url,{method:'POST',headers:{Origin:'https://ai.rhyslindmark.com','Content-Type':'application/json','CF-Connecting-IP':'192.0.2.1',...headers},body:JSON.stringify(body)});

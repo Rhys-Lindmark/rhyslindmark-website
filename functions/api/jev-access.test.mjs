@@ -11,7 +11,7 @@ function database() {
 }
 const body={claim:'Participation doubled.',evidence:'Participation rose from 10 to 20.',verification_token:'fresh-human-token'};
 const request=(changes={},headers={})=>new Request('https://ai.rhyslindmark.com/api/jev',{method:'POST',headers:{Origin:'https://ai.rhyslindmark.com','Content-Type':'application/json','CF-Connecting-IP':'192.0.2.1',...headers},body:JSON.stringify({...body,...changes})});
-const environment=db=>({JEV_ENABLED:'1',JEV_API_KEY:'server-only-test-key',RHYSBOT_TURNSTILE_SECRET:'server-turnstile-secret',RHYSBOT_CLIENT_SALT:'server-client-salt',RHYSBOT_DB:db});
+const environment=db=>({JEV_ENABLED:'1',JEV_API_KEY:'server-only-test-key',JEV_TURNSTILE_SECRET:'server-turnstile-secret',JEV_KEY_SECRET:'server-client-salt',JEV_DB:db});
 const valid={model:'jev-1.14.0',answers:{verdict:{choice:'supported',probabilities:{supported:.9,contradicted:.01,insufficient:.09},confidence:.8},direct:{noul:.9},overreach:{noul:.1}}};
 test('gates each call on fresh verified hostname/action; no header or cookie bypass; replay rejected',async()=>{
   const db=database();try{
@@ -64,7 +64,7 @@ test('daily ceiling and kill switch stop valid humans; no budget refund after up
   }finally{db.raw.close();}
 });
 test('missing key, database, salt, feature flag, trusted IP or available database fails closed',async()=>{
-  const db=database();try{for(const field of ['JEV_API_KEY','RHYSBOT_DB','RHYSBOT_CLIENT_SALT','RHYSBOT_TURNSTILE_SECRET','JEV_ENABLED']){let calls=0;const env=environment(db);delete env[field];const h=createHandler(()=>{calls++;throw Error()});assert.equal((await h({request:request(),env})).status,503);assert.equal(calls,0);}
+  const db=database();try{for(const field of ['JEV_API_KEY','JEV_DB','JEV_KEY_SECRET','JEV_TURNSTILE_SECRET','JEV_ENABLED']){let calls=0;const env=environment(db);delete env[field];const h=createHandler(()=>{calls++;throw Error()});assert.equal((await h({request:request(),env})).status,503);assert.equal(calls,0);}
     const h=createHandler(()=>{throw Error('must not call')});assert.equal((await h({request:request({}, {'CF-Connecting-IP':''}),env:environment(db)})).status,403);
     const unavailable={prepare(){throw Error('database unavailable')}};const v=createHandler(async()=>Response.json({success:true,hostname:'ai.rhyslindmark.com',action:'jev_check'}));assert.equal((await v({request:request(),env:environment(unavailable)})).status,503);
   }finally{db.raw.close();}
@@ -76,7 +76,7 @@ test('one-time provisioning encrypts the key, rejects other keys, and cannot ove
   const db=database();try{
     const key='owner-test-key-not-a-real-credential';
     const digest=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(key))),n=>n.toString(16).padStart(2,'0')).join('');
-    const env={RHYSBOT_DB:db,RHYSBOT_CLIENT_SALT:'test-encryption-secret',JEV_SETUP_KEY_SHA256:digest};
+    const env={JEV_DB:db,JEV_KEY_SECRET:'test-encryption-secret',JEV_SETUP_KEY_SHA256:digest};
     const req=value=>new Request('https://ai.rhyslindmark.com/api/jev-setup',{method:'POST',headers:{Origin:'https://ai.rhyslindmark.com','Content-Type':'application/json'},body:JSON.stringify({key:value})});
     assert.equal((await setup({request:req(key),env:{...env,JEV_SETUP_KEY_SHA256:''}})).status,404);
     assert.equal((await setup({request:req('unapproved-test-key'),env})).status,403);
@@ -84,7 +84,7 @@ test('one-time provisioning encrypts the key, rejects other keys, and cannot ove
     const saved=db.raw.prepare('SELECT iv,ciphertext FROM jev_credentials').get();
     assert.ok(!JSON.stringify(saved).includes(key));assert.equal(await loadKey(env),key);
     assert.equal((await setup({request:req(key),env})).status,409);
-    await assert.rejects(loadKey({...env,RHYSBOT_CLIENT_SALT:'wrong-secret'}));
+    await assert.rejects(loadKey({...env,JEV_KEY_SECRET:'wrong-secret'}));
     db.raw.prepare('UPDATE jev_credentials SET ciphertext=?').run(saved.ciphertext.slice(0,-4)+'AAAA');
     await assert.rejects(loadKey(env));
   }finally{db.raw.close();}

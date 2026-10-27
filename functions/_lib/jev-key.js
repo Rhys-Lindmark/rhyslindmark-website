@@ -12,8 +12,8 @@ export async function sealKey(value, salt) {
 }
 export async function loadKey(env) {
   if (env.JEV_API_KEY) return env.JEV_API_KEY;
-  const row = await env.RHYSBOT_DB.prepare('SELECT iv,ciphertext FROM jev_credentials WHERE id=1').first();
+  const row = await env.JEV_DB.prepare('SELECT iv,ciphertext FROM jev_credentials WHERE id=1').first();
   if (!row) return null;
-  const value = await crypto.subtle.decrypt({name:'AES-GCM',iv:unbase64(row.iv),additionalData:enc.encode('JEV_API_KEY')}, await wrappingKey(env.RHYSBOT_CLIENT_SALT), unbase64(row.ciphertext));
+  const value = await crypto.subtle.decrypt({name:'AES-GCM',iv:unbase64(row.iv),additionalData:enc.encode('JEV_API_KEY')}, await wrappingKey(env.JEV_KEY_SECRET), unbase64(row.ciphertext));
   return new TextDecoder().decode(value);
 }
