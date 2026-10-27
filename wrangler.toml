@@ -4,6 +4,7 @@ compatibility_flags = ["enable_request_signal"]
 pages_build_output_dir = "dist"
 
 [vars]
+JEV_ENABLED = "1"
 SIGNAL_GARDEN_SITE_KEY = "0x4AAAAAAFowk8GNrnL0PvUq"
 SIGNAL_GARDEN_ENABLED = "1"
 RHYSBOT_MODAL_URL = "https://rhys-lindmark--rhysbot-serving-api.us-east.modal.run"
