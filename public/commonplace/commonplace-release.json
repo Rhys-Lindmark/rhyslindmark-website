@@ -1370,7 +1370,7 @@
     "data/sections/time--reflections--1.json": "18e53d905b3427a99ec33c9b1b15a49f1887c848a7e8656b56bf618403147946",
     "data/sections/time--time-priorities--1.json": "3029b8b89c92b6f0c7efb1c0ad5355e9616836a7d98ef19aca436e37b60526bc",
     "dates.js": "4a2d917caa0f77d4eab9848b9d6db1d46254592db697b70c50336945c9e3c40a",
-    "index.html": "4376e8e9faee5505ac35094ff2203c169b685dacfb5a4f4bc1d81d669f1ee235",
+    "index.html": "72fbcbe293606e66a1e271343ea48ab35c11c811f3e05a836c6bc1f85725cbaf",
     "library-client.js": "f07892721bce05b8239c9ae1535889ca17b5894775dcc6ac6d5a7008616af4aa",
     "library-worker.js": "472aa7d26f5d6563c768501fe6b7dc41fa971a8a0c1b5f8d72db657f36e59166",
     "pdf.js": "af6be22f01220eaf72c678c1ae18254466b8e81a88bdb874c09eb4f3a59df2fd",
@@ -1381,6 +1381,6 @@
     "vendor/jspdf.umd.min.js": "0e2ca540064bc064b338700e82e1507772297a5ebf66bb85b83d7890abfa5131"
   },
   "generated_by": "commonplace-static-export-v1",
-  "source_commit": "7560234b5d4d870541ea212bd4ec9342c62cad11",
+  "source_commit": "a53fa81cf388cadbd5bd3a91bfadba5967f1a316",
   "source_repository": "https://github.com/Rhys-Lindmark/commonplace"
 }
