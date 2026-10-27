@@ -31,7 +31,7 @@ async function readJSON(request) {
     return JSON.parse(text + decoder.decode());
   } finally { reader.releaseLock(); }
 }
-export function createHandler(fetcher = fetch) {
+export function createHandler(fetcher = (...args) => fetch(...args)) {
   return async ({ request }) => {
     if (request.method !== 'POST') return json({ error: 'Use POST.' }, 405);
     const origin = request.headers.get('Origin');
@@ -47,14 +47,17 @@ export function createHandler(fetcher = fetch) {
       const response = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: authorization, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'jev-latest', state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() }), signal: AbortSignal.timeout(25000), redirect: 'error' });
       if (!response.ok) {
         const messages = { 401: 'TypeSafe rejected this API key. Check your key and try again.', 402: 'Your TypeSafe account needs credits.', 403: 'This key does not have access to Jev.', 429: 'TypeSafe is rate limiting this key. Wait a moment and try again.' };
-        await response.body?.cancel();
+        await response.body?.cancel().catch(() => {});
         return json({ error: messages[response.status] || 'TypeSafe could not complete this check. Please try again.' }, [401,402,403,429].includes(response.status) ? response.status : 502);
       }
       const data = await readJSON(response);
       const a = data?.answers, v = a?.verdict;
       if (!labels.includes(v?.choice) || !labels.every(k => probability(v.probabilities?.[k])) || Math.abs(labels.reduce((s,k)=>s+v.probabilities[k],0)-1) > .02 || !(v.confidence === null || probability(v.confidence)) || !probability(a?.direct?.noul) || !probability(a?.overreach?.noul)) return json({ error: 'Jev returned an unexpected response. Please try again.' }, 502);
       return json({ model: typeof data.model === 'string' ? data.model : 'jev-latest', verdict: v.choice, probabilities: Object.fromEntries(labels.map(k=>[k,v.probabilities[k]])), confidence: v.confidence, direct: a.direct.noul, overreach: a.overreach.noul, elapsed_ms: Date.now()-started });
-    } catch { return json({ error: 'Jev could not be reached or timed out. Please try again.' }, 502); }
+    } catch (error) {
+      console.error(JSON.stringify({ event: 'jev_upstream_failure', name: error?.name, message: String(error?.message || 'Unknown error').slice(0, 200) }));
+      return json({ error: 'Jev could not be reached or timed out. Please try again.' }, 502);
+    }
   };
 }
 export const onRequest = createHandler();
