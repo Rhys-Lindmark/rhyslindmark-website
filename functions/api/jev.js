@@ -44,7 +44,7 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     if (!body || typeof body.claim !== 'string' || typeof body.evidence !== 'string' || !body.claim.trim() || !body.evidence.trim() || body.claim.length > 1500 || body.evidence.length > 10000) return json({ error: 'Add a claim (up to 1,500 characters) and evidence (up to 10,000 characters).' }, 400);
     const started = Date.now();
     try {
-      const response = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: authorization, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'jev-latest', state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() }), signal: AbortSignal.timeout(25000), redirect: 'error' });
+      const response = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: authorization, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: 'jev-latest', state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() }), signal: AbortSignal.timeout(25000), redirect: 'manual' });
       if (!response.ok) {
         const messages = { 401: 'TypeSafe rejected this API key. Check your key and try again.', 402: 'Your TypeSafe account needs credits.', 403: 'This key does not have access to Jev.', 429: 'TypeSafe is rate limiting this key. Wait a moment and try again.' };
         await response.body?.cancel().catch(() => {});
