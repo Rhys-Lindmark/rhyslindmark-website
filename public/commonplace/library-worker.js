@@ -10,6 +10,17 @@
   function intersect(a, b) { const out = []; let i = 0, j = 0; while (i < a.length && j < b.length) { if (a[i] === b[j]) { out.push(a[i]); i++; j++; } else if (a[i] < b[j]) i++; else j++; } return out; }
   function createEngine({ manifest, base, fetch: fetcher = scope.fetch.bind(scope) }) {
     const dictionaries = new LRU(8), pending = new Map(), prefixSet = new Set(manifest.searchPrefixes || []);
+    const sectionDefinitions = new Map((manifest.browseGroups || []).flatMap(g => g.sections.map(s => [s.id, { ...s, topic: g.topic }]))), sectionCache = new LRU(8), sectionPending = new Map();
+    async function sectionMembers(section) {
+      const cached = sectionCache.get(section.id); if (cached) return cached;
+      if (!sectionPending.has(section.id)) sectionPending.set(section.id, (async () => {
+        const r = await fetcher(asset(section.file)); if (!r.ok) throw Error('This topic section could not be loaded. Please retry.');
+        const values = await r.json();
+        if (!Array.isArray(values) || values.length !== section.count || values.length > (manifest.sectionLimit || 10000) || values.some((n, i) => !Number.isInteger(n) || n < 0 || n >= manifest.total || i > 0 && n <= values[i - 1])) throw Error('This topic section is incomplete. Please retry.');
+        return sectionCache.set(section.id, new Set(values));
+      })().finally(() => sectionPending.delete(section.id)));
+      return sectionPending.get(section.id);
+    }
     let catalogPromise, view, idIndex;
     const asset = path => { const u = new URL(path, base); if (manifest.release) u.searchParams.set('v', manifest.release); return u.href; };
     const canonical = id => { const seen = new Set(); while (Object.prototype.hasOwnProperty.call(manifest.aliases || {}, id) && !seen.has(id)) { seen.add(id); id = manifest.aliases[id]; } return id; };
@@ -40,6 +51,10 @@
       const terms = tokens(options.search), pageSize = Math.min(100, Math.max(1, Number(options.pageSize) || 10));
       if (String(options.search || '').trim() && !terms.length) return { total: 0, page: 1, refs: [], message: 'Enter at least two letters or numbers to search.' };
       const topic = options.topic || 'All topics', topicIndex = (manifest.topics || []).findIndex(t => (typeof t === 'string' ? t : t.name) === topic), topicActive = topic !== 'All topics';
+      const sectionId = options.section || '', section = sectionDefinitions.get(sectionId), sectionActive = !!sectionId;
+      const onlyCustom = sectionId === 'custom:' + topic, onlyLibrary = sectionId === 'library:' + topic;
+      if (sectionActive && (topicIndex < 0 || topicIndex >= 64 || (!onlyCustom && !onlyLibrary && (!section || section.topic !== topic)) || onlyLibrary && (manifest.topics[topicIndex].count || 0) > (manifest.sectionLimit || 10000))) return { total: 0, page: 1, refs: [] };
+      const membership = section && section.topic === topic ? await sectionMembers(section) : null;
       const maxAge = options.age === 'all' || options.age == null ? Infinity : Number(options.age), collection = options.collection || 'all';
       const favorites = new Set((options.favorites || []).map(canonical)), ratings = new Map(), rows = [];
       if (Object.keys(options.ratings || {}).length) { const map = await index(); for (const [id, rating] of Object.entries(options.ratings)) if (Number.isInteger(rating) && rating >= 1 && rating <= 5) { const c = canonical(id); ratings.set(c, rating); const n = map.get(c); if (n !== undefined) ratings.set(n, rating); } }
@@ -47,15 +62,17 @@
       if (collection === 'favorites') { const map = await index(); favoriteOrdinals = new Set([...favorites].map(id => map.get(id)).filter(n => n !== undefined)); }
       const custom = new Map(); for (const record of options.custom || []) if (record && typeof record.id === 'string') custom.set(canonical(record.id), record);
       for (const [id, record] of custom) {
+        if (sectionActive && !onlyCustom) continue;
         if (collection === 'goodreads' && record.popularity?.source !== 'Goodreads') continue;
         if (topicActive && !(record.topics || []).includes(topic) || Number(record.minAge || 0) > maxAge || collection === 'favorites' && !favorites.has(id)) continue;
         const haystack = tokens([record.text, record.author, ...(record.topics || []), record.source, record.year ?? '', record.chronology?.label || '', record.chronology?.startYear ?? '', record.chronology?.endYear ?? ''].join(' '));
         if (!terms.every(term => haystack.some(word => word.startsWith(term)))) continue;
         rows.push({ record, id, order: rows.length, importance: ratings.get(id) ?? record.importance ?? 0, length: record.text.length, year: record.chronology?.version===1&&record.chronology.kind!=='unknown'&&Number.isInteger(record.chronology.startYear)?record.chronology.startYear:record.year===0?32767:record.year ?? 32767, likes: record.likes ?? -1 });
       }
-      if (collection !== 'mine' && (!topicActive || topicIndex >= 0 && topicIndex < 64)) {
+      if (!onlyCustom && collection !== 'mine' && (!topicActive || topicIndex >= 0 && topicIndex < 64)) {
         const found = terms.length ? await candidates(terms) : null;
         const visit = n => { const p = n * 32;
+          if (membership && !membership.has(n)) return;
           if (view.getUint8(p + 24) > maxAge || favoriteOrdinals && !favoriteOrdinals.has(n)) return;
           if (topicActive && !(view.getUint32(p + (topicIndex < 32 ? 8 : 12), true) & (1 << (topicIndex % 32)))) return;
           if (custom.size && custom.has(idAt(n))) return;
@@ -78,7 +95,7 @@
       const total = rows.length, page = Math.min(Math.max(1, Math.floor(Number(options.page) || 1)), Math.max(1, Math.ceil(total / pageSize)));
       return { total, page, refs: rows.slice((page - 1) * pageSize, page * pageSize).map(row => row.record ? { record: row.record } : { ordinal: row.ordinal, id: idAt(row.ordinal) }) };
     }
-    return { query, resolve, canonical, catalog, dictionary, dictionaries };
+    return { query, resolve, canonical, catalog, dictionary, dictionaries, sectionCache };
   }
   if (typeof module !== 'undefined' && module.exports) module.exports = { createEngine, tokens, LRU };
   else {
