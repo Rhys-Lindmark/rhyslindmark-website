@@ -23,6 +23,7 @@ summary { cursor: pointer; }
 summary span { margin-left: 10px; color: #666; font-size: 13px; }
 details p, .note { font-size: 14px; color: #555; }
 .run { padding: 6px 18px; background: #f6f6f6; color: #222; border: 1px solid #999; border-radius: 2px; }
+#human-check { margin: 20px 0; }
 .results { margin-top: 32px; padding-top: 22px; border-top: 1px solid #ddd; }
 .results:has(#output[hidden]):not([aria-busy="true"]) > .section-heading { display: none; }
 .bar-row { margin: 12px 0; }
