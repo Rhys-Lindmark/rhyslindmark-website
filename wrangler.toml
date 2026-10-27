@@ -4,6 +4,8 @@ compatibility_flags = ["enable_request_signal"]
 pages_build_output_dir = "dist"
 
 [vars]
+SIGNAL_GARDEN_SITE_KEY = "0x4AAAAAAFowk8GNrnL0PvUq"
+SIGNAL_GARDEN_ENABLED = "1"
 RHYSBOT_MODAL_URL = "https://rhys-lindmark--rhysbot-serving-api.us-east.modal.run"
 RHYSBOT_TURNSTILE_SITE_KEY = "0x4AAAAAAFbFqVlmDZgVCLAG"
 RHYSBOT_ENABLED_MODELS = "qwen,nanochat"

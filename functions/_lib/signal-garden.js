@@ -1,5 +1,3 @@
-// Signal Garden: adapted from sites/signal-garden/worker/index.js.
-// Public Pages edition; visitors supply their own session-only Exa key.
 const headers = { 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'referrer-policy': 'no-referrer' };
 const json = (data, status = 200) => Response.json(data, {status, headers});
 const lenses = {
@@ -7,7 +5,7 @@ const lenses = {
   practice: 'Find real-world projects, organizations, experiments, and implementations of ',
   counterpoints: 'Find thoughtful critiques, limitations, failures, and opposing arguments about '
 };
-async function readBounded(request, max = 16384) {
+export async function readBounded(request, max = 16384) {
   const reader = request.body?.getReader();
   if (!reader) throw new Error('Empty request');
   const parts = []; let size = 0;
@@ -40,8 +38,11 @@ export default {
     }
     if (url.pathname !== '/') return new Response('Not found',{status:404,headers});
     if (!['GET','HEAD'].includes(request.method)) return new Response('Method not allowed',{status:405,headers});
-    const serverConfigured = Boolean(request.headers.get('oai-authenticated-user-id') && typeof env.EXA_API_KEY === 'string' && env.EXA_API_KEY.trim());
-    return new Response(request.method === 'HEAD' ? null : page.replace('const serverConfigured = false;', 'const serverConfigured = ' + serverConfigured + ';'), {headers:{...headers,'content-type':'text/html; charset=utf-8','content-security-policy':"default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'"}});
+    const publicSearch = env.SIGNAL_GARDEN_PUBLIC === true;
+    const sitekey = typeof env.SIGNAL_GARDEN_SITE_KEY === 'string' && /^[A-Za-z0-9_-]{10,100}$/.test(env.SIGNAL_GARDEN_SITE_KEY) ? env.SIGNAL_GARDEN_SITE_KEY : '';
+    const publicAvailable = publicSearch && env.SIGNAL_GARDEN_AVAILABLE === true && Boolean(sitekey);
+    const serverConfigured = publicAvailable || Boolean(request.headers.get('oai-authenticated-user-id') && typeof env.EXA_API_KEY === 'string' && env.EXA_API_KEY.trim());
+    return new Response(request.method === 'HEAD' ? null : page.replace('const serverConfigured = false;', 'const serverConfigured = ' + serverConfigured + ';').replace('const publicSearch = false;', 'const publicSearch = ' + publicSearch + ';').replace('const turnstileSitekey = "";', 'const turnstileSitekey = ' + JSON.stringify(sitekey) + ';'), {headers:{...headers,'content-type':'text/html; charset=utf-8','content-security-policy':"default-src 'self'; script-src 'unsafe-inline' https://challenges.cloudflare.com; style-src 'unsafe-inline'; connect-src 'self' https://challenges.cloudflare.com; frame-src https://challenges.cloudflare.com; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'"}});
   }
 };
 async function readResponseBounded(response) {
@@ -59,7 +60,7 @@ const page = String.raw`<!doctype html>
 
 <form id="searchform" class="searchbox"><input id="topic" aria-label="Topic to explore" placeholder="Enter a topic" maxlength="600" minlength="3" required value="Regenerative economics"><button class="btn primary" id="explore" type="submit">Explore </button></form>
 
-<div id="status" role="status" aria-live="polite"></div>
+<div id="humancheck"></div><div id="status" role="status" aria-live="polite"></div>
 <div class="workspace"><main id="main"><div class="notice" id="notice"><span id="noticecopy">Sample results. Connect Exa to search.</span><button id="noticeaction" class="hidden">Connect for live search</button></div>
 <div class="mainbar"><div class="tabs" role="tablist" aria-label="Discovery lens"><button class="tab active" role="tab" aria-selected="true" data-lens="research">Research</button><button class="tab" role="tab" aria-selected="false" data-lens="practice">In the wild</button><button class="tab" role="tab" aria-selected="false" data-lens="counterpoints">Counterpoints</button></div><span class="spacer"></span><label class="sub" for="period">Published</label><select id="period"><option value="all">Any time</option><option value="year">Past year</option><option value="month">Past 30 days</option></select></div>
 <div class="resultshead"><div><h2 id="resulttitle">Regenerative economics</h2><div class="sub" id="resultsub">Curated sample sources.</div></div><span class="pill" id="resultcount">4 sources</span></div><div class="cards" id="cards" role="tabpanel" aria-label="Discovery results"></div></main>
@@ -71,6 +72,9 @@ const page = String.raw`<!doctype html>
 'use strict';
 const $=s=>document.querySelector(s);
 const serverConfigured = false;
+const publicSearch = false;
+const turnstileSitekey = "";
+let turnstileToken='', turnstileWidget;
 const connected=()=>Boolean(apiKey || serverConfigured);
 const demo={research:[
 {title:'An economy designed to regenerate',url:'https://capitalinstitute.org/',author:'Capital Institute',highlights:['Sample guide: a starting point for exploring regenerative economics and its underlying principles.']},
@@ -107,24 +111,27 @@ function render(){
 }
 function renderSaved(){const root=$('#saved');root.replaceChildren();$('#savedcount').textContent=saved.length;if(!saved.length){const empty=el('div','empty');empty.append(document.createTextNode('No saved sources.'));root.append(empty);}saved.forEach(r=>{const row=el('div','saveditem'),remove=el('button','remove','×');remove.setAttribute('aria-label','Remove '+r.title);remove.onclick=()=>toggleSave(r);const a=el('a','',r.title);a.href=safeURL(r.url);a.target='_blank';a.rel='noopener noreferrer';row.append(remove,a,el('small','',host(r.url)+(r.sample?' · Sample':'')));root.append(row);});}
 function setBusy(value){busy=value;$('#explore').disabled=value;$('#explore').textContent=value?'Searching…':'Explore';document.querySelectorAll('.tab,#period,.chip,#connect,#noticeaction').forEach(n=>n.disabled=value);$('#main').setAttribute('aria-busy',String(value));}
-function mode(){const isConnected=connected();$('#mode').textContent=apiKey?'Personal key connected':serverConfigured?'Server key configured':'Sample';$('#connect').textContent=apiKey?'Disconnect key':serverConfigured?'Use another key':'Connect Exa';$('#period').disabled=!isConnected;$('#noticecopy').textContent=live?'Results from Exa.':isConnected?'Explore a topic to search the web.':'Sample results. Connect Exa to search.';$('#noticeaction').textContent=isConnected?'Search this topic':'Connect Exa';}
-async function search(){if(busy)return;const value=$('#topic').value.trim();if(value.length<3)return toast('Give your topic at least three characters.');if(!connected()){$('#keydialog').showModal();return;}
+function mode(){const isConnected=connected();$('#connect').classList.toggle('hidden',publicSearch);$('#mode').textContent=apiKey?'Personal key connected':serverConfigured?'Server key configured':'Sample';$('#connect').textContent=apiKey?'Disconnect key':serverConfigured?'Use another key':'Connect Exa';$('#period').disabled=!isConnected;$('#noticecopy').textContent=live?'Results from Exa.':isConnected?'Explore a topic to search the web.':'Sample results. Connect Exa to search.';$('#noticeaction').textContent=isConnected?'Search this topic':'Connect Exa';if(publicSearch)$('#noticecopy').textContent=isConnected?'Human check required. 5 searches per IP daily; 100 sponsored searches total.':'Sponsored search is paused.';}
+async function search(){if(busy)return;const value=$('#topic').value.trim();if(value.length<3)return toast('Give your topic at least three characters.');if(!connected()){if(publicSearch)return toast('Sponsored search is paused.');$('#keydialog').showModal();return;}
  query=value;const key=JSON.stringify([query,lens,$('#period').value]);$('#notice').classList.remove('error');
  if(cache.has(key)){results=cache.get(key);live=true;render();mode();$('#status').textContent='Showing results from this session.';return;}
+ if(publicSearch && !turnstileToken)return toast('Complete the human check first.');
  setBusy(true);$('#status').textContent='Following the '+(lens==='practice'?'real-world':lens)+' thread…';
- try{const response=await fetch('/signal-garden/api/search',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({query,lens,period:$('#period').value,apiKey}),signal:AbortSignal.timeout(35000)});const data=await response.json();if(!response.ok)throw new Error(data.error||'Search could not complete.');results=data.results;cache.set(key,results);live=true;render();mode();$('#status').textContent='Found '+results.length+' sources.'+(typeof data.cost==='number'?' Reported Exa cost: $'+data.cost.toFixed(4)+'.':'');}
+ try{const response=await fetch('/signal-garden/api/search',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({query,lens,period:$('#period').value,apiKey,requestId:crypto.randomUUID(),turnstileToken}),signal:AbortSignal.timeout(35000)});const data=await response.json();if(!response.ok)throw new Error(data.error||'Search could not complete.');results=data.results;cache.set(key,results);live=true;render();mode();$('#status').textContent='Found '+results.length+' sources.'+(typeof data.cost==='number'?' Reported Exa cost: $'+data.cost.toFixed(4)+'.':'');}
  catch(error){results=[];live=true;render();$('#notice').classList.add('error');$('#noticecopy').textContent=error.name==='TimeoutError'?'The search took too long. Try again.':error.message;$('#status').textContent='Search failed. Adjust your topic or connection and try again.';}
- finally{setBusy(false);$('#period').disabled=!connected();}
+ finally{setBusy(false);$('#period').disabled=!connected();if(publicSearch){turnstileToken='';if(turnstileWidget!==undefined&&window.turnstile)window.turnstile.reset(turnstileWidget);}}
 }
 $('#searchform').onsubmit=e=>{e.preventDefault();search();};
 $('#connect').onclick=()=>{if(apiKey){apiKey='';cache.clear();live=false;results=demo[lens];$('#status').textContent='Disconnected. Your key has been cleared from this page.';mode();render();}else $('#keydialog').showModal();};
 $('#noticeaction').onclick=()=>connected()?search():$('#keydialog').showModal();$('#cancelkey').onclick=()=>$('#keydialog').close();$('#keydialog').addEventListener('close',()=>{$('#apikey').value='';});
 $('#keyform').onsubmit=e=>{e.preventDefault();apiKey=$('#apikey').value.trim();$('#keydialog').close();mode();toast('Exa connected. Starting your first search.');search();};
 document.querySelectorAll('[data-topic]').forEach(n=>n.onclick=()=>{$('#topic').value=n.dataset.topic;search();});
-document.querySelectorAll('[data-lens]').forEach(n=>n.onclick=()=>{lens=n.dataset.lens;document.querySelectorAll('[data-lens]').forEach(t=>{t.classList.toggle('active',t===n);t.setAttribute('aria-selected',String(t===n));});if(connected())search();else{results=demo[lens];render();}});
-$('#period').onchange=search;$('#notes').oninput=persist;
+document.querySelectorAll('[data-lens]').forEach(n=>n.onclick=()=>{lens=n.dataset.lens;document.querySelectorAll('[data-lens]').forEach(t=>{t.classList.toggle('active',t===n);t.setAttribute('aria-selected',String(t===n));});if(publicSearch)showSelected();else if(connected())search();else{results=demo[lens];render();}});
+function showSelected(){const key=JSON.stringify([$('#topic').value.trim(),lens,$('#period').value]);live=true;query=$('#topic').value.trim();results=cache.get(key)||[];render();$('#status').textContent=cache.has(key)?'Showing saved results from this session.':'Click Explore to search this view.';}
+$('#period').onchange=()=>publicSearch?showSelected():search();$('#notes').oninput=persist;
 function md(s){return String(s||'').replace(/[\\\[\]*_<>#]/g,'\\$&').replace(/[\r\n]+/g,' ');}
 $('#export').onclick=()=>{if(!saved.length&&!$('#notes').value.trim())return toast('Save a source or add a thought first.');const text='# Signal Garden — Reading list\n\nExported '+new Date().toISOString().slice(0,10)+'\n\n'+($('#notes').value.trim()?'## Notes\n\n'+$('#notes').value.trim()+'\n\n':'')+'## Sources\n\n'+saved.map(r=>'- ['+md(r.title)+']('+r.url.replace(/\(/g,'%28').replace(/\)/g,'%29')+')'+(r.sample?' — curated sample':'')+'\n  '+md(r.highlights?.join(' ')||'')).join('\n\n')+'\n';const objectURL=URL.createObjectURL(new Blob([text],{type:'text/markdown;charset=utf-8'}));const a=el('a');a.href=objectURL;a.download='signal-garden-reading-list.md';a.click();setTimeout(()=>URL.revokeObjectURL(objectURL),1000);toast('Your reading list is ready.');};
 render();renderSaved();mode();
+if(publicSearch&&serverConfigured){window.signalGardenTurnstileLoaded=()=>{turnstileWidget=window.turnstile.render('#humancheck',{sitekey:turnstileSitekey,action:'signal_garden_search',theme:'light',callback:token=>{turnstileToken=token;},'expired-callback':()=>{turnstileToken='';},'error-callback':()=>{turnstileToken='';$('#status').textContent='Human verification could not load. Reload to try again.';}});};const script=document.createElement('script');script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?onload=signalGardenTurnstileLoaded&render=explicit';script.async=true;script.defer=true;document.head.append(script);}
 })();
 </script></body></html>`;
