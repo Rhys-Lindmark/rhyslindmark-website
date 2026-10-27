@@ -42,6 +42,7 @@ $('check-form').addEventListener('submit',async event=>{
       const row=document.createElement('div');row.className='bar-row';const line=document.createElement('div');line.className='bar-label';const title=document.createElement('span');title.textContent=label;const amount=document.createElement('span');amount.textContent=pct(data.probabilities[id]);line.append(title,amount);const track=document.createElement('div');track.className='track';const fill=document.createElement('div');fill.className='fill';fill.style.width=pct(data.probabilities[id]);track.append(fill);row.append(line,track);$('bars').append(row);
     }
     $('direct').textContent=pct(data.direct);$('overreach').textContent=pct(data.overreach);$('confidence').textContent=data.confidence===null?'Not provided':pct(data.confidence);$('meta').textContent=`${data.model} · ${(data.elapsed_ms/1000).toFixed(2)}s`;
+    if(window.matchMedia('(max-width: 679px)').matches)document.querySelector('.results').scrollIntoView({block:'start',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
   }catch(error){$('error').textContent=error.name==='TimeoutError'?'The request timed out. Please try again.':error.message;$('error').hidden=false;$('status').textContent='';}
   finally{busy=false;verificationToken='';$('run').disabled=true;if(widgetId!==undefined)window.turnstile.reset(widgetId);document.querySelector('.results').setAttribute('aria-busy','false');for(const el of document.querySelectorAll('textarea, [data-example], #clear'))el.disabled=false;}
 });
