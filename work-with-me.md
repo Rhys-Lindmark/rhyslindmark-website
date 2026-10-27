@@ -12,7 +12,7 @@ Technical generalist in the details. Likes getting things done. Good with people
 Currently:
 - Mapping the technological frontier ([1](https://www.rhyslindmark.com/posts/ai2026-pt1/), [2](https://www.rhyslindmark.com/posts/ai2026-pt2), [3](https://www.rhyslindmark.com/posts/ai2026-pt3/))
 - [Multiplexing agents](https://ai.rhyslindmark.com/) to do my bidding.
-- Helping technical communities as I find my next role. ([RenPhil](https://www.renaissancephilanthropy.org/), [Topology](https://www.topology.vc/).)
+- Helping technical communities as I find my next role. ([RenPhil](https://www.renaissancephilanthropy.org/), etc.)
 
 I think abundant intelligence is a big deal. More like the emergence of sapiens than the internet.
 
