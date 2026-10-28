@@ -16,9 +16,16 @@ const html = (marked.parse(raw) as string)
 		const slug = title.replace(/<[^>]+>/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 		return `<section data-section="${slug}"><h2${attrs}>${title}</h2>${body}</section>`;
 	})
-	// The small-print blocks use separators when their print line breaks are hidden.
+	// Keep each fact/skill intact, with extra separators where print line breaks hide.
 	.replace(/(<section data-section="other">[\s\S]*?)(?=<blockquote>)/, (_, blocks) =>
-		blocks.replace(/<br\s*\/?>/g, '<span class="screen-separator" aria-hidden="true"> · </span><br>'),
+		blocks.replace(/<p>([\s\S]*?)<\/p>/g, (_, body) => `<p>${body
+			.split(/<br\s*\/?>/)
+			.map((line, lineIndex, lines) => line.trim().split(' · ').map((item, itemIndex, items) => {
+				const separator = itemIndex < items.length - 1 ? ' ·' : lineIndex < lines.length - 1
+					? '<span class="screen-separator" aria-hidden="true"> ·</span>' : '';
+				return `<span class="other-item">${item}${separator}</span>`;
+			}).join(' '))
+			.join('<br>\n')}</p>`),
 	)
 	.replace(/<h3([^>]*)>(.*) · ([^<]+)<\/h3>/g, (_, attrs, place, dates) => {
 		const [org, loc = ''] = place.split(' — ');
@@ -158,7 +165,7 @@ const html = (marked.parse(raw) as string)
 		min-width: 0;
 		margin: 0;
 		font-family: var(--font-sans);
-		font-size: .85rem;
+		font-size: .75rem;
 		color: var(--muted);
 	}
 
@@ -171,7 +178,7 @@ const html = (marked.parse(raw) as string)
 
 	.resume :global([data-section='other'] blockquote) {
 		margin: 0;
-		font-size: .85rem;
+		font-size: .75rem;
 		color: var(--muted);
 	}
 
@@ -184,6 +191,11 @@ const html = (marked.parse(raw) as string)
 	}
 
 	@media screen {
+		.resume :global(.other-item) {
+			display: inline-block;
+			white-space: nowrap;
+		}
+
 		.resume :global(.screen-separator) {
 			display: inline;
 		}
