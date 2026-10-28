@@ -231,6 +231,16 @@ export async function onRequest(context) {
 	if (url.hostname === 'ai.rhyslindmark.com') {
 		const path = url.pathname.replace(/\/$/, '') || '/';
 
+		// Keep Jev's public URL slashless while serving its directory asset.
+		if (path === '/jev' && ['GET', 'HEAD'].includes(context.request.method)) {
+			if (url.pathname.endsWith('/')) {
+				url.pathname = '/jev';
+				return Response.redirect(url.toString(), 308);
+			}
+			url.pathname = '/jev/';
+			return context.env.ASSETS.fetch(new Request(url, context.request));
+		}
+
 		if (path === '/donate' || path.startsWith('/donate/')) {
 			url.pathname = `/givebetter${url.pathname.slice('/donate'.length)}`;
 			return Response.redirect(url.toString(), 308);
