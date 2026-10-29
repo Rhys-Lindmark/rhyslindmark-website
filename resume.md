@@ -2,7 +2,7 @@
 
 rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · [LinkedIn](https://www.linkedin.com/in/rhyslindmark) · [X](https://x.com/RhysLindmark) · San Francisco, CA
 
-**4x founder, community leader, and educator with 15+ years of experience building technical ecosystems & teams from scratch.** <br>
+**4x founder, community leader, and educator with 15+ years of experience building developer ecosystems & teams at the technological frontier.** <br>
 
 *$5M+ raised | 25+ hires | 10,000+ community members reached<br>*
 *Building ecosystems & teams at the AI frontier | Working towards abundant, safe intelligence*<br>
