@@ -7,9 +7,7 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · [
 *$5M+ raised | 25+ hires | 10,000+ community members reached<br>*
 *Building ecosystems & teams at the AI frontier | Working towards abundant, safe intelligence*<br>
 
-*"Rhys is entrepreneurial and creative, with P99 general intelligence, P99 people-person-ness, and P99 low ego.<br>
-His potential is off the charts for a place that values what he has to offer."* <br>
-– Michael, Lead PM at Uber
+*"The frontier is closer than you think."*
 
 ## Work Experience
 
@@ -68,5 +66,5 @@ Skills: Developer relations · Hackathons & workshops <br>
 Fellowships · Partnerships · Content · Public speaking · AI agents <br>
 Founder coaching · Hiring · Budgets & fundraising · OKRs & offsites
 
-> "How you do anything is how you do everything."<br>
-> "The frontier is closer than you think."
+> "Rhys is entrepreneurial and creative, with P99 general intelligence, P99 people-person-ness, and P99 low ego. His potential is off the charts for a place that values what he has to offer."<br>
+> <span class="quote-attribution">– Michael, friend & Lead PM at Uber</span>
