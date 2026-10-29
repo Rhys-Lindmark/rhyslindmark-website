@@ -47,9 +47,9 @@ His potential is off the charts for a place that values what he has to offer.</e
 
 ## **What I'm looking for**
 
-* A cross-functional role at a well-run, growth-stage AI org.
-* Roles like: Ecosystem GTM, DevRel, Chief of Staff, Product Ops, People, or Societal Impacts.
-* Open to part-time & full-time roles. Curious to work together to see if I can be helpful.
+* A developer ecosystem role at a well-run, growing AI company.
+* Roles like Ecosystem GTM, DevRel, or Community. Also excited by generalist roles like: Chief of Staff, Product Ops, Societal Impacts, or Culture.
+* Curious to work together to see if I can be helpful.
 
 ---
 
