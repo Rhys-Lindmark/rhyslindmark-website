@@ -200,13 +200,21 @@ const html = (marked.parse(raw) as string)
 			display: inline;
 		}
 
-		/* Let screen text wrap naturally; retain the compact print line breaks. */
-		.resume :global([data-section='other'] > p br) {
+		.resume :global([data-section='other']) {
+			grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+		}
+
+		/* Preserve the three personal-facts rows; skills can wrap naturally. */
+		.resume :global([data-section='other'] > p:last-of-type br) {
+			display: none;
+		}
+
+		.resume :global([data-section='other'] > p:first-of-type .screen-separator) {
 			display: none;
 		}
 	}
 
-	@media screen and (max-width: 600px) {
+	@media screen and (max-width: 735px) {
 		.resume :global([data-section='other']) {
 			grid-template-columns: minmax(0, 1fr);
 		}
