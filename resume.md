@@ -68,4 +68,4 @@ Content · Hiring · Budgets & fundraising · OKRs & offsites
 
 > "Rhys is entrepreneurial and creative, with P99 general intelligence, P99 people-person-ness, and P99 low ego.<br>
 > His potential is off the charts for a place that values what he has to offer."<br>
-> <span class="quote-attribution">– Michael, friend & Lead PM at Uber</span>
+> <span class="quote-attribution">– Michael, friend & Lead Big Tech PM</span>
