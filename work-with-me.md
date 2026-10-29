@@ -2,10 +2,7 @@
 
 📍 San Francisco, CA
 
-**I'm an energizer bunny & founder type who likes captaining teams to do great work at the frontier.**
-
-Technical generalist in the details. Likes getting things done. Good with people.
-
+**4x founder, community leader, and educator with 15+ years of experience building developer ecosystems & teams at the technological frontier.**<br>
 <span class="bio-tooltip"><button type="button" aria-describedby="nerd-herder-tip">Nerd Herder</button><span role="tooltip" id="nerd-herder-tip">Builds communities, relationships, teams.</span></span> &amp; <span class="bio-tooltip"><button type="button" aria-describedby="people-whisperer-tip">People Whisperer</button><span role="tooltip" id="people-whisperer-tip">Aspiring <a href="https://www.thesocialradars.com/">Social Radar</a> &amp; <a href="https://press.stripe.com/scaling-people">Scaling People</a> enthusiast.</span></span>.<br>
 <span class="bio-tooltip"><button type="button" aria-describedby="info-sponge-tip">Info Sponge</button><span role="tooltip" id="info-sponge-tip">Turns context &amp; research into content &amp; direction.</span></span> &amp; <span class="bio-tooltip"><button type="button" aria-describedby="product-guy-tip">Annoying Product Guy</button><span role="tooltip" id="product-guy-tip">Makes nice things by caring about small things a little too much.</span></span>.
 
