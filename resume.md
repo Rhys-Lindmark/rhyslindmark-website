@@ -4,8 +4,8 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · [
 
 **4x founder, community leader, and educator with 15+ years of experience building developer ecosystems & teams at the technological frontier.** <br>
 
-*$5M+ raised | 25+ hires | 10,000+ community members reached<br>*
-*Building ecosystems & teams at the AI frontier | Working towards abundant, safe intelligence*<br>
+$5M+ raised | 25+ hires | 10,000+ community members reached<br>
+Building ecosystems & teams at the AI frontier | Working towards abundant, safe intelligence<br>
 
 *"The frontier is closer than you think."*
 
