@@ -60,7 +60,7 @@ Building ecosystems & teams at the AI frontier | Working towards abundant, safe 
 
 250+ books read · 20k+ Anki cards · 200+ blog posts <br>
 1,000+ miles backpacked · 1,000+ days of meditation <br>
-5 group houses · 3x frisbee captain & champion · 15k+ albums
+5 group houses · 3x frisbee champion · 15k+ albums
 
 Skills: Developer relations · Hackathons & workshops <br>
 Fellowships · Partnerships · AI agents · Founder coaching <br>
