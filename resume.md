@@ -63,8 +63,8 @@ Building ecosystems & teams at the AI frontier | Working towards abundant, safe 
 5 group houses · 3x frisbee captain & champion · 15k+ albums
 
 Skills: Developer relations · Hackathons & workshops <br>
-Fellowships · Partnerships · Content · Public speaking · AI agents <br>
-Founder coaching · Hiring · Budgets & fundraising · OKRs & offsites
+Fellowships · Partnerships · AI agents · Founder coaching <br>
+Content · Hiring · Budgets & fundraising · OKRs & offsites
 
 > "Rhys is entrepreneurial and creative, with P99 general intelligence, P99 people-person-ness, and P99 low ego. His potential is off the charts for a place that values what he has to offer."<br>
 > <span class="quote-attribution">– Michael, friend & Lead PM at Uber</span>

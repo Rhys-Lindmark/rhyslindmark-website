@@ -205,15 +205,12 @@ const html = (marked.parse(raw) as string)
 		}
 
 		.resume :global([data-section='other']) {
-			grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+			grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+			column-gap: .5rem;
 		}
 
-		/* Preserve the three personal-facts rows; skills can wrap naturally. */
-		.resume :global([data-section='other'] > p:last-of-type br) {
-			display: none;
-		}
-
-		.resume :global([data-section='other'] > p:first-of-type .screen-separator) {
+		/* Preserve the three explicit rows in both footer columns. */
+		.resume :global([data-section='other'] > p .screen-separator) {
 			display: none;
 		}
 	}
