@@ -7,7 +7,7 @@ const AI_SITES = {
 	'/byow': 'https://byow.rhyslindmark.chatgpt.site',
 	'/domestication': 'https://visualizing-reality.rhyslindmark.chatgpt.site',
 	'/givebetter': 'https://givebetter.rhyslindmark.workers.dev',
-	'/music': 'https://songs-for-self.rhyslindmark.chatgpt.site',
+	'/music': 'https://songs-for-self.rhyslindmark.workers.dev',
 	'/games': 'https://ai-games-accelerator.rhyslindmark.chatgpt.site',
 	'/claims': 'https://ai-claims-accelerator.rhyslindmark.chatgpt.site',
 	'/bubble': 'https://ai-bubble-observatory.rhyslindmark.chatgpt.site',
