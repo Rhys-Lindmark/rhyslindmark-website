@@ -1,0 +1,23 @@
+export const sources=[
+ {name:'Y Combinator: How to Apply',url:'https://www.ycombinator.com/howtoapply',detail:'Clear explanations, specific achievements, distinctive insight, and obstacles.'},
+ {name:'YC Interview Simulator',url:'https://yci.vercel.app/',detail:'Product, customers, traction, competition, and team.'},
+ {name:'ghSMART: The Who Method',url:'https://ghsmart.com/research-ip/who-method/',detail:'Role expectations, accomplishments, setbacks, working relationships, and transitions.'}
+];
+export const names={blend:'YC + Who',yc:'YC founder',who:'Who hiring'};
+export function createPlan(text,title,mode,prelaunch=false,sourceUrl){
+ const sentences=text.split(/(?<=[.!?])\s+|\n+/).map(s=>s.trim()).filter(s=>s.length>=30&&s.length<=600);const used=new Set();
+ const excerpt=(cue)=>{const i=sentences.findIndex((s,i)=>!used.has(i)&&cue.test(s));if(i<0)return '';used.add(i);return sentences[i].slice(0,240);};
+ const q=(topic,minutes,question,followups,cue,source)=>({topic,minutes,question,followups,excerpt:excerpt(cue),source});
+ const questions=[
+  q('Background',2,'Tell me about your background and how it led to the work you do now.',['Which experience most shaped how you approach your work?'],/found|experience|previous|career|background|role|work/i,'Who'),
+  q('Current work',3,mode==='who'?'In your most relevant recent role, what outcomes were you responsible for?':'What are you working on, who is it for, and what problem does it solve?',mode==='who'?['What did success look like when you started?','How does that connect to this opportunity?']:['Tell me about one person who needs it.','How do they solve this problem today?'],/product|build|develop|role|responsib|problem|help/i,mode==='who'?'Who':'YC'),
+  q('Results & evidence',4,mode==='who'?'Walk me through your most consequential accomplishment. What did you personally contribute?':prelaunch?'What have you tested so far, and what evidence would convince you to keep building?':mode==='yc'?'What evidence shows people want this, and what are your actual traction numbers?':'Walk me through a specific result you are proud of in this work. What changed because of your contribution?',mode==='who'?['What was the starting point, and what changed?','Which actions were yours, and which were the team’s?']:['What have customers or users actually done, rather than said?','What is the strongest evidence, and what remains unproven?'],/customer|user|research|achiev|result|grow|revenue|\d/i,mode==='who'?'Who':'YC + Who'),
+  q('Judgment & learning',4,'Tell me about a decision that did not go as planned. What did you learn and change?',['What part of the outcome was within your control?','Give me an example of applying that lesson afterward.'],/decision|fail|challenge|learn|difficult|team/i,'Who'),
+  q('Direction & trade-offs',4,mode==='who'?'What are you looking for next, and why is it the right step for you?':'What is the most important next milestone, and what could prevent you from reaching it?',mode==='who'?['Why leave your current or last role?','What trade-offs would you be willing to make?']:['Why would someone choose your approach over the best alternative?','What is the riskiest assumption, and how will you test it?'],/future|next|risk|compet|plan|goal|opportun|cost/i,mode==='who'?'Who':'YC'),
+  q('Closing',3,'What should I have asked that I missed? What questions do you have for me?',['What is the one thing you would like me to take away from this conversation?'],/vision|mission|want/i,'YC + Who')
+ ];
+ for(const item of questions)if(item.excerpt)item.followups.push(`You mention “${item.excerpt}” Can you give a concrete example?`);
+ return {title:title.trim().slice(0,120)||'Interview plan',mode,sourceUrl,questions,method:'curated'};
+}
+export function planText(plan,notes=[]){let time=0;return `${plan.title}\n20 minutes · ${names[plan.mode]}\n${plan.sourceUrl?'Context: '+plan.sourceUrl+'\n':''}\n`+plan.questions.map((q,i)=>{let start=time;time+=q.minutes;return `${i+1}. ${q.topic} (${start}–${time} min)\n${q.question}\n${q.followups.map(f=>'  - '+f).join('\n')}\n${notes[i]?'Notes: '+notes[i]+'\n':''}`;}).join('\n')+'\nSources:\n'+sources.map(s=>s.name+': '+s.url).join('\n');}
+export function validPlan(plan){return !!plan&&['yc','who','blend'].includes(plan.mode)&&typeof plan.title==='string'&&Array.isArray(plan.questions)&&plan.questions.length===6&&plan.questions.every(q=>typeof q.question==='string'&&typeof q.topic==='string'&&typeof q.excerpt==='string'&&typeof q.minutes==='number'&&q.minutes>0&&Array.isArray(q.followups)&&q.followups.every(f=>typeof f==='string'))&&plan.questions.reduce((n,q)=>n+q.minutes,0)===20;}

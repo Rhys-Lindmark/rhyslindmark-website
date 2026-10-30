@@ -228,6 +228,11 @@ export async function onRequest(context) {
 		return Response.redirect(url.toString(), 301);
 	}
 
+	if (url.hostname === 'www.ai.rhyslindmark.com') {
+		url.hostname = 'ai.rhyslindmark.com';
+		return Response.redirect(url.toString(), 308);
+	}
+
 	if (url.hostname === 'ai.rhyslindmark.com') {
 		const path = url.pathname.replace(/\/$/, '') || '/';
 

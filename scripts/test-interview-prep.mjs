@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {createPlan,validPlan,planText} from '../public/interview-prep/questions.js';
+import {onRequestPost} from '../functions/interview-prep/api/plan.js';
+const input='Fieldnote builds scheduling software for home care agencies. We interviewed 18 customers and piloted with three agencies. We reduced missed visits from twelve to four per week. Our founders previously ran a care company. Next quarter we want three paid customers.';
+const call=(body,env={},headers={})=>onRequestPost({request:new Request('https://ai.rhyslindmark.com/interview-prep/api/plan',{method:'POST',headers,body:typeof body==='string'?body:JSON.stringify(body)}),env});
+for(const mode of ['blend','yc','who'])for(const prelaunch of [true,false]){let plan=createPlan(input,'Fieldnote',mode,prelaunch);assert(validPlan(plan));assert(plan.questions[0].question.startsWith('Tell me about your background'));assert.equal(plan.questions[5].topic,'Closing');assert(planText(plan,['important note']).includes('important note'));if(prelaunch&&mode!=='who')assert(plan.questions[2].question.includes('tested'));}
+assert.equal((await call({input:'abc'})).status,400);assert.equal((await call({input},{},{Origin:'https://evil.example'})).status,403);assert.equal((await call({input:'http://127.0.0.1'})).status,400);assert.equal((await call({input:'x'.repeat(25000)})).status,400);
+const curated=await (await call({input})).json();assert.equal(curated.method,'curated');
+let prompt;
+const ai={AI:{run:async(model,args)=>{prompt=args;return {response:JSON.stringify({questions:Array.from({length:6},(_,i)=>({question:'What did you learn from the three agency pilots?',followups:['What changed for coordinators?','How did you measure it?']}))})};}}};
+const tailored=await (await call({input},ai)).json();assert.equal(tailored.method,'ai');assert(tailored.questions[0].question.startsWith('Tell me about your background'));assert.equal(tailored.questions[1].question,'What did you learn from the three agency pilots?');assert(tailored.questions[5].question.includes('What should I have asked'));assert(prompt.messages[1].content.includes('18 customers'));assert(validPlan(tailored));
+const fallback=await (await call({input},{AI:{run:async()=>({response:'bad JSON'})}})).json();assert.equal(fallback.method,'curated');
+if(process.env.INTERVIEW_LIVE_TEST){const live=await call({input:'https://www.ycombinator.com/howtoapply'});const liveData=await live.json();assert.equal(live.status,200,JSON.stringify(liveData));assert(liveData.title.includes('Y Combinator'));assert.equal(liveData.sourceUrl,'https://www.ycombinator.com/howtoapply');}
+console.log('Passed: fixed background-first order, 20-minute total, all styles/stages, notes export, AI tailoring, enforced opening/close, malformed AI fallback, input/origin/private-URL rejection, live URL extraction.');
