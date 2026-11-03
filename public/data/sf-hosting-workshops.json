@@ -1,0 +1,471 @@
+{
+  "updated": "2026-11-02",
+  "capacityNote": "Published layouts are not interchangeable; confirm workshop table seating with the venue.",
+  "venues": [
+    {
+      "id": "workshop-exploratorium",
+      "name": "Exploratorium — Bay Observatory & Kanbar Forum",
+      "category": "workshop",
+      "workshop": true,
+      "neighborhood": "Embarcadero",
+      "cuisine": "Workshops / Offsites",
+      "website": "https://www.exploratorium.edu/visit/rentals/bay-observatory-gallery-terrace",
+      "source": "https://www.exploratorium.edu/visit/rentals/bay-observatory-gallery-terrace",
+      "inquiry": "https://www.exploratorium.edu/visit/rentals/bay-observatory-gallery-terrace",
+      "address": "Pier 15, San Francisco, CA 94111",
+      "zipCode": "94111",
+      "lat": 37.8015,
+      "lng": -122.3973,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": 200,
+      "capacityLayout": "seated",
+      "private": true,
+      "semiPrivate": false,
+      "buyout": false,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": false,
+      "workshopFit": "Bay-view offsites in the Observatory, or presentation-led workshops in the Kanbar Forum.",
+      "amenities": [
+        "Waterfront terrace",
+        "Daytime meeting packages",
+        "Kanbar projection & sound"
+      ],
+      "details": "The Fisher Bay Observatory supports daytime meetings with a waterfront terrace. Its published counts are 150 indoor dining seats and 100 terrace dining seats, not classroom capacities. The Kanbar Forum offers flexible theater and cabaret setups with projection and Meyer Constellation sound. Ask about table layouts, Wi-Fi, catering, A/V support, and room-specific hire costs.",
+      "rooms": [
+        {
+          "name": "Fisher Bay Observatory Gallery",
+          "privacy": "Private room",
+          "capacityLabel": "150 dining seats indoors; 200 standing",
+          "note": "3,500 sq ft indoors. Confirm workshop table capacity; do not combine indoor and terrace counts without venue approval.",
+          "source": "https://www.exploratorium.edu/visit/rentals/bay-observatory-gallery-terrace"
+        },
+        {
+          "name": "Observatory Terrace",
+          "privacy": "Private room",
+          "capacityLabel": "100 dining seats; 125 standing",
+          "note": "2,500 sq ft outdoors. Ask about weather backup and whether terrace access is included.",
+          "source": "https://www.exploratorium.edu/visit/rentals/bay-observatory-gallery-terrace"
+        },
+        {
+          "name": "Kanbar Forum",
+          "privacy": "Private room",
+          "capacityLabel": "160–200 seated; 250 standing",
+          "note": "3,600 sq ft with configurable theater/cabaret seating, projection and sound. Confirm capacity for your table layout.",
+          "source": "https://www.exploratorium.edu/visit/rentals/kanbar-forum"
+        }
+      ],
+      "verified": "2026-11-02",
+      "sources": [
+        "Official venue rental pages (November 2026)"
+      ],
+      "image": null
+    },
+    {
+      "id": "workshop-box",
+      "name": "The Box SF — Buddy Suite",
+      "category": "workshop",
+      "workshop": true,
+      "neighborhood": "SoMa",
+      "cuisine": "Workshops / Offsites",
+      "website": "https://theboxsf.com/pages/buddy-suite",
+      "source": "https://theboxsf.com/pages/buddy-suite",
+      "inquiry": "https://theboxsf.com/pages/buddy-suite",
+      "address": "1069 Howard St, San Francisco, CA 94103",
+      "zipCode": "94103",
+      "lat": 37.778500098252,
+      "lng": -122.408624601131,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": 35,
+      "capacityLayout": "seated",
+      "private": true,
+      "semiPrivate": false,
+      "buyout": false,
+      "patio": false,
+      "groupHosting": true,
+      "casualDropIn": false,
+      "workshopFit": "A small workshop room with flexible furniture, a monitor, and a four-hour minimum hire.",
+      "amenities": [
+        "Wi-Fi",
+        "HDMI monitor",
+        "Projection screen",
+        "Furniture",
+        "On-site venue manager"
+      ],
+      "details": "Historic printing-plant venue near Moscone. The Buddy Suite supports meetings and classroom setups, with catering and bar packages available. Projector rental and outside catering can cost extra; published pricing is by inquiry. Confirm the seated count for your chosen table arrangement.",
+      "rooms": [
+        {
+          "name": "Buddy Suite & Classroom",
+          "privacy": "Private room",
+          "capacityLabel": "Up to 35 seated; 40 standing",
+          "note": "Hourly rental with a four-hour minimum. Monitor, HDMI cord, screen, Wi-Fi, and furniture included. Projector costs extra; no food-and-beverage minimum.",
+          "source": "https://theboxsf.com/pages/buddy-suite"
+        }
+      ],
+      "verified": "2026-11-02",
+      "sources": [
+        "Official venue rental pages (November 2026)"
+      ],
+      "image": "https://i.shgcdn.com/8fe40c1c-ef40-4c7d-92af-0cc21c9a7dc0/-/format/auto/-/preview/1000x1000/-/quality/lighter/"
+    },
+    {
+      "id": "workshop-fort-mason",
+      "name": "Fort Mason Center — Meeting Rooms",
+      "category": "workshop",
+      "workshop": true,
+      "neighborhood": "Marina",
+      "cuisine": "Workshops / Offsites",
+      "website": "https://fortmason.org/venue/meeting-rooms/",
+      "source": "https://fortmason.org/venue/meeting-rooms/",
+      "inquiry": "https://fortmason.org/venue/meeting-rooms/",
+      "address": "2 Marina Blvd, San Francisco, CA 94123",
+      "zipCode": "94123",
+      "lat": 37.80526140413,
+      "lng": -122.43215792061,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": 52,
+      "capacityLayout": "classroom",
+      "private": true,
+      "semiPrivate": false,
+      "buyout": false,
+      "patio": false,
+      "groupHosting": true,
+      "casualDropIn": false,
+      "workshopFit": "Training workshops with published classroom layouts for 20–52 people and several breakout rooms.",
+      "amenities": [
+        "Whiteboards",
+        "Presentation monitors",
+        "Wi-Fi",
+        "Hourly or daily rental",
+        "On-site parking"
+      ],
+      "details": "Four configurable meeting rooms with natural light and bay views. Classroom capacities below come from the venue-linked 2024 specification, which differs from headline event capacities. Ask for current layouts and a quote including equipment, cleaning, and catering.",
+      "rooms": [
+        {
+          "name": "C210 or C230",
+          "privacy": "Private room",
+          "capacityLabel": "20 classroom seats each",
+          "note": "C210 also lists 20 conference / 44 theater; C230 lists 20 conference / 40 theater.",
+          "source": "https://fortmason.org/wp-content/uploads/2015/09/meeting_rooms_info_pkt_2024.pdf"
+        },
+        {
+          "name": "C205",
+          "privacy": "Private room",
+          "capacityLabel": "30 classroom seats",
+          "note": "28 conference / 68 theater seats in the linked specification.",
+          "source": "https://fortmason.org/wp-content/uploads/2015/09/meeting_rooms_info_pkt_2024.pdf"
+        },
+        {
+          "name": "C235",
+          "privacy": "Private room",
+          "capacityLabel": "40 classroom seats",
+          "note": "30 conference / 68 theater seats in the linked specification.",
+          "source": "https://fortmason.org/wp-content/uploads/2015/09/meeting_rooms_info_pkt_2024.pdf"
+        },
+        {
+          "name": "Combined C205–C235",
+          "privacy": "Private room",
+          "capacityLabel": "52 classroom seats",
+          "note": "Airwall combination; 36 conference / 128 theater seats in the linked specification. Confirm current combined-room capacity.",
+          "source": "https://fortmason.org/wp-content/uploads/2015/09/meeting_rooms_info_pkt_2024.pdf"
+        }
+      ],
+      "verified": "2026-11-02",
+      "sources": [
+        "Official venue rental pages (November 2026)"
+      ],
+      "image": "https://fortmasondev.wpenginepowered.com/wp-content/uploads/2015/09/FMCAC_MAS-2_bigslide.jpg"
+    },
+    {
+      "id": "workshop-laundry",
+      "name": "The Laundry Gallery",
+      "category": "workshop",
+      "workshop": true,
+      "neighborhood": "Mission District",
+      "cuisine": "Workshops / Offsites",
+      "website": "https://www.thelaundrysf.com/private-events",
+      "source": "https://www.thelaundrysf.com/private-events",
+      "inquiry": "https://www.thelaundrysf.com/private-events",
+      "address": "3359 26th St, San Francisco, CA 94110",
+      "zipCode": "94110",
+      "lat": 37.749038310304,
+      "lng": -122.417230844755,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": 85,
+      "capacityLayout": "seated",
+      "private": true,
+      "semiPrivate": false,
+      "buyout": true,
+      "patio": false,
+      "groupHosting": true,
+      "casualDropIn": false,
+      "workshopFit": "Gallery workshops and offsites with four rooms that can also serve as breakout spaces.",
+      "amenities": [
+        "A/V available",
+        "Furniture",
+        "Coffee & tea service",
+        "Event staffing"
+      ],
+      "details": "Two floors of gallery space available for workshops and corporate offsites. Rooms can be rented separately or together. Published seated counts are general event layouts; ask about tables for participatory workshops, accessibility between floors, catering, and total rental costs.",
+      "rooms": [
+        {
+          "name": "Salon Gallery",
+          "privacy": "Private room",
+          "capacityLabel": "40 seated; 80 standing",
+          "note": "Exposed brick and high ceilings; suitable for meetings.",
+          "source": "https://www.thelaundrysf.com/private-events"
+        },
+        {
+          "name": "Theater Gallery",
+          "privacy": "Private room",
+          "capacityLabel": "85 seated; 100 standing",
+          "note": "Lower-level room for panels and presentations; confirm table seating.",
+          "source": "https://www.thelaundrysf.com/private-events"
+        },
+        {
+          "name": "Upper Capp St. Gallery",
+          "privacy": "Private room",
+          "capacityLabel": "15 seated; 25 standing",
+          "note": "Small gathering or breakout room.",
+          "source": "https://www.thelaundrysf.com/private-events"
+        },
+        {
+          "name": "Capp St. Gallery",
+          "privacy": "Private room",
+          "capacityLabel": "15 seated; 25 standing",
+          "note": "Lower-level meeting space with wooden farm tables.",
+          "source": "https://www.thelaundrysf.com/private-events"
+        }
+      ],
+      "verified": "2026-11-02",
+      "sources": [
+        "Official venue rental pages (November 2026)"
+      ],
+      "image": "https://static.wixstatic.com/media/48cef9_ebe498a83a7f4500a09df105aff5e951~mv2.jpg/v1/fill/w_2500,h_1666,al_c/48cef9_ebe498a83a7f4500a09df105aff5e951~mv2.jpg"
+    },
+    {
+      "id": "workshop-gray-area",
+      "name": "Gray Area — Classroom",
+      "category": "workshop",
+      "workshop": true,
+      "neighborhood": "Mission District",
+      "cuisine": "Workshops / Offsites",
+      "website": "https://grayarea.org/services/venue-rental/",
+      "source": "https://grayarea.org/services/venue-rental/",
+      "inquiry": "https://grayarea.org/services/venue-rental/",
+      "address": "2665 Mission St, San Francisco, CA 94110",
+      "zipCode": "94110",
+      "lat": 37.754413947991,
+      "lng": -122.418576872717,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": 30,
+      "capacityLayout": "room capacity",
+      "private": true,
+      "semiPrivate": false,
+      "buyout": false,
+      "patio": false,
+      "groupHosting": true,
+      "casualDropIn": false,
+      "workshopFit": "Creative and technology workshops in a dedicated classroom with a large screen and sound system.",
+      "amenities": [
+        "85-inch screen",
+        "Small sound system",
+        "Near 24th Street BART"
+      ],
+      "details": "The Grand Theater arts venue rents a separate 250 sq ft classroom for smaller meetings and workshops. The listed 30-person capacity is room occupancy; confirm how many fit at tables. Larger lobby and theater rentals are also available. Request Wi-Fi, accessibility, equipment, catering, and hire details.",
+      "rooms": [
+        {
+          "name": "Classroom",
+          "privacy": "Private room",
+          "capacityLabel": "30-person room capacity",
+          "note": "250 sq ft; 85-inch screen and small sound system. Confirm table seating and practical workshop capacity.",
+          "source": "https://grayarea.org/services/venue-rental/"
+        }
+      ],
+      "verified": "2026-11-02",
+      "sources": [
+        "Official venue rental pages (November 2026)"
+      ],
+      "image": "https://grayarea.org/wp-content/uploads/2018/08/19069307275_bee6a02d46_z-1.jpg"
+    },
+    {
+      "id": "workshop-trellis",
+      "name": "Trellis — Meeting Rooms",
+      "category": "workshop",
+      "workshop": true,
+      "neighborhood": "SoMa",
+      "cuisine": "Workshops / Offsites",
+      "website": "https://www.trellis.social/",
+      "source": "https://www.trellis.social/",
+      "inquiry": "https://www.trellis.social/",
+      "address": "981 Mission St, San Francisco, CA 94103",
+      "zipCode": "94103",
+      "lat": 37.781237703012,
+      "lng": -122.408268616919,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": 20,
+      "capacityLayout": "meeting seats",
+      "private": true,
+      "semiPrivate": false,
+      "buyout": false,
+      "patio": false,
+      "groupHosting": true,
+      "casualDropIn": false,
+      "workshopFit": "Small team workshops with whiteboards and presentation TVs, plus an on-site cafe.",
+      "amenities": [
+        "Whiteboards",
+        "Presentation TVs",
+        "Wireless casting",
+        "On-site cafe"
+      ],
+      "details": "Bookable meeting rooms for brainstorming, offsites, classes, and talks. The largest listed meeting room holds 20 people. A separate event space is available by inquiry; its workshop capacity and pricing need confirmation. Check room access hours, table arrangement, and catering options.",
+      "rooms": [
+        {
+          "name": "Rambling Rose",
+          "privacy": "Private room",
+          "capacityLabel": "20 people",
+          "note": "Presentation TV with wireless casting and a whiteboard.",
+          "source": "https://www.trellis.social/"
+        },
+        {
+          "name": "Hyacinth or Ivy",
+          "privacy": "Private room",
+          "capacityLabel": "8 people each",
+          "note": "Presentation TV with wireless casting and a whiteboard.",
+          "source": "https://www.trellis.social/"
+        },
+        {
+          "name": "Dahlia",
+          "privacy": "Private room",
+          "capacityLabel": "6 people",
+          "note": "Presentation TV with wireless casting and a whiteboard.",
+          "source": "https://www.trellis.social/"
+        }
+      ],
+      "verified": "2026-11-02",
+      "sources": [
+        "Official venue rental pages (November 2026)"
+      ],
+      "image": "https://images.squarespace-cdn.com/content/v1/5f6d02a80733a356fcd58ae3/c4e4845e-7cf4-41a5-8456-73d3db1f9378/rambling%2Brose3.jpg?format=1000w"
+    },
+    {
+      "id": "workshop-golden-gate",
+      "name": "Golden Gate Club",
+      "category": "workshop",
+      "workshop": true,
+      "neighborhood": "Presidio",
+      "cuisine": "Workshops / Offsites",
+      "website": "https://presidio.gov/venues/golden-gate-club",
+      "source": "https://presidio.gov/venues/golden-gate-club",
+      "inquiry": "https://www.wedgewoodevents.com/venue/northern-california-golden-gate-club",
+      "address": "135 Fisher Loop, San Francisco, CA 94129",
+      "zipCode": "94129",
+      "lat": 37.799926181247,
+      "lng": -122.461657527517,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": null,
+      "fullBookingKind": null,
+      "maxGuests": null,
+      "capacityLayout": null,
+      "private": true,
+      "semiPrivate": false,
+      "buyout": false,
+      "patio": true,
+      "groupHosting": true,
+      "casualDropIn": false,
+      "workshopFit": "Larger team retreats with multiple meeting rooms, outdoor breaks, and on-site catering options.",
+      "amenities": [
+        "Wi-Fi",
+        "A/V on site",
+        "Furniture",
+        "Catering available",
+        "Courtyard & balcony",
+        "Parking"
+      ],
+      "details": "Historic Presidio venue with several room sizes and views toward the Golden Gate Bridge. The official page lists 300 overall capacity, without a workshop layout count. Ask Wedgewood Events for classroom, boardroom, and breakout-room capacities, package pricing, and minimums.",
+      "rooms": [
+        {
+          "name": "Meeting rooms & event spaces",
+          "privacy": "Private room",
+          "capacityLabel": "Workshop seating by inquiry; venue lists 300 overall",
+          "note": "Ask for capacities by room and layout. Courtyard and balcony are available; confirm which spaces and equipment your package includes.",
+          "source": "https://presidio.gov/venues/golden-gate-club"
+        }
+      ],
+      "verified": "2026-11-02",
+      "sources": [
+        "Official venue rental pages (November 2026)"
+      ],
+      "image": "https://wp.presidio.gov/wp-content/uploads/2023/06/41-traditional-san-francisco-presidio-golden-gate-club-wedding-vivianchen-025-1-3.jpg"
+    },
+    {
+      "id": "workshop-mechanics",
+      "name": "Mechanics’ Institute — Board Room",
+      "category": "workshop",
+      "workshop": true,
+      "neighborhood": "Financial District",
+      "cuisine": "Workshops / Offsites",
+      "website": "https://www.milibrary.org/our-historic-building/meeting-spaces/",
+      "source": "https://www.milibrary.org/our-historic-building/meeting-spaces/",
+      "inquiry": "https://www.milibrary.org/our-historic-building/meeting-spaces/",
+      "address": "57 Post St, San Francisco, CA 94104",
+      "zipCode": "94104",
+      "lat": 37.788928089421,
+      "lng": -122.402926242283,
+      "pricePerHead": null,
+      "priceKind": null,
+      "fullBookingPrice": 250,
+      "fullBookingKind": "Board Room: two-hour minimum at $125/hour; $750 full day over six hours",
+      "maxGuests": 14,
+      "capacityLayout": "boardroom seats",
+      "private": true,
+      "semiPrivate": false,
+      "buyout": false,
+      "patio": false,
+      "groupHosting": true,
+      "casualDropIn": false,
+      "workshopFit": "A 14-person boardroom near Montgomery BART, with a published two-hour rental minimum.",
+      "amenities": [
+        "Flat-screen monitor & cables",
+        "Whiteboard",
+        "Writing easel",
+        "Outside catering allowed"
+      ],
+      "details": "A small discussion or planning workshop around one oval table. Published hire is $125/hour with a two-hour minimum, or $750 for a full day over six hours. The larger Meeting Room and third-floor classrooms are currently unavailable during improvements. Check current access and rental hours.",
+      "rooms": [
+        {
+          "name": "Board Room",
+          "privacy": "Private room",
+          "capacityLabel": "14 around an oval table",
+          "note": "Published rate: $125/hour, two-hour minimum ($250); $750 for a full day over six hours. Monitor, cables, whiteboard, and writing easel. Confirm any cleaning or hybrid-meeting equipment fees.",
+          "source": "https://www.milibrary.org/our-historic-building/meeting-spaces/",
+          "minimum": 250
+        }
+      ],
+      "verified": "2026-11-02",
+      "sources": [
+        "Official venue rental pages (November 2026)"
+      ],
+      "image": "https://www.milibrary.org/content/galleries/Conference-2-small-370-tall.jpg"
+    }
+  ]
+}

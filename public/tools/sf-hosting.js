@@ -1,4 +1,5 @@
-const state = {venues:[], matched:[], filtered:[], type:'all', selected:null, map:null, clusterLayer:null, markers:[], guests:0};
+const requestedType=new URLSearchParams(location.search).get('type');
+const state = {venues:[], matched:[], filtered:[], type:['casual','private','workshop'].includes(requestedType)?requestedType:'all', selected:null, map:null, clusterLayer:null, markers:[], guests:0};
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 const money = (value) => `$${Number(value).toLocaleString('en-US')}`;
@@ -27,12 +28,13 @@ function getFilters(){
 function hasActiveFilters(f){return Boolean(f.query || f.minPrice || f.maxPrice || f.minBooking || f.maxBooking || f.minCapacity || f.maxCapacity || f.guests || f.private || f.semi || f.buyout || f.dropin || f.patio || state.type!=='all');}
 
 function matches(v,f){
+  if(state.type==='workshop' && !v.workshop)return false;
   if(state.type==='casual' && !['drinks','both'].includes(v.category))return false;
   if(state.type==='private' && (!['dinner','both'].includes(v.category)||!(v.private||v.semiPrivate||v.buyout)))return false;
   if(f.query){
     const zip=f.query.match(/^(\d{5})(?:-\d{4})?$/);
     if(zip){if(v.zipCode!==zip[1])return false;}
-    else if(![v.name,v.neighborhood,v.cuisine,v.details,v.address].some(x=>String(x||'').toLowerCase().includes(f.query)))return false;
+    else if(![v.name,v.neighborhood,v.cuisine,v.details,v.address,v.workshopFit,...(v.amenities||[])].some(x=>String(x||'').toLowerCase().includes(f.query)))return false;
   }
   if((f.minPrice||f.maxPrice) && (!v.pricePerHead || (f.minPrice&&v.pricePerHead<f.minPrice) || (f.maxPrice&&v.pricePerHead>f.maxPrice)))return false;
   if(f.minBooking||f.maxBooking){
@@ -69,7 +71,7 @@ function sortVenues(venues){
   return sorted;
 }
 
-function categoryLabel(v){return v.category==='dinner'?'Private dining':v.category==='drinks'?'Casual drinks':'Dinner & drinks';}
+function categoryLabel(v){return v.workshop?'Workshops & offsites':v.category==='dinner'?'Private dining':v.category==='drinks'?'Casual drinks':'Dinner & drinks';}
 function privacyLabel(v){
   const labels=[];
   if(v.patio)labels.push('Patio / garden');
@@ -79,19 +81,19 @@ function privacyLabel(v){
   if(v.casualDropIn||v.sources?.includes("Rhys's drop-in map"))labels.push('Drop-in');
   return labels.slice(0,3);
 }
-function priceLabel(v){return v.pricePerHead?`${money(v.pricePerHead)} / guest`:'Price on request';}
+function priceLabel(v){if(v.workshop)return v.fullBookingPrice?`${money(v.fullBookingPrice)}+ room hire`:'Room hire on request';return v.pricePerHead?`${money(v.pricePerHead)} / guest`:'Price on request';}
 
 function cardHtml(v){
   const image=v.image?`<img src="${esc(safeUrl(v.image))}" alt="" loading="lazy" onerror="this.parentElement.classList.add('no-image');this.remove()">`:'';
   const tags=privacyLabel(v).map(x=>`<span>${esc(x)}</span>`).join('');
-  const summary=text(v.details||v.cuisine||'').slice(0,110);
+  const summary=text(v.workshopFit||v.details||v.cuisine||'').slice(0,140);
   return `<article class="venue-card" data-id="${esc(v.id)}" tabindex="0" role="button" aria-label="View ${esc(v.name)} details">
     <div class="card-image ${image?'':'no-image'}">${image}<div class="image-fallback"><span>${esc(v.neighborhood||'San Francisco')}</span><strong>${esc(v.name)}</strong></div><span class="card-category">${esc(categoryLabel(v))}</span></div>
-    <div class="card-body"><div class="card-title-row"><h2>${esc(v.name)}</h2>${v.maxGuests?`<span class="guest-count">Up to ${esc(v.maxGuests)}</span>`:v.groupSizeHint?`<span class="guest-count">${esc(v.groupSizeHint)}-person group noted</span>`:v.groupHosting?'<span class="guest-count">Confirm group size</span>':''}</div>
+    <div class="card-body"><div class="card-title-row"><h2>${esc(v.name)}</h2>${v.maxGuests?`<span class="guest-count">Up to ${esc(v.maxGuests)}${v.capacityLayout?` ${esc(v.capacityLayout)}`:''}</span>`:v.groupSizeHint?`<span class="guest-count">${esc(v.groupSizeHint)}-person group noted</span>`:v.groupHosting?'<span class="guest-count">Confirm group size</span>':''}</div>
       <div class="card-location">${esc(v.neighborhood||'San Francisco')} ${v.cuisine?`· ${esc(v.cuisine.split(/[\/,]/)[0])}`:''}</div>
       <p class="card-summary">${esc(summary)}</p>
       <div class="card-tags">${tags}</div>
-      <div class="card-footer"><div><strong>${esc(priceLabel(v))}</strong><small>${v.pricePerHead?esc(v.priceKind?.startsWith('estimated')?'estimated all-in':'starting menu price'):'ask venue for quote'}</small></div><span aria-hidden="true">↗</span></div>
+      <div class="card-footer"><div><strong>${esc(priceLabel(v))}</strong><small>${v.workshop?(v.fullBookingPrice?'minimum rental; see room details':'ask about equipment & catering'):v.pricePerHead?esc(v.priceKind?.startsWith('estimated')?'estimated all-in':'starting menu price'):'ask venue for quote'}</small></div></div>
     </div></article>`;
 }
 
@@ -155,10 +157,17 @@ function fitToMatches(animate=true){
 }
 
 function roomHtml(room){
-  const capacity=(room.seated?`<span>${esc(room.seated)} seated</span>`:'')+(room.standing?`<span>${esc(room.standing)} standing</span>`:'');
+  const capacity=room.capacityLabel?`<span>${esc(room.capacityLabel)}</span>`:(room.seated?`<span>${esc(room.seated)} seated</span>`:'')+(room.standing?`<span>${esc(room.standing)} standing</span>`:'');
   const minimum=room.minimum?`<span>${money(room.minimum)} minimum</span>`:'';
   const fee=room.fee?`<span>${money(room.fee)} fee</span>`:'';
-  return `<div class="room-card"><div class="room-heading"><strong>${esc(room.name)}</strong><span>${esc(room.privacy)}</span></div><div class="room-facts">${capacity}${minimum}${fee}</div>${room.note?`<p>${esc(room.note)}</p>`:''}${room.source?`<a href="${esc(safeUrl(room.source))}" target="_blank" rel="noopener noreferrer">Room source ↗</a>`:''}</div>`;
+  return `<div class="room-card"><div class="room-heading"><strong>${esc(room.name)}</strong><span>${esc(room.privacy)}</span></div><div class="room-facts">${capacity}${minimum}${fee}</div>${room.note?`<p>${esc(room.note)}</p>`:''}${room.source?`<a href="${esc(safeUrl(room.source))}" target="_blank" rel="noopener noreferrer">Room source</a>`:''}</div>`;
+}
+
+function venueUrl(id){
+  const params=new URLSearchParams(location.search);
+  if(state.type==='all')params.delete('type');else params.set('type',state.type);
+  if(id)params.set('venue',id);else params.delete('venue');
+  return location.pathname+(params.size?`?${params}`:'');
 }
 
 function openVenue(id){
@@ -169,25 +178,26 @@ function openVenue(id){
   const maps=v.address?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.name+' '+v.address)}`:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.name+' San Francisco')}`;
   const hasInquiry=Boolean(v.inquiry||v.website);
   const primaryUrl=hasInquiry?(v.inquiry||v.website):maps;
-  const primaryLabel=hasInquiry?'Ask about an event ↗':'View venue listing ↗';
-  $('#detail-drawer').innerHTML=`<button class="drawer-close" aria-label="Close details" type="button">×</button><div class="drawer-image ${image?'':'no-image'}">${image}<div class="image-fallback"><span>${esc(v.neighborhood||'San Francisco')}</span><strong>${esc(v.name)}</strong></div></div><div class="drawer-content"><div class="drawer-category">${esc(categoryLabel(v))}</div><h2>${esc(v.name)}</h2><p class="drawer-location">${esc(v.neighborhood||'San Francisco')}${v.cuisine?` · ${esc(v.cuisine)}`:''}</p><div class="drawer-actions"><a href="${esc(safeUrl(primaryUrl))}" target="_blank" rel="noopener noreferrer">${primaryLabel}</a></div><div class="detail-prices"><div><span>Per guest</span><strong>${v.pricePerHead?money(v.pricePerHead):'Quote required'}</strong><small>${esc(v.priceKind||'Ask venue for a menu quote')}</small></div><div><span>Space minimum</span><strong>${v.fullBookingPrice?`${money(v.fullBookingPrice)}+`:'Quote required'}</strong><small>${esc(v.fullBookingKind||'Varies by room and date')}</small></div></div>${v.details?`<p class="drawer-description">${esc(v.details)}</p>`:''}<div class="detail-section"><h3>Spaces & rooms</h3>${v.rooms?.length?v.rooms.map(roomHtml).join(''):`<p class="unknown-rooms">${esc(privacyLabel(v).join(' · ')||'Contact venue for group options')} · ${v.maxGuests?`up to ${esc(v.maxGuests)} guests`: 'capacity on request'}. Ask for current room choices and minimums.</p>`}</div><div class="detail-section"><h3>Sources & verification</h3><p>Last checked: ${esc(v.verified||'September 2026')}. Terms may have changed.</p>${site?`<a href="${esc(safeUrl(site))}" target="_blank" rel="noopener noreferrer">View venue information ↗</a>`:''}</div></div>`;
+  const primaryLabel=hasInquiry?'Ask about an event':'View venue listing';
+  $('#detail-drawer').innerHTML=`<button class="drawer-close" aria-label="Close details" type="button">×</button><div class="drawer-image ${image?'':'no-image'}">${image}<div class="image-fallback"><span>${esc(v.neighborhood||'San Francisco')}</span><strong>${esc(v.name)}</strong></div></div><div class="drawer-content"><div class="drawer-category">${esc(categoryLabel(v))}</div><h2>${esc(v.name)}</h2><p class="drawer-location">${esc(v.neighborhood||'San Francisco')}${v.cuisine?` · ${esc(v.cuisine)}`:''}</p><div class="drawer-actions"><a href="${esc(safeUrl(primaryUrl))}" target="_blank" rel="noopener noreferrer">${primaryLabel}</a></div><div class="detail-prices"><div><span>Per guest</span><strong>${v.pricePerHead?money(v.pricePerHead):'Quote required'}</strong><small>${esc(v.priceKind||(v.workshop?'Ask about catering separately':'Ask venue for a menu quote'))}</small></div><div><span>Space minimum</span><strong>${v.fullBookingPrice?`${money(v.fullBookingPrice)}+`:'Quote required'}</strong><small>${esc(v.fullBookingKind||'Varies by room and date')}</small></div></div>${v.workshopFit?`<div class="detail-section"><h3>Workshop fit</h3><p>${esc(v.workshopFit)}</p>${v.amenities?.length?`<p>${esc(v.amenities.join(' · '))}</p>`:''}</div>`:''}${v.details?`<p class="drawer-description">${esc(v.details)}</p>`:''}<div class="detail-section"><h3>Spaces & rooms</h3>${v.rooms?.length?v.rooms.map(roomHtml).join(''):`<p class="unknown-rooms">${esc(privacyLabel(v).join(' · ')||'Contact venue for group options')} · ${v.maxGuests?`up to ${esc(v.maxGuests)} guests`: 'capacity on request'}. Ask for current room choices and minimums.</p>`}</div><div class="detail-section"><h3>Sources & verification</h3><p>Last checked: ${esc(v.verified||'September 2026')}. Terms may have changed.</p>${site?`<a href="${esc(safeUrl(site))}" target="_blank" rel="noopener noreferrer">View venue information</a>`:''}</div></div>`;
   $('#drawer-backdrop').hidden=false;
   $('#detail-drawer').classList.add('open');$('#detail-drawer').setAttribute('aria-hidden','false');
   document.body.classList.add('drawer-open');
   $('#detail-drawer .drawer-close').addEventListener('click',closeVenue);
-  history.replaceState(null,'',`${location.pathname}?venue=${encodeURIComponent(v.id)}`);
+  history.replaceState(null,'',venueUrl(v.id));
   renderMap();
 }
 
 function closeVenue(){
   state.selected=null;$('#detail-drawer').classList.remove('open');$('#detail-drawer').setAttribute('aria-hidden','true');
   $('#drawer-backdrop').hidden=true;document.body.classList.remove('drawer-open');
-  history.replaceState(null,'',location.pathname);
+  history.replaceState(null,'',venueUrl(null));
   renderMap();
 }
 
 function applyFilters(){
   $('#search-feedback').hidden=true;
+  $('#workshop-note').hidden=state.type!=='workshop';
   const f=getFilters();state.matched=sortVenues(state.venues.filter(v=>matches(v,f)));
   $('#dialog-done').textContent=`Show ${state.matched.length} ${state.matched.length===1?'place':'places'}`;
   $('#clear-filters').hidden=!hasActiveFilters(f);
@@ -202,6 +212,7 @@ function clearFilters(){
   ['price','booking','capacity'].forEach(kind=>{$(`#${kind}-min`).value=0;$(`#${kind}-max`).value=$(`#${kind}-max`).max;});
   ['#private-only','#semi-only','#buyout-only','#dropin-only','#patio-only'].forEach(s=>$(s).checked=false);
   state.type='all';$$('.type-tab').forEach(tab=>{tab.classList.remove('active');tab.setAttribute('aria-pressed','false');});
+  history.replaceState(null,'',venueUrl(state.selected));
   updateRangeLabels();applyFilters();fitToMatches();
 }
 
@@ -269,7 +280,10 @@ function updateDateSummary(){
 }
 
 function wireEvents(){
-  $$('.type-tab').forEach(tab=>tab.addEventListener('click',()=>{state.type=state.type===tab.dataset.type?'all':tab.dataset.type;$$('.type-tab').forEach(t=>{const active=t.dataset.type===state.type;t.classList.toggle('active',active);t.setAttribute('aria-pressed',active);});applyFilters();}));
+  $$('.type-tab').forEach(tab=>{
+    const active=tab.dataset.type===state.type;tab.classList.toggle('active',active);tab.setAttribute('aria-pressed',active);
+    tab.addEventListener('click',()=>{state.type=state.type===tab.dataset.type?'all':tab.dataset.type;$$('.type-tab').forEach(t=>{const active=t.dataset.type===state.type;t.classList.toggle('active',active);t.setAttribute('aria-pressed',active);});history.replaceState(null,'',venueUrl(state.selected));applyFilters();fitToMatches();});
+  });
   $('#search').addEventListener('focus',()=>{closeSearchPanels();showNeighborhoods();$('#where-panel').hidden=false;$('#search').setAttribute('aria-expanded','true');});
   $('#search').addEventListener('input',()=>{showNeighborhoods();$('#where-panel').hidden=false;$('#search').setAttribute('aria-expanded','true');$('#search-feedback').hidden=true;applyFilters();});
   $('#search').addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();submitSearch();}});
@@ -299,11 +313,13 @@ function wireEvents(){
 async function init(){
   wireEvents();
   try{
-    const [response,zipResponse,hintsResponse,casualResponse]=await Promise.all([fetch('/data/sf-hosting.json'),fetch('/data/sf-hosting-zips.json'),fetch('/data/sf-hosting-group-hints.json'),fetch('/data/sf-hosting-casual.json')]);if(!response.ok||!casualResponse.ok)throw new Error('Venue data unavailable');
+    const [response,zipResponse,hintsResponse,casualResponse,workshopResponse]=await Promise.all([fetch('/data/sf-hosting.json'),fetch('/data/sf-hosting-zips.json'),fetch('/data/sf-hosting-group-hints.json'),fetch('/data/sf-hosting-casual.json'),fetch('/data/sf-hosting-workshops.json')]);if(!response.ok||!casualResponse.ok||!workshopResponse.ok)throw new Error('Venue data unavailable');
     const data=await response.json();state.venues=data.venues;
     const casualData=await casualResponse.json(),existingIds=new Set(state.venues.map(v=>v.id));
     state.venues.push(...casualData.venues.filter(v=>!existingIds.has(v.id)));
     state.venues.forEach(v=>{Object.assign(v,casualData.venueUpdates?.[v.id]||{});if(casualData.patioVenueIds.includes(v.id))v.patio=true;});
+    const workshopData=await workshopResponse.json(),venueIds=new Set(state.venues.map(v=>v.id));
+    state.venues.push(...workshopData.venues.filter(v=>!venueIds.has(v.id)));
     if(zipResponse.ok){const zipData=await zipResponse.json();state.venues.forEach(v=>v.zipCode=zipData.venues[v.id]||v.zipCode);}
     if(hintsResponse.ok){const hints=await hintsResponse.json();state.venues.forEach(v=>v.groupSizeHint=hints[v.id]||v.groupSizeHint||null);}
     $('#price-max').max=Math.ceil(Math.max(...state.venues.map(v=>v.pricePerHead||0))/10)*10;$('#price-max').value=$('#price-max').max;$('#price-min').max=$('#price-max').max;
