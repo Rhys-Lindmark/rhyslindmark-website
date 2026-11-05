@@ -40,11 +40,12 @@ His potential is off the charts for a place that values what he has to offer.</e
 
 ## **What I'm looking for**
 
-* A developer ecosystem role at a well-run, growing AI company.
-* Roles like Ecosystem GTM, DevRel, or Community.
-* Also excited by generalist roles like Chief of Staff, Product Ops, Societal Impacts, or Culture.
-* Curious to work together to see if I can be helpful.
+* **A developer ecosystem role at a well-run, growing AI company.**
+* Roles like Developer Relations, Applied AI Engineer, or Ecosystem GTM.
+* Also excited by generalist roles like Chief of Staff, Product Ops, Societal Impacts, or Culture. Or capital allocation at a VC or Foundation.
+
+Curious to work together to see if I can be helpful.
 
 ---
 
-[Resume](https://www.rhyslindmark.com/resume) · [LinkedIn](https://www.linkedin.com/in/rhyslindmark/) · [Website](https://www.rhyslindmark.com/) · rhyslindmark@gmail.com
+[Resume](https://www.rhyslindmark.com/resume) · [LinkedIn](https://www.linkedin.com/in/rhyslindmark/) · [X](https://x.com/RhysLindmark/) · [Website](https://www.rhyslindmark.com/) · rhyslindmark@gmail.com
