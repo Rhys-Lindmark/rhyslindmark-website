@@ -2,9 +2,12 @@
 
 📍 San Francisco, CA
 
-**4x founder, community leader, and educator with 15+ years of experience building developer ecosystems & teams at the technological frontier.**<br>
-<span class="bio-tooltip"><button type="button" aria-describedby="nerd-herder-tip">Nerd Herder</button><span role="tooltip" id="nerd-herder-tip">Builds communities, relationships, teams.</span></span> &amp; <span class="bio-tooltip"><button type="button" aria-describedby="people-whisperer-tip">People Whisperer</button><span role="tooltip" id="people-whisperer-tip">Aspiring <a href="https://www.thesocialradars.com/">Social Radar</a> &amp; <a href="https://press.stripe.com/scaling-people">Scaling People</a> enthusiast.</span></span>.<br>
-<span class="bio-tooltip"><button type="button" aria-describedby="info-sponge-tip">Info Sponge</button><span role="tooltip" id="info-sponge-tip">Turns context &amp; research into content &amp; direction.</span></span> &amp; <span class="bio-tooltip"><button type="button" aria-describedby="product-guy-tip">Annoying Product Guy</button><span role="tooltip" id="product-guy-tip">Makes nice things by caring about small things a little too much.</span></span>.
+**4x founder, community leader, and educator with 15+ years of experience building developer ecosystems & teams at the technological frontier.**
+
+*$2.5M+ raised | $2.5M+ in sales | 25+ hires | 10,000+ community members reached*<br>
+*Building ecosystems & teams at the AI frontier | Working towards abundant, safe intelligence*<br>
+
+"The frontier is closer than you think."
 
 Currently:
 - Mapping the technological frontier ([1](https://www.rhyslindmark.com/posts/ai2026-pt1/), [2](https://www.rhyslindmark.com/posts/ai2026-pt2), [3](https://www.rhyslindmark.com/posts/ai2026-pt3/))
