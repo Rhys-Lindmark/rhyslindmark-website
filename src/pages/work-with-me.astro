@@ -58,6 +58,10 @@ const html = marked.parse(raw) as string;
 </script>
 
 <style>
+	:global(main:has(.work-with-me)) {
+		max-width: 46rem;
+	}
+
 	.work-with-me :global(.bio-tooltip) {
 		position: relative;
 		display: inline-block;
