@@ -23,12 +23,10 @@ Previously:
 🤖 I studied Computer Science at [Carleton College](https://www.carleton.edu/)
 ✍️ I write at [Rhys' Pieces](https://rhyslindmark.substack.com/). ([Some](https://rhyslindmark.substack.com/p/incentives) [articles](https://www.rhyslindmark.com/marriage-counseling-with-capitalism/) [to](https://www.roote.co/wisdom-age) [start](https://rhyslindmark.substack.com/p/the-high-return-activity-of-giving).)
 
-I'm @RhysLindmark on [X](https://twitter.com/RhysLindmark), [LinkedIn](https://www.linkedin.com/in/rhyslindmark), or [YouTube](https://www.youtube.com/@RhysLindmark/). [Say hi](mailto:rhyslindmark@gmail.com). ❤️
+I'm @RhysLindmark on [X](https://twitter.com/RhysLindmark), [LinkedIn](https://www.linkedin.com/in/rhyslindmark), [GitHub](https://github.com/Rhys-Lindmark) or [YouTube](https://www.youtube.com/@RhysLindmark/). [Say hi](mailto:rhyslindmark@gmail.com). ❤️
 
 _“The frontier is closer than you think.”_
 _“Human capital is upstream of everything.”_
 _"Seek first to understand, then to be understood."_
 
 Meliorist.
-
-[Current AI projects](https://ai.rhyslindmark.com/)
