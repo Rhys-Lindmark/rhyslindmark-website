@@ -157,7 +157,7 @@ const html = (marked.parse(raw) as string)
 		margin-bottom: 0;
 	}
 
-	.resume :global([data-section='other'] > p:last-of-type) {
+	.resume :global([data-section='other'] > p:nth-of-type(2)) {
 		text-align: right;
 	}
 
@@ -185,6 +185,15 @@ const html = (marked.parse(raw) as string)
 
 	.resume :global([data-section='other'] blockquote p) {
 		margin: 0;
+	}
+
+	.resume :global([data-section='other'] > .resume-closing) {
+		grid-column: 1 / -1;
+		text-align: center;
+		font-family: inherit;
+		font-size: .9rem;
+		color: var(--text);
+		margin-top: .5rem;
 	}
 
 	.resume :global(.quote-attribution) {
@@ -221,7 +230,7 @@ const html = (marked.parse(raw) as string)
 			grid-template-columns: minmax(0, 1fr);
 		}
 
-		.resume :global([data-section='other'] > p:last-of-type) {
+		.resume :global([data-section='other'] > p:nth-of-type(2)) {
 			text-align: left;
 		}
 	}
@@ -340,6 +349,10 @@ const html = (marked.parse(raw) as string)
 		.resume :global([data-section='other'] blockquote) {
 			margin: .15rem 0;
 			font-size: 7.6pt;
+		}
+
+		.resume :global([data-section='other'] > .resume-closing) {
+			font-size: 8.8pt;
 		}
 
 		.resume :global(h3 .org a) {

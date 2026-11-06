@@ -7,8 +7,6 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · [
 *$2.5M+ raised | $2.5M+ in sales | 25+ hires | 10,000+ community members reached*<br>
 *Building ecosystems & teams at the AI frontier | Working towards abundant, safe intelligence*<br>
 
-"The frontier is closer than you think."
-
 ## Work Experience
 
 ### Independent — San Francisco, CA · Jul 2026 – Present
@@ -69,3 +67,5 @@ Content · Hiring · Budgets & fundraising · OKRs & offsites
 > "Rhys is entrepreneurial and creative, with P99 general intelligence, P99 people-person-ness, and P99 low ego.<br>
 > His potential is off the charts for a place that values what he has to offer."<br>
 > <span class="quote-attribution">– Michael, a fellow friendly ambitious nerd</span>
+
+<p class="resume-closing">"The frontier is closer than you think."</p>
