@@ -13,7 +13,7 @@ rhyslindmark@gmail.com · [rhyslindmark.com](https://www.rhyslindmark.com/) · [
 
 *Fractional Chief of Staff & Ecosystem Lead*
 
-- Run 10+ events & dinners, coach dozens of founders and fellows, and make intros for orgs like [Renaissance Philanthropy](https://www.renaissancephilanthropy.org/) & [Topology Ventures](https://www.topology.vc/); built AI automations with Claude Code that save the teams tens of hours a week.
+- Run 10+ events & dinners, coach dozens of founders and fellows, and make intros for orgs like [Renaissance Philanthropy](https://www.renaissancephilanthropy.org/) & [Topology Ventures](https://www.topology.vc/); built AI automations with Claude Code & Codex that save the teams tens of hours a week.
 - Shipping 10+ open-source AI projects to GitHub using LLM SDKs & APIs, including: [GiveBetter](https://ai.rhyslindmark.com/givebetter), an agentic database rating hundreds of nonprofits on cost-effectiveness; [AI 2026](https://www.rhyslindmark.com/posts/ai2026-pt1/), a 100-page report on AI's trajectory; and [RhysBot](https://ai.rhyslindmark.com/rhysbot/), a model trained on a 10 MB personal corpus (nanochat from scratch + Qwen fine-tune).
 
 ### [Roote](https://www.roote.co/) — San Francisco, CA · Jan 2022 – May 2026
