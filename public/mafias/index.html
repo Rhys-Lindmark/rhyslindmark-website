@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Scroll through 1985–2026 and watch exceptional people flow from olympiads to universities to the hottest companies, then scatter into mafias.">
+<meta property="og:title" content="Talent Flows">
+<meta property="og:description" content="Scroll through 1985–2026 and watch exceptional people flow from olympiads to universities to the hottest companies, then scatter into mafias.">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,sans-serif}[hidden]{display:none!important}</style>
+<title>Talent Flows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a fixed "night map" canvas fills the screen. The page scrolls invisibly underneath it and the scroll position is the clock (1985 → 2026). HUD bands pin to the top and bottom; the map fits the space between them. */
+:root{
+  --bg:#0a0f1c; --bg-glow:#131d36; --ink:#ebe8e1; --muted:#8c95aa; --line:rgba(160,180,220,.18);
+  --chip:rgba(22,30,52,.75); --panel:rgba(12,18,34,.88); --ring:rgba(170,190,235,.30); --node:rgba(120,150,215,.07);
+  --mafia:#ff8a5c; --up:#5fe39a; --down:#ff7b7b;
+  --o0:#ffc94a; --o1:#46c7ff; --o2:#c08bff; --o3:#c3cbda; --o4:#5fe39a;
+  --is-dark:1;
+  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#edf0f6; --bg-glow:#fbfcff; --ink:#131a28; --muted:#5a647a; --line:rgba(20,32,64,.14);
+    --chip:rgba(255,255,255,.8); --panel:rgba(250,251,254,.94); --ring:rgba(30,48,90,.26); --node:rgba(40,60,120,.05);
+    --mafia:#d2491d; --up:#13924f; --down:#c93434;
+    --o0:#c48600; --o1:#0a82bd; --o2:#7643d4; --o3:#6b7488; --o4:#13924f;
+    --is-dark:0; color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#edf0f6; --bg-glow:#fbfcff; --ink:#131a28; --muted:#5a647a; --line:rgba(20,32,64,.14);
+  --chip:rgba(255,255,255,.8); --panel:rgba(250,251,254,.94); --ring:rgba(30,48,90,.26); --node:rgba(40,60,120,.05);
+  --mafia:#d2491d; --up:#13924f; --down:#c93434;
+  --o0:#c48600; --o1:#0a82bd; --o2:#7643d4; --o3:#6b7488; --o4:#13924f;
+  --is-dark:0; color-scheme:light;
+}
+
+html{scroll-behavior:auto}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);overflow-x:hidden}
+#map{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.track{position:relative;z-index:-1}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.hud{position:fixed;left:0;right:0;z-index:2;pointer-events:none;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.hud > *{pointer-events:auto}
+
+.top{top:0;padding-top:calc(env(safe-area-inset-top,0px) + 14px);padding-bottom:6px;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:10px 28px;flex-wrap:wrap;
+  background:linear-gradient(var(--bg) 55%,transparent)}
+.brand{min-width:0;max-width:520px}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(24px,2.7vw,34px);letter-spacing:-.025em;line-height:1;margin:0}
+h1 span{color:var(--mafia)}
+.dek{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.45;max-width:52ch}
+
+.tools{display:flex;flex-direction:column;align-items:flex-end;gap:8px;min-width:0;max-width:100%}
+.row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;min-width:0;max-width:100%}
+.lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 2px 0 8px}
+.btn{font-family:var(--f-mono);font-size:12px;color:var(--ink);background:var(--chip);border:1px solid var(--line);
+  border-radius:999px;padding:5px 11px;cursor:pointer;line-height:1.2;white-space:nowrap;
+  transition:background .15s,border-color .15s,color .15s}
+.btn:hover{border-color:var(--ring)}
+.btn:focus-visible,input:focus-visible{outline:2px solid var(--mafia);outline-offset:2px}
+.btn[aria-pressed="true"]{background:var(--mafia);border-color:transparent;color:var(--bg)}
+.btn.play{font-weight:500;padding:5px 14px}
+.legend{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.legend .btn{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 9px}
+.legend .btn[aria-pressed="true"]{background:var(--chip);color:var(--ink);border-color:currentColor}
+.sw{width:8px;height:8px;border-radius:50%;flex:none}
+
+.bottom{bottom:0;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px);padding-top:10px;
+  background:linear-gradient(transparent,var(--bg) 30%)}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,360px);gap:10px 36px;align-items:end}
+.when{min-width:0;display:flex;align-items:flex-end;gap:18px}
+.year{font-family:var(--f-display);font-weight:800;font-size:clamp(48px,7vw,96px);line-height:.82;letter-spacing:-.045em;
+  font-variant-numeric:tabular-nums;flex:none}
+.caption{margin:0;font-size:14px;line-height:1.45;max-width:56ch;min-height:4.35em;display:flex;align-items:flex-end}
+.board{min-width:0}
+.board-h{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.board-h b{color:var(--ink);font-weight:500}
+#board{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:3px}
+#board li{display:grid;grid-template-columns:minmax(0,1fr) 96px 3.2ch 4.2ch;gap:8px;align-items:center;font-size:13px;line-height:1.35;font-variant-numeric:tabular-nums}
+#board .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#board .ct{text-align:right;font-family:var(--f-mono);font-size:12px}
+#board .dl{text-align:right;font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+#board .dl.up{color:var(--up)} #board .dl.down{color:var(--down)}
+.bar{height:6px;border-radius:3px;background:var(--line);display:flex;overflow:hidden}
+.bar span{display:block;height:100%}
+.scrub{margin-top:10px;display:flex;align-items:center;gap:10px}
+.scrub span{font-family:var(--f-mono);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+#scrub{flex:1;min-width:0;accent-color:var(--mafia);margin:0}
+.fine{margin:6px 0 0;font-size:11px;line-height:1.4;color:var(--muted)}
+
+.tip{position:fixed;z-index:5;pointer-events:none;background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:10px 12px;font-size:12px;line-height:1.4;width:max-content;max-width:250px;box-shadow:0 8px 30px rgba(0,0,0,.25);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.tip .tn{font-family:var(--f-display);font-weight:700;font-size:16px;letter-spacing:-.01em}
+.tip .ts{color:var(--muted);margin-bottom:6px}
+.tip .tc{font-family:var(--f-mono);font-size:11px;margin:6px 0 2px;display:flex;flex-wrap:wrap;gap:2px 10px}
+.tip .tc i{font-style:normal;display:inline-flex;align-items:center;gap:4px}
+.tip .th{color:var(--muted);font-size:11px;margin-top:6px}
+
+.hint{position:fixed;left:50%;transform:translateX(-50%);z-index:3;font-family:var(--f-mono);font-size:12px;color:var(--ink);
+  background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:6px 14px;pointer-events:none;transition:opacity .4s}
+
+@media (max-width:760px){
+  .top{flex-direction:column;align-items:stretch;gap:8px}
+  .dek{display:none}
+  .tools{align-items:stretch}
+  .row{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .row::-webkit-scrollbar{display:none}
+  .legend{justify-content:flex-start}
+  .lbl{margin-left:4px}
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .when{gap:12px}
+  .caption{font-size:13px;min-height:5.8em}
+  #board li:nth-child(n+4){display:none}
+  #board li{grid-template-columns:minmax(0,1fr) 70px 3.2ch 4.2ch;font-size:12px}
+  .fine{display:none}
+}
+@media (prefers-reduced-motion: reduce){ .btn,.hint{transition:none} }
+</style>
+</head>
+<body>
+<canvas id="map" aria-label="Animated map of exceptional people flowing from olympiads to universities to companies and their alumni networks, 1985 to 2026"></canvas>
+
+<header class="hud top" id="hdr">
+  <div class="brand">
+    <h1>Talent Flows</h1>
+    <p class="dek">Exceptional people pour out of the olympiads and elite universities, pile into whichever company is hottest, then scatter into its <em>mafia</em>. Scroll to move through time.</p>
+  </div>
+  <div class="tools">
+    <div class="row" id="chips">
+      <button class="btn play" id="play" type="button" aria-pressed="false">Play</button>
+      <span class="lbl">Trace alumni</span>
+    </div>
+    <div class="legend" id="legend" aria-label="Highlight by origin"></div>
+  </div>
+</header>
+
+<footer class="hud bottom" id="ftr">
+  <div class="grid">
+    <div class="when">
+      <div class="year" id="year" aria-live="polite">1985</div>
+      <p class="caption" id="caption"></p>
+    </div>
+    <div class="board">
+      <div class="board-h"><span id="boardTitle">Largest clusters</span><span id="boardRight">vs last yr</span></div>
+      <ol id="board"></ol>
+    </div>
+  </div>
+  <div class="scrub">
+    <span>1985</span>
+    <input id="scrub" type="range" min="1985" max="2026" step="0.01" value="1985" aria-label="Year">
+    <span>2026</span>
+  </div>
+  <p class="fine">Each dot is a small cohort of unusually strong people. A stylized simulation driven by real founding dates, acquisitions and founder moves plus rough estimates of how hot each place was. It is not headcount data.</p>
+</footer>
+
+<div class="tip" id="tip" hidden></div>
+<div class="hint" id="hint">Scroll ↓ to move through time</div>
+<div class="track" id="track"><p class="sr">Scroll to advance the year from 1985 to 2026.</p></div>
+
+<script>
+(() => {
+"use strict";
+const TAU = Math.PI * 2;
+const SIM0 = 1976, Y0 = 1985, Y1 = 2026, NY = Y1 - SIM0 + 1;
+const VH_PER_YEAR = 60;
+
+/* ---------------- data ---------------- */
+const ORIGINS = [
+  { name: "IMO medalists", short: "IMO" },
+  { name: "IOI medalists", short: "IOI" },
+  { name: "IPhO medalists", short: "IPhO" },
+  { name: "Everyone else", short: "Other" },
+  { name: "Thiel Fellows", short: "Thiel" },
+];
+
+// x,y are in a 1000 × 640 design space (landscape). Portrait screens transpose it.
+const NODES = [
+  // proving grounds
+  { id:"imo",  name:"IMO",  sub:"International Math Olympiad",       kind:"source", x:55, y:120, rate:8,  origin:0, start:1900 },
+  { id:"ioi",  name:"IOI",  sub:"Int'l Olympiad in Informatics",     kind:"source", x:55, y:215, rate:6,  origin:1, start:1989 },
+  { id:"ipho", name:"IPhO", sub:"International Physics Olympiad",    kind:"source", x:55, y:310, rate:5,  origin:2, start:1900 },
+  { id:"kids", name:"Other bright kids", sub:"No medal, same spark", kind:"source", x:55, y:420, rate:30, grow:0.3, origin:3, start:1900 },
+  { id:"thiel",name:"Thiel Fellowship", sub:"$100k to skip college and build", kind:"source", x:55, y:545, rate:1.3, origin:4, start:2011 },
+  // universities
+  { id:"mit",      name:"MIT",       sub:"Cambridge, MA", kind:"school", x:180, y:80,  geo:"east" },
+  { id:"stanford", name:"Stanford",  sub:"Palo Alto",     kind:"school", x:232, y:138, geo:"west" },
+  { id:"harvard",  name:"Harvard",   sub:"Cambridge, MA", kind:"school", x:180, y:196, geo:"east" },
+  { id:"caltech",  name:"Caltech",   sub:"Pasadena",      kind:"school", x:232, y:254, geo:"west" },
+  { id:"princeton",name:"Princeton", sub:"New Jersey",    kind:"school", x:180, y:312, geo:"east" },
+  { id:"berkeley", name:"Berkeley",  sub:"Bay Area",      kind:"school", x:232, y:370, geo:"west" },
+  { id:"cmu",      name:"CMU",       sub:"Pittsburgh",    kind:"school", x:180, y:428, geo:"" },
+  { id:"waterloo", name:"Waterloo",  sub:"Ontario",       kind:"school", x:232, y:486, geo:"seattle" },
+  { id:"oxbridge", name:"Oxbridge",  sub:"Oxford & Cambridge", kind:"school", x:180, y:560, geo:"europe" },
+  // firms
+  { id:"bell", name:"Bell Labs & IBM", sub:"The old guard", kind:"firm", x:345, y:95, founded:1900, geo:"east", sector:"old", cap:90, ramp:1,
+    hot:[[1976,.75],[1985,.6],[1995,.28],[2005,.12],[2026,.08]] },
+  { id:"rest", name:"Rest of industry", sub:"Everywhere else talent lands", kind:"firm", x:745, y:60, founded:1900, geo:"other", sector:"rest", cap:700, ramp:1,
+    hot:[[1976,.38],[2026,.38]] },
+  { id:"msft", name:"Microsoft", sub:"Redmond", kind:"firm", x:350, y:250, founded:1975, geo:"seattle", sector:"soft", cap:105, ramp:8,
+    hot:[[1976,.45],[1985,.75],[1992,1],[1999,.85],[2005,.45],[2012,.35],[2019,.45],[2026,.5]] },
+  { id:"amzn", name:"Amazon", sub:"Seattle", kind:"firm", x:360, y:390, founded:1994, geo:"seattle", sector:"soft", cap:80, ramp:5,
+    hot:[[1994,.4],[1999,.65],[2008,.55],[2015,.5],[2026,.4]] },
+  { id:"deshaw", name:"D.E. Shaw", sub:"New York", kind:"firm", x:390, y:520, founded:1988, geo:"east", sector:"quant", cap:45, ramp:4,
+    hot:[[1988,.45],[1995,.65],[2005,.55],[2026,.45]] },
+  { id:"jane", name:"Jane Street", sub:"New York", kind:"firm", x:470, y:585, founded:2000, geo:"east", sector:"quant", cap:60, ramp:6,
+    hot:[[2000,.3],[2007,.55],[2014,.8],[2026,.92]] },
+  { id:"ftx", name:"Alameda / FTX", sub:"Berkeley, then the Bahamas", kind:"firm", x:545, y:622, founded:2017, dissolve:2023, geo:"other", sector:"quant", cap:16, ramp:2,
+    hot:[[2017,.35],[2020,.6],[2022,.75]], after:[2023,"FTX · collapsed"] },
+  { id:"paypal", name:"PayPal", sub:"Palo Alto", kind:"firm", x:530, y:135, founded:1999, geo:"west", sector:"soft", cap:45, ramp:2,
+    hot:[[1999,1.05],[2002,1],[2003,.06],[2026,.06]], after:[2003,"PayPal · eBay"] },
+  { id:"spacex", name:"SpaceX", sub:"El Segundo, later Hawthorne", kind:"firm", x:445, y:55, founded:2002, geo:"west", sector:"hard", cap:50, ramp:6,
+    hot:[[2002,.45],[2008,.6],[2015,.75],[2026,.7]] },
+  { id:"tesla", name:"Tesla", sub:"Palo Alto", kind:"firm", x:548, y:38, founded:2004, geo:"west", sector:"hard", cap:45, ramp:6,
+    hot:[[2004,.3],[2009,.5],[2013,.7],[2020,.6],[2026,.4]] },
+  { id:"linkedin", name:"LinkedIn", sub:"Mountain View", kind:"firm", x:630, y:72, founded:2003, geo:"west", sector:"soft", cap:30, ramp:5,
+    hot:[[2003,.45],[2011,.45],[2016,.2],[2026,.15]], absorb:[2017,"msft",.06] },
+  { id:"youtube", name:"YouTube", sub:"San Mateo", kind:"firm", x:645, y:155, founded:2005, geo:"west", sector:"soft", cap:18, ramp:2,
+    hot:[[2005,.7],[2006,.7],[2007,.25]], absorb:[2007,"google",.35], after:[2007,"YouTube · Google"] },
+  { id:"yelp", name:"Yelp", sub:"San Francisco", kind:"firm", x:622, y:228, founded:2004, geo:"west", sector:"soft", cap:15, ramp:4,
+    hot:[[2004,.35],[2012,.22],[2026,.1]] },
+  { id:"palantir", name:"Palantir", sub:"Palo Alto", kind:"firm", x:440, y:195, founded:2003, geo:"west", sector:"soft", cap:45, ramp:6,
+    hot:[[2003,.4],[2010,.8],[2016,.5],[2026,.55]] },
+  { id:"affirm", name:"Affirm", sub:"San Francisco", kind:"firm", x:535, y:240, founded:2012, geo:"west", sector:"soft", cap:18, ramp:4,
+    hot:[[2012,.45],[2021,.45],[2026,.3]] },
+  { id:"google", name:"Google", sub:"Mountain View", kind:"firm", x:595, y:360, founded:1998, geo:"west", sector:"soft", cap:120, ramp:8,
+    hot:[[1998,.6],[2001,1],[2007,.95],[2012,.65],[2018,.55],[2026,.55]] },
+  { id:"instagram", name:"Instagram", sub:"San Francisco", kind:"firm", x:712, y:270, founded:2010, geo:"west", sector:"soft", cap:14, ramp:2,
+    hot:[[2010,.6],[2012,.5],[2016,.15]], absorb:[2013,"facebook",.3], after:[2013,"Instagram · Meta"] },
+  { id:"facebook", name:"Facebook", sub:"Menlo Park", kind:"firm", x:805, y:195, founded:2004, geo:"west", sector:"soft", cap:110, ramp:7,
+    hot:[[2004,.55],[2007,1],[2012,.75],[2017,.55],[2026,.5]], after:[2022,"Meta"] },
+  { id:"asana", name:"Asana", sub:"San Francisco", kind:"firm", x:880, y:115, founded:2008, geo:"west", sector:"soft", cap:18, ramp:4,
+    hot:[[2008,.4],[2015,.35],[2026,.25]] },
+  { id:"quora", name:"Quora", sub:"Mountain View", kind:"firm", x:915, y:210, founded:2009, geo:"west", sector:"soft", cap:14, ramp:3,
+    hot:[[2009,.4],[2013,.3],[2018,.12]] },
+  { id:"stripe", name:"Stripe", sub:"San Francisco", kind:"firm", x:875, y:340, founded:2010, geo:"west", sector:"soft", cap:65, ramp:6,
+    hot:[[2010,.45],[2013,.85],[2018,.9],[2023,.65],[2026,.6]] },
+  { id:"stripealum", name:"Stripe alumni", sub:"Startups founded by ex-Stripes", kind:"firm", x:955, y:420, founded:2015, geo:"west", sector:"soft", cap:40, ramp:6,
+    hot:[[2015,.3],[2026,.5]] },
+  { id:"deepmind", name:"DeepMind", sub:"London", kind:"firm", x:560, y:470, founded:2010, geo:"europe", sector:"ai", cap:60, ramp:6,
+    hot:[[2010,.5],[2014,.8],[2018,.9],[2023,.85],[2026,.8]], after:[2014,"DeepMind · Google"] },
+  { id:"inflection", name:"Inflection", sub:"Palo Alto", kind:"firm", x:470, y:450, founded:2022, geo:"west", sector:"ai", cap:14, ramp:2,
+    hot:[[2022,.55],[2023,.55],[2024,.1]], absorb:[2024,"msft",.7], after:[2024,"Inflection → Microsoft"] },
+  { id:"character", name:"Character.ai", sub:"Menlo Park", kind:"firm", x:668, y:430, founded:2021, geo:"west", sector:"ai", cap:16, ramp:2,
+    hot:[[2021,.5],[2023,.45],[2024,.15]], absorb:[2025,"google",.45] },
+  { id:"mistral", name:"Mistral", sub:"Paris", kind:"firm", x:615, y:565, founded:2023, geo:"europe", sector:"ai", cap:22, ramp:3,
+    hot:[[2023,.6],[2026,.6]] },
+  { id:"xai", name:"xAI", sub:"Palo Alto", kind:"firm", x:690, y:505, founded:2023, geo:"west", sector:"ai", cap:30, ramp:3,
+    hot:[[2023,.6],[2026,.6]] },
+  { id:"openai", name:"OpenAI", sub:"San Francisco", kind:"firm", x:775, y:465, founded:2016, geo:"west", sector:"ai", cap:95, ramp:5,
+    hot:[[2016,.75],[2018,.8],[2020,1],[2023,1.1],[2026,.85]] },
+  { id:"anthropic", name:"Anthropic", sub:"San Francisco", kind:"firm", x:900, y:515, founded:2021, geo:"west", sector:"ai", cap:110, ramp:5,
+    hot:[[2021,.8],[2023,1],[2026,1.25]] },
+  { id:"perplexity", name:"Perplexity", sub:"San Francisco", kind:"firm", x:720, y:590, founded:2022, geo:"west", sector:"ai", cap:18, ramp:3,
+    hot:[[2022,.4],[2024,.6],[2026,.55]] },
+  { id:"ssi", name:"SSI", sub:"Safe Superintelligence · Palo Alto & Tel Aviv", kind:"firm", x:820, y:600, founded:2024, geo:"west", sector:"ai", cap:10, ramp:2,
+    hot:[[2024,.65],[2026,.65]] },
+  { id:"tml", name:"Thinking Machines", sub:"San Francisco", kind:"firm", x:930, y:605, founded:2025, geo:"west", sector:"ai", cap:16, ramp:2,
+    hot:[[2025,.75],[2026,.75]] },
+];
+const NN = NODES.length;
+const idx = Object.fromEntries(NODES.map((n, i) => [n.id, i]));
+const SOURCES = [], SCHOOLS = [], FIRMS = [];
+NODES.forEach((n, i) => (n.kind === "source" ? SOURCES : n.kind === "school" ? SCHOOLS : FIRMS).push(i));
+
+const MAFIAS = [
+  { parent:"paypal",   label:"PayPal Mafia",       kids:["spacex","tesla","linkedin","youtube","yelp","palantir","affirm"] },
+  { parent:"google",   label:"Google alumni",      kids:["instagram","openai","character","xai"] },
+  { parent:"facebook", label:"Facebook Mafia",     kids:["asana","quora","mistral"] },
+  { parent:"deepmind", label:"DeepMind diaspora",  kids:["inflection","mistral","xai"] },
+  { parent:"openai",   label:"OpenAI Mafia",       kids:["anthropic","perplexity","ssi","tml","xai"] },
+  { parent:"jane",     label:"Jane Street alumni", kids:["ftx"] },
+  { parent:"deshaw",   label:"",                   kids:["amzn"] },
+  { parent:"stripe",   label:"Stripe Mafia",       kids:["stripealum"] },
+];
+const KIDS = {};
+MAFIAS.forEach(m => { KIDS[idx[m.parent]] = new Set(m.kids.map(k => idx[k])); });
+
+// founder bursts: [from, to, year arriving, dots]. Founders are drawn from anyone who ever worked at `from`.
+const EVENTS = [
+  ["deshaw","amzn",1994,2], ["paypal","spacex",2002,4], ["paypal","linkedin",2003,4], ["paypal","palantir",2003,3],
+  ["paypal","tesla",2004,2], ["paypal","yelp",2004,3], ["paypal","youtube",2005,4], ["facebook","asana",2008,3],
+  ["facebook","quora",2009,3], ["google","instagram",2010,2], ["paypal","affirm",2012,3], ["stripe","stripealum",2015,4],
+  ["google","openai",2016,6], ["jane","ftx",2017,3], ["openai","anthropic",2021,8], ["google","character",2021,3],
+  ["deepmind","inflection",2022,3], ["openai","perplexity",2022,2], ["deepmind","mistral",2023,2], ["facebook","mistral",2023,2],
+  ["deepmind","xai",2023,2], ["google","xai",2023,2], ["openai","xai",2023,1], ["openai","ssi",2024,3], ["openai","tml",2025,5],
+];
+
+const CAPTIONS = [
+  [1985, "The old guard at Bell Labs and IBM still holds much of the talent. Microsoft is the hot young company, and olympiad kids head for MIT, Harvard and Caltech."],
+  [1988, "D.E. Shaw opens in New York and starts hiring olympiad medalists into quantitative finance."],
+  [1989, "The first International Olympiad in Informatics opens a new pipeline of competitive programmers."],
+  [1992, "Windows 3.1 is selling everywhere. Microsoft is now the strongest pull on the map."],
+  [1994, "Jeff Bezos leaves D.E. Shaw and starts Amazon in Seattle."],
+  [1998, "Two Stanford PhD students incorporate Google."],
+  [1999, "X.com and Confinity, soon merged as PayPal, pack an unusually dense team into Palo Alto."],
+  [2000, "Jane Street is founded. Over two decades it becomes a magnet for IMO and IOI medalists."],
+  [2001, "Google becomes the place every strong engineer wants to be."],
+  [2002, "eBay buys PayPal for $1.5B and the team scatters. Elon Musk founds SpaceX."],
+  [2003, "PayPal alumni start LinkedIn and Palantir."],
+  [2004, "Facebook launches at Harvard. PayPal alumni start Yelp, and Musk leads Tesla's first round."],
+  [2005, "Three early PayPal employees launch YouTube."],
+  [2006, "Google buys YouTube for $1.65B."],
+  [2007, "Fortune runs its “PayPal Mafia” photo. Facebook starts pulling engineers away from Google."],
+  [2008, "Facebook co-founder Dustin Moskovitz leaves to start Asana."],
+  [2009, "Adam D'Angelo leaves Facebook to start Quora."],
+  [2010, "Patrick and John Collison start Stripe. DeepMind is founded in London. An ex-Googler launches Instagram."],
+  [2011, "The Thiel Fellowship starts paying teenagers to skip college and build."],
+  [2012, "Facebook buys Instagram. Max Levchin, PayPal's co-founder, starts Affirm."],
+  [2014, "Google acquires DeepMind. Stripe is now a top destination for new grads."],
+  [2015, "Stripe alumni begin founding companies of their own."],
+  [2016, "OpenAI, announced in December 2015, pulls researchers out of Google Brain."],
+  [2017, "Jane Street alumni start Alameda Research. Google researchers publish the Transformer paper."],
+  [2020, "GPT-3 ships. Frontier AI labs start pulling talent from every other cluster on the map."],
+  [2021, "A group of OpenAI researchers leave to found Anthropic. Noam Shazeer leaves Google to start Character.ai."],
+  [2022, "FTX collapses in November and its people scatter. ChatGPT launches weeks later."],
+  [2023, "Ex-DeepMind and Meta researchers found Mistral in Paris. xAI launches with alumni of DeepMind, Google and OpenAI."],
+  [2024, "Ilya Sutskever leaves OpenAI to found SSI. Microsoft hires most of Inflection; Google re-hires Character.ai's founders."],
+  [2025, "Mira Murati and other OpenAI alumni launch Thinking Machines Lab."],
+  [2026, "Today. The AI labs are the densest clusters on the map. Tap any cluster to see where its alumni went."],
+];
+
+const ORIGIN_AFF = {
+  quant:[3.2,2.2,1.6,0.8,0.6], ai:[1.7,1.5,1.4,1,1.2], hard:[1,1,2.6,1,1.4],
+  soft:[0.9,1.3,0.8,1,1.3], old:[1,1,1.3,1,0.3], rest:[0.7,0.8,0.8,1.2,0.8],
+};
+const SCHOOL_W = [
+  { mit:5, harvard:4, princeton:3, stanford:2.5, caltech:1.5, oxbridge:2.5, cmu:1, berkeley:1, waterloo:.8 },
+  { mit:4, cmu:3, stanford:3, waterloo:2.5, harvard:2, oxbridge:1.5, berkeley:1.5, princeton:1, caltech:.8 },
+  { caltech:4, mit:4, oxbridge:2.5, princeton:2, stanford:2, harvard:1.5, berkeley:1.5, cmu:.5, waterloo:.5 },
+  { stanford:4, mit:3, harvard:3, berkeley:3.5, cmu:2.5, waterloo:2.5, princeton:2, caltech:1, oxbridge:2 },
+  { stanford:1 },
+];
+
+/* ---------------- simulation (deterministic) ---------------- */
+function mulberry(a){ return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const rand = mulberry(19852026);
+
+function interp(pts, y){
+  if (y <= pts[0][0]) return pts[0][1];
+  for (let k = 1; k < pts.length; k++) if (y <= pts[k][0]) {
+    const [a, va] = pts[k-1], [b, vb] = pts[k]; return va + (vb - va) * (y - a) / (b - a);
+  }
+  return pts[pts.length-1][1];
+}
+function hot(i, y){
+  const n = NODES[i];
+  if (n.kind !== "firm" || y < n.founded || (n.dissolve && y >= n.dissolve)) return 0;
+  return interp(n.hot, y);
+}
+function geoAff(pg, dg){
+  if (!pg) return 1;
+  if (pg === dg) return pg === "europe" ? 3 : 1.6;
+  if (pg === "europe") return 0.6;
+  if (pg === "seattle" && dg === "west") return 1.3;
+  return 1;
+}
+function pickW(ws, keys){
+  let s = 0; for (const k of keys) s += ws[k];
+  if (s <= 0) return -1;
+  let r = rand() * s;
+  for (const k of keys){ r -= ws[k]; if (r <= 0) return k; }
+  return keys[keys.length-1];
+}
+
+function simulate(){
+  const people = [];
+  const occ = new Int32Array(NN);
+  const newP = (o, node, y, spawn, phase, dwell) => {
+    const p = { o, node, arr:y, spawn, phase, dwell, geo:"", h:new Int16Array(NY).fill(-1), d:new Uint8Array(NY), done:0 };
+    p.h[y - SIM0] = node; people.push(p); return p;
+  };
+  const seedOrigin = () => { const r = rand(); return r < .08 ? 0 : r < .14 ? 2 : 3; };
+  for (let k = 0; k < 55; k++) newP(seedOrigin(), idx.bell, SIM0, SIM0 - 6 - ((rand()*28)|0), "job", 0);
+  for (let k = 0; k < 45; k++) newP(seedOrigin(), idx.rest, SIM0, SIM0 - 4 - ((rand()*30)|0), "job", 0);
+  for (let k = 0; k < 4; k++)  newP(seedOrigin(), idx.msft, SIM0, SIM0 - 3, "job", 0);
+
+  const acc = new Float64Array(NN);
+  const hw = new Float64Array(NN), capN = new Float64Array(NN), ws = new Float64Array(NN);
+
+  for (let y = SIM0; y <= Y1; y++){
+    const yi = y - SIM0;
+    for (const s of SOURCES){
+      const n = NODES[s]; if (y < n.start) continue;
+      acc[s] += n.rate + (n.grow || 0) * (y - SIM0);
+      while (acc[s] >= 1){
+        acc[s] -= 1;
+        const dw = n.id === "kids" ? 1 : n.id === "thiel" ? 2 : (rand() < .5 ? 1 : 2);
+        newP(n.origin, s, y, y, "src", dw);
+      }
+    }
+    if (y === Y1) break;
+    const ny = y + 1, nyi = yi + 1;
+
+    occ.fill(0);
+    for (const p of people) if (p.node >= 0) occ[p.node]++;
+    const cand = [];
+    for (const i of FIRMS){
+      const h = hot(i, ny);
+      if (h > 0){ cand.push(i); hw[i] = Math.pow(h, 2.4); const n = NODES[i]; capN[i] = n.cap * Math.min(1, (ny - n.founded + 1) / n.ramp); }
+    }
+    const moveTo = (p, i, dbyte) => {
+      if (p.node >= 0) occ[p.node]--;
+      occ[i]++; p.node = i; p.arr = ny;
+      if (NODES[i].kind === "school"){ p.phase = "ug"; p.dwell = 4; p.geo = NODES[i].geo || ""; }
+      else p.phase = "job";
+      p.h[nyi] = i; p.d[nyi] = dbyte != null ? dbyte : (rand()*255)|0; p.done = ny;
+    };
+    const stay = p => { p.h[nyi] = p.node; p.done = ny; };
+    const leave = p => { if (p.node >= 0) occ[p.node]--; p.node = -2; p.h[nyi] = -2; p.d[nyi] = (rand()*255)|0; p.done = ny; };
+    const toFirm = (p, youth) => {
+      const from = p.node, fromFirm = from >= 0 && NODES[from].kind === "firm";
+      const keys = [];
+      for (const i of cand){
+        if (i === from) continue;
+        const n = NODES[i];
+        let w = hw[i] * ORIGIN_AFF[n.sector][p.o] * geoAff(p.geo, n.geo);
+        w *= Math.pow(Math.max(0, 1 - occ[i] / capN[i]), 1.3);
+        if (fromFirm){
+          if (KIDS[from] && KIDS[from].has(i)) w *= 4;
+          if (NODES[from].sector === "ai" && n.sector === "ai") w *= 1.6;
+          if (NODES[from].id === "google" && n.id === "deepmind" && ny >= 2014) w *= 2.5;
+        }
+        if (p.phase === "phd"){ if (n.sector === "ai") w *= 1.8; else if (n.sector === "quant") w *= 1.2; }
+        if (youth){ if (ny - n.founded < 6) w *= 3; if (n.id === "rest") w *= 1.5; }
+        ws[i] = w; keys.push(i);
+      }
+      const k = pickW(ws, keys);
+      if (k < 0){ fromFirm ? leave(p) : stay(p); return; }
+      moveTo(p, k);
+    };
+    const toSchool = p => {
+      const W = SCHOOL_W[p.o]; const keys = [];
+      for (const s of SCHOOLS){ ws[s] = W[NODES[s].id] || 0; keys.push(s); }
+      moveTo(p, pickW(ws, keys));
+    };
+
+    // founder bursts first
+    for (const [f, t, yr, n] of EVENTS){
+      if (yr !== ny) continue;
+      const fi = idx[f], ti = idx[t], c = [];
+      for (const p of people){
+        if (p.done === ny || p.phase !== "job" || p.node < 0 || p.node === ti) continue;
+        let has = false; for (let k = 0; k <= yi; k++) if (p.h[k] === fi){ has = true; break; }
+        if (has) c.push([p, (p.node === fi ? 0 : 1) + rand() * .9]);
+      }
+      c.sort((a, b) => a[1] - b[1]);
+      for (let k = 0; k < Math.min(n, c.length); k++) moveTo(c[k][0], ti, 25 + ((rand()*30)|0));
+    }
+
+    const order = people.map((_, i) => i);
+    for (let i = order.length - 1; i > 0; i--){ const j = (rand() * (i + 1)) | 0; [order[i], order[j]] = [order[j], order[i]]; }
+    for (const oi of order){
+      const p = people[oi];
+      if (p.done === ny) continue;
+      if (p.node === -2){ p.h[nyi] = -2; continue; }
+      const n = NODES[p.node];
+      const age = ny - p.spawn;
+      if (n.kind !== "source" && ((age > 44 && rand() < .3) || (n.kind === "firm" && rand() < .015))){ leave(p); continue; }
+      if (n.kind === "source"){
+        if (ny - p.arr >= p.dwell){
+          if (n.id === "thiel") toFirm(p, true);
+          else if (n.id === "kids" && rand() < .2) toFirm(p, false);
+          else toSchool(p);
+        } else stay(p);
+      } else if (n.kind === "school"){
+        if (ny - p.arr >= p.dwell){
+          if (p.phase === "ug"){
+            const r = rand();
+            if (r < .07){ p.phase = "fac"; p.dwell += 10 + ((rand()*25)|0); stay(p); }
+            else if (r < .27){ p.phase = "phd"; p.dwell += 5; stay(p); }
+            else toFirm(p, false);
+          } else if (p.phase === "fac" && rand() < .5) leave(p);
+          else toFirm(p, false);
+        } else stay(p);
+      } else {
+        if (n.dissolve && ny >= n.dissolve){ toFirm(p, false); continue; }
+        if (n.absorb && ny >= n.absorb[0] && rand() < n.absorb[2]){ moveTo(p, idx[n.absorb[1]]); continue; }
+        const h0 = hot(p.node, y - 1) || hot(p.node, y), h1 = hot(p.node, ny);
+        let churn = .09 + Math.max(0, (h0 - h1) / Math.max(h0, .01)) * .7;
+        if (ny - p.arr < 2) churn *= .35;
+        if (rand() < churn) toFirm(p, false); else stay(p);
+      }
+    }
+  }
+  return people;
+}
+
+const people = simulate();
+const P = people.length;
+const traj = new Int16Array(P * NY), dly = new Uint8Array(P * NY), orig = new Uint8Array(P);
+const ang0 = new Float32Array(P), rf = new Float32Array(P), arc = new Float32Array(P);
+const cnt = new Uint16Array(NY * NN), cntO = new Uint16Array(NY * NN * 5);
+people.forEach((p, k) => {
+  orig[k] = p.o;
+  traj.set(p.h, k * NY); dly.set(p.d, k * NY);
+  ang0[k] = rand() * TAU; rf[k] = Math.sqrt(rand()) * .9 + .06; arc[k] = rand() * 2 - 1;
+  for (let yi = 0; yi < NY; yi++){ const v = p.h[yi]; if (v >= 0){ cnt[yi*NN+v]++; cntO[(yi*NN+v)*5+p.o]++; } }
+});
+window.__tf = { NODES, cnt, NN, NY, SIM0, P, idx };
+
+/* ---------------- view ---------------- */
+const cv = document.getElementById("map"), ctx = cv.getContext("2d");
+const hdr = document.getElementById("hdr"), ftr = document.getElementById("ftr");
+const tip = document.getElementById("tip"), hint = document.getElementById("hint");
+const yearEl = document.getElementById("year"), capEl = document.getElementById("caption");
+const boardEl = document.getElementById("board"), boardTitle = document.getElementById("boardTitle"), boardRight = document.getElementById("boardRight");
+const scrub = document.getElementById("scrub"), playBtn = document.getElementById("play");
+const reduceMQ = matchMedia("(prefers-reduced-motion: reduce)");
+document.getElementById("track").style.height = `calc(${(Y1 - Y0) * VH_PER_YEAR}vh + 100vh)`;
+
+const C = { o:[] };
+function readTheme(){
+  const cs = getComputedStyle(document.documentElement), g = k => cs.getPropertyValue(k).trim();
+  C.bg = g("--bg"); C.glow = g("--bg-glow"); C.ink = g("--ink"); C.muted = g("--muted"); C.ring = g("--ring");
+  C.node = g("--node"); C.mafia = g("--mafia"); C.line = g("--line"); C.dark = g("--is-dark") === "1";
+  C.o = [0,1,2,3,4].map(i => g("--o" + i));
+  makeGlow();
+}
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", readTheme);
+new MutationObserver(readTheme).observe(document.documentElement, { attributes:true, attributeFilter:["data-theme"] });
+
+let W = 0, H = 0, DPR = 1, scale = 1, portrait = false, ox = 0, oy = 0, mapTop = 0, mapBot = 0, glow = null;
+const NX = new Float32Array(NN), NYp = new Float32Array(NN);
+function toScreen(x, y){ const [a, b] = portrait ? [y, x] : [x, y]; return [ox + a * scale, oy + b * scale]; }
+function makeGlow(){
+  if (!W) return;
+  glow = ctx.createRadialGradient(W * .55, (mapTop + mapBot) / 2, 0, W * .55, (mapTop + mapBot) / 2, Math.max(W, H) * .65);
+  glow.addColorStop(0, C.glow); glow.addColorStop(1, C.bg);
+}
+function layout(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = innerWidth; H = innerHeight;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  mapTop = hdr.getBoundingClientRect().bottom + 4;
+  mapBot = ftr.getBoundingClientRect().top + 8;
+  const availW = W - 16, availH = Math.max(180, mapBot - mapTop);
+  portrait = availW / availH < 0.95;
+  const B = portrait ? { x0:-12, x1:672, y0:-8, y1:1012 } : { x0:-14, x1:1014, y0:-30, y1:650 };
+  scale = Math.min(availW / (B.x1 - B.x0), availH / (B.y1 - B.y0));
+  ox = (W - (B.x1 - B.x0) * scale) / 2 - B.x0 * scale;
+  oy = mapTop + (availH - (B.y1 - B.y0) * scale) / 2 - B.y0 * scale;
+  NODES.forEach((n, i) => { const [sx, sy] = toScreen(n.x, n.y); NX[i] = sx; NYp[i] = sy; });
+  hint.style.top = Math.max(mapTop, mapBot - 44) + "px";
+  makeGlow();
+}
+
+/* ---------------- time & scroll ---------------- */
+let t = Y0, tTarget = Y0, playing = false, playPos = 0;
+const maxScroll = () => Math.max(1, document.documentElement.scrollHeight - innerHeight);
+const yearToScroll = y => (y - Y0) / (Y1 - Y0) * maxScroll();
+function onScroll(){ tTarget = Y0 + Math.min(1, Math.max(0, scrollY / maxScroll())) * (Y1 - Y0); }
+addEventListener("scroll", onScroll, { passive:true });
+function setPlaying(v){
+  playing = v; playBtn.setAttribute("aria-pressed", String(v)); playBtn.textContent = v ? "Pause" : "Play";
+  if (v){ if (tTarget >= Y1 - .01) scrollTo(0, 0); playPos = scrollY; }
+}
+playBtn.addEventListener("click", () => setPlaying(!playing));
+["wheel", "touchstart"].forEach(e => addEventListener(e, () => { if (playing) setPlaying(false); }, { passive:true }));
+scrub.addEventListener("input", () => { if (playing) setPlaying(false); scrollTo(0, yearToScroll(+scrub.value)); });
+addEventListener("keydown", e => {
+  if (e.target.closest && e.target.closest("input,button")) { if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return; if (e.target === scrub) return; }
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft"){
+    e.preventDefault(); if (playing) setPlaying(false);
+    const y = Math.max(Y0, Math.min(Y1, Math.round(tTarget) + (e.key === "ArrowRight" ? 1 : -1)));
+    scrollTo(0, yearToScroll(y));
+  } else if (e.key === " " && e.target === document.body){ e.preventDefault(); setPlaying(!playing); }
+});
+
+/* ---------------- selection ---------------- */
+let sel = -1, focusO = -1, hover = -1;
+const alumni = new Uint8Array(P); let alumniKey = "";
+function updateAlumni(cyi){
+  const key = sel + ":" + cyi; if (key === alumniKey) return; alumniKey = key;
+  alumni.fill(0); if (sel < 0) return;
+  for (let p = 0; p < P; p++){ const b = p * NY; for (let k = 0; k <= cyi; k++) if (traj[b + k] === sel){ alumni[p] = 1; break; } }
+}
+const chipsEl = document.getElementById("chips");
+const CHIP_IDS = [["paypal","PayPal"],["google","Google"],["facebook","Facebook"],["stripe","Stripe"],["openai","OpenAI"],["jane","Jane Street"]];
+const chipBtns = CHIP_IDS.map(([id, label]) => {
+  const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.textContent = label;
+  b.setAttribute("aria-pressed", "false"); b.addEventListener("click", () => setSel(sel === idx[id] ? -1 : idx[id]));
+  chipsEl.appendChild(b); return [idx[id], b];
+});
+const legendEl = document.getElementById("legend");
+const legBtns = ORIGINS.map((o, i) => {
+  const b = document.createElement("button"); b.type = "button"; b.className = "btn"; b.style.color = `var(--o${i})`;
+  b.innerHTML = `<span class="sw" style="background:var(--o${i})"></span><span style="color:var(--ink)">${o.name}</span>`;
+  b.setAttribute("aria-pressed", "false"); b.title = "Highlight " + o.name;
+  b.addEventListener("click", () => { focusO = focusO === i ? -1 : i; legBtns.forEach((x, j) => x.setAttribute("aria-pressed", String(j === focusO))); lastBoard = ""; });
+  legendEl.appendChild(b); return b;
+});
+function setSel(i){ sel = i; chipBtns.forEach(([n, b]) => b.setAttribute("aria-pressed", String(n === sel))); lastBoard = ""; }
+
+/* ---------------- HUD text ---------------- */
+let lastBoard = "";
+const label = (i, y) => { const n = NODES[i]; return n.after && y >= n.after[0] ? n.after[1] : n.name; };
+function captionFor(y){ let c = CAPTIONS[0][1]; for (const [yr, txt] of CAPTIONS) if (yr <= y) c = txt; return c; }
+function bar(i, yi, frac){
+  const tot = cnt[yi*NN+i] || 1; let h = "";
+  for (let o = 0; o < 5; o++){ const v = cntO[(yi*NN+i)*5+o]; if (v) h += `<span style="width:${(v/tot*frac*100).toFixed(1)}%;background:var(--o${o})"></span>`; }
+  return `<div class="bar">${h}</div>`;
+}
+function renderHUD(cy){
+  const key = cy + ":" + sel + ":" + focusO; if (key === lastBoard) return; lastBoard = key;
+  const yi = cy - SIM0;
+  yearEl.textContent = cy; capEl.textContent = captionFor(cy);
+  let rows = "";
+  if (sel < 0){
+    boardTitle.innerHTML = `Largest clusters · <b>${cy}</b>`; boardRight.textContent = "vs last yr";
+    const arr = FIRMS.filter(i => NODES[i].id !== "rest").map(i => [i, cnt[yi*NN+i], cnt[(yi-1)*NN+i]]).filter(a => a[1] > 0).sort((a, b) => b[1] - a[1]).slice(0, 5);
+    const mx = arr.length ? arr[0][1] : 1;
+    for (const [i, c, c0] of arr){
+      const d = c - c0, cls = d > 0 ? "up" : d < 0 ? "down" : "";
+      rows += `<li><span class="nm">${label(i, cy)}</span>${bar(i, yi, c / mx)}<span class="ct">${c}</span><span class="dl ${cls}">${d > 0 ? "+" + d : d < 0 ? "−" + (-d) : "·"}</span></li>`;
+    }
+  } else {
+    updateAlumni(yi);
+    const where = new Map(); let total = 0;
+    for (let p = 0; p < P; p++) if (alumni[p]){ total++; const v = traj[p*NY+yi]; if (v >= 0) where.set(v, (where.get(v) || 0) + 1); }
+    boardTitle.innerHTML = `${label(sel, cy)} alumni · <b>${cy}</b>`; boardRight.textContent = `${total} passed through`;
+    const arr = [...where.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5); const mx = arr.length ? arr[0][1] : 1;
+    for (const [i, c] of arr){
+      rows += `<li><span class="nm">${i === sel ? "Still at " + label(i, cy) : label(i, cy)}</span><div class="bar"><span style="width:${(c/mx*100).toFixed(1)}%;background:var(--mafia)"></span></div><span class="ct">${c}</span><span class="dl"></span></li>`;
+    }
+    if (!arr.length) rows = `<li><span class="nm" style="color:var(--muted)">No one has passed through yet</span></li>`;
+  }
+  boardEl.innerHTML = rows;
+}
+
+/* ---------------- drawing ---------------- */
+const Rn = new Float32Array(NN), vis = new Uint8Array(NN);
+const G = 10, buf = Array.from({ length:G }, () => new Float32Array(P * 3)), bn = new Int32Array(G);
+const tb = Array.from({ length:G }, () => new Float32Array(P * 4)), tn = new Int32Array(G);
+const ease = s => s < .5 ? 2 * s * s : 1 - Math.pow(-2 * s + 2, 2) / 2;
+function nodeR(i, c){ const k = NODES[i].id === "rest" ? .55 : 1; return (3 + Math.sqrt(c) * 2.0 * k) * scale; }
+function restPos(i, p, now, out){
+  const a = ang0[p] + now * .22 * (1.15 - rf[p]); const r = rf[p] * Rn[i] * .86;
+  out[0] = NX[i] + Math.cos(a) * r; out[1] = NYp[i] + Math.sin(a) * r;
+}
+const pa = [0, 0], pb = [0, 0];
+
+function draw(t, now){
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+  ctx.fillStyle = glow || C.bg; ctx.fillRect(0, 0, W, H);
+
+  let yi = Math.floor(t) - SIM0, f = t - Math.floor(t);
+  if (yi >= NY - 1){ yi = NY - 2; f = 1; }
+  const cy = Math.min(Y1, Math.round(t)), cyi = cy - SIM0;
+  if (sel >= 0) updateAlumni(cyi);
+
+  for (let i = 0; i < NN; i++){
+    const n = NODES[i], c = cnt[yi*NN+i] * (1 - f) + cnt[(yi+1)*NN+i] * f;
+    Rn[i] = nodeR(i, c);
+    let v;
+    if (n.kind === "source") v = t >= n.start - .6;
+    else if (n.kind === "school") v = true;
+    else v = (n.founded <= t + .6 && !(n.dissolve && t > n.dissolve + 1.5 && c < .5)) || c > .5;
+    vis[i] = v ? 1 : 0;
+  }
+
+  const fs = Math.max(9, Math.min(13, 11 * scale * 1.12));
+  const mono = `500 ${Math.max(8.5, fs * .8)}px ${getFont("--f-mono")}`;
+
+  // region headers
+  ctx.fillStyle = C.muted; ctx.font = mono; setSpacing(".12em");
+  const heads = portrait
+    ? [["PROVING GROUNDS", -8, 22, "left"], ["UNIVERSITIES", -8, 150, "left"], ["FIRMS & THEIR MAFIAS", -8, 312, "left"]]
+    : [["PROVING GROUNDS", 55, -16, "center"], ["UNIVERSITIES", 206, -16, "center"], ["FIRMS & THEIR MAFIAS", 640, -16, "center"]];
+  for (const [txt, x, y, al] of heads){ const [sx, sy] = portrait ? [ox + x * scale, oy + y * scale] : [ox + x * scale, oy + y * scale]; ctx.textAlign = al; ctx.fillText(txt, sx, sy); }
+  setSpacing("0px");
+
+  // mafia lines
+  ctx.lineWidth = 1; ctx.setLineDash([2, 5]); ctx.lineDashOffset = -now * 12;
+  for (const m of MAFIAS){
+    const pi = idx[m.parent]; if (!vis[pi]) continue;
+    const traced = sel === pi;
+    for (const k of m.kids){
+      const ki = idx[k], n = NODES[ki]; if (!vis[ki] || n.founded > t + .3) continue;
+      const x1 = NX[pi], y1 = NYp[pi], x2 = NX[ki], y2 = NYp[ki];
+      const mx = (x1 + x2) / 2 - (y2 - y1) * .18, my = (y1 + y2) / 2 + (x2 - x1) * .18;
+      ctx.strokeStyle = C.mafia; ctx.globalAlpha = traced ? .75 : (sel >= 0 ? .1 : .32);
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.quadraticCurveTo(mx, my, x2, y2); ctx.stroke();
+    }
+  }
+  ctx.setLineDash([]); ctx.globalAlpha = 1;
+
+  // node discs
+  for (let i = 0; i < NN; i++){
+    if (!vis[i]) continue;
+    const n = NODES[i], dead = (n.dissolve && t >= n.dissolve - .3);
+    ctx.beginPath(); ctx.arc(NX[i], NYp[i], Rn[i] + 3, 0, TAU);
+    ctx.fillStyle = C.node; ctx.fill();
+    ctx.strokeStyle = i === sel ? C.mafia : C.ring; ctx.lineWidth = i === sel ? 1.6 : 1;
+    if (dead) ctx.setLineDash([2, 3]);
+    ctx.globalAlpha = n.kind === "firm" ? 1 : .7; ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
+    if (n.kind === "firm" && n.founded > 1900){
+      const q = (t - (n.founded - .7)) / 1.2;
+      if (q > 0 && q < 1){
+        ctx.beginPath(); ctx.arc(NX[i], NYp[i], Rn[i] + 3 + q * 34 * scale, 0, TAU);
+        ctx.strokeStyle = C.mafia; ctx.globalAlpha = (1 - q) * .8; ctx.lineWidth = 1.5; ctx.stroke(); ctx.globalAlpha = 1;
+      }
+    }
+  }
+
+  // dots
+  bn.fill(0); tn.fill(0);
+  const dotR = Math.max(1.15, Math.min(2.5, 1.6 * scale));
+  const showTrails = !reduceMQ.matches;
+  for (let p = 0; p < P; p++){
+    const b = p * NY + yi, a = traj[b], bb = traj[b + 1];
+    if (a < 0 && bb < 0) continue;
+    let x, y, r = dotR, moving = false, tx0 = 0, ty0 = 0;
+    if (a < 0){
+      if (!vis[bb]) continue;
+      restPos(bb, p, now, pb); x = pb[0]; y = pb[1]; r *= ease(f);
+    } else if (bb === -2){
+      const s = Math.min(1, Math.max(0, (f - dly[b+1] / 255 * .5) / .5)), e = ease(s);
+      restPos(a, p, now, pa);
+      const dx = pa[0] - NX[a], dy = pa[1] - NYp[a], dl = Math.hypot(dx, dy) || 1;
+      x = pa[0] + dx / dl * e * 26 * scale; y = pa[1] + dy / dl * e * 26 * scale; r *= 1 - e;
+      if (r < .2) continue;
+    } else if (a === bb){
+      restPos(a, p, now, pa); x = pa[0]; y = pa[1];
+    } else {
+      const d = dly[b+1] / 255 * .5, s = Math.min(1, Math.max(0, (f - d) / .5)), e = ease(s);
+      restPos(a, p, now, pa); restPos(bb, p, now, pb);
+      const dx = pb[0] - pa[0], dy = pb[1] - pa[1];
+      const cx = (pa[0] + pb[0]) / 2 - dy * arc[p] * .3, cyy = (pa[1] + pb[1]) / 2 + dx * arc[p] * .3;
+      const u = 1 - e; x = u*u*pa[0] + 2*u*e*cx + e*e*pb[0]; y = u*u*pa[1] + 2*u*e*cyy + e*e*pb[1];
+      if (s > 0 && s < 1 && showTrails){
+        moving = true; const e2 = ease(Math.max(0, s - .09)), u2 = 1 - e2;
+        tx0 = u2*u2*pa[0] + 2*u2*e2*cx + e2*e2*pb[0]; ty0 = u2*u2*pa[1] + 2*u2*e2*cyy + e2*e2*pb[1];
+      }
+    }
+    const o = orig[p];
+    let dim = (sel >= 0 && !alumni[p]) || (focusO >= 0 && o !== focusO);
+    if (sel >= 0 && alumni[p] && !dim) r *= 1.2;
+    const g = o * 2 + (dim ? 1 : 0);
+    const k = bn[g] * 3; buf[g][k] = x; buf[g][k+1] = y; buf[g][k+2] = r; bn[g]++;
+    if (moving){ const m = tn[g] * 4; tb[g][m] = tx0; tb[g][m+1] = ty0; tb[g][m+2] = x; tb[g][m+3] = y; tn[g]++; }
+  }
+  if (C.dark) ctx.globalCompositeOperation = "lighter";
+  for (let g = 0; g < G; g++){
+    const dim = g & 1, col = C.o[g >> 1];
+    if (tn[g]){
+      ctx.strokeStyle = col; ctx.lineWidth = dotR * .9; ctx.lineCap = "round"; ctx.globalAlpha = dim ? .05 : .35;
+      ctx.beginPath(); const T = tb[g];
+      for (let k = 0; k < tn[g]; k++){ ctx.moveTo(T[k*4], T[k*4+1]); ctx.lineTo(T[k*4+2], T[k*4+3]); }
+      ctx.stroke();
+    }
+    if (!bn[g]) continue;
+    ctx.fillStyle = col; ctx.globalAlpha = dim ? (C.dark ? .1 : .14) : (C.dark ? .9 : .85);
+    ctx.beginPath(); const B = buf[g];
+    for (let k = 0; k < bn[g]; k++){ const x = B[k*3], y = B[k*3+1], r = B[k*3+2]; ctx.moveTo(x + r, y); ctx.arc(x, y, r, 0, TAU); }
+    ctx.fill();
+  }
+  ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+
+  // labels
+  ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+  const body = getFont("--f-body");
+  for (let i = 0; i < NN; i++){
+    if (!vis[i]) continue;
+    const n = NODES[i], dead = (n.dissolve && t >= n.dissolve - .3);
+    const txt = label(i, cy);
+    const y = NYp[i] + Rn[i] + 3 + fs + 1;
+    ctx.font = n.kind === "firm" ? `600 ${fs}px ${body}` : n.kind === "source" ? `500 ${fs * .92}px ${getFont("--f-mono")}` : `500 ${fs}px ${body}`;
+    ctx.globalAlpha = dead ? .55 : (n.kind === "firm" ? 1 : .85);
+    ctx.lineWidth = 3; ctx.strokeStyle = C.bg; ctx.lineJoin = "round"; ctx.strokeText(txt, NX[i], y);
+    ctx.fillStyle = i === sel ? C.mafia : (n.kind === "firm" ? C.ink : C.muted); ctx.fillText(txt, NX[i], y);
+  }
+  // mafia labels
+  ctx.font = mono; setSpacing(".1em");
+  for (const m of MAFIAS){
+    if (!m.label) continue;
+    const pi = idx[m.parent]; if (!vis[pi]) continue;
+    const born = m.kids.filter(k => NODES[idx[k]].founded <= t + .3).length;
+    if (born < (m.kids.length === 1 ? 1 : 2)) continue;
+    ctx.globalAlpha = sel >= 0 && sel !== pi ? .35 : .95;
+    ctx.lineWidth = 3; ctx.strokeStyle = C.bg; ctx.strokeText(m.label.toUpperCase(), NX[pi], NYp[pi] - Rn[pi] - 9);
+    ctx.fillStyle = C.mafia; ctx.fillText(m.label.toUpperCase(), NX[pi], NYp[pi] - Rn[pi] - 9);
+  }
+  setSpacing("0px"); ctx.globalAlpha = 1;
+
+  if (hover >= 0 && vis[hover]){
+    ctx.beginPath(); ctx.arc(NX[hover], NYp[hover], Rn[hover] + 6, 0, TAU);
+    ctx.strokeStyle = C.ink; ctx.globalAlpha = .5; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1;
+  }
+  renderHUD(cy);
+}
+
+const fontCache = {};
+function getFont(v){ return fontCache[v] || (fontCache[v] = getComputedStyle(document.documentElement).getPropertyValue(v).trim()); }
+const hasSpacing = "letterSpacing" in ctx;
+function setSpacing(v){ if (hasSpacing) ctx.letterSpacing = v; }
+
+/* ---------------- pointer ---------------- */
+function nodeAt(x, y){
+  let best = -1, bd = Infinity;
+  for (let i = 0; i < NN; i++){
+    if (!vis[i]) continue;
+    const d = Math.hypot(x - NX[i], y - NYp[i]);
+    if (d < Math.max(Rn[i] + 8, 14) && d < bd){ bd = d; best = i; }
+  }
+  return best;
+}
+function showTip(i, x, y){
+  if (i < 0){ tip.hidden = true; return; }
+  const n = NODES[i], cy = Math.min(Y1, Math.round(t)), yi = cy - SIM0, c = cnt[yi*NN+i];
+  let comp = "";
+  for (let o = 0; o < 5; o++){ const v = cntO[(yi*NN+i)*5+o]; if (v) comp += `<i><span class="sw" style="background:var(--o${o})"></span>${ORIGINS[o].short} ${v}</i>`; }
+  const founded = n.kind === "firm" && n.founded > 1900 ? ` · founded ${n.founded}` : "";
+  tip.innerHTML = `<div class="tn">${label(i, cy)}</div><div class="ts">${n.sub || ""}${founded}</div>
+    <div><b>${c}</b> dot${c === 1 ? "" : "s"} here in ${cy}</div>${c ? bar(i, yi, 1) : ""}<div class="tc">${comp}</div>
+    <div class="th">${sel === i ? "Click again to clear the trace" : "Click to trace where these people go next"}</div>`;
+  tip.hidden = false;
+  const r = tip.getBoundingClientRect();
+  let tx = x + 16, ty = y + 16;
+  if (tx + r.width > W - 8) tx = x - r.width - 16;
+  if (ty + r.height > H - 8) ty = y - r.height - 16;
+  tip.style.left = Math.max(8, tx) + "px"; tip.style.top = Math.max(8, ty) + "px";
+}
+cv.addEventListener("pointermove", e => { hover = nodeAt(e.clientX, e.clientY); cv.style.cursor = hover >= 0 ? "pointer" : "default"; showTip(hover, e.clientX, e.clientY); });
+cv.addEventListener("pointerleave", () => { hover = -1; tip.hidden = true; });
+cv.addEventListener("click", e => {
+  const i = nodeAt(e.clientX, e.clientY);
+  setSel(i >= 0 && i !== sel ? i : -1);
+  if (i >= 0) showTip(i, e.clientX, e.clientY); else tip.hidden = true;
+});
+
+/* ---------------- loop ---------------- */
+let last = performance.now();
+function frame(ts){
+  const dt = Math.min(.05, (ts - last) / 1000); last = ts;
+  if (playing){
+    const pxPerYear = maxScroll() / (Y1 - Y0);
+    playPos += pxPerYear * .65 * dt;
+    if (playPos >= maxScroll()){ playPos = maxScroll(); setPlaying(false); }
+    scrollTo(0, playPos);
+  }
+  t += (tTarget - t) * Math.min(1, dt * 7);
+  if (Math.abs(tTarget - t) < 1e-4) t = tTarget;
+  scrub.value = t.toFixed(2);
+  hint.style.opacity = t < Y0 + .25 ? "1" : "0";
+  draw(t, reduceMQ.matches ? 0 : ts / 1000);
+  requestAnimationFrame(frame);
+}
+readTheme();
+layout();
+addEventListener("resize", () => { layout(); lastBoard = ""; });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { layout(); });
+onScroll(); t = tTarget;
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
