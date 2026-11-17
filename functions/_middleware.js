@@ -236,6 +236,10 @@ export async function onRequest(context) {
 	if (url.hostname === 'ai.rhyslindmark.com') {
 		const path = url.pathname.replace(/\/$/, '') || '/';
 
+		if (path === '/warp' && ['GET', 'HEAD'].includes(context.request.method)) {
+			return Response.redirect('https://platform.warp.dev/q3JLYzeswNuT47rYZz0Qyj/dashboard', 302);
+		}
+
 		// Keep Jev's public URL slashless while serving its directory asset.
 		if (path === '/jev' && ['GET', 'HEAD'].includes(context.request.method)) {
 			if (url.pathname.endsWith('/')) {
