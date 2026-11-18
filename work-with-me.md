@@ -42,7 +42,7 @@ His potential is off the charts for a place that values what he has to offer.</e
 
 * **A developer ecosystem role at a well-run, growing AI company.**
 * Roles like Developer Relations, Applied AI Engineer, or Ecosystem GTM.
-* Also excited by generalist roles like Chief of Staff, Product Ops, Societal Impacts, or Culture. Or capital allocation at a VC or Foundation.
+* Also excited by generalist tech roles like Chief of Staff, Education, Product Ops, Societal Impacts, or Culture. Or capital allocation at a VC or Foundation.
 
 Curious to work together to see if I can be helpful.
 
