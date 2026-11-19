@@ -111,10 +111,31 @@ li::marker { color: var(--muted); font-variant-numeric: tabular-nums; font-weigh
 .job-detail { margin-top: .55rem; }
 .job-detail summary { min-height: 2.75rem; font-size: .84rem; }
 .job-detail p { color: var(--muted); font-size: .86rem; }
+.page-footer { margin-top: 2rem; color: var(--muted); font-size: .86rem; }
 noscript p { margin-top: 1.2rem; }
+
+.eval-page main { width: min(100% - 3rem, 47rem); }
+.eval-page section { margin-top: 2rem; }
+.eval-page section p { margin-top: .65rem; }
+.eval-intro, #report-status { margin-top: 1.15rem; }
+.eval-page table {
+	width: 100%;
+	margin-top: .85rem;
+	border-collapse: collapse;
+	font-size: .9rem;
+	font-variant-numeric: tabular-nums;
+}
+.eval-page th, .eval-page td { padding: .48rem .38rem; border-bottom: 1px solid var(--line); text-align: right; }
+.eval-page th:first-child { text-align: left; }
+.eval-page thead { background: var(--surface); }
+.eval-page tbody th { font-weight: 520; }
+.eval-page code { overflow-wrap: anywhere; }
 
 @media (max-width: 34rem) {
 	main { width: min(100% - 2rem, 45rem); padding-top: 1.25rem; }
 	h1 { font-size: 2.35rem; }
 	ol { padding-left: 1.25rem; }
+	.eval-page main { width: min(100% - 2rem, 47rem); }
+	.eval-page table { font-size: .84rem; }
+	.eval-page th, .eval-page td { padding-inline: .3rem; }
 }

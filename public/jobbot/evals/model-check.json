@@ -1,0 +1,25 @@
+{
+  "cases": [
+    {
+      "expected": "Developer Education Lead",
+      "top": "Developer Education Lead",
+      "rank": 1
+    },
+    {
+      "expected": "Applied AI Engineer",
+      "top": "Applied AI Engineer",
+      "rank": 1
+    },
+    {
+      "expected": "Ecosystem Partnerships Lead",
+      "top": "Ecosystem Partnerships Lead",
+      "rank": 1
+    },
+    {
+      "expected": "AI Policy Researcher",
+      "top": "AI Policy Researcher",
+      "rank": 1
+    }
+  ],
+  "passed": 4
+}

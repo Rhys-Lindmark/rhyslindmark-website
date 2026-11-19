@@ -1,0 +1,407 @@
+{
+  "version": 1,
+  "seed": 20261118,
+  "candidates": 1000,
+  "postings": 10000,
+  "pairs": 10000000,
+  "topK": 10,
+  "trainingCandidates": 900,
+  "trainingLabels": 33290,
+  "rounds": [
+    {
+      "round": 1,
+      "phase": "tune",
+      "candidates": 100,
+      "priorLabels": 0,
+      "newLabels": 2988,
+      "baseline": {
+        "fitRate": 0.747,
+        "applicationRate": 0.539,
+        "actualInterviewRate": 0.135,
+        "conditionalInterviewRate": 0.250464,
+        "anyInterviewRate": 0.73,
+        "expectedInterviews": 1.427347,
+        "expectedInterviewRate": 0.142735,
+        "expectedAnyInterviewRate": 0.730804
+      },
+      "tuned": {
+        "fitRate": 0.747,
+        "applicationRate": 0.539,
+        "actualInterviewRate": 0.135,
+        "conditionalInterviewRate": 0.250464,
+        "anyInterviewRate": 0.73,
+        "expectedInterviews": 1.427347,
+        "expectedInterviewRate": 0.142735,
+        "expectedAnyInterviewRate": 0.730804
+      }
+    },
+    {
+      "round": 2,
+      "phase": "tune",
+      "candidates": 100,
+      "priorLabels": 2988,
+      "newLabels": 3802,
+      "baseline": {
+        "fitRate": 0.702,
+        "applicationRate": 0.524,
+        "actualInterviewRate": 0.148,
+        "conditionalInterviewRate": 0.282443,
+        "anyInterviewRate": 0.71,
+        "expectedInterviews": 1.315638,
+        "expectedInterviewRate": 0.131564,
+        "expectedAnyInterviewRate": 0.684442
+      },
+      "tuned": {
+        "fitRate": 0.679,
+        "applicationRate": 0.51,
+        "actualInterviewRate": 0.154,
+        "conditionalInterviewRate": 0.301961,
+        "anyInterviewRate": 0.76,
+        "expectedInterviews": 1.640215,
+        "expectedInterviewRate": 0.164021,
+        "expectedAnyInterviewRate": 0.780655
+      }
+    },
+    {
+      "round": 3,
+      "phase": "tune",
+      "candidates": 100,
+      "priorLabels": 6790,
+      "newLabels": 3759,
+      "baseline": {
+        "fitRate": 0.75,
+        "applicationRate": 0.561,
+        "actualInterviewRate": 0.144,
+        "conditionalInterviewRate": 0.256684,
+        "anyInterviewRate": 0.73,
+        "expectedInterviews": 1.406264,
+        "expectedInterviewRate": 0.140626,
+        "expectedAnyInterviewRate": 0.724859
+      },
+      "tuned": {
+        "fitRate": 0.731,
+        "applicationRate": 0.582,
+        "actualInterviewRate": 0.229,
+        "conditionalInterviewRate": 0.393471,
+        "anyInterviewRate": 0.86,
+        "expectedInterviews": 1.965726,
+        "expectedInterviewRate": 0.196573,
+        "expectedAnyInterviewRate": 0.833307
+      }
+    },
+    {
+      "round": 4,
+      "phase": "tune",
+      "candidates": 100,
+      "priorLabels": 10549,
+      "newLabels": 3761,
+      "baseline": {
+        "fitRate": 0.736,
+        "applicationRate": 0.552,
+        "actualInterviewRate": 0.128,
+        "conditionalInterviewRate": 0.231884,
+        "anyInterviewRate": 0.7,
+        "expectedInterviews": 1.403853,
+        "expectedInterviewRate": 0.140385,
+        "expectedAnyInterviewRate": 0.721387
+      },
+      "tuned": {
+        "fitRate": 0.737,
+        "applicationRate": 0.581,
+        "actualInterviewRate": 0.193,
+        "conditionalInterviewRate": 0.332186,
+        "anyInterviewRate": 0.8,
+        "expectedInterviews": 2.068182,
+        "expectedInterviewRate": 0.206818,
+        "expectedAnyInterviewRate": 0.840834
+      }
+    },
+    {
+      "round": 5,
+      "phase": "tune",
+      "candidates": 100,
+      "priorLabels": 14310,
+      "newLabels": 3773,
+      "baseline": {
+        "fitRate": 0.721,
+        "applicationRate": 0.563,
+        "actualInterviewRate": 0.136,
+        "conditionalInterviewRate": 0.241563,
+        "anyInterviewRate": 0.69,
+        "expectedInterviews": 1.299723,
+        "expectedInterviewRate": 0.129972,
+        "expectedAnyInterviewRate": 0.685592
+      },
+      "tuned": {
+        "fitRate": 0.696,
+        "applicationRate": 0.525,
+        "actualInterviewRate": 0.17,
+        "conditionalInterviewRate": 0.32381,
+        "anyInterviewRate": 0.84,
+        "expectedInterviews": 1.908639,
+        "expectedInterviewRate": 0.190864,
+        "expectedAnyInterviewRate": 0.814801
+      }
+    },
+    {
+      "round": 6,
+      "phase": "tune",
+      "candidates": 100,
+      "priorLabels": 18083,
+      "newLabels": 3822,
+      "baseline": {
+        "fitRate": 0.717,
+        "applicationRate": 0.528,
+        "actualInterviewRate": 0.109,
+        "conditionalInterviewRate": 0.206439,
+        "anyInterviewRate": 0.64,
+        "expectedInterviews": 1.210051,
+        "expectedInterviewRate": 0.121005,
+        "expectedAnyInterviewRate": 0.64917
+      },
+      "tuned": {
+        "fitRate": 0.731,
+        "applicationRate": 0.581,
+        "actualInterviewRate": 0.217,
+        "conditionalInterviewRate": 0.373494,
+        "anyInterviewRate": 0.84,
+        "expectedInterviews": 1.992521,
+        "expectedInterviewRate": 0.199252,
+        "expectedAnyInterviewRate": 0.807382
+      }
+    },
+    {
+      "round": 7,
+      "phase": "tune",
+      "candidates": 100,
+      "priorLabels": 21905,
+      "newLabels": 3797,
+      "baseline": {
+        "fitRate": 0.719,
+        "applicationRate": 0.507,
+        "actualInterviewRate": 0.11,
+        "conditionalInterviewRate": 0.216963,
+        "anyInterviewRate": 0.62,
+        "expectedInterviews": 1.34537,
+        "expectedInterviewRate": 0.134537,
+        "expectedAnyInterviewRate": 0.693699
+      },
+      "tuned": {
+        "fitRate": 0.701,
+        "applicationRate": 0.531,
+        "actualInterviewRate": 0.195,
+        "conditionalInterviewRate": 0.367232,
+        "anyInterviewRate": 0.8,
+        "expectedInterviews": 2.123355,
+        "expectedInterviewRate": 0.212336,
+        "expectedAnyInterviewRate": 0.839128
+      }
+    },
+    {
+      "round": 8,
+      "phase": "tune",
+      "candidates": 100,
+      "priorLabels": 25702,
+      "newLabels": 3796,
+      "baseline": {
+        "fitRate": 0.774,
+        "applicationRate": 0.59,
+        "actualInterviewRate": 0.153,
+        "conditionalInterviewRate": 0.259322,
+        "anyInterviewRate": 0.78,
+        "expectedInterviews": 1.471893,
+        "expectedInterviewRate": 0.147189,
+        "expectedAnyInterviewRate": 0.754329
+      },
+      "tuned": {
+        "fitRate": 0.753,
+        "applicationRate": 0.577,
+        "actualInterviewRate": 0.218,
+        "conditionalInterviewRate": 0.377816,
+        "anyInterviewRate": 0.87,
+        "expectedInterviews": 2.275831,
+        "expectedInterviewRate": 0.227583,
+        "expectedAnyInterviewRate": 0.889781
+      }
+    },
+    {
+      "round": 9,
+      "phase": "tune",
+      "candidates": 100,
+      "priorLabels": 29498,
+      "newLabels": 3792,
+      "baseline": {
+        "fitRate": 0.727,
+        "applicationRate": 0.535,
+        "actualInterviewRate": 0.143,
+        "conditionalInterviewRate": 0.26729,
+        "anyInterviewRate": 0.75,
+        "expectedInterviews": 1.298579,
+        "expectedInterviewRate": 0.129858,
+        "expectedAnyInterviewRate": 0.695141
+      },
+      "tuned": {
+        "fitRate": 0.739,
+        "applicationRate": 0.589,
+        "actualInterviewRate": 0.205,
+        "conditionalInterviewRate": 0.348048,
+        "anyInterviewRate": 0.86,
+        "expectedInterviews": 1.889504,
+        "expectedInterviewRate": 0.18895,
+        "expectedAnyInterviewRate": 0.823102
+      }
+    },
+    {
+      "round": 10,
+      "phase": "holdout",
+      "candidates": 100,
+      "priorLabels": 33290,
+      "newLabels": 0,
+      "baseline": {
+        "fitRate": 0.741,
+        "applicationRate": 0.556,
+        "actualInterviewRate": 0.161,
+        "conditionalInterviewRate": 0.289568,
+        "anyInterviewRate": 0.77,
+        "expectedInterviews": 1.423919,
+        "expectedInterviewRate": 0.142392,
+        "expectedAnyInterviewRate": 0.72733
+      },
+      "tuned": {
+        "fitRate": 0.742,
+        "applicationRate": 0.599,
+        "actualInterviewRate": 0.238,
+        "conditionalInterviewRate": 0.397329,
+        "anyInterviewRate": 0.88,
+        "expectedInterviews": 2.172374,
+        "expectedInterviewRate": 0.217237,
+        "expectedAnyInterviewRate": 0.850606
+      }
+    }
+  ],
+  "holdout": {
+    "candidates": 100,
+    "baseline": {
+      "fitRate": 0.741,
+      "applicationRate": 0.556,
+      "actualInterviewRate": 0.161,
+      "conditionalInterviewRate": 0.289568,
+      "anyInterviewRate": 0.77,
+      "expectedInterviews": 1.423919,
+      "expectedInterviewRate": 0.142392,
+      "expectedAnyInterviewRate": 0.72733
+    },
+    "tuned": {
+      "fitRate": 0.742,
+      "applicationRate": 0.599,
+      "actualInterviewRate": 0.238,
+      "conditionalInterviewRate": 0.397329,
+      "anyInterviewRate": 0.88,
+      "expectedInterviews": 2.172374,
+      "expectedInterviewRate": 0.217237,
+      "expectedAnyInterviewRate": 0.850606
+    },
+    "deltaExpectedInterviews": {
+      "mean": 0.748455,
+      "lower95": 0.624167,
+      "upper95": 0.884276
+    },
+    "cohorts": [
+      {
+        "group": "Remote",
+        "candidates": 29,
+        "baseline": {
+          "fitRate": 0.824138,
+          "applicationRate": 0.651724,
+          "actualInterviewRate": 0.213793,
+          "conditionalInterviewRate": 0.328042,
+          "anyInterviewRate": 0.862069,
+          "expectedInterviews": 1.794914,
+          "expectedInterviewRate": 0.179491,
+          "expectedAnyInterviewRate": 0.814655
+        },
+        "tuned": {
+          "fitRate": 0.793103,
+          "applicationRate": 0.668966,
+          "actualInterviewRate": 0.282759,
+          "conditionalInterviewRate": 0.42268,
+          "anyInterviewRate": 0.862069,
+          "expectedInterviews": 2.879109,
+          "expectedInterviewRate": 0.287911,
+          "expectedAnyInterviewRate": 0.918944
+        }
+      },
+      {
+        "group": "Hybrid",
+        "candidates": 39,
+        "baseline": {
+          "fitRate": 0.707692,
+          "applicationRate": 0.538462,
+          "actualInterviewRate": 0.133333,
+          "conditionalInterviewRate": 0.247619,
+          "anyInterviewRate": 0.692308,
+          "expectedInterviews": 1.267944,
+          "expectedInterviewRate": 0.126794,
+          "expectedAnyInterviewRate": 0.691632
+        },
+        "tuned": {
+          "fitRate": 0.715385,
+          "applicationRate": 0.582051,
+          "actualInterviewRate": 0.210256,
+          "conditionalInterviewRate": 0.361233,
+          "anyInterviewRate": 0.897436,
+          "expectedInterviews": 1.922236,
+          "expectedInterviewRate": 0.192224,
+          "expectedAnyInterviewRate": 0.821263
+        }
+      },
+      {
+        "group": "On-site",
+        "candidates": 32,
+        "baseline": {
+          "fitRate": 0.70625,
+          "applicationRate": 0.490625,
+          "actualInterviewRate": 0.146875,
+          "conditionalInterviewRate": 0.299363,
+          "anyInterviewRate": 0.78125,
+          "expectedInterviews": 1.277798,
+          "expectedInterviewRate": 0.12778,
+          "expectedAnyInterviewRate": 0.6917
+        },
+        "tuned": {
+          "fitRate": 0.728125,
+          "applicationRate": 0.55625,
+          "actualInterviewRate": 0.23125,
+          "conditionalInterviewRate": 0.41573,
+          "anyInterviewRate": 0.875,
+          "expectedInterviews": 1.836751,
+          "expectedInterviewRate": 0.183675,
+          "expectedAnyInterviewRate": 0.824437
+        }
+      }
+    ]
+  },
+  "definitions": {
+    "fitRate": "Fraction of shown jobs that received a simulated would-pursue vote.",
+    "applicationRate": "Fraction of shown jobs that received a simulated application.",
+    "actualInterviewRate": "Fraction of shown jobs with a simulated first interview, counting unapplied jobs as zero.",
+    "conditionalInterviewRate": "Fraction of simulated applications that resulted in a simulated first interview.",
+    "anyInterviewRate": "Fraction of candidate shortlists with at least one simulated first interview.",
+    "expectedInterviews": "Average total of the simulator’s joint application and interview probabilities across each ten-job shortlist.",
+    "expectedInterviewRate": "Average joint application and first-interview probability per shown job.",
+    "expectedAnyInterviewRate": "Average probability of at least one first interview assuming independent outcomes within a shortlist.",
+    "deltaExpectedInterviews": "Paired tuned-minus-baseline difference in expected interviews per candidate and its 95% candidate bootstrap interval."
+  },
+  "method": [
+    "Every candidate was scored against the same catalog of generated postings. Both rankers returned ten results per candidate.",
+    "The baseline uses the live JobBot point formula with simulated location, compensation, role fit and résumé fit inputs.",
+    "The tuned ranker combines the estimated chance of applying with the estimated chance of a first interview after applying. It uses simulated role, skill, experience, location, work mode, pay disclosure, industry, connection and competition features.",
+    "Each tuning batch was scored before training on its labels. Training used that batch’s shortlists plus samples from uniform and role-specific exploration.",
+    "The last 100 candidates came from a separate seeded stream. Both rankers were frozen before evaluating those candidates on the same job catalog."
+  ],
+  "limitations": [
+    "The interview probabilities and interval quantify outcomes in one simulated market. Real interview rates require observed outcomes.",
+    "The simulator encodes assumptions about preferences, candidate experience, compensation, connections and employer competition. Different assumptions can reverse or shrink the result.",
+    "The benchmark covers numerical ranking. Web retrieval, résumé parsing and language-model fit judgments require their own evaluations."
+  ]
+}

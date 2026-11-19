@@ -240,10 +240,11 @@ export async function onRequest(context) {
 			return Response.redirect('https://platform.warp.dev/q3JLYzeswNuT47rYZz0Qyj/dashboard', 302);
 		}
 
-		// Keep these public URLs slashless while serving their directory assets.
-		if (['/jev', '/jobbot'].includes(path) && ['GET', 'HEAD'].includes(context.request.method)) {
-			if (url.pathname.endsWith('/')) {
-				url.pathname = path;
+		// Serve the app and report at their canonical URLs.
+		if (['/jev', '/jobbot', '/jobbot/evals'].includes(path) && ['GET', 'HEAD'].includes(context.request.method)) {
+			const canonicalPath = path === '/jobbot/evals' ? `${path}/` : path;
+			if (url.pathname !== canonicalPath) {
+				url.pathname = canonicalPath;
 				return Response.redirect(url.toString(), 308);
 			}
 			url.pathname = `${path}/`;

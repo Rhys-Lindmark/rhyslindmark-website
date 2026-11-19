@@ -1,3 +1,5 @@
+import { compareJobbotMatches, jobbotScore } from './jobbot-ranking.js';
+
 const RESPONSES_URL = 'https://api.openai.com/v1/responses';
 const MAX_JOBS = 5;
 const VALIDATION_MESSAGE = 'Describe the job you want and upload a résumé or paste at least 20 characters of experience.';
@@ -184,7 +186,7 @@ function buildResult(job, points, profile, preferences) {
 	};
 	return {
 		company, title, url,
-		score: Math.round(Object.values(parts).reduce((a, b) => a + b, 0) * 10) / 10,
+		score: jobbotScore(parts),
 		parts: { ...parts, pay: Math.round(parts.pay * 10) / 10 },
 		location: field(job.location, 150) || 'Work arrangement unclear',
 		compensation,
@@ -287,6 +289,6 @@ export async function searchJobbot(input, { apiKey, reserve, fetchResponse = fet
 			results.set(index, buildResult(postings[index], points, profile, preferences));
 		}
 	}
-	const jobs = [...results.values()].sort((a, b) => b.score - a.score || Number(Boolean(b.contact)) - Number(Boolean(a.contact)));
+	const jobs = [...results.values()].sort(compareJobbotMatches);
 	return { jobs: jobs.slice(0, MAX_JOBS), maximum: MAX_JOBS };
 }
