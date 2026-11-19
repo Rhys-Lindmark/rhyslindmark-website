@@ -22,27 +22,27 @@
 		<noscript><p>Enable JavaScript to search and view results.</p></noscript>
 		<form id="search-form" method="post" action="/jobbot/api/search" autocomplete="off">
 			<div class="field">
-				<label for="roles">What roles are you looking for?</label>
-				<input id="roles" name="roles" maxlength="300" required
-					placeholder="Developer Relations, Applied AI, Ecosystem GTM at AI companies">
-			</div>
-			<div class="search-preferences">
-				<div class="field">
-					<label for="location">Location and work setup <span>optional</span></label>
-					<input id="location" name="location" maxlength="160" placeholder="San Francisco, in person">
-				</div>
-				<div class="field">
-					<label for="minimum">Pay target in USD <span>optional</span></label>
-					<input id="minimum" name="minimum" type="number" min="0" max="2000000" step="1" placeholder="250000">
-				</div>
+				<label for="resume-file">Résumé</label>
+				<input type="file" id="resume-file" name="resume-file" accept=".pdf,.docx,.txt" aria-describedby="resume-file-hint">
+				<p class="hint" id="resume-file-hint">PDF, DOCX, or TXT up to 3 MB.</p>
+				<details>
+					<summary>Paste résumé text instead</summary>
+					<label for="resume">Résumé or work experience</label>
+					<textarea id="resume" name="resume" minlength="20" maxlength="12000" rows="5"></textarea>
+				</details>
 			</div>
 			<div class="field">
-				<label for="resume">Résumé or work experience</label>
-				<textarea id="resume" name="resume" minlength="20" maxlength="12000" rows="5" required
-					placeholder="Paste your résumé or describe the work you’ve done."></textarea>
+				<label for="roles">Describe the job you want in one sentence</label>
+				<input id="roles" name="roles" maxlength="300" required
+					placeholder="Developer Relations at an AI company in San Francisco, $200k+">
+			</div>
+			<div class="field">
+				<label for="connections-file">Connections <span>optional</span></label>
+				<input type="file" id="connections-file" name="connections-file" accept=".csv,text/csv" aria-describedby="connections-file-hint">
+				<p class="hint" id="connections-file-hint">Upload LinkedIn’s Connections.csv or a CSV with Name and Company columns, up to 2 MB.</p>
 			</div>
 			<details class="enhance">
-				<summary>Add job links or people you know</summary>
+				<summary>Add job links or enter contacts by hand</summary>
 				<div class="details-fields">
 					<div class="field">
 						<label for="links">Public job links</label>
@@ -61,7 +61,7 @@
 				<button id="search-button" type="submit">Find jobs</button>
 				<button class="secondary" id="example-button" type="button">Show example</button>
 			</div>
-			<p class="hint">Your criteria and public links go to OpenAI for search. Your résumé is sent separately for scoring and your contacts stay in JobBot’s request. JobBot doesn’t save your inputs.</p>
+			<p class="hint">OpenAI uses your search criteria to find postings and your résumé to score them. JobBot reads only names and companies from your connections file and doesn’t save your inputs.</p>
 		</form>
 
 		<p id="search-status" role="status" aria-live="polite" hidden></p>

@@ -1,6 +1,6 @@
 import { JobbotProblem, searchJobbot } from '../../_lib/jobbot.js';
 
-const MAX_BODY_BYTES = 64_000;
+const MAX_BODY_BYTES = 8 * 1024 * 1024;
 const CLIENT_RUNS_PER_DAY = 3;
 const TOTAL_RUNS_PER_DAY = 24;
 

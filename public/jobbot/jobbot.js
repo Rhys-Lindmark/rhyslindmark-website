@@ -6,7 +6,10 @@ const results = document.querySelector('#results');
 const heading = document.querySelector('#results-heading');
 const note = document.querySelector('#results-note');
 const matches = document.querySelector('#matches');
+const resumeFile = document.querySelector('#resume-file');
+const connectionsFile = document.querySelector('#connections-file');
 const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+const MB = 1024 * 1024;
 
 const exampleJobs = [
 	{
@@ -72,7 +75,7 @@ function jobRow(job) {
 		element('p', `${job.location} | ${pay}`, 'job-meta'));
 	if (job.why) row.append(fact('Fit', job.why));
 	if (job.gap) row.append(fact('Gap', job.gap));
-	row.append(fact('Contact', job.contact ?? 'No contact provided at this company.'));
+	row.append(fact('Possible contact', job.contact ?? 'No contact found in the connections you provided.'));
 	const details = element('details', '', 'job-detail');
 	const { location, pay: payPoints, fit, resume } = job.parts;
 	details.append(element('summary', `Match score ${job.score}/100`),
@@ -98,6 +101,90 @@ function showJobs(jobs, example = false) {
 	heading.focus();
 }
 
+function csvRows(csv) {
+	const rows = [];
+	let row = [];
+	let cell = '';
+	let quoted = false;
+	for (let i = 0; i < csv.length; i += 1) {
+		const char = csv[i];
+		if (quoted) {
+			if (char !== '"') cell += char;
+			else if (csv[i + 1] === '"') {
+				cell += '"';
+				i += 1;
+			} else quoted = false;
+		} else if (char === '"' && !cell) {
+			quoted = true;
+		} else if (char === ',' || char === '\n' || char === '\r') {
+			row.push(cell);
+			cell = '';
+			if (char !== ',') {
+				rows.push(row);
+				row = [];
+				if (char === '\r' && csv[i + 1] === '\n') i += 1;
+			}
+		} else {
+			cell += char;
+		}
+	}
+	if (quoted) throw new Error('The connections CSV has an unfinished quoted field.');
+	if (cell || row.length) rows.push([...row, cell]);
+	return rows;
+}
+
+async function readConnections(file) {
+	if (!file) return [];
+	if (file.size > 2 * MB) throw new Error('Choose a connections CSV up to 2 MB.');
+	if (/\bfollowing\b/i.test(file.name)) throw new Error('Upload a connections list with companies.');
+	const rows = csvRows((await file.text()).replace(/^\uFEFF/, ''));
+	for (const [index, row] of rows.entries()) {
+		const headers = row.map(value => value.trim().toLowerCase());
+		const companyIndex = headers.indexOf('company');
+		const nameIndex = headers.indexOf('name');
+		const firstIndex = headers.indexOf('first name');
+		const lastIndex = headers.indexOf('last name');
+		if (companyIndex < 0 || (nameIndex < 0 && (firstIndex < 0 || lastIndex < 0))) continue;
+		const connections = rows.slice(index + 1).map(values => ({
+			company: values[companyIndex]?.trim().slice(0, 100),
+			name: (nameIndex < 0 ? [values[firstIndex], values[lastIndex]].join(' ') : values[nameIndex])
+				?.trim().slice(0, 150),
+		})).filter(({ company, name }) => company && name).slice(0, 8_000);
+		if (connections.length) return connections;
+		break;
+	}
+	throw new Error('Use LinkedIn’s Connections.csv or a CSV with names and companies.');
+}
+
+function fileAsBase64(file) {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.addEventListener('load', () => resolve(String(reader.result).split(',')[1]));
+		reader.addEventListener('error', () => reject(new Error('The résumé file could not be read.')));
+		reader.readAsDataURL(file);
+	});
+}
+
+async function readSearchInputs() {
+	const data = Object.fromEntries(new FormData(form));
+	delete data['resume-file'];
+	delete data['connections-file'];
+	const file = resumeFile.files[0];
+	if (file) {
+		const extension = file.name.split('.').at(-1).toLowerCase();
+		if (!['pdf', 'docx', 'txt'].includes(extension) || file.size > 3 * MB) {
+			throw new Error('Choose a PDF, DOCX, or TXT résumé up to 3 MB.');
+		}
+		if (extension === 'txt') data.resume = (await file.text()).trim().slice(0, 12_000);
+		else data.resumeFile = { extension, data: await fileAsBase64(file) };
+	}
+	if (!data.resumeFile && data.resume.trim().length < 20) {
+		throw new Error('Upload your résumé or paste at least 20 characters of experience.');
+	}
+	data.connections = await readConnections(connectionsFile.files[0]);
+	return data;
+}
+
 exampleButton.addEventListener('click', () => {
 	setStatus('', '');
 	showJobs(exampleJobs, true);
@@ -105,13 +192,20 @@ exampleButton.addEventListener('click', () => {
 
 form.addEventListener('submit', async event => {
 	event.preventDefault();
-	const data = Object.fromEntries(new FormData(form));
 	results.hidden = true;
 	searchButton.disabled = true;
 	exampleButton.disabled = true;
 	searchButton.textContent = 'Searching…';
-	setStatus('Finding public postings and scoring the matches. This can take up to 90 seconds.', 'loading');
+	setStatus('Reading your search details…', 'loading');
 	try {
+		let data;
+		try {
+			data = await readSearchInputs();
+		} catch (error) {
+			setStatus(error.message, 'error');
+			return;
+		}
+		setStatus('Finding public postings and scoring the matches. This can take up to 90 seconds.', 'loading');
 		const response = await fetch(form.action, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },

@@ -43,7 +43,6 @@ form { display: grid; gap: 1.05rem; margin-top: 1.5rem; }
 .field { display: grid; gap: .32rem; min-width: 0; }
 label { font-size: .92rem; font-weight: 630; }
 label span { color: var(--muted); margin-inline-start: .22em; font-size: .79rem; font-weight: 400; }
-.search-preferences { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: .85rem; }
 input, textarea, button { font: inherit; }
 input, textarea {
 	width: 100%;
@@ -56,6 +55,17 @@ input, textarea {
 	line-height: 1.38;
 }
 input::placeholder, textarea::placeholder { color: var(--muted); opacity: 1; }
+input[type="file"] { padding: .36rem .45rem; }
+input::file-selector-button {
+	margin-inline-end: .5rem;
+	padding: .22rem .55rem;
+	border: 1px solid var(--input-line);
+	border-radius: var(--radius);
+	background: var(--surface);
+	color: var(--ink);
+	font: inherit;
+	cursor: pointer;
+}
 input:hover, textarea:hover { border-color: var(--ink); }
 input:focus-visible, textarea:focus-visible { outline-offset: 2px; }
 textarea { resize: vertical; }
@@ -106,6 +116,5 @@ noscript p { margin-top: 1.2rem; }
 @media (max-width: 34rem) {
 	main { width: min(100% - 2rem, 45rem); padding-top: 1.25rem; }
 	h1 { font-size: 2.35rem; }
-	.search-preferences { grid-template-columns: minmax(0, 1fr); }
 	ol { padding-left: 1.25rem; }
 }
