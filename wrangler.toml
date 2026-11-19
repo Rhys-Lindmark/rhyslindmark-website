@@ -32,3 +32,9 @@ database_id = "c2f5b3ad-87cd-4e17-9e07-da810454a53c"
 binding = "RHYSBOT_TRAIN_DB"
 database_name = "rhysbot-platform"
 database_id = "c2f5b3ad-87cd-4e17-9e07-da810454a53c"
+
+[[d1_databases]]
+binding = "JOBBOT_DB"
+database_name = "jobbot-draft"
+database_id = "76c1456c-b801-4b6b-bc59-9584a7728db5"
+migrations_dir = "migrations/jobbot"

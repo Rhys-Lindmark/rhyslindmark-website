@@ -240,14 +240,21 @@ export async function onRequest(context) {
 			return Response.redirect('https://platform.warp.dev/q3JLYzeswNuT47rYZz0Qyj/dashboard', 302);
 		}
 
-		// Keep Jev's public URL slashless while serving its directory asset.
-		if (path === '/jev' && ['GET', 'HEAD'].includes(context.request.method)) {
+		// Keep these public URLs slashless while serving their directory assets.
+		if (['/jev', '/jobbot'].includes(path) && ['GET', 'HEAD'].includes(context.request.method)) {
 			if (url.pathname.endsWith('/')) {
-				url.pathname = '/jev';
+				url.pathname = path;
 				return Response.redirect(url.toString(), 308);
 			}
-			url.pathname = '/jev/';
-			return context.env.ASSETS.fetch(new Request(url, context.request));
+			url.pathname = `${path}/`;
+			const asset = await context.env.ASSETS.fetch(new Request(url, context.request));
+			if (path === '/jev') return asset;
+			const response = new Response(asset.body, asset);
+			response.headers.set('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
+			response.headers.set('Referrer-Policy', 'no-referrer');
+			response.headers.set('X-Content-Type-Options', 'nosniff');
+			response.headers.set('X-Robots-Tag', 'noindex');
+			return response;
 		}
 
 		if (path === '/donate' || path.startsWith('/donate/')) {

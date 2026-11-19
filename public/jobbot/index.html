@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="robots" content="noindex">
+	<meta name="referrer" content="no-referrer">
+	<meta name="description" content="Search public job postings, rank them against your experience, and match people you know.">
+	<title>JobBot</title>
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+	<link rel="stylesheet" href="/jobbot/jobbot.css">
+	<script src="/jobbot/jobbot.js" type="module"></script>
+</head>
+<body>
+	<main>
+		<header class="intro">
+			<a class="back-link" href="https://ai.rhyslindmark.com/">Rhys’s AI projects</a>
+			<h1>JobBot</h1>
+			<p>Find open roles that fit your experience and see who you can ask for an introduction.</p>
+		</header>
+
+		<noscript><p>Enable JavaScript to search and view results.</p></noscript>
+		<form id="search-form" method="post" action="/jobbot/api/search" autocomplete="off">
+			<div class="field">
+				<label for="roles">What roles are you looking for?</label>
+				<input id="roles" name="roles" maxlength="300" required
+					placeholder="Developer Relations, Applied AI, Ecosystem GTM at AI companies">
+			</div>
+			<div class="search-preferences">
+				<div class="field">
+					<label for="location">Location and work setup <span>optional</span></label>
+					<input id="location" name="location" maxlength="160" placeholder="San Francisco, in person">
+				</div>
+				<div class="field">
+					<label for="minimum">Pay target in USD <span>optional</span></label>
+					<input id="minimum" name="minimum" type="number" min="0" max="2000000" step="1" placeholder="250000">
+				</div>
+			</div>
+			<div class="field">
+				<label for="resume">Résumé or work experience</label>
+				<textarea id="resume" name="resume" minlength="20" maxlength="12000" rows="5" required
+					placeholder="Paste your résumé or describe the work you’ve done."></textarea>
+			</div>
+			<details class="enhance">
+				<summary>Add job links or people you know</summary>
+				<div class="details-fields">
+					<div class="field">
+						<label for="links">Public job links</label>
+						<textarea id="links" name="links" maxlength="2500" rows="2" aria-describedby="links-hint"></textarea>
+						<p class="hint" id="links-hint">Up to eight links, one per line.</p>
+					</div>
+					<div class="field">
+						<label for="contacts">People you know</label>
+						<textarea id="contacts" name="contacts" maxlength="1500" rows="3"
+							placeholder="Company — Name and how you know them" aria-describedby="contacts-hint"></textarea>
+						<p class="hint" id="contacts-hint">One contact per line. JobBot matches them by company.</p>
+					</div>
+				</div>
+			</details>
+			<div class="actions">
+				<button id="search-button" type="submit">Find jobs</button>
+				<button class="secondary" id="example-button" type="button">Show example</button>
+			</div>
+			<p class="hint">Your criteria and public links go to OpenAI for search. Your résumé is sent separately for scoring and your contacts stay in JobBot’s request. JobBot doesn’t save your inputs.</p>
+		</form>
+
+		<p id="search-status" role="status" aria-live="polite" hidden></p>
+		<section id="results" class="results" aria-labelledby="results-heading" hidden>
+			<h2 id="results-heading" tabindex="-1">Shortlist</h2>
+			<p id="results-note" class="results-note"></p>
+			<ol id="matches"></ol>
+		</section>
+	</main>
+</body>
+</html>
