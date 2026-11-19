@@ -7,8 +7,8 @@
 	<meta name="description" content="A synthetic evaluation of how JobBot ranks job shortlists.">
 	<title>JobBot evals</title>
 	<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-	<link rel="stylesheet" href="../jobbot.css">
-	<script src="/jobbot/evals/evals.js" type="module"></script>
+	<link rel="stylesheet" href="../jobbot.css?v=eval-trend">
+	<script src="/jobbot/evals/evals.js?v=eval-trend" type="module"></script>
 </head>
 <body class="eval-page">
 	<main>
@@ -18,10 +18,30 @@
 			<p>How well do the top ten jobs match what a candidate would pursue?</p>
 		</header>
 
-		<p class="eval-intro">The large benchmark uses fictional candidates, jobs, and outcomes. Its interview rates are estimates inside the simulation. We’ll need real applicants’ feedback and outcomes to estimate real interview rates.</p>
+		<p class="eval-intro">The benchmark simulates candidates, jobs, and outcomes. Estimating real interview rates requires data from real applicants.</p>
 		<p id="report-status" role="status">Loading the benchmark…</p>
 		<noscript><p><a href="/jobbot/evals/report.json">Download the benchmark data</a></p></noscript>
 		<div id="benchmark" hidden>
+			<section aria-labelledby="rounds-heading">
+				<h2 id="rounds-heading">Expected interviews by round</h2>
+				<p id="scale"></p>
+				<figure class="round-chart">
+					<div class="chart-legend" aria-hidden="true">
+						<span class="legend-tuned">Tuned scoring</span>
+						<span class="legend-current">Current scoring</span>
+					</div>
+					<canvas id="round-chart" role="img" aria-labelledby="rounds-heading" aria-describedby="chart-summary"></canvas>
+					<figcaption id="chart-summary" class="hint"></figcaption>
+				</figure>
+				<p class="hint">Each round scores 100 new simulated candidates before learning from that batch. Round 10 was held out.</p>
+				<details>
+					<summary>See values by round</summary>
+					<table>
+						<thead><tr><th scope="col">Round</th><th scope="col">Current expected interviews</th><th scope="col">Tuned expected interviews</th></tr></thead>
+						<tbody id="round-metrics"></tbody>
+					</table>
+				</details>
+			</section>
 			<section aria-labelledby="holdout-heading">
 				<h2 id="holdout-heading">Held-out results</h2>
 				<p id="holdout-summary"></p>
@@ -38,16 +58,18 @@
 					</table>
 				</details>
 			</section>
-			<section aria-labelledby="rounds-heading">
-				<h2 id="rounds-heading">Ten rounds</h2>
-				<p id="scale"></p>
-				<table>
-					<thead><tr><th scope="col">Round</th><th scope="col">Current expected interviews</th><th scope="col">Tuned expected interviews</th></tr></thead>
-					<tbody id="round-metrics"></tbody>
-				</table>
-				<p class="hint">Expected interviews per shortlist. Each tuning round is measured before learning from that batch.</p>
-			</section>
 		</div>
+		<section aria-labelledby="changes-heading">
+			<h2 id="changes-heading">What changed in the tuned ranker</h2>
+			<ol class="ranker-changes">
+				<li><strong>Rank for a first interview.</strong> The current score adds fixed points. The tuned version multiplies the chance the candidate applies by the chance they get an interview after applying.</li>
+				<li><strong>Keep what you want and what you’ve done separate.</strong> Role and industry alignment come from the search description. Required-skill overlap and experience relative to the role’s seniority come from the résumé. The tuned ranker learns how to weigh each signal.</li>
+				<li><strong>Give dealbreakers their own inputs.</strong> The model sees partial work-mode matches, strict location or work-mode conflicts, pay below and above target, and whether pay was disclosed.</li>
+				<li><strong>Factor in who you know.</strong> A connection at the employer can move a job in the ranking beyond breaking ties. The experiment also used simulated employer competition, which would need a validated signal for live use.</li>
+				<li><strong>Learn from a wider set of jobs.</strong> After scoring each batch, the ranker learns from simulated applications and interviews on shortlist picks plus randomly selected jobs and roles related to the candidate’s search.</li>
+			</ol>
+			<p class="hint">The benchmark measures these changes together. The draft uses the current scoring formula.</p>
+		</section>
 		<section id="model-check" aria-labelledby="model-heading" hidden>
 			<h2 id="model-heading">Hosted model check</h2>
 			<p id="model-summary"></p>
@@ -58,7 +80,7 @@
 		</section>
 		<section aria-labelledby="method-heading">
 			<h2 id="method-heading">Method</h2>
-			<p>The large run uses synthetic role and résumé scores in place of model calls. Both rankers see the same job catalog. The tuned version learns from simulated outcomes in the first nine batches. The tenth batch stays outside tuning. The simulation supplies an employer competition signal that live JobBot would have to validate.</p>
+			<p>The benchmark computes fit from synthetic résumés and preferences. Both rankers see the same job catalog in every round.</p>
 			<p>“Would pursue” is the simulated equivalent of a positive swipe. Expected interviews combine how likely a candidate is to apply with how likely the employer is to interview them if they apply. Modeled chances of a first interview assume independent outcomes within a shortlist.</p>
 			<p>Real evaluation starts with an optional “Would pursue” or “Pass” after the shortlist. Interview outcomes can be checked later among jobs people applied to, with missing outcomes tracked separately. Job offers are a longer-term outcome.</p>
 			<p>Reproduce the offline benchmark with <code>node scripts/jobbot-evals.mjs</code>. <a href="/jobbot/evals/report.json">Download benchmark data</a></p>

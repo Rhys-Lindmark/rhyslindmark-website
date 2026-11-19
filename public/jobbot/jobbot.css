@@ -130,6 +130,14 @@ noscript p { margin-top: 1.2rem; }
 .eval-page thead { background: var(--surface); }
 .eval-page tbody th { font-weight: 520; }
 .eval-page code { overflow-wrap: anywhere; }
+.round-chart { margin: .9rem 0 0; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; font-size: .86rem; }
+.chart-legend span { display: inline-flex; align-items: center; gap: .4rem; }
+.chart-legend span::before { content: ''; width: 1.2rem; border-top: 2px solid var(--focus); }
+.chart-legend .legend-current::before { border-top: 2px dashed var(--muted); }
+.round-chart canvas { display: block; width: 100%; height: clamp(12.5rem, 42vw, 16rem); }
+.ranker-changes { margin-top: .3rem; }
+.ranker-changes li:last-child { border-bottom: 0; }
 
 @media (max-width: 34rem) {
 	main { width: min(100% - 2rem, 45rem); padding-top: 1.25rem; }

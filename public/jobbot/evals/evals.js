@@ -30,6 +30,79 @@ async function loadData(file) {
 	return response.json();
 }
 
+function renderRoundChart(rounds) {
+	const canvas = document.getElementById('round-chart');
+	const ctx = canvas.getContext('2d');
+	if (!ctx) return;
+	const { baseline, tuned } = rounds.at(-1);
+	write('chart-summary', `Expected interviews per ten-job shortlist. On the held-out round, current scoring averaged ${count.format(baseline.expectedInterviews)} and tuned scoring averaged ${count.format(tuned.expectedInterviews)}.`);
+
+	function draw() {
+		const { width, height } = canvas.getBoundingClientRect();
+		if (!width || !height) return;
+		const pixelRatio = window.devicePixelRatio || 1;
+		canvas.width = Math.round(width * pixelRatio);
+		canvas.height = Math.round(height * pixelRatio);
+		ctx.scale(pixelRatio, pixelRatio);
+		const styles = getComputedStyle(canvas);
+		const muted = styles.getPropertyValue('--muted').trim();
+		const accent = styles.getPropertyValue('--focus').trim();
+		const left = 26;
+		const right = width - 40;
+		const top = 18;
+		const bottom = height - 46;
+		const step = (right - left) / (rounds.length - 1);
+		const max = Math.ceil(Math.max(...rounds.flatMap(({ baseline, tuned }) => [
+			baseline.expectedInterviews, tuned.expectedInterviews,
+		])));
+		const x = index => left + step * index;
+		const y = value => bottom - value / max * (bottom - top);
+
+		ctx.fillStyle = styles.getPropertyValue('--surface').trim();
+		ctx.fillRect(right - step / 2, top, width - right + step / 2, bottom - top);
+		ctx.font = `12px ${styles.fontFamily}`;
+		ctx.fillStyle = muted;
+		ctx.strokeStyle = styles.getPropertyValue('--line').trim();
+		ctx.textAlign = 'right';
+		ctx.textBaseline = 'middle';
+		for (let value = 0; value <= max; value += 1) {
+			ctx.beginPath();
+			ctx.moveTo(left, y(value));
+			ctx.lineTo(width, y(value));
+			ctx.stroke();
+			ctx.fillText(value, left - 8, y(value));
+		}
+
+		ctx.textAlign = 'center';
+		rounds.forEach(({ round }, index) => ctx.fillText(round, x(index), bottom + 14));
+		ctx.fillText('Round', (left + right) / 2, bottom + 34);
+		ctx.fillText('Held out', right + 8, bottom + 34);
+
+		for (const [key, color, dash] of [['baseline', muted, [5, 4]], ['tuned', accent, []]]) {
+			ctx.beginPath();
+			ctx.strokeStyle = color;
+			ctx.lineWidth = 2;
+			ctx.setLineDash(dash);
+			rounds.forEach((round, index) => {
+				const value = round[key].expectedInterviews;
+				if (index === 0) ctx.moveTo(x(index), y(value));
+				else ctx.lineTo(x(index), y(value));
+			});
+			ctx.stroke();
+			const lastValue = rounds.at(-1)[key].expectedInterviews;
+			ctx.beginPath();
+			ctx.arc(right, y(lastValue), 3.5, 0, Math.PI * 2);
+			ctx.fillStyle = color;
+			ctx.fill();
+			ctx.fillStyle = muted;
+			ctx.textAlign = 'left';
+			ctx.fillText(lastValue.toFixed(2), right + 8, y(lastValue));
+		}
+	}
+
+	new ResizeObserver(draw).observe(canvas);
+}
+
 async function renderBenchmark() {
 	try {
 		const report = await loadData('report.json');
@@ -60,6 +133,7 @@ async function renderBenchmark() {
 		]));
 		document.getElementById('benchmark').hidden = false;
 		document.getElementById('report-status').hidden = true;
+		renderRoundChart(report.rounds);
 	} catch {
 		write('report-status', 'The benchmark data could not load. Refresh the page to try again.');
 	}
