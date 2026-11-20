@@ -28,12 +28,11 @@ for (const button of document.querySelectorAll('[data-copy]')) {
 const filter = document.querySelector('[data-filter]');
 if (filter) {
   const input = filter.querySelector('input');
+  const topic = filter.querySelector('select');
   const status = filter.querySelector('[data-count]');
-  const sectionLinks = new Map(Array.from(document.querySelectorAll('[data-proposal-link]'),
-    (link) => [link.dataset.proposalLink, link]));
   const groups = Array.from(document.querySelectorAll('[data-proposal-group]'), (group) => ({
     group,
-    link: sectionLinks.get(group.querySelector('h3').id),
+    id: group.querySelector('h3').id,
     proposals: Array.from(group.querySelectorAll('[data-proposal]'), (row) => ({
       row, text: row.textContent.toLowerCase(),
     })),
@@ -42,14 +41,13 @@ if (filter) {
   function filterProposals() {
     const words = input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     let count = 0;
-    for (const { group, link, proposals } of groups) {
+    for (const { group, id, proposals } of groups) {
       let matches = 0;
       for (const { row, text } of proposals) {
-        row.hidden = !words.every((word) => text.includes(word));
+        row.hidden = (topic.value !== '' && topic.value !== id) || !words.every((word) => text.includes(word));
         if (!row.hidden) matches += 1;
       }
       group.hidden = matches === 0;
-      link.hidden = group.hidden;
       count += matches;
     }
     status.textContent = count === 0 ? 'No matching proposals' : count + (count === 1 ? ' proposal' : ' proposals');
@@ -57,5 +55,6 @@ if (filter) {
 
   filter.hidden = false;
   input.addEventListener('input', filterProposals);
+  topic.addEventListener('change', filterProposals);
   filterProposals();
 }

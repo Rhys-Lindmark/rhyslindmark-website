@@ -37,7 +37,7 @@ Read the Session construction in [agent.mjs](../../src/agent.mjs) and the JWT he
 node --test --test-name-pattern='discovery, scoped sign-in' test/sandbox.test.mjs
 ```
 
-The test verifies discovery, accepted signed requests, user approval, and a fresh order read showing Saturday. [Read the recorded requests](https://ai.rhyslindmark.com/poppy/protocol-trace).
+The test verifies discovery, accepted signed requests, user approval, and a fresh order read showing Saturday. [Step through the recorded requests](https://ai.rhyslindmark.com/poppy/protocol-trace#replay).
 
 ## Continue
 

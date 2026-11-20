@@ -41,7 +41,7 @@ User → Agent    POST /agent/approval    303  Approved the reviewed terms
 Agent → Store    POST /api/delivery       200  User approved the proposed revision
 ```
 
-[Explore the full recorded trace](https://ai.rhyslindmark.com/poppy/protocol-trace) or read the [Operations 3 extension](https://personalagentprotocol.org/docs/1.0/extensions/operations).
+[Replay the requests in your browser](https://ai.rhyslindmark.com/poppy/protocol-trace#replay) or read the [Operations 3 extension](https://personalagentprotocol.org/docs/1.0/extensions/operations).
 
 ## 4. Run the approval and refusal checks
 
