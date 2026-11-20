@@ -1,0 +1,133 @@
+{
+  "protocol_version": "1.0",
+  "outcome": "Saturday",
+  "requests": [
+    {
+      "actor": "Agent → Store",
+      "method": "GET",
+      "path": "/.well-known/poppy.json",
+      "status": 200,
+      "details": {}
+    },
+    {
+      "actor": "Agent → Store",
+      "method": "GET",
+      "path": "/.well-known/oauth-protected-resource",
+      "status": 200,
+      "details": {}
+    },
+    {
+      "actor": "Agent → Store",
+      "method": "GET",
+      "path": "/.well-known/oauth-authorization-server",
+      "status": 200,
+      "details": {}
+    },
+    {
+      "actor": "Agent → Store",
+      "method": "GET",
+      "path": "/openapi.json",
+      "status": 200,
+      "details": {}
+    },
+    {
+      "actor": "Agent → Store",
+      "method": "GET",
+      "path": "/api/delivery-options",
+      "status": 200,
+      "details": {
+        "version": "1.0",
+        "extension": "Operations 3",
+        "session": "Signed, delegated ES256 key"
+      }
+    },
+    {
+      "actor": "Agent → Store",
+      "method": "GET",
+      "path": "/api/delivery",
+      "status": 401,
+      "details": {
+        "version": "1.0",
+        "extension": "Operations 3",
+        "session": "Signed, delegated ES256 key"
+      }
+    },
+    {
+      "actor": "User → Store",
+      "method": "GET",
+      "path": "/oauth/authorize",
+      "status": 200,
+      "details": {}
+    },
+    {
+      "actor": "User → Store",
+      "method": "POST",
+      "path": "/oauth/authorize",
+      "status": 303,
+      "details": {}
+    },
+    {
+      "actor": "Store → Agent",
+      "method": "GET",
+      "path": "/agent/oauth/callback",
+      "status": 303,
+      "details": {
+        "result": "Authorization code returned"
+      }
+    },
+    {
+      "actor": "Agent → Store",
+      "method": "POST",
+      "path": "/oauth/token",
+      "status": 200,
+      "details": {}
+    },
+    {
+      "actor": "Agent → Store",
+      "method": "GET",
+      "path": "/api/delivery",
+      "status": 200,
+      "details": {
+        "version": "1.0",
+        "extension": "Operations 3",
+        "session": "Signed, delegated ES256 key",
+        "account": "Scoped access token"
+      }
+    },
+    {
+      "actor": "Agent → Store",
+      "method": "POST",
+      "path": "/api/delivery",
+      "status": 403,
+      "details": {
+        "version": "1.0",
+        "extension": "Operations 3",
+        "session": "Signed, delegated ES256 key",
+        "account": "Scoped access token",
+        "result": "approval_required"
+      }
+    },
+    {
+      "actor": "User → Agent",
+      "method": "POST",
+      "path": "/agent/approval",
+      "status": 303,
+      "details": {
+        "decision": "Approved the reviewed terms"
+      }
+    },
+    {
+      "actor": "Agent → Store",
+      "method": "POST",
+      "path": "/api/delivery",
+      "status": 200,
+      "details": {
+        "version": "1.0",
+        "extension": "Operations 3",
+        "session": "Signed, delegated ES256 key",
+        "account": "Scoped access token",
+        "approval": "User approved the proposed revision"
+      }
+    }
+  ]
+}

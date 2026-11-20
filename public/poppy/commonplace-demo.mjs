@@ -1,3 +1,5 @@
+import { discoverEdition, editionBackup } from './commonplace-client.mjs';
+
 const start = document.querySelector('#start');
 const approve = document.querySelector('#approve');
 const status = document.querySelector('#status');
@@ -24,27 +26,13 @@ async function get(path) {
   }
 }
 
-start.addEventListener('click', async () => {
+async function findEdition() {
   start.disabled = true;
   review.hidden = true;
   trace.replaceChildren();
   status.textContent = 'Discovering Commonplace…';
   try {
-    const discovery = await get('/.well-known/poppy.json');
-    if (discovery.protocol_version !== '1.0' || discovery.organization?.domain !== location.host) {
-      throw new Error('Commonplace discovery did not match this host.');
-    }
-    const description = discovery.apis.find((api) => api.type === 'openapi');
-    const openAPI = await get(description.url);
-    const [endpoint] = Object.entries(openAPI.paths).find(([, operation]) =>
-      operation.get?.operationId === 'getCommonplaceEdition');
-    const proposal = await get(endpoint);
-    if (proposal.store !== 'Commonplace' || proposal.format !== '5x8' ||
-        proposal.price !== '0.00' || proposal.currency !== 'USD' ||
-        typeof proposal.title !== 'string' || !Array.isArray(proposal.quotes) ||
-        !proposal.quotes.every(({ id }) => /^press-[\w-]+$/.test(id))) {
-      throw new Error('The edition terms did not match the requested free draft.');
-    }
+    const proposal = await discoverEdition(location.origin, get);
     edition = proposal;
     document.querySelector('#edition-title').textContent = proposal.title;
     terms.textContent = proposal.quotes.length + ' quotations. 5 × 8 inches. USD 0.00.';
@@ -62,19 +50,15 @@ start.addEventListener('click', async () => {
   } finally {
     start.disabled = false;
   }
-});
+}
+
+start.addEventListener('click', findEdition);
+if (new URLSearchParams(location.search).get('intent') === 'edition') void findEdition();
 
 approve.addEventListener('click', () => {
   if (!edition) return;
   const approved = edition;
-  const backup = {
-    version: 1,
-    exported: new Date().toISOString(),
-    state: {
-      selected: approved.quotes.map(({ id }) => id), favorites: [], custom: [], ratings: {}, shelf: [],
-      book: { title: approved.title, author: '', format: approved.format, theme: 'forest', sources: true },
-    },
-  };
+  const backup = editionBackup(approved);
   const url = URL.createObjectURL(new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' }));
   const download = document.createElement('a');
   download.href = url;

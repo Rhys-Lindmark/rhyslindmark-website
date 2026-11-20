@@ -1,0 +1,300 @@
+{
+  "checkedAt": "2026-11-20T21:48:45.441Z",
+  "market": "U.S. retail ecommerce, calendar 2025",
+  "marketSource": "https://www.census.gov/retail/mrts/www/data/delimited/tsnadprectbl3.dat",
+  "cohortSource": "https://papchecker.com/sites",
+  "groups": {
+    "merchant": "Major U.S. retail storefronts and marketplaces",
+    "platform_sample": "Shopify-hosted storefront examples",
+    "reference": "Public Poppy store examples"
+  },
+  "summary": {
+    "totals": {
+      "published": {
+        "count": 5,
+        "weightedStores": 1
+      },
+      "absent": {
+        "count": 11,
+        "weightedStores": 3
+      },
+      "invalid": {
+        "count": 0,
+        "weightedStores": 0
+      },
+      "unreachable": {
+        "count": 0,
+        "weightedStores": 0
+      },
+      "redirect_unverified": {
+        "count": 0,
+        "weightedStores": 0
+      }
+    },
+    "denominatorBillions": 1247.639,
+    "namedMerchantSalesMeasured": {
+      "billions": 568.441,
+      "sharePercent": 45.56
+    },
+    "namedMerchantSalesWithPublicDiscovery": {
+      "billions": 7.741,
+      "sharePercent": 0.62
+    },
+    "namedMerchantSalesReturning404": {
+      "billions": 560.7,
+      "sharePercent": 44.94
+    },
+    "platformProxy": {
+      "name": "Shopify merchants",
+      "billions": 175,
+      "display": "~$175B",
+      "basis": "2025 platform proxy based on Shopify’s reported market share",
+      "discovery": "Reported platform rollout. Individual storefront checks vary.",
+      "source": "https://www.shopify.com/investors",
+      "sharePercent": 14.03
+    }
+  },
+  "stores": [
+    {
+      "name": "Amazon US",
+      "host": "www.amazon.com",
+      "group": "merchant",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.amazon.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "Walmart US",
+      "host": "www.walmart.com",
+      "group": "merchant",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.walmart.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "Target",
+      "host": "www.target.com",
+      "group": "merchant",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.target.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "eBay US",
+      "host": "www.ebay.com",
+      "group": "merchant",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.ebay.com/.well-known/poppy.json",
+          "status": 302
+        },
+        {
+          "url": "https://pages.ebay.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "Costco US",
+      "host": "www.costco.com",
+      "group": "merchant",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.costco.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "Best Buy US",
+      "host": "www.bestbuy.com",
+      "group": "merchant",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.bestbuy.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "Home Depot US",
+      "host": "www.homedepot.com",
+      "group": "merchant",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.homedepot.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "Etsy",
+      "host": "www.etsy.com",
+      "group": "merchant",
+      "state": "published",
+      "discovery": [
+        {
+          "url": "https://www.etsy.com/.well-known/poppy.json",
+          "status": 200
+        }
+      ],
+      "version": "0.3",
+      "organization": "Etsy",
+      "channels": [
+        "web"
+      ],
+      "extensions": [],
+      "signIn": "untested"
+    },
+    {
+      "name": "Wayfair",
+      "host": "www.wayfair.com",
+      "group": "merchant",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.wayfair.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "Nordstrom",
+      "host": "www.nordstrom.com",
+      "group": "merchant",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.nordstrom.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "Allbirds",
+      "host": "www.allbirds.com",
+      "group": "platform_sample",
+      "state": "published",
+      "discovery": [
+        {
+          "url": "https://www.allbirds.com/.well-known/poppy.json",
+          "status": 200
+        }
+      ],
+      "version": "0.4",
+      "organization": "Allbirds",
+      "channels": [
+        "company-agent",
+        "web"
+      ],
+      "extensions": [
+        "ucp"
+      ],
+      "signIn": "untested"
+    },
+    {
+      "name": "Gymshark US",
+      "host": "www.gymshark.com",
+      "group": "platform_sample",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.gymshark.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "Brooklinen",
+      "host": "www.brooklinen.com",
+      "group": "platform_sample",
+      "state": "published",
+      "discovery": [
+        {
+          "url": "https://www.brooklinen.com/.well-known/poppy.json",
+          "status": 200
+        }
+      ],
+      "version": "0.4",
+      "organization": "Brooklinen",
+      "channels": [
+        "company-agent",
+        "web"
+      ],
+      "extensions": [
+        "ucp"
+      ],
+      "signIn": "untested"
+    },
+    {
+      "name": "Fashion Nova",
+      "host": "www.fashionnova.com",
+      "group": "platform_sample",
+      "state": "absent",
+      "discovery": [
+        {
+          "url": "https://www.fashionnova.com/.well-known/poppy.json",
+          "status": 404
+        }
+      ]
+    },
+    {
+      "name": "BYLT Basics",
+      "host": "byltbasics.com",
+      "group": "reference",
+      "state": "published",
+      "discovery": [
+        {
+          "url": "https://byltbasics.com/.well-known/poppy.json",
+          "status": 200
+        }
+      ],
+      "version": "0.3",
+      "organization": "BYLT",
+      "channels": [
+        "company-agent"
+      ],
+      "extensions": [
+        "operations",
+        "ucp"
+      ],
+      "signIn": "untested"
+    },
+    {
+      "name": "Commonplace",
+      "host": "ai.rhyslindmark.com",
+      "group": "reference",
+      "state": "published",
+      "discovery": [
+        {
+          "url": "https://ai.rhyslindmark.com/.well-known/poppy.json",
+          "status": 200
+        }
+      ],
+      "version": "1.0",
+      "organization": "Commonplace",
+      "channels": [
+        "openapi",
+        "web"
+      ],
+      "extensions": [],
+      "signIn": "disabled"
+    }
+  ]
+}
