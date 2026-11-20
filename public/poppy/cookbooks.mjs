@@ -1,3 +1,6 @@
+const outline = document.querySelector('.cookbook-outline details');
+if (outline && window.matchMedia('(max-width: 51rem)').matches) outline.open = false;
+
 const copyFeedback = document.querySelector('.cookbook-feedback');
 for (const button of document.querySelectorAll('[data-copy]')) {
   const code = button.closest('.cookbook-code').querySelector('code');
