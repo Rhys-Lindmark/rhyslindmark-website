@@ -19,11 +19,6 @@
   --pap: #c45b00;
   --pap-label: #a84e00;
   --selected: #fff4e6;
-  --inspector: #191916;
-  --inspector-line: #525047;
-  --inspector-text: #f7f7f5;
-  --inspector-muted: #d4d3cc;
-  --inspector-pap: #ff9a3f;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
   padding: clamp(0.75rem, 2vw, 1.15rem);
   border-radius: 0.5rem;
@@ -80,19 +75,17 @@
 .demo-span-name small { color: var(--pap-label); font: inherit; }
 .demo-duration { text-align: right; color: var(--secondary); white-space: nowrap; }
 .demo-workspace > .demo-panel {
-  background: var(--inspector);
-  border-color: var(--inspector-line);
-  color: var(--inspector-text);
+  background: #fff;
+  color: #000;
 }
-.demo-workspace > .demo-panel h2 { border-color: var(--inspector-line); }
-#demo-inspector .demo-details { padding: 0.75rem; }
+#demo-inspector { padding: 0.75rem; }
 #demo-inspector h3 { margin: 0 0 0.25rem; font: 1rem/1.4 var(--mono); overflow-wrap: anywhere; }
-#demo-inspector [data-span-meta] { margin: 0 0 0.75rem; color: var(--inspector-muted); font-size: 0.84rem; }
-#demo-inspector [data-evidence] { margin: 0 0 0.75rem; color: var(--inspector-pap); font-size: 0.88rem; }
-.demo-payload { margin: 0.8rem 0 0.25rem; color: var(--inspector-muted); font-size: 0.8rem; }
+#demo-inspector [data-span-meta] { margin: 0 0 0.75rem; font-size: 0.84rem; }
+#demo-inspector [data-evidence] { margin: 0 0 0.75rem; font-size: 0.88rem; }
+.demo-payload { margin: 0.8rem 0 0.25rem; font-size: 0.8rem; }
 #demo-inspector pre {
-  margin: 0; padding: 0.65rem; background: var(--text); color: var(--inspector-text);
-  border: 1px solid var(--inspector-line); border-radius: 0.2rem; overflow-wrap: anywhere;
+  margin: 0; padding: 0.65rem; background: #fff; color: inherit;
+  border: 1px solid var(--line); border-radius: 0.2rem; overflow-wrap: anywhere;
   white-space: pre-wrap; font: 0.8rem/1.5 var(--mono);
 }
 .poppy-trace .trace-owner { margin: 0.9rem 0 0; font-size: 0.9rem; }
