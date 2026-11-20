@@ -6,5 +6,18 @@
     "path": "/poppy/api/edition.json",
     "status": 200
   },
-  "tool": "prepare_commonplace_edition"
+  "tool": "prepare_commonplace_edition",
+  "interoperability": {
+    "observed_at": "2026-11-20T23:33:31Z",
+    "company": "Cliffside Retail",
+    "origin": "https://www.cliffside-retail.com",
+    "protocol_version": "1.0",
+    "operation": "getInventory",
+    "request": {
+      "method": "GET",
+      "path": "/api/products/{sku}/inventory",
+      "status": 200
+    },
+    "tool": "read_company_api"
+  }
 }
