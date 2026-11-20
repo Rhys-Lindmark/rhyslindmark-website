@@ -1,0 +1,27 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Poppy Personal Agent Protocol demo with Commonplace."><title>Add Poppy discovery to a store</title><link rel="stylesheet" href="/poppy/styles.css"></head><body><header><nav aria-label="Main"><a href="/poppy/">Poppy</a><a href="/poppy/cookbooks/">Cookbooks</a><a href="/poppy/coverage.html">Sales coverage</a><a href="/poppy/poppyval.html">PoppyVal</a></nav></header><main><h1>Add Poppy discovery to a store</h1><pre class="guide">**Roles** Company and an independent client
+**Protocol** Poppy 1.0 Discovery
+**Prerequisites** Node 22.18 or later, OpenSSL 3, and this repository
+
+Run this from the repository. The sandbox client trusts just the generated local certificate for the life of the process.
+
+```sh
+node --input-type=module &lt;&lt;&#39;NODE&#39;
+import { startSandbox } from &#39;./src/demo.mjs&#39;;
+const { origin, http, close } = await startSandbox();
+try {
+  const result = await http(origin + &#39;/.well-known/poppy.json&#39;);
+  const discovery = result.json();
+  if (result.status !== 200 || discovery.protocol_version !== &#39;1.0&#39; ||
+      discovery.organization.domain !== new URL(origin).host ||
+      discovery.apis[0]?.type !== &#39;openapi&#39;) {
+    throw new Error(&#39;Discovery did not match the advertised storefront&#39;);
+  }
+  console.log(JSON.stringify(discovery, null, 2));
+} finally {
+  await close();
+}
+NODE
+```
+
+Expect the store’s host, a Poppy 1.0 version, its OpenAPI description, OAuth scopes, and Operations 3. In [store.mjs](../../src/store.mjs), use the discovery handler as a model for exposing your own API description. The [discovery rules](https://personalagentprotocol.org/docs/1.0/spec) cover redirects and domain binding.
+</pre></main></body></html>

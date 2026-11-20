@@ -1,0 +1,20 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Poppy Personal Agent Protocol demo with Commonplace."><title>Sign in to read an order</title><link rel="stylesheet" href="/poppy/styles.css"></head><body><header><nav aria-label="Main"><a href="/poppy/">Poppy</a><a href="/poppy/cookbooks/">Cookbooks</a><a href="/poppy/coverage.html">Sales coverage</a><a href="/poppy/poppyval.html">PoppyVal</a></nav></header><main><h1>Sign in to read an order</h1><pre class="guide">**Roles** User, Personal Agent, and Company
+**Protocol** Poppy 1.0 Direct Sign-In with OAuth code, PKCE, and private-key JWT
+**Prerequisites** Node 22.18 or later, OpenSSL 3, and this repository
+
+```sh
+npm start
+```
+
+Open the printed URL and choose **Look up delivery**. The User grants `orders:read` on the Demo Store consent screen. The callback checks its state and issuer, exchanges the code using PKCE and a client assertion, and sends a fresh signed Session with the access token.
+
+The seeded order should say Friday on a fresh server. In the trace, the first order lookup should have HTTP 401 and the signed-in order lookup HTTP 200.
+
+Verify insufficient consent and the unchanged order in the sandbox:
+
+```sh
+npm test -- --test-name-pattern=&#39;read-only consent&#39;
+```
+
+See [Poppy’s OAuth and session rules](https://personalagentprotocol.org/docs/1.0/spec) for the requested and granted scope semantics.
+</pre></main></body></html>

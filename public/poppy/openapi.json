@@ -1,0 +1,25 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Commonplace edition catalog",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://ai.rhyslindmark.com"
+    }
+  ],
+  "paths": {
+    "/poppy/api/edition.json": {
+      "get": {
+        "operationId": "getCommonplaceEdition",
+        "summary": "Read the public terms and source selections for a Commonplace edition",
+        "responses": {
+          "200": {
+            "description": "Commonplace reading edition"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+:root {
+  color-scheme: light;
+  --paper: #ffffff;
+  --ink: #1b2522;
+  --muted: #52625c;
+  --line: #ccd6d1;
+  --panel: #f4f7f5;
+  --accent: #145641;
+  --accent-hover: #0e4635;
+  --focus: #007461;
+  --font: system-ui, sans-serif;
+  --code: ui-monospace, monospace;
+}

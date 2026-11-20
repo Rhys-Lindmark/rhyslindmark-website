@@ -1,6 +1,7 @@
 // Serve local pages first. Only explicitly verified legacy article paths on the
 // main site may redirect to Substack; unknown URLs keep their local 404.
 import { LEGACY_POST_SLUGS } from './_legacy/posts.js';
+import { poppyDiscovery } from './_lib/poppy-discovery.js';
 
 const AI_SITES = {
 	'/tools/lean-coffee': 'https://lean-coffee-together.rhyslindmark.chatgpt.site',
@@ -231,6 +232,14 @@ export async function onRequest(context) {
 	if (url.hostname === 'www.ai.rhyslindmark.com') {
 		url.hostname = 'ai.rhyslindmark.com';
 		return Response.redirect(url.toString(), 308);
+	}
+
+	if (url.pathname === '/.well-known/poppy.json' && url.hostname === 'ai.rhyslindmark.com') {
+		if (!['GET', 'HEAD'].includes(context.request.method)) {
+			return new Response(null, { status: 405, headers: { Allow: 'GET, HEAD' } });
+		}
+		const headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'public, max-age=300' };
+		return context.request.method === 'HEAD' ? new Response(null, { headers }) : Response.json(poppyDiscovery, { headers });
 	}
 
 	if (url.hostname === 'ai.rhyslindmark.com') {

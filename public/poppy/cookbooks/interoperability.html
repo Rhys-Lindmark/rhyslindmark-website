@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Poppy Personal Agent Protocol demo with Commonplace."><title>Run a Poppy interoperability check</title><link rel="stylesheet" href="/poppy/styles.css"></head><body><header><nav aria-label="Main"><a href="/poppy/">Poppy</a><a href="/poppy/cookbooks/">Cookbooks</a><a href="/poppy/coverage.html">Sales coverage</a><a href="/poppy/poppyval.html">PoppyVal</a></nav></header><main><h1>Run a Poppy interoperability check</h1><pre class="guide">**Roles** Evaluator, Personal Agent, and Company
+**Protocol** Poppy 1.0 and Operations 3
+**Prerequisites** Node 22.18 or later, OpenSSL 3, and this repository
+
+```sh
+node src/poppyval.mjs
+```
+
+The sandbox report should mark its tested agent and store scenario as passing, with an outcome per test. It exercises actual HTTPS requests, signed-out rejection, OAuth scope consent, revision approval, and the resulting order. The report is suitable for processing by another agent.
+
+To add a candidate, record the exact product build and reachable interface. Give it the same delivery request in a Company sandbox that admits its client ID. Use store-side traces for signed requests and account state for the final outcome. Report strengths and gaps per protocol version and keep unavailable capabilities and untested checks visible. The current built-in fixture recognizes the bundled agent. See the [PoppyVal design](../poppyval.md).
+</pre></main></body></html>

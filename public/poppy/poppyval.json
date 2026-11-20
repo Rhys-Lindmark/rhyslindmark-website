@@ -1,0 +1,24 @@
+{
+  "protocol_version": "1.0",
+  "extensions": {
+    "operations": "3"
+  },
+  "agent": "Bundled Personal Agent",
+  "store": "Demo Store",
+  "environment": "local HTTPS sandbox",
+  "outcome": "pass",
+  "checks": [
+    {
+      "check": "discovery, scoped sign-in, exact approval, and a verified delivery change",
+      "outcome": "pass"
+    },
+    {
+      "check": "read-only consent and declining the exact change leave the order unchanged",
+      "outcome": "pass"
+    },
+    {
+      "check": "Persona gates write consent and Amplitude records the approved demo funnel",
+      "outcome": "pass"
+    }
+  ]
+}
