@@ -3,9 +3,8 @@
   --cookbook-reading: 43rem;
 }
 
-.cookbook-page > header nav,
 .cookbook-page > main {
-  width: min(100% - 3rem, var(--cookbook-width));
+  width: min(100% - 2 * var(--site-gutter), var(--cookbook-width));
 }
 
 .cookbook-page > main {
@@ -19,13 +18,13 @@
 
 .cookbook-entry-title {
   padding-top: 1.1rem;
-  border-top: 3px solid #829057;
+  border-top: 3px solid var(--site-olive);
 }
 
 .cookbook-title.cookbook-catalog-title {
   padding: clamp(1.5rem, 4vw, 3rem) 1rem;
   text-align: center;
-  border-top: 3px solid #829057;
+  border-top: 3px solid var(--site-olive);
   background: var(--panel);
 }
 
@@ -200,6 +199,7 @@
   line-height: 1.4;
 }
 
+.cookbook-guides li > span { justify-self: end; }
 .cookbook-guides li > span,
 .cookbook-group li p + p { color: var(--muted); }
 
@@ -260,9 +260,8 @@
 }
 
 @media (max-width: 34rem) {
-  .cookbook-page > header nav,
-  .cookbook-page > main { width: calc(100% - 2rem); }
   .cookbook-guides li { grid-template-columns: 1fr; }
+  .cookbook-guides li > span { justify-self: start; }
   .cookbook-filter { grid-template-columns: 1fr; }
   .cookbook-filter select { max-width: 100%; }
 }
