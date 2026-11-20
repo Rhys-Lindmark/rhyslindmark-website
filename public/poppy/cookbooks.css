@@ -257,6 +257,7 @@
   font-size: 0.8125rem;
   font-weight: 580;
 }
+.cookbook-guides th:first-child { width: auto; }
 .cookbook-guides thead th:last-child { width: 29%; }
 .cookbook-guides tbody th { font-size: 1rem; font-weight: 510; }
 .cookbook-guides tbody a {
@@ -345,6 +346,6 @@
   .cookbook-group li,
   .cookbook-filter { grid-template-columns: minmax(0, 1fr); }
   .cookbook-filter { row-gap: 0.55rem; }
-  .cookbook-guides thead th:last-child { width: 34%; }
+  .cookbook-guides thead th:last-child { width: 38%; }
   .cookbook-guides :is(th, td) { padding-inline: 0.5rem; }
 }
