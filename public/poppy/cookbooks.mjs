@@ -67,12 +67,12 @@ if (filter) {
   const input = filter.querySelector('input');
   const topic = filter.querySelector('select');
   const status = filter.querySelector('[data-count]');
-  const featured = document.querySelector('[data-featured]');
   const guides = document.querySelector('[data-guide-section]');
   const proposals = document.querySelector('[data-proposal-section]');
   const groups = Array.from(proposals.querySelectorAll('[data-proposal-group]'));
   const rows = Array.from(document.querySelectorAll('[data-guide], [data-proposal]'), (row) => ({
-    row, text: row.textContent.toLowerCase(), topic: row.dataset.topic ?? row.closest('[data-proposal-group]').querySelector('h3').id,
+    row, text: (row.textContent + ' ' + (row.dataset.search ?? '')).toLowerCase(),
+    topic: row.dataset.topic ?? row.closest('[data-proposal-group]').querySelector('h3').id,
   }));
 
   function filterCookbooks() {
@@ -84,10 +84,8 @@ if (filter) {
       if (!item.row.hidden) matches += 1;
     }
     for (const group of groups) group.hidden = !group.querySelector('[data-proposal]:not([hidden])');
-    featured.hidden = narrowed;
     guides.hidden = !guides.querySelector('[data-guide]:not([hidden])');
     proposals.hidden = groups.every((group) => group.hidden);
-    document.querySelector('.cookbook-source a[href="#runnable-guides"]').hidden = guides.hidden;
     document.querySelector('.cookbook-source a[href="#proposals"]').hidden = proposals.hidden;
     status.textContent = !narrowed ? '' : matches === 0 ? 'No matching cookbooks' :
       matches + (matches === 1 ? ' result' : ' results');
