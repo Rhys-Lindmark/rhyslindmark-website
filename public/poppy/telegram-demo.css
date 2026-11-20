@@ -1,0 +1,90 @@
+.poppy-trace > main { --site-wide: 78rem; }
+.poppy-trace h1 { margin: 0 0 0.5rem; font-size: clamp(1.9rem, 4vw, 2.7rem); }
+.poppy-trace .trace-intro { margin: 0 0 0.9rem; max-width: 66ch; }
+#demo-explorer {
+  --surface: #131a18;
+  --panel: #192320;
+  --line: #3b5047;
+  --text: #edf2eb;
+  --secondary: #bdc8c0;
+  --channel: #91d3bc;
+  --model: #9bbee1;
+  --tool: #bdd293;
+  --pap: #f1c07a;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  padding: clamp(0.75rem, 2vw, 1.15rem);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--text);
+  color-scheme: dark;
+}
+.demo-toolbar, .demo-example {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem 0.9rem;
+}
+.demo-toolbar { justify-content: space-between; margin-bottom: 1rem; }
+.demo-example label { font-weight: 650; font-size: 0.92rem; }
+.demo-example select { background: var(--panel); border-color: var(--line); color: var(--text); max-width: 100%; }
+#demo-stats { color: var(--secondary); margin: 0; font: 0.83rem/1.5 var(--mono); }
+.demo-workspace { display: grid; grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.52fr); gap: 0.85rem; }
+.demo-workspace > *, .demo-panel { min-width: 0; }
+.demo-panel { background: var(--panel); border: 1px solid var(--line); border-radius: 0.3rem; }
+.demo-panel + .demo-panel { margin-top: 0.75rem; }
+.demo-panel h2 { margin: 0; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+#demo-overview { padding: 0.45rem 0.75rem; }
+.demo-lane {
+  display: grid; grid-template-columns: 5rem minmax(0, 1fr); align-items: center;
+  min-height: 1.55rem; color: var(--secondary); font: 0.77rem/1.35 var(--mono);
+}
+.demo-rail {
+  position: relative; display: block; height: 0.75rem; border-inline: 1px solid var(--line);
+  background: repeating-linear-gradient(to right, var(--surface) 0 calc(25% - 1px), var(--line) calc(25% - 1px) 25%);
+}
+.demo-bar { position: absolute; inset-block: 2px; border-radius: 1px; }
+.demo-bar.channel { background: var(--channel); }
+.demo-bar.model { background: var(--model); }
+.demo-bar.tool { background: var(--tool); }
+.demo-bar.pap { background: var(--pap); }
+.demo-axis, #demo-explorer .demo-span {
+  display: grid; grid-template-columns: minmax(10rem, 1.15fr) minmax(0, 1fr) 4.1rem;
+  align-items: center; gap: 0.55rem; padding: 0.55rem 0.75rem; text-align: left;
+  font: 0.78rem/1.4 var(--mono);
+}
+.demo-axis { color: var(--secondary); }
+#demo-axis { display: flex; justify-content: space-between; }
+#demo-waterfall { padding: 0; margin: 0; list-style: none; }
+#demo-waterfall li { margin: 0; border-top: 1px solid var(--line); }
+#demo-explorer .demo-span {
+  width: 100%; border: 0; border-radius: 0; background: transparent; color: var(--text);
+}
+#demo-explorer .demo-span:is(:hover, [aria-pressed="true"]) { background: #2b3d35; }
+#demo-explorer :focus-visible { outline: 2px solid var(--pap); outline-offset: -2px; }
+.demo-span-name { overflow-wrap: anywhere; }
+.demo-span-name.depth-1 { padding-inline-start: 0.65rem; }
+.demo-span-name.depth-2 { padding-inline-start: 1.3rem; }
+.demo-span-name small { color: var(--pap); font: inherit; }
+.demo-duration { text-align: right; color: var(--secondary); white-space: nowrap; }
+#demo-inspector .demo-details { padding: 0.75rem; }
+#demo-inspector h3 { margin: 0 0 0.25rem; font: 1rem/1.4 var(--mono); overflow-wrap: anywhere; }
+#demo-inspector [data-span-meta] { margin: 0 0 0.75rem; color: var(--secondary); font-size: 0.84rem; }
+#demo-inspector [data-evidence] { margin: 0 0 0.75rem; color: var(--pap); font-size: 0.88rem; }
+.demo-payload { margin: 0.8rem 0 0.25rem; color: var(--secondary); font-size: 0.8rem; }
+#demo-inspector pre {
+  margin: 0; padding: 0.65rem; background: var(--surface); color: var(--text);
+  border: 1px solid var(--line); border-radius: 0.2rem; overflow-wrap: anywhere;
+  white-space: pre-wrap; font: 0.8rem/1.5 var(--mono);
+}
+.poppy-trace .trace-owner { margin: 0.9rem 0 0; font-size: 0.9rem; }
+@media (max-width: 60rem) {
+  #demo-axis span:nth-child(even) { display: none; }
+}
+@media (max-width: 49rem) {
+  .demo-workspace { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 36rem) {
+  .demo-axis, #demo-explorer .demo-span {
+    grid-template-columns: minmax(0, 1.4fr) minmax(3rem, 0.7fr) 3.5rem; padding-inline: 0.5rem;
+  }
+  #demo-axis span:nth-child(3) { display: none; }
+  .demo-span-name.depth-1 { padding-inline-start: 0.45rem; }
+  .demo-span-name.depth-2 { padding-inline-start: 0.9rem; }
+}
