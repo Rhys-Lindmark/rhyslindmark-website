@@ -1,0 +1,706 @@
+{
+  "version": "1.0",
+  "source": "Seeded HTTPS sandbox",
+  "scenarios": [
+    {
+      "id": "read",
+      "title": "Read a delivery",
+      "prompt": "Tell me which day my order will arrive.",
+      "reply": "Your order is scheduled for Friday.",
+      "steps": [
+        {
+          "actor": "Training agent → Poppy",
+          "title": "Send scripted task",
+          "request": {
+            "input": "Tell me which day my order will arrive."
+          },
+          "response": {
+            "task": "read"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /.well-known/poppy.json · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/.well-known/poppy.json",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /.well-known/oauth-protected-resource · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/.well-known/oauth-protected-resource",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /.well-known/oauth-authorization-server · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/.well-known/oauth-authorization-server",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /openapi.json · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/openapi.json",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /api/delivery · HTTP 401",
+          "request": {
+            "method": "GET",
+            "path": "/api/delivery",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3"
+            }
+          },
+          "response": {
+            "status": 401,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key"
+          }
+        },
+        {
+          "actor": "User → Store",
+          "title": "GET /oauth/authorize · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/oauth/authorize",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "User → Store",
+          "title": "POST /oauth/authorize · HTTP 303",
+          "request": {
+            "method": "POST",
+            "path": "/oauth/authorize",
+            "headers": {},
+            "body": {
+              "decision": "allow",
+              "scope": [
+                "orders:read"
+              ],
+              "ticket": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 303
+          }
+        },
+        {
+          "actor": "Store → Agent",
+          "title": "GET /agent/oauth/callback · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/agent/oauth/callback",
+            "headers": {},
+            "query": {
+              "code": "[redacted]",
+              "state": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 200,
+            "result": "Authorization code returned"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "POST /oauth/token · HTTP 200",
+          "request": {
+            "method": "POST",
+            "path": "/oauth/token",
+            "headers": {},
+            "body": {
+              "grant_type": "authorization_code",
+              "code": "[redacted]",
+              "code_verifier": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 200,
+            "scopes": [
+              "orders:read"
+            ]
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /api/delivery · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/api/delivery",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3",
+              "Authorization": "Bearer [redacted]"
+            }
+          },
+          "response": {
+            "status": 200,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key",
+            "account": "Scoped access token"
+          }
+        },
+        {
+          "actor": "Poppy → Simulated user",
+          "title": "Format the reply",
+          "response": {
+            "format": "Plain text",
+            "reply": "Your order is scheduled for Friday."
+          }
+        }
+      ]
+    },
+    {
+      "id": "approve",
+      "title": "Approve a delivery change",
+      "prompt": "Move my Friday delivery to Saturday.",
+      "reply": "Your delivery is now scheduled for Saturday.",
+      "steps": [
+        {
+          "actor": "Training agent → Poppy",
+          "title": "Send scripted task",
+          "request": {
+            "input": "Move my Friday delivery to Saturday."
+          },
+          "response": {
+            "task": "reschedule",
+            "delivery_day": "Saturday"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /.well-known/poppy.json · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/.well-known/poppy.json",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /.well-known/oauth-protected-resource · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/.well-known/oauth-protected-resource",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /.well-known/oauth-authorization-server · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/.well-known/oauth-authorization-server",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /openapi.json · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/openapi.json",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /api/delivery-options · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/api/delivery-options",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3"
+            }
+          },
+          "response": {
+            "status": 200,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /api/delivery · HTTP 401",
+          "request": {
+            "method": "GET",
+            "path": "/api/delivery",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3"
+            }
+          },
+          "response": {
+            "status": 401,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key"
+          }
+        },
+        {
+          "actor": "User → Store",
+          "title": "GET /oauth/authorize · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/oauth/authorize",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "User → Store",
+          "title": "POST /oauth/authorize · HTTP 303",
+          "request": {
+            "method": "POST",
+            "path": "/oauth/authorize",
+            "headers": {},
+            "body": {
+              "decision": "allow",
+              "scope": [
+                "orders:read",
+                "orders:write"
+              ],
+              "ticket": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 303
+          }
+        },
+        {
+          "actor": "Store → Agent",
+          "title": "GET /agent/oauth/callback · HTTP 303",
+          "request": {
+            "method": "GET",
+            "path": "/agent/oauth/callback",
+            "headers": {},
+            "query": {
+              "code": "[redacted]",
+              "state": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 303,
+            "result": "Authorization code returned"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "POST /oauth/token · HTTP 200",
+          "request": {
+            "method": "POST",
+            "path": "/oauth/token",
+            "headers": {},
+            "body": {
+              "grant_type": "authorization_code",
+              "code": "[redacted]",
+              "code_verifier": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 200,
+            "scopes": [
+              "orders:read",
+              "orders:write"
+            ]
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /api/delivery · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/api/delivery",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3",
+              "Authorization": "Bearer [redacted]"
+            }
+          },
+          "response": {
+            "status": 200,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key",
+            "account": "Scoped access token"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "POST /api/delivery · HTTP 403",
+          "request": {
+            "method": "POST",
+            "path": "/api/delivery",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3",
+              "Authorization": "Bearer [redacted]"
+            },
+            "body": {
+              "delivery_day": "Saturday"
+            }
+          },
+          "response": {
+            "status": 403,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key",
+            "account": "Scoped access token",
+            "result": "approval_required"
+          }
+        },
+        {
+          "actor": "User → Agent",
+          "title": "POST /agent/approval · HTTP 303",
+          "request": {
+            "method": "POST",
+            "path": "/agent/approval",
+            "headers": {},
+            "body": {
+              "decision": "approve",
+              "revision": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 303,
+            "decision": "Approved the reviewed terms"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "POST /api/delivery · HTTP 200",
+          "request": {
+            "method": "POST",
+            "path": "/api/delivery",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3",
+              "Authorization": "Bearer [redacted]",
+              "Poppy-Approval": "The approved operation and revision [redacted]"
+            },
+            "body": {
+              "delivery_day": "Saturday"
+            }
+          },
+          "response": {
+            "status": 200,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key",
+            "account": "Scoped access token",
+            "approval": "User approved the proposed revision"
+          }
+        },
+        {
+          "actor": "Poppy → Simulated user",
+          "title": "Format the reply",
+          "response": {
+            "format": "Plain text",
+            "reply": "Your delivery is now scheduled for Saturday."
+          }
+        }
+      ]
+    },
+    {
+      "id": "decline",
+      "title": "Decline a delivery change",
+      "prompt": "Check if my Friday delivery can move to Saturday.",
+      "reply": "The change was declined. Your delivery is still scheduled for Friday.",
+      "steps": [
+        {
+          "actor": "Training agent → Poppy",
+          "title": "Send scripted task",
+          "request": {
+            "input": "Check if my Friday delivery can move to Saturday."
+          },
+          "response": {
+            "task": "reschedule",
+            "delivery_day": "Saturday"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /.well-known/poppy.json · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/.well-known/poppy.json",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /.well-known/oauth-protected-resource · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/.well-known/oauth-protected-resource",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /.well-known/oauth-authorization-server · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/.well-known/oauth-authorization-server",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /openapi.json · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/openapi.json",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /api/delivery-options · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/api/delivery-options",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3"
+            }
+          },
+          "response": {
+            "status": 200,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /api/delivery · HTTP 401",
+          "request": {
+            "method": "GET",
+            "path": "/api/delivery",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3"
+            }
+          },
+          "response": {
+            "status": 401,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key"
+          }
+        },
+        {
+          "actor": "User → Store",
+          "title": "GET /oauth/authorize · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/oauth/authorize",
+            "headers": {}
+          },
+          "response": {
+            "status": 200
+          }
+        },
+        {
+          "actor": "User → Store",
+          "title": "POST /oauth/authorize · HTTP 303",
+          "request": {
+            "method": "POST",
+            "path": "/oauth/authorize",
+            "headers": {},
+            "body": {
+              "decision": "allow",
+              "scope": [
+                "orders:read",
+                "orders:write"
+              ],
+              "ticket": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 303
+          }
+        },
+        {
+          "actor": "Store → Agent",
+          "title": "GET /agent/oauth/callback · HTTP 303",
+          "request": {
+            "method": "GET",
+            "path": "/agent/oauth/callback",
+            "headers": {},
+            "query": {
+              "code": "[redacted]",
+              "state": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 303,
+            "result": "Authorization code returned"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "POST /oauth/token · HTTP 200",
+          "request": {
+            "method": "POST",
+            "path": "/oauth/token",
+            "headers": {},
+            "body": {
+              "grant_type": "authorization_code",
+              "code": "[redacted]",
+              "code_verifier": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 200,
+            "scopes": [
+              "orders:read",
+              "orders:write"
+            ]
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "GET /api/delivery · HTTP 200",
+          "request": {
+            "method": "GET",
+            "path": "/api/delivery",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3",
+              "Authorization": "Bearer [redacted]"
+            }
+          },
+          "response": {
+            "status": 200,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key",
+            "account": "Scoped access token"
+          }
+        },
+        {
+          "actor": "Agent → Store",
+          "title": "POST /api/delivery · HTTP 403",
+          "request": {
+            "method": "POST",
+            "path": "/api/delivery",
+            "headers": {
+              "Poppy-Version": "1.0",
+              "Poppy-Session": "Delegated ES256 signature [redacted]",
+              "Poppy-Extensions": "Operations 3",
+              "Authorization": "Bearer [redacted]"
+            },
+            "body": {
+              "delivery_day": "Saturday"
+            }
+          },
+          "response": {
+            "status": 403,
+            "version": "1.0",
+            "extension": "Operations 3",
+            "session": "Signed, delegated ES256 key",
+            "account": "Scoped access token",
+            "result": "approval_required"
+          }
+        },
+        {
+          "actor": "User → Agent",
+          "title": "POST /agent/approval · HTTP 200",
+          "request": {
+            "method": "POST",
+            "path": "/agent/approval",
+            "headers": {},
+            "body": {
+              "decision": "decline",
+              "revision": "[redacted]"
+            }
+          },
+          "response": {
+            "status": 200,
+            "decision": "Declined the reviewed terms"
+          }
+        },
+        {
+          "actor": "Poppy → Simulated user",
+          "title": "Format the reply",
+          "response": {
+            "format": "Plain text",
+            "reply": "The change was declined. Your delivery is still scheduled for Friday."
+          }
+        }
+      ]
+    }
+  ]
+}

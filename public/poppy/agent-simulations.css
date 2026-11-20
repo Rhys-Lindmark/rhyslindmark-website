@@ -1,0 +1,19 @@
+/* Hallmark · app screen · Minimalist · training agent and protocol messages */
+.simulation-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 0.65rem; }
+.simulation-controls label { display: block; font-weight: 600; }
+.simulation-controls select { max-width: 100%; }
+.simulation-page [role="status"] { margin-block: 0.8rem 1.4rem; color: var(--muted); }
+.simulation-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: clamp(1rem, 4vw, 3rem); }
+.simulation-layout section { margin: 0; min-width: 0; }
+.simulation-layout section + section { border-inline-start: 1px solid var(--line); padding-inline-start: 1.3rem; }
+.simulation-layout ol { margin: 0; padding: 0; list-style: none; }
+.simulation-layout li { padding-block: 0.65rem; border-bottom: 1px solid var(--line); }
+.simulation-layout li p { margin: 0.25rem 0 0; }
+.simulation-layout [data-events] li p { font-size: 0.85rem; color: var(--muted); }
+.simulation-layout pre { padding: 0.7rem; overflow: auto; background: var(--panel); font-size: 0.85rem; }
+.simulation-layout summary { min-height: auto; overflow-wrap: anywhere; }
+.simulation-page .site-links { margin-top: 1.4rem; }
+@media (max-width: 43rem) {
+  .simulation-layout { grid-template-columns: minmax(0, 1fr); }
+  .simulation-layout section + section { border: 0; padding: 0; }
+}
