@@ -66,7 +66,7 @@ function describe(intent, terms) {
     terms.quotes.length + ' quotations. You can review the edition and approve the download.';
 }
 
-export async function handleAgentMessage(request, fetcher = fetch) {
+export async function handleAgentMessage(request, fetcher) {
   if (request.method !== 'POST') return json({ reply: 'Send a JSON message with POST.' }, 405, { Allow: 'POST' });
   if (request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') {
     return json({ reply: 'Send the message as JSON.' }, 415);
@@ -76,8 +76,13 @@ export async function handleAgentMessage(request, fetcher = fetch) {
   const intent = identifyIntent(parsed.message);
   if (intent === 'help') return json({ kind: 'help', reply: help });
 
-  const proposal = await readProposal(companyOrigin, fetcher).catch(() => null);
-  if (!proposal) return json({ reply: 'I couldn’t read the Commonplace catalog. Try again in a moment.' }, 502);
+  let proposal;
+  try {
+    proposal = await readProposal(companyOrigin, fetcher);
+  } catch (error) {
+    console.warn('Commonplace catalog unavailable', { reason: error instanceof Error ? error.message : 'Unknown error' });
+    return json({ reply: 'I couldn’t read the Commonplace catalog. Try again in a moment.' }, 502);
+  }
   const changed = Boolean(parsed.revision && proposal.revision !== parsed.revision);
   const reply = (changed ? 'The edition details changed. Review the new terms. ' : '') + describe(intent, proposal.terms);
   return json({
