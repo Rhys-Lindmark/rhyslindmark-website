@@ -8,7 +8,6 @@
   --panel: #f1f0ea;
   --accent: #216b48;
   --accent-hover: #164c34;
-  --cookbook-topic: #eaf2e8;
   --cookbook-orange: #c45b00;
   --cookbook-code-bg: #191916;
   --cookbook-code-fg: #f7f7f5;
@@ -21,6 +20,7 @@
 }
 
 .cookbook-page { background: var(--paper); color: var(--ink); }
+.cookbook-index { --paper: #fff; --line: #dedfdc; --muted: #585e57; }
 .cookbook-page :focus-visible { outline: 2px solid var(--accent-hover); outline-offset: 3px; }
 
 .cookbook-page .site-masthead .site-docs {
@@ -49,10 +49,6 @@
   font-weight: 600;
   letter-spacing: -0.03em;
   text-wrap: balance;
-}
-.cookbook-catalog-title h1 {
-  padding-inline-start: 0.7rem;
-  border-inline-start: 3px solid var(--cookbook-orange);
 }
 
 .cookbook-intro {
@@ -239,7 +235,7 @@
 .cookbook-adjacent a:hover { background: var(--panel); }
 .cookbook-adjacent span { font-size: 0.8125rem; color: var(--muted); }
 
-.cookbook-catalog { margin-top: clamp(1.4rem, 3vw, 2rem); }
+.cookbook-catalog { margin-top: clamp(1rem, 2.5vw, 1.7rem); }
 .cookbook-catalog > section + section { margin-top: clamp(2rem, 5vw, 3.75rem); }
 .cookbook-catalog h3 { font-size: 1.05rem; font-weight: 570; line-height: 1.4; }
 .cookbook-catalog h3 a { color: var(--ink); text-decoration: none; }
@@ -247,36 +243,43 @@
 
 .cookbook-guides { width: 100%; table-layout: fixed; margin-block: 0.65rem 0; }
 .cookbook-guides :is(th, td) {
-  padding: 0.65rem 0.7rem;
+  padding: 0.9rem 0.45rem;
   vertical-align: middle;
   border-bottom: 1px solid var(--line);
 }
-.cookbook-guides thead { background: var(--panel); }
 .cookbook-guides thead th {
   color: var(--muted);
-  font-size: 0.8125rem;
-  font-weight: 580;
+  font-size: 0.875rem;
+  font-weight: 400;
 }
 .cookbook-guides th:first-child { width: auto; }
-.cookbook-guides thead th:last-child { width: 29%; }
-.cookbook-guides tbody th { font-size: 1rem; font-weight: 510; }
+.cookbook-guides thead th:nth-child(2) { width: 24%; }
+.cookbook-guides thead th:last-child { width: 15%; }
+.cookbook-guides :is(th, td):last-child { text-align: end; }
+.cookbook-guides tbody th { font-size: 1rem; font-weight: 400; }
+.cookbook-guides tbody td { font-size: 0.875rem; color: var(--muted); }
 .cookbook-guides tbody a {
   display: block;
-  padding-block: 0.15rem;
   color: var(--ink);
   text-decoration: none;
 }
 .cookbook-guides tbody :is(tr:hover, tr:focus-within) { background: #f3f6ef; }
 .cookbook-guides tbody a:hover { color: var(--accent); text-decoration: underline; }
 .cookbook-topic {
-  display: inline-block;
-  padding: 0.15rem 0.5rem;
-  background: var(--cookbook-topic);
-  color: var(--accent-hover);
-  border-radius: 0.25rem;
-  font-size: 0.8125rem;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
   line-height: 1.4;
 }
+.cookbook-topic::before {
+  content: "";
+  flex: 0 0 0.34rem;
+  height: 0.34rem;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-0.12rem);
+}
+[data-topic="store-and-company-agent"] .cookbook-topic::before { background: var(--cookbook-orange); }
 .cookbook-group { margin: 1.75rem 0 2.5rem; }
 .cookbook-group h3 { margin: 0 0 0.2rem; }
 .cookbook-content .cookbook-group ul { padding: 0; }
@@ -346,6 +349,7 @@
   .cookbook-group li,
   .cookbook-filter { grid-template-columns: minmax(0, 1fr); }
   .cookbook-filter { row-gap: 0.55rem; }
-  .cookbook-guides thead th:last-child { width: 38%; }
+  .cookbook-guides thead th:nth-child(2) { width: 38%; }
+  .cookbook-guides :is(th, td):last-child { display: none; }
   .cookbook-guides :is(th, td) { padding-inline: 0.5rem; }
 }
