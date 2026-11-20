@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Poppy Personal Agent Protocol demo with Commonplace."><title>Build a Personal Agent</title><link rel="stylesheet" href="/poppy/styles.css"><link rel="stylesheet" href="/poppy/branding.css"><link rel="stylesheet" href="/poppy/cookbooks.css?v=reading-layout"><script type="module" src="/poppy/cookbooks.mjs?v=reading-layout"></script></head><body class="poppy-site cookbook-page"><a class="site-skip" href="#main">Skip to content</a><header class="site-masthead"><div class="site-wrap"><a class="site-brand" href="/poppy/">Personal Agent Protocol</a><nav class="site-navigation" aria-label="Main"><a href="/poppy/agent">Message the agent</a><a href="/poppy/cookbooks/" aria-current="page">Cookbooks</a><a href="/poppy/protocol-trace">Delivery trace</a><a href="/poppy/coverage">Sales coverage</a><a href="/poppy/poppyval">PoppyVal</a><a href="/poppy/sponsors">Sponsors</a></nav><a class="site-docs site-button" href="https://personalagentprotocol.org/docs/introduction">Read the docs</a></div></header><main id="main" tabindex="-1"><div class="cookbook-title cookbook-entry-title"><nav class="cookbook-breadcrumb" aria-label="Breadcrumb"><a href="./">Cookbooks</a><span aria-hidden="true">/</span><span>Agent implementation</span></nav><h1>Build a Personal Agent</h1><p class="cookbook-intro">Ask an agent to move a Friday delivery to Saturday. Follow its first requests to the Demo Store and see how the store distinguishes a signed guest Session from an account grant.</p><p class="cookbook-source"><a href="personal-agent.md">Markdown</a><a href="https://github.com/Rhys-Lindmark/poppy/blob/main/docs/cookbooks/personal-agent.md">View on GitHub</a></p></div><div class="cookbook-layout"><nav class="cookbook-outline" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#what-you-ll-build">What you’ll build</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#1-run-the-request">1. Run the request</a></li><li><a href="#2-inspect-the-signed-guest-request">2. Inspect the signed guest request</a></li><li><a href="#3-replay-the-workflow">3. Replay the workflow</a></li><li><a href="#continue">Continue</a></li></ul></details></nav><article class="cookbook-content"><h2 id="what-you-ll-build">What you’ll build</h2>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Poppy Personal Agent Protocol demo with Commonplace."><title>Build a Personal Agent</title><link rel="stylesheet" href="/poppy/styles.css"><link rel="stylesheet" href="/poppy/branding.css"><link rel="stylesheet" href="/poppy/cookbooks.css?v=recipe-library"><script type="module" src="/poppy/cookbooks.mjs?v=recipe-library"></script></head><body class="poppy-site cookbook-page"><a class="site-skip" href="#main">Skip to content</a><header class="site-masthead"><div class="site-wrap"><a class="site-brand" href="/poppy/">Personal Agent Protocol</a><nav class="site-navigation" aria-label="Main"><a href="/poppy/agent">Message the agent</a><a href="/poppy/cookbooks/" aria-current="page">Cookbooks</a><a href="/poppy/protocol-trace">Delivery trace</a><a href="/poppy/coverage">Sales coverage</a><a href="/poppy/poppyval">PoppyVal</a><a href="/poppy/sponsors">Sponsors</a></nav><a class="site-docs site-button" href="https://personalagentprotocol.org/docs/introduction">Read the docs</a></div></header><main id="main" tabindex="-1"><div class="cookbook-title cookbook-entry-title"><nav class="cookbook-breadcrumb" aria-label="Breadcrumb"><a href="./">Cookbooks</a><span aria-hidden="true">/</span><span>Agent implementation</span></nav><h1>Build a Personal Agent</h1><p class="cookbook-intro">Ask an agent to move a Friday delivery to Saturday. Follow its first requests to the Demo Store and see how the store distinguishes a signed guest Session from an account grant.</p><div class="cookbook-source cookbook-article-tools"><button type="button" data-copy-page hidden>Copy page</button><a href="personal-agent.md">Markdown</a><a href="https://github.com/Rhys-Lindmark/poppy/blob/main/docs/cookbooks/personal-agent.md">View on GitHub</a></div></div><div class="cookbook-layout"><nav class="cookbook-outline" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#what-you-ll-build">What you’ll build</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#1-run-the-request">1. Run the request</a></li><li><a href="#2-inspect-the-signed-guest-request">2. Inspect the signed guest request</a></li><li><a href="#3-replay-the-workflow">3. Replay the workflow</a></li><li><a href="#continue">Continue</a></li></ul></details></nav><article class="cookbook-content"><h2 id="what-you-ll-build">What you’ll build</h2>
 <p>The bundled agent takes a delivery request, discovers the Company’s OpenAPI description, and sends a signed request for delivery options. The store accepts the guest request and asks for sign-in when the agent tries to read the order.</p>
 <blockquote><p>Move my delivery to Saturday.</p></blockquote>
 <h2 id="prerequisites">Prerequisites</h2>
@@ -14,4 +14,48 @@
 <div class="cookbook-code"><div class="cookbook-code-bar"><span>Shell</span><button type="button" data-copy hidden aria-label="Copy Shell">Copy</button></div><pre tabindex="0" aria-label="Shell"><code>node --test --test-name-pattern=&#39;discovery, scoped sign-in&#39; test/sandbox.test.mjs</code></pre></div>
 <p>The test verifies discovery, accepted signed requests, user approval, and a fresh order read showing Saturday. <a href="https://ai.rhyslindmark.com/poppy/protocol-trace#replay">Step through the recorded requests</a>.</p>
 <h2 id="continue">Continue</h2>
-<p><a href="direct-sign-in.html">Sign in to read an order</a> follows the redirect and scope grant that come after the 401.</p></article></div><p class="cookbook-feedback" role="status"></p></main><footer class="site-footer"><div class="site-wrap"><span>Poppy hackathon demo</span><div><a href="https://personalagentprotocol.org/">Official protocol site</a><a href="https://github.com/Rhys-Lindmark/poppy">GitHub</a></div></div></footer></body></html>
+<p><a href="direct-sign-in.html">Sign in to read an order</a> follows the redirect and scope grant that come after the 401.</p><nav class="cookbook-adjacent" aria-label="Browse guides"><a href="store-discovery.html"><span>Next guide</span>Add Poppy discovery to a store</a></nav></article></div><template id="cookbook-markdown"># Build a Personal Agent
+
+Ask an agent to move a Friday delivery to Saturday. Follow its first requests to the Demo Store and see how the store distinguishes a signed guest Session from an account grant.
+
+## What you’ll build
+
+The bundled agent takes a delivery request, discovers the Company’s OpenAPI description, and sends a signed request for delivery options. The store accepts the guest request and asks for sign-in when the agent tries to read the order.
+
+&gt; Move my delivery to Saturday.
+
+## Prerequisites
+
+- The [Poppy source files](https://ai.rhyslindmark.com/poppy/source.tar.gz), Node 22.18 or later, and OpenSSL 3.
+- Run commands from the repository root. The sandbox has a seeded order and needs no API key.
+
+## 1. Run the request
+
+```sh
+npm start -- &quot;Move my delivery to Saturday&quot;
+```
+
+Open the printed localhost URL and select **Start rescheduling**. The sandbox generates its own certificate, so the browser may show a warning for that localhost URL.
+
+The store opens its consent screen. To see the request trace in the browser, grant the demo scopes and continue to review. Stop at the proposal if you only want to inspect the requests.
+
+## 2. Inspect the signed guest request
+
+- **Discovery.** The agent reads `/.well-known/poppy.json`, checks the Company domain and version, and loads its OpenAPI description.
+- **Agent identity.** A root key vouches for a short-lived Session key in `poppy_dlg`. The agent uses that delegated key to sign the `Poppy-Session` header.
+- **Account boundary.** Expand `GET /api/delivery-options` in the trace to see the signing information beside HTTP 200. The next `GET /api/delivery` returns 401 because the order requires an account grant.
+
+Read the Session construction in [agent.mjs](../../src/agent.mjs) and the JWT helper in [protocol.mjs](../../src/protocol.mjs). See [Poppy 1.0, sections 4.1 and 5](https://personalagentprotocol.org/docs/1.0/spec) for the identity and Session rules.
+
+## 3. Replay the workflow
+
+```sh
+node --test --test-name-pattern=&#39;discovery, scoped sign-in&#39; test/sandbox.test.mjs
+```
+
+The test verifies discovery, accepted signed requests, user approval, and a fresh order read showing Saturday. [Step through the recorded requests](https://ai.rhyslindmark.com/poppy/protocol-trace#replay).
+
+## Continue
+
+[Sign in to read an order](direct-sign-in.md) follows the redirect and scope grant that come after the 401.
+</template><p class="cookbook-feedback" role="status"></p></main><footer class="site-footer"><div class="site-wrap"><span>Poppy hackathon demo</span><div><a href="https://personalagentprotocol.org/">Official protocol site</a><a href="https://github.com/Rhys-Lindmark/poppy">GitHub</a></div></div></footer></body></html>

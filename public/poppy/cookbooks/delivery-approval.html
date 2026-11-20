@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Poppy Personal Agent Protocol demo with Commonplace."><title>Approve a delivery change</title><link rel="stylesheet" href="/poppy/styles.css"><link rel="stylesheet" href="/poppy/branding.css"><link rel="stylesheet" href="/poppy/cookbooks.css?v=reading-layout"><script type="module" src="/poppy/cookbooks.mjs?v=reading-layout"></script></head><body class="poppy-site cookbook-page"><a class="site-skip" href="#main">Skip to content</a><header class="site-masthead"><div class="site-wrap"><a class="site-brand" href="/poppy/">Personal Agent Protocol</a><nav class="site-navigation" aria-label="Main"><a href="/poppy/agent">Message the agent</a><a href="/poppy/cookbooks/" aria-current="page">Cookbooks</a><a href="/poppy/protocol-trace">Delivery trace</a><a href="/poppy/coverage">Sales coverage</a><a href="/poppy/poppyval">PoppyVal</a><a href="/poppy/sponsors">Sponsors</a></nav><a class="site-docs site-button" href="https://personalagentprotocol.org/docs/introduction">Read the docs</a></div></header><main id="main" tabindex="-1"><div class="cookbook-title cookbook-entry-title"><nav class="cookbook-breadcrumb" aria-label="Breadcrumb"><a href="./">Cookbooks</a><span aria-hidden="true">/</span><span>Operations 3</span></nav><h1>Approve a delivery change</h1><p class="cookbook-intro">Move a seeded order from Friday to Saturday for USD 0.00. Inspect the Company’s proposal, approve the exact revision, and verify the stored delivery day.</p><p class="cookbook-source"><a href="delivery-approval.md">Markdown</a><a href="https://github.com/Rhys-Lindmark/poppy/blob/main/docs/cookbooks/delivery-approval.md">View on GitHub</a></p></div><div class="cookbook-layout"><nav class="cookbook-outline" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#what-you-ll-build">What you’ll build</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#1-request-saturday">1. Request Saturday</a></li><li><a href="#2-review-and-approve-the-terms">2. Review and approve the terms</a></li><li><a href="#3-replay-the-evidence">3. Replay the evidence</a></li><li><a href="#4-run-the-approval-and-refusal-checks">4. Run the approval and refusal checks</a></li></ul></details></nav><article class="cookbook-content"><h2 id="what-you-ll-build">What you’ll build</h2>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Poppy Personal Agent Protocol demo with Commonplace."><title>Approve a delivery change</title><link rel="stylesheet" href="/poppy/styles.css"><link rel="stylesheet" href="/poppy/branding.css"><link rel="stylesheet" href="/poppy/cookbooks.css?v=recipe-library"><script type="module" src="/poppy/cookbooks.mjs?v=recipe-library"></script></head><body class="poppy-site cookbook-page"><a class="site-skip" href="#main">Skip to content</a><header class="site-masthead"><div class="site-wrap"><a class="site-brand" href="/poppy/">Personal Agent Protocol</a><nav class="site-navigation" aria-label="Main"><a href="/poppy/agent">Message the agent</a><a href="/poppy/cookbooks/" aria-current="page">Cookbooks</a><a href="/poppy/protocol-trace">Delivery trace</a><a href="/poppy/coverage">Sales coverage</a><a href="/poppy/poppyval">PoppyVal</a><a href="/poppy/sponsors">Sponsors</a></nav><a class="site-docs site-button" href="https://personalagentprotocol.org/docs/introduction">Read the docs</a></div></header><main id="main" tabindex="-1"><div class="cookbook-title cookbook-entry-title"><nav class="cookbook-breadcrumb" aria-label="Breadcrumb"><a href="./">Cookbooks</a><span aria-hidden="true">/</span><span>Operations 3</span></nav><h1>Approve a delivery change</h1><p class="cookbook-intro">Move a seeded order from Friday to Saturday for USD 0.00. Inspect the Company’s proposal, approve the exact revision, and verify the stored delivery day.</p><div class="cookbook-source cookbook-article-tools"><button type="button" data-copy-page hidden>Copy page</button><a href="delivery-approval.md">Markdown</a><a href="https://github.com/Rhys-Lindmark/poppy/blob/main/docs/cookbooks/delivery-approval.md">View on GitHub</a></div></div><div class="cookbook-layout"><nav class="cookbook-outline" aria-label="On this page"><details open><summary>On this page</summary><ul><li><a href="#what-you-ll-build">What you’ll build</a></li><li><a href="#prerequisites">Prerequisites</a></li><li><a href="#1-request-saturday">1. Request Saturday</a></li><li><a href="#2-review-and-approve-the-terms">2. Review and approve the terms</a></li><li><a href="#3-replay-the-evidence">3. Replay the evidence</a></li><li><a href="#4-run-the-approval-and-refusal-checks">4. Run the approval and refusal checks</a></li></ul></details></nav><article class="cookbook-content"><h2 id="what-you-ll-build">What you’ll build</h2>
 <p>The User gives the agent read and change access to the Demo Store. The store responds to the first write with an Operations 3 proposal. The Personal Agent presents the terms and waits for the User’s decision.</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <ul><li>The <a href="https://ai.rhyslindmark.com/poppy/source.tar.gz">Poppy source files</a>, Node 22.18 or later, and OpenSSL 3.</li><li>Run from the repository root. Restart the sandbox between manual scenarios to reset the order to Friday.</li></ul>
@@ -17,4 +17,56 @@ Agent → Store    POST /api/delivery       200  User approved the proposed revi
 <p><a href="https://ai.rhyslindmark.com/poppy/protocol-trace#replay">Replay the requests in your browser</a> or read the <a href="https://personalagentprotocol.org/docs/1.0/extensions/operations">Operations 3 extension</a>.</p>
 <h2 id="4-run-the-approval-and-refusal-checks">4. Run the approval and refusal checks</h2>
 <div class="cookbook-code"><div class="cookbook-code-bar"><span>Shell</span><button type="button" data-copy hidden aria-label="Copy Shell">Copy</button></div><pre tabindex="0" aria-label="Shell"><code>node --test test/sandbox.test.mjs</code></pre></div>
-<p>The tests verify Friday before approval, Saturday after approval, and Friday when the User declines.</p></article></div><p class="cookbook-feedback" role="status"></p></main><footer class="site-footer"><div class="site-wrap"><span>Poppy hackathon demo</span><div><a href="https://personalagentprotocol.org/">Official protocol site</a><a href="https://github.com/Rhys-Lindmark/poppy">GitHub</a></div></div></footer></body></html>
+<p>The tests verify Friday before approval, Saturday after approval, and Friday when the User declines.</p><nav class="cookbook-adjacent" aria-label="Browse guides"><a href="direct-sign-in.html"><span>Previous guide</span>Sign in to read an order</a><a href="interoperability.html"><span>Next guide</span>Run a Poppy interoperability check</a></nav></article></div><template id="cookbook-markdown"># Approve a delivery change
+
+Move a seeded order from Friday to Saturday for USD 0.00. Inspect the Company’s proposal, approve the exact revision, and verify the stored delivery day.
+
+## What you’ll build
+
+The User gives the agent read and change access to the Demo Store. The store responds to the first write with an Operations 3 proposal. The Personal Agent presents the terms and waits for the User’s decision.
+
+## Prerequisites
+
+- The [Poppy source files](https://ai.rhyslindmark.com/poppy/source.tar.gz), Node 22.18 or later, and OpenSSL 3.
+- Run from the repository root. Restart the sandbox between manual scenarios to reset the order to Friday.
+
+## 1. Request Saturday
+
+```sh
+npm start -- &quot;Move my delivery to Saturday&quot;
+```
+
+Open the localhost URL, select **Start rescheduling**, and approve both store scopes. In the agent’s trace, expand the first `POST /api/delivery`. It returns HTTP 403 with `approval_required`.
+
+## 2. Review and approve the terms
+
+- **Order.** Check the order shown by the agent.
+- **Delivery.** The proposal changes Friday to Saturday.
+- **Price.** The additional fee is USD 0.00.
+
+Select **Approve change**. The agent repeats the request with `Poppy-Approval` referencing the reviewed operation and revision. The Company returns HTTP 200, and the result says **Saturday**. On a fresh run, choose **Decline** and use **Look up delivery** to confirm **Friday**.
+
+## 3. Replay the evidence
+
+```sh
+node scripts/capture-delivery-trace.mjs
+```
+
+The script runs the workflow in a disposable HTTPS sandbox and exports the request trace. The final write follows the User’s approval.
+
+```text
+Agent → Store    POST /api/delivery       403  approval_required
+User → Agent    POST /agent/approval    303  Approved the reviewed terms
+Agent → Store    POST /api/delivery       200  User approved the proposed revision
+```
+
+[Replay the requests in your browser](https://ai.rhyslindmark.com/poppy/protocol-trace#replay) or read the [Operations 3 extension](https://personalagentprotocol.org/docs/1.0/extensions/operations).
+
+## 4. Run the approval and refusal checks
+
+```sh
+node --test test/sandbox.test.mjs
+```
+
+The tests verify Friday before approval, Saturday after approval, and Friday when the User declines.
+</template><p class="cookbook-feedback" role="status"></p></main><footer class="site-footer"><div class="site-wrap"><span>Poppy hackathon demo</span><div><a href="https://personalagentprotocol.org/">Official protocol site</a><a href="https://github.com/Rhys-Lindmark/poppy">GitHub</a></div></div></footer></body></html>
