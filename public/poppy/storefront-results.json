@@ -296,5 +296,14 @@
       "extensions": [],
       "signIn": "disabled"
     }
-  ]
+  ],
+  "directory": {
+    "source": "https://papchecker.com/sites",
+    "observedOn": "2026-11-20",
+    "publishingDomains": 10814,
+    "platformDomains": {
+      "Wix": 7443,
+      "Shopify": 3271
+    }
+  }
 }

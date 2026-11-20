@@ -89,9 +89,13 @@
       },
       {
         "name": "Poppy Demo Agent",
-        "status": "source_evidence",
-        "evidence": "The project documents 0.4 in deployment and a 1.0 implementation in source. PoppyVal has yet to run the hosted agent.",
-        "source": "https://github.com/adewale/pda"
+        "status": "metadata_pass",
+        "evidence": "Public client metadata and JWKS passed the project’s hosted 1.0 document validator. PoppyVal has yet to run the signed product workflow.",
+        "source": "https://poppydemoagent.dev/validator",
+        "documents": [
+          "https://poppydemoagent.dev/poppy/client.json",
+          "https://poppydemoagent.dev/poppy/jwks.json"
+        ]
       },
       {
         "name": "Hark",
@@ -200,7 +204,14 @@
         ],
         "signedSession": "untested",
         "directSignIn": "unavailable",
-        "operationsApproval": "unavailable"
+        "operationsApproval": "unavailable",
+        "independentValidation": {
+          "tool": "Poppy Demo Agent hosted validator",
+          "version": "1.0",
+          "outcome": "pass",
+          "source": "https://poppydemoagent.dev/validator?url=ai.rhyslindmark.com",
+          "evidence": "The validator accepted Commonplace discovery and reported that the Company has no issuer."
+        }
       }
     ]
   },
@@ -502,6 +513,15 @@
         "extensions": [],
         "signIn": "disabled"
       }
-    ]
+    ],
+    "directory": {
+      "source": "https://papchecker.com/sites",
+      "observedOn": "2026-11-20",
+      "publishingDomains": 10814,
+      "platformDomains": {
+        "Wix": 7443,
+        "Shopify": 3271
+      }
+    }
   }
 }
