@@ -1,0 +1,5 @@
+{
+  "client_id": "https://ai.rhyslindmark.com/poppy/hermes-agent.json",
+  "client_name": "Poppy (Hermes)",
+  "jwks_uri": "https://ai.rhyslindmark.com/poppy/hermes-jwks.json"
+}

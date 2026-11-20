@@ -1,0 +1,41 @@
+/* Hallmark · v2.0.0 · shape: ordered protocol flow · theme: Minimalist · signature: observed request receipt */
+/* Hallmark · critique: distinguish observed Hermes requests from the separate delivery sandbox. */
+.pap-flow {
+  max-width: 56rem;
+  counter-reset: pap-step;
+  list-style: none;
+  padding: 0 0 0 1rem;
+  margin: 2.5rem 0 2rem;
+}
+
+.pap-flow > li {
+  position: relative;
+  counter-increment: pap-step;
+  border-inline-start: 1px solid var(--line);
+  padding: 0 0 2rem 1.8rem;
+  margin: 0;
+}
+
+.pap-flow > li:last-child { padding-bottom: 0; }
+
+.pap-flow > li::before {
+  position: absolute;
+  inset: 0 auto auto 0;
+  transform: translateX(-50%);
+  background: var(--paper);
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  color: var(--accent);
+  content: counter(pap-step);
+  width: 1.8rem;
+  line-height: 1.8rem;
+  text-align: center;
+  font: 500 0.875rem/1.8rem var(--font);
+}
+
+.pap-flow-heading { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 1rem; }
+.pap-flow-heading h2 { font-size: 1.35rem; margin: 0; }
+.pap-flow-heading p { font-size: 0.85rem; color: var(--accent); margin: 0; }
+.pap-flow > li > p { margin: 0.45rem 0; }
+.pap-flow .site-links { margin-top: 0.55rem; font-size: 0.9rem; }
+.pap-flow-receipt { overflow-wrap: anywhere; }

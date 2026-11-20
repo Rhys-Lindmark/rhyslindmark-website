@@ -21,6 +21,16 @@
       "outcome": "pass"
     }
   ],
+  "hermes": {
+    "observed_at": "2026-11-20T22:38:55+00:00",
+    "protocol_version": "1.0",
+    "request": {
+      "method": "GET",
+      "path": "/poppy/api/edition.json",
+      "status": 200
+    },
+    "tool": "prepare_commonplace_edition"
+  },
   "interoperability": {
     "checkedOn": "2026-11-20",
     "clients": [
