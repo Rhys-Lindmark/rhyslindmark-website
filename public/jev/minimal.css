@@ -150,3 +150,17 @@ code, .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 
 .anti-why h4 { color: var(--ink); margin-top: 0; }
 .anti-why ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--steel); display: grid; gap: 6px; }
 .anti-why strong { color: var(--ink); font-weight: 600; }
+/* Router vs. Choice comparison */
+.anti-compare { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--bone); }
+.cmp-summary { margin: 0 0 8px; font-size: 14px; font-weight: 535; }
+.cmp-scroll { overflow-x: auto; }
+.anti-compare .tt td { vertical-align: top; }
+.anti-compare .tt td:first-child { width: 46%; }
+.link-cell { border: 0; padding: 0; background: none; color: var(--ink); text-align: left; font-size: 13px; }
+.link-cell:not(:disabled):hover { color: var(--magenta); }
+.cmp-sub { color: var(--steel); font-size: 12px; }
+.agree-tag { font: 600 11px ui-monospace, Menlo, monospace; padding: 2px 7px; border-radius: 999px; background: var(--bone); color: var(--steel); white-space: nowrap; }
+.agree .agree-tag { background: #ddf6ee; color: #08765a; }
+.disagree .agree-tag { background: #fdecee; color: var(--coral); }
+.anti-compare tr.pending td { color: var(--fog); }
+.anti-compare tr.now td { background: #fafafa; }

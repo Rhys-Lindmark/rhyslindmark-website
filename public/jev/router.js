@@ -160,7 +160,31 @@ function renderAnti(pending) {
     table(['Option', 'Probability', 'Use'], rows),
     h('p', 'note', 'That’s the whole table. There are no inputs to inspect, no rows to edit, and no way to explain why one model won.'));
 }
-const renderAll = () => { renderOutput(); renderTrace(); renderTables(); renderApi(); renderAnti(); };
+// ---- Agree / disagree across every prompt that has been run -----------------
+let runningAll = false;
+function renderCompare() {
+  const rows = PROMPTS.map(prompt => {
+    const data = cache.get(prompt);
+    const go = h('button', 'link-cell', prompt); go.type = 'button'; go.dataset.prompt = prompt; go.disabled = busy; go.addEventListener('click', () => route(prompt));
+    if (!data) return h('tr', 'pending', h('td', null, go), h('td', null, '–'), h('td', null, '–'), h('td', null, h('span', 'agree-tag', 'not run')));
+    const d = decide(judge(data.answers)), c = data.answers.model_choice;
+    const router = MODELS[d.tier], choice = `Claude ${c.choice}`, same = router === choice;
+    return h('tr', (same ? 'agree' : 'disagree') + (current?.prompt === prompt ? ' now' : ''), h('td', null, go),
+      h('td', null, router, h('span', 'cmp-sub', ` · ${LEVELS[d.reasoning].toLowerCase()}`)),
+      h('td', null, choice, h('span', 'cmp-sub', ` ${pct(c.probabilities[c.choice])}`)),
+      h('td', null, h('span', 'agree-tag', same ? 'agree' : 'disagree')));
+  });
+  const run = PROMPTS.filter(p => cache.has(p)), agree = run.filter(p => { const a = cache.get(p).answers; return MODELS[decide(judge(a)).tier] === `Claude ${a.model_choice.choice}`; }).length;
+  const all = h('button', 'text-button', runningAll ? 'Running…' : run.length === PROMPTS.length ? 'All run' : `Run the other ${PROMPTS.length - run.length}`);
+  all.type = 'button'; all.disabled = busy || runningAll || run.length === PROMPTS.length;
+  all.addEventListener('click', async () => { runningAll = true; renderCompare(); for (const p of PROMPTS) if (!cache.has(p) && !(await route(p))) break; runningAll = false; renderCompare(); });
+  $('anti-compare').replaceChildren(
+    h('div', 'section-heading', h('h3', null, 'Router vs. Choice'), all),
+    h('p', 'cmp-summary', run.length ? `They agree on ${agree} of ${run.length} prompts run.` : 'Run prompts to compare the two approaches.'),
+    h('div', 'cmp-scroll', table(['Prompt', 'Router (truth table)', 'Choice (argmax)', ''], rows)),
+    h('p', 'note', 'The Choice can never pick Haiku: it isn’t one of the original options. Each prompt is one Jev call; answers are saved for this visit.'));
+}
+const renderAll = () => { renderOutput(); renderTrace(); renderTables(); renderApi(); renderAnti(); renderCompare(); };
 
 function renderWidget() {
   if (rendered || !window.turnstile || window.jevHuman?.ok()) return;
@@ -177,11 +201,11 @@ window.addEventListener('jev-human-needed', () => { rendered = false; renderWidg
 
 async function route(prompt) {
   prompt = prompt.trim();
-  if (!prompt || busy) return;
+  if (!prompt || busy) return false;
   $('route-prompt').value = prompt;
   for (const c of document.querySelectorAll('[data-prompt]')) c.classList.toggle('active', c.dataset.prompt === prompt);
-  if (cache.has(prompt)) { current = { prompt, data: { ...cache.get(prompt), cached: true } }; renderAll(); return; }
-  if (!human()) { showError('Complete the human check above first.'); renderWidget(); return; }
+  if (cache.has(prompt)) { current = { prompt, data: { ...cache.get(prompt), cached: true } }; renderAll(); return true; }
+  if (!human()) { showError('Complete the human check above first.'); renderWidget(); return false; }
   setBusy(true); showError('');
   $('route-output').replaceChildren(h('p', 'route-empty', `Asking Jev about “${prompt}”…`));
   renderAnti(true);
@@ -192,12 +216,14 @@ async function route(prompt) {
     if (!response.ok) { if (data.needs_human) window.jevHuman.clear(); throw new Error(data.error || 'Routing failed. Please try again.'); }
     cache.set(prompt, data); current = { prompt, data }; renderAll();
     $('route-human-check').hidden = window.jevHuman.ok();
+    return true;
   } catch (error) {
-    renderOutput(); renderAnti(); showError(error.name === 'TimeoutError' ? 'The request timed out. Please try again.' : error.message);
+    renderOutput(); renderAnti(); renderCompare(); showError(error.name === 'TimeoutError' ? 'The request timed out. Please try again.' : error.message);
   } finally {
-    setBusy(false); token = '';
+    setBusy(false); token = ''; renderCompare();
     if (widgetId !== undefined && !window.jevHuman.ok()) window.turnstile.reset(widgetId);
   }
+  return false;
 }
 
 // The same prompts appear in both cards; either set runs the one shared call.
