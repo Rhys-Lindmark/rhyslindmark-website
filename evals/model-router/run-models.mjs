@@ -10,27 +10,38 @@
 // been spent per arm) fits what is left. Results are appended to
 // results/raw.jsonl as they arrive, so a run can be stopped and resumed.
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
-import { TASKS, RESULTS } from './eval-set.mjs';
+import { TASKS, RESULTS, EVAL_SET } from './eval-set.mjs';
 import { grade } from './graders.mjs';
 
 export const BUDGET_USD = Number(process.env.EVAL_BUDGET_USD || 25);
 export const MAX_REPS = Number(process.env.EVAL_MAX_REPS || 3);
 // The router's tiers keep their names (its truth table says haiku..fable);
 // each is played by an open model, cheapest to strongest.
-export const MODELS = {
-  haiku: 'z-ai/glm-5.3-flash',
-  sonnet: 'deepseek/deepseek-v4.1-flash-1017',
-  opus: 'z-ai/glm-5.3',
-  fable: 'deepseek/deepseek-v4-pro-0813'
+// v1 used a mixed ladder; v1 showed family quirks (GLM is weak at letter-level
+// work) swamping tier differences, so v2 uses one family: Qwen.
+const LADDERS = {
+  v1: {
+    models: { haiku: 'z-ai/glm-5.3-flash', sonnet: 'deepseek/deepseek-v4.1-flash-1017', opus: 'z-ai/glm-5.3', fable: 'deepseek/deepseek-v4-pro-0813' },
+    names: { haiku: 'GLM 5.3 Flash', sonnet: 'DeepSeek V4.1 Flash', opus: 'GLM 5.3', fable: 'DeepSeek V4 Pro' }
+  },
+  v2: {
+    models: { haiku: 'qwen/qwen3.7-flash', sonnet: 'qwen/qwen3.7-plus', opus: 'qwen/qwen3.7-max', fable: 'qwen/qwen3.8-max-prime' },
+    names: { haiku: 'Qwen 3.7 Flash', sonnet: 'Qwen 3.7 Plus', opus: 'Qwen 3.7 Max', fable: 'Qwen 3.8 Max Prime' }
+  }
 };
-export const MODEL_NAMES = { haiku: 'GLM 5.3 Flash', sonnet: 'DeepSeek V4.1 Flash', opus: 'GLM 5.3', fable: 'DeepSeek V4 Pro' };
+export const MODELS = LADDERS[EVAL_SET].models;
+export const MODEL_NAMES = LADDERS[EVAL_SET].names;
 // $ per million tokens from OpenRouter's model list (2026-11-21); used only if a
 // response doesn't report its own cost.
 export const PRICES = {
   'z-ai/glm-5.3-flash': { in: 0.04, out: 0.078 },
   'deepseek/deepseek-v4.1-flash-1017': { in: 0.15, out: 0.60 },
   'z-ai/glm-5.3': { in: 0.07, out: 1.40 },
-  'deepseek/deepseek-v4-pro-0813': { in: 1.32, out: 3.96 }
+  'deepseek/deepseek-v4-pro-0813': { in: 1.32, out: 3.96 },
+  'qwen/qwen3.7-flash': { in: 0.03, out: 0.13 },
+  'qwen/qwen3.7-plus': { in: 0.32, out: 1.28 },
+  'qwen/qwen3.7-max': { in: 1.475, out: 4.425 },
+  'qwen/qwen3.8-max-prime': { in: 4, out: 12 }
 };
 export const EFFORTS = ['low', 'high'];
 export const ARMS = Object.keys(MODELS).flatMap(m => EFFORTS.map(e => `${m}:${e}`));
@@ -126,9 +137,11 @@ async function main() {
   }
   if (cmd !== 'run') throw new Error(`unknown command ${cmd}`);
   if (!process.env.OPENROUTER_KEY_JEV_EVAL) { console.error('OPENROUTER_KEY_JEV_EVAL is not set (use bws run, or .env). See README.'); process.exit(1); }
-  if (!readRaw().length) await runJobs(todo(0, PROBE_TASKS), 'probe');
-  // Every remaining (task, arm, repeat), first repeats first, as one stream.
-  await runJobs(Array.from({ length: MAX_REPS }, (_, rep) => todo(rep)).flat(), `rounds 1-${MAX_REPS}`);
+  // Every remaining (task, arm, repeat) as one stream: the probe tasks first, so
+  // real per-arm costs are known early for the budget check, then everything
+  // else, first repeats first. Nothing waits for a slow request to finish.
+  const probeFirst = jobs => [...jobs.filter(j => PROBE_TASKS.includes(j.task.id)), ...jobs.filter(j => !PROBE_TASKS.includes(j.task.id))];
+  await runJobs(Array.from({ length: MAX_REPS }, (_, rep) => probeFirst(todo(rep))).flat(), `rounds 1-${MAX_REPS}`);
   console.log(`done. Spent $${spent().toFixed(3)} of $${BUDGET_USD}.`);
 }
 

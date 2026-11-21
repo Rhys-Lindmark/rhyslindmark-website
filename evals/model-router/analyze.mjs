@@ -126,6 +126,35 @@ const summary = {
 writeFileSync(SUMMARY, JSON.stringify(summary, null, 2));
 copyFileSync(SUMMARY, PAGE_COPY);
 
+// ---- replay: every run, so the page can play the eval back prompt by prompt ----
+// For each task: the prompt, what Jev judged, and every recorded run on every
+// arm (pass, cost, a short excerpt of the answer). Policies list which arm each
+// router picked per task, so the page can replay any of them.
+const REPLAY = new URL(EVAL_SET === 'v2' ? '../../public/jev/eval-replay-v2.json' : '../../public/jev/eval-replay.json', import.meta.url);
+const { finalAnswer } = await import('./graders.mjs');
+const runsBy = {};
+for (const r of raw) (runsBy[`${r.task}|${r.arm}`] ||= []).push(r);
+const excerpt = (t, text = '') => {
+  if (t.grader.type === 'answer') return finalAnswer(text) ?? '(no ANSWER line)';
+  if (t.grader.type === 'python') return /```/.test(text) ? '(Python code)' : '(no code block)';
+  return text.trim().replace(/\s+/g, ' ').slice(0, 110) || '(empty)';
+};
+const replayPolicies = policies.filter(p => ['router', 'choice', 'router-v2', 'router-v3'].includes(p.kind) || (p.kind === 'learned' && p.lambda === 8));
+const replay = {
+  generated: summary.generated, arm_names: summary.arm_names, tiers: summary.tiers,
+  policies: replayPolicies.map(p => ({ name: p.name, kind: p.kind, arms: p.arms })),
+  tasks: tasks.map(t => {
+    const a = jev[t.id].answers, j = judge(a);
+    return {
+      id: t.id, category: t.category, bucket: t.bucket ?? null, prompt: t.prompt,
+      answer: t.grader.answer ?? null,
+      jev: { depth: j.depth, expertise: j.expertise, high_stakes: j.high_stakes, large_output: j.large_output, nuanced_writing: j.nuanced_writing, choice: a.model_choice.choice },
+      runs: Object.fromEntries(ARMS.map(arm => [arm, (runsBy[`${t.id}|${arm}`] || []).sort((x, y) => x.rep - y.rep).map(r => [r.pass ? 1 : 0, +r.cost_usd.toFixed(6), excerpt(t, r.text)])]))
+    };
+  })
+};
+writeFileSync(REPLAY, JSON.stringify(replay));
+
 const fmt = p => `${(p.pass * 100).toFixed(1).padStart(5)}%  $${p.cost.toFixed(2).padStart(7)}/1k${p.random_p95 != null ? `  random p95 ${(p.random_p95 * 100).toFixed(1)}% ${p.beats_random ? 'BEATS' : 'does not beat'}` : ''}`;
 console.log(`${tasks.length} tasks, ${reps} repeat(s) each, spent $${summary.spent_usd.toFixed(2)} of $${BUDGET_USD}\n`);
 for (const p of policies.filter(p => p.kind !== 'learned' && p.kind !== 'router-variant')) console.log(`${p.name.padEnd(34)} ${fmt(p)}`);
