@@ -1,0 +1,52 @@
+/* Question Linter. Built on minimal.css tokens. */
+.lint-lede { max-width: 68ch; font-size: 17px; line-height: 1.5; margin: 0 0 24px; }
+.lint-types { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+#lint-instructions { font-family: var(--jev-font-mono); font-size: 14px; }
+#lint-criteria { font-family: var(--jev-font-mono); font-size: 13px; }
+#route-human-check { margin-top: 12px; }
+.lint-result { margin-top: 20px; border-top: var(--jev-rule); padding-top: 16px; }
+.lint-verdict { font-size: 18px; font-weight: 535; margin: 0 0 12px; }
+.lint-verdict.good { color: var(--jev-ink); }
+.lint-verdict.warn { color: var(--jev-alert); }
+.lint-rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.lint-row { border: 1px solid var(--bone); padding: 12px; background: #fff; }
+.lint-row.is-flag { border-color: var(--jev-alert); }
+.lint-row-head { display: flex; align-items: baseline; gap: 8px; font-size: 14px; }
+.lint-name { font-weight: 535; }
+.lint-p { font-family: var(--jev-font-mono); font-size: 13px; }
+.lint-tag { margin-left: auto; font: 500 11px/1 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--steel); }
+.is-flag .lint-tag { color: var(--jev-alert); }
+.lint-bar { height: 6px; background: var(--jev-mist); margin: 8px 0; }
+.lint-fill { height: 100%; background: var(--fog); }
+.is-flag .lint-fill { background: var(--jev-alert); }
+.is-unsure .lint-fill { background: var(--steel); }
+.lint-ask { margin: 0; font-size: 13px; color: var(--steel); }
+.is-flag .lint-ask { color: var(--ink); }
+.lint-code h4 { margin-top: 16px; }
+.lint-code ul { margin: 0; padding-left: 18px; font-size: 14px; }
+.lint-gallery { margin: 40px 0 24px; }
+#gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; margin-top: 16px; }
+.lint-card { border: var(--jev-rule); background: var(--jev-paper); padding: 18px; box-shadow: var(--jev-shadow-window); min-width: 0; }
+.lint-card-title { font-size: 16px; color: var(--ink); margin: 0; }
+.lint-lesson { font-size: 14px; color: var(--steel); margin: 6px 0 12px; }
+.lint-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.lint-step { border-left: 3px solid var(--bone); padding: 4px 0 4px 10px; }
+.lint-step.is-bad { border-left-color: var(--jev-alert); }
+.lint-step.is-good { border-left-color: var(--jev-ink); }
+.lint-step-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.lint-step-head .chip { margin: 0; padding: 3px 9px; font-size: 12px; }
+.lint-step-label { font: 500 12px/1.2 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .03em; }
+.is-bad .lint-step-label { color: var(--jev-alert); }
+.lint-q { display: block; margin: 6px 0; }
+.lint-q code { font-size: 13px; word-break: break-word; }
+.lint-qmeta { display: block; font-size: 12px; color: var(--steel); margin-top: 2px; }
+.lint-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+.lint-pill { font: 400 11px/1 var(--jev-font-mono); padding: 4px 6px; border: 1px solid var(--bone); color: var(--steel); background: #fff; }
+.lint-pill.is-flag { border-color: var(--jev-alert); color: var(--jev-alert); }
+.lint-pill.is-unsure { color: var(--ink); }
+.lint-step-code { font-size: 12px; color: var(--jev-alert); margin: 6px 0 0; }
+.lint-then { margin-top: 12px; }
+.lint-then-label { font: 500 11px/1 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--steel); }
+.lint-then pre { margin: 6px 0 0; padding: 10px 12px; background: var(--jev-mist); overflow-x: auto; font-size: 12px; line-height: 1.5; }
+.lint-checks ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 15px; max-width: 70ch; }
+@media (max-width: 520px) { #gallery { grid-template-columns: 1fr; } .lint-lede { font-size: 16px; } }

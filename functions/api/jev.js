@@ -1,6 +1,7 @@
 import { MODEL, reserve, clientIdentity, issueHumanCookie, humanCookieExpiry } from '../_lib/jev-access.js';
 import { loadKey } from '../_lib/jev-key.js';
 import { databaseFor } from '../_lib/jev-database.js';
+import { lintQuestions, lintInput, lintAnswers } from '../_lib/jev-lint.js';
 const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
 const labels = ['supported', 'contradicted', 'insufficient'];
 const THROWS = ['rock', 'paper', 'scissors'];
@@ -145,8 +146,11 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     if (!/^application\/json(?:;|$)/i.test(request.headers.get('Content-Type') || '') || request.headers.has('Content-Encoding')) return json({ error: 'Send uncompressed JSON.' }, 415);
     let body;
     try { body = await readJSON(request); } catch (error) { return json({ error: error instanceof RangeError ? 'Input is too large.' : 'Invalid JSON.' }, error instanceof RangeError ? 413 : 400); }
-    const rps = body?.demo === 'rps', route = body?.demo === 'route';
-    if (route) {
+    const rps = body?.demo === 'rps', route = body?.demo === 'route', lint = body?.demo === 'lint';
+    const lintQuestion = lint ? lintInput(body.question) : null;
+    if (lint) {
+      if (!lintQuestion) return json({ error: 'Send a Jev question: a type (noul, choice or score), instructions up to 1,000 characters, and up to 16 options.' }, 400);
+    } else if (route) {
       if (typeof body.prompt !== 'string' || !body.prompt.trim() || body.prompt.length > MAX_PROMPT) return json({ error: `Add a prompt (up to ${MAX_PROMPT.toLocaleString('en-US')} characters).` }, 400);
     } else if (rps) {
       if (!Array.isArray(body.history) || body.history.length > MAX_ROUNDS || !body.history.every(validRound)) return json({ error: `Send up to ${MAX_ROUNDS} previous rounds.` }, 400);
@@ -186,7 +190,7 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     const out = (b, status = 200) => json(status === 200 ? { ...b, human_until: humanUntil } : b, status, setCookie ? { 'Set-Cookie': setCookie.header } : {});
     const started = Date.now();
     try {
-      const upstream = route ? { model: MODEL, state: { prompt: body.prompt.trim() }, questions: { ...routerQuestions(), ...routerV2Questions(), ...antiQuestions() } } : rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
+      const upstream = lint ? { model: MODEL, state: { question: lintQuestion }, questions: lintQuestions() } : route ? { model: MODEL, state: { prompt: body.prompt.trim() }, questions: { ...routerQuestions(), ...routerV2Questions(), ...antiQuestions() } } : rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
       const response = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(upstream), signal: AbortSignal.timeout(25000), redirect: 'manual' });
       if (!response.ok) {
         const messages = { 401: 'Claim Check is temporarily unavailable.', 402: 'Claim Check is paused: its usage allowance has been reached.', 403: 'Claim Check is temporarily unavailable.', 429: 'Jev is busy. Wait a moment and try again.' };
@@ -194,6 +198,12 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
         return out({ error: messages[response.status] || 'TypeSafe could not complete this check. Please try again.' }, response.status === 429 ? 429 : 502);
       }
       const data = await readJSON(response);
+      if (lint) {
+        const judgments = lintAnswers(data?.answers);
+        if (!judgments) return out({ error: 'Jev returned an unexpected response. Please try again.' }, 502);
+        const model = typeof data.model === 'string' ? data.model : MODEL;
+        return out({ model, judgments, elapsed_ms: Date.now() - started, request: upstream });
+      }
       if (route) {
         const answers = routerAnswers(data?.answers);
         if (!answers) return out({ error: 'Jev returned an unexpected response. Please try again.' }, 502);

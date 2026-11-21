@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Paste a Jev question and Jev reviews it: is it a decision, two questions in one, dependent on hidden rules, or arithmetic? With before-and-after examples and the code that replaces each bad question."><title>Question Linter</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/lint/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/lint/lint.css?v=lint-1"><meta name="robots" content="noindex"></head>
+<body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>Question Linter</h1></header>
+<main>
+<p class="lint-lede">Most “Jev got it wrong” reports are really a question that a smart person couldn’t answer at a glance either. Paste a Jev question and Jev reviews its wording with four judgments; code adds the checks code can do.</p>
+
+<section class="demo" id="editor" aria-labelledby="editor-title">
+<div class="demo-heading"><h2 id="editor-title">Your question</h2><p>Code checks run as you type. <strong>Ask Jev</strong> sends one live call (four Nouls about your question, about $0.00002).</p></div>
+<form id="lint-form">
+<div class="lint-types" role="radiogroup" aria-label="Question type">
+<button type="button" class="chip active" data-type="noul" role="radio" aria-checked="true">Noul (yes/no)</button>
+<button type="button" class="chip" data-type="choice" role="radio" aria-checked="false">Choice (pick one)</button>
+<button type="button" class="chip" data-type="score" role="radio" aria-checked="false">Score (a level)</button>
+</div>
+<label for="lint-instructions"><span>Instructions: what you’d ask a person looking at the input</span><span id="lint-count">0 / 1000</span></label>
+<textarea id="lint-instructions" maxlength="1000" rows="3" placeholder="Should `ticket` be escalated?"></textarea>
+<label for="lint-criteria"><span id="lint-criteria-label">Criteria (optional): one per line, <code>true: …</code> and <code>false: …</code></span></label>
+<textarea id="lint-criteria" rows="3" placeholder="true: Records are missing because of something our product did.&#10;false: A forgotten password, or a project the customer deleted."></textarea>
+<div class="actions"><button class="run" id="lint-run" type="submit">Ask Jev</button><span class="note" id="lint-source"></span></div>
+<div id="route-human-check"></div><p id="route-error" class="error" role="alert" hidden></p>
+</form>
+<div id="lint-result" class="lint-result" aria-live="polite"></div>
+</section>
+
+<section class="lint-gallery" aria-labelledby="gallery-title">
+<div class="section-heading"><h3 id="gallery-title">Before and after</h3><span class="status">Recorded Jev answers · jev-1.14.0</span></div>
+<p class="note">Real first drafts, most from GitHub issues, Hacker News threads and my own code. Each row is Jev’s recorded review; flagged at 0.7. <strong>Open</strong> loads it into the editor.</p>
+<div id="gallery"></div>
+</section>
+
+<section class="demo lint-checks" aria-labelledby="checks-title">
+<div class="demo-heading"><h2 id="checks-title">The five checks, before you send a question</h2></div>
+<ol>
+<li><strong>The human test.</strong> Could a smart person, shown only this input, answer at a glance?</li>
+<li><strong>Judgment, not decision.</strong> “Is production down?”, not “Should we escalate?”</li>
+<li><strong>Beware the “or”.</strong> “Rude or drunk?” is two Nouls. Combine them in code.</li>
+<li><strong>Ask about nothing.</strong> A Choice always picks. Pair it with a Noul: “does anything fit?”</li>
+<li><strong>Math goes in code.</strong> Read the number or date; compare it in code. Jev isn’t a calculator.</li>
+</ol>
+<p class="note">From the talk <a href="/jev/talks/question-is-the-program/">The Question Is the Program</a> and the guide <a href="/jev/docs/takehome/teachbacks/b1-how-to-ask-jev.md">How to Ask Jev</a>. Run it on a file: <code>node lint.mjs questions.json</code> in <a href="/jev/docs/takehome/demos/a1-wrong-question/">demos/a1-wrong-question</a>.</p>
+</section>
+</main><footer><a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div>
+<script type="module" src="/jev/human.js?v=router-13"></script><script type="module" src="/jev/lint/lint.js?v=lint-1"></script></body></html>
