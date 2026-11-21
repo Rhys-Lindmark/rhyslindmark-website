@@ -107,7 +107,7 @@ const counts = diagnosis.reduce((m, d) => (m[d.verdict] = (m[d.verdict] || 0) + 
 const byCategory = Object.fromEntries(cats.map(c => [c, Object.fromEntries(ARMS.map(a => [a, mean(tasks.filter(t => t.category === c).map(t => S(t, a)))]))]));
 
 const summary = {
-  generated: new Date().toISOString(), tasks: tasks.length, reps, arms: ARMS,
+  generated: new Date().toISOString(), partial: process.argv.includes('--partial'), tasks: tasks.length, reps, arms: ARMS,
   tiers: Object.fromEntries(Object.entries(MODELS).map(([t, id]) => [t, { id, name: MODEL_NAMES[t] }])), arm_names: Object.fromEntries(ARMS.map(a => [a, armName(a)])),
   spent_usd: raw.reduce((s, r) => s + r.cost_usd, 0), budget_usd: BUDGET_USD,
   jev_model: Object.values(jev)[0]?.model ?? null,

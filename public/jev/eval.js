@@ -99,7 +99,8 @@ function render(data) {
 
   $('eval-body').replaceChildren(...[
     h('div', 'demo-heading', h('h2', null, 'Eval: does the router pay off?')),
-    h('p', 'eval-meta', `${data.tasks} prompts with code-checked answers · ${data.reps} run${data.reps === 1 ? '' : 's'} of each on ${data.arms.length} model/effort combinations · ${usd(data.spent_usd)} spent · Jev ${data.jev_model ?? ''}`),
+    data.partial ? h('p', 'eval-partial', `Results so far: more runs of each prompt are in progress. Updated ${new Date(data.generated).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}.`) : null,
+    h('p', 'eval-meta', `${data.tasks} prompts with code-checked answers · ${data.reps} run${data.reps === 1 ? '' : 's'} of each on ${data.arms.length} model/effort combinations · ${usd(data.spent_usd)} spent · ${data.jev_model ?? ''}`),
     data.tiers ? h('p', 'eval-tiers', 'To keep costs low, open models played the router’s four tiers: ', ...Object.entries(data.tiers).flatMap(([t, m], i, all) => [h('strong', null, `${t[0].toUpperCase()}${t.slice(1)}`), ` → ${m.name}${i < all.length - 1 ? ', ' : '.'}`]), ' Same truth table, same Jev answers; only the models behind each tier differ.') : null,
     legend(), box,
     h('p', 'note', 'Each point routes all prompts one way. Up and to the left is better. The oracle knows every result in advance, so nothing can beat it. "vs. random routing" deals the same mix of models to prompts at random 10,000 times; a policy beats it if it scores above the 95th percentile. The learned router is fit on Jev’s five judgments with one category held out at a time.'),

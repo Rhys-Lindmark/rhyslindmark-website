@@ -190,3 +190,4 @@ code, .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 
 .eval-misses ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
 .eval-tiers { margin: -4px 0 14px; font-size: 13px; color: var(--steel); }
 .eval-tiers strong { color: var(--ink); font-weight: 600; }
+.eval-partial { display: inline-block; margin: -8px 0 12px; padding: 4px 10px; border-radius: 999px; background: #fff1d6; color: #8a5300; font-size: 12px; font-weight: 535; }
