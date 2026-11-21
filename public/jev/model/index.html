@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="What a data maximalist would add to an open-source Jev: crowd vote distributions as calibrated targets, tested by fine-tuning Kev-4B on Modal and scoring it against hosted Jev."><title>Jev: Model</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/model/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/model/model.css?v=model-4"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="What a data maximalist would add to an open-source Jev: crowd vote distributions as calibrated targets, tested by fine-tuning Kev-4B on Modal and scoring it against hosted Jev."><title>Jev: Model</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/model/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/model/model.css?v=model-5"></head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>Model</h1></header>
 <main>
 
@@ -80,6 +80,17 @@
 
 <section class="demo" id="results" aria-labelledby="results-title">
 <div class="demo-heading"><h2 id="results-title">4. Results</h2></div>
+<div class="figure">
+<h3 class="figure-title">How each model scores, eval by eval</h3>
+<p class="figure-sub">Higher is better everywhere. Bars start at zero, so a one-point gain is a sliver; the number on the right is exact. Hover a bar for its change from the released model. Jev wasn't run on transfer-v4.</p>
+<div id="eval-chart"></div>
+</div>
+<div class="figure">
+<h3 class="figure-title">Training loss, step by step</h3>
+<p class="figure-sub">Mean training loss over each block of 10 optimizer steps (80 records: crowd records mixed with replayed Kev records). All three arms see the same records in the same order, which is why their wiggles line up. Most of the drop comes in the first 50 steps; after that the curves are nearly flat. Levels aren't comparable across arms: a vote-share target can't be fit below the spread of the votes, while a majority label can be fit to zero.</p>
+<div id="loss-chart"></div>
+<p class="caption">Falling loss shows each arm fitting its training targets. It doesn't show whether the evals improved along the way: only the final step-400 checkpoint was scored.</p>
+</div>
 <div class="prose">
 <p><strong>Does it generalize?</strong> On breadth-v1 (14 held-out datasets, 3,075 questions), with the change from the released model and its 95% interval in brackets:</p>
 </div>
@@ -185,4 +196,4 @@
 </section>
 
 </main>
-<footer><a href="/jev">Jev demos</a> · <a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div></body></html>
+<footer><a href="/jev">Jev demos</a> · <a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div><script src="/jev/model/charts.js?v=charts-1" defer></script></body></html>

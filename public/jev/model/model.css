@@ -45,3 +45,33 @@ table.data td small { font-size: 11px; font-weight: 400; color: var(--steel); ma
 .legend i { display: inline-block; width: 9px; height: 9px; margin-right: 4px; vertical-align: 0; }
 .toc { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; margin: 14px 0 0; }
 @media (max-width: 480px) { .lede { font-size: 17px; } .bar { grid-template-columns: 96px minmax(0, 1fr) 46px; } }
+/* charts (charts.js) */
+.m-jev { --c: var(--jev-ink); } .m-parent { --c: var(--jev-fog); } .m-hard { --c: #2a78d6; } .m-soft { --c: #eb6834; } .m-synth { --c: #1baf7a; }
+.figure { margin: 12px 0 20px; }
+.figure-title { font: 500 var(--jev-text-h3)/1.1 var(--jev-font-display); margin: 0 0 4px; }
+.figure-sub { font-size: 13px; color: var(--steel); margin: 0 0 10px; max-width: 80ch; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 12px; color: var(--steel); margin: 0 0 10px; }
+.sw { display: inline-block; width: 10px; height: 10px; background: var(--c); margin-right: 6px; vertical-align: -1px; }
+.viz-panels { display: grid; gap: 12px; }
+@media (min-width: 620px) { .viz-panels { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 960px) { .viz-panels { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.viz-panel { border: 1px solid var(--jev-silver); padding: 12px 12px 8px; }
+.viz-panel-title { font-size: 14px; font-weight: 500; }
+.viz-panel-sub { font: 500 10px/1.3 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .02em; color: var(--steel); margin: 2px 0 10px; }
+.viz-row { display: grid; grid-template-columns: 92px minmax(0, 1fr) 36px; gap: 8px; align-items: center; height: 22px; font-size: 12px; outline-offset: 1px; }
+.viz-row:hover .viz-bar, .viz-row:focus .viz-bar { filter: brightness(.9); }
+.viz-name { color: var(--jev-graphite); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.viz-track { position: relative; height: 14px; border-left: 1px solid var(--jev-ink); }
+.viz-bar { display: block; height: 100%; background: var(--c); }
+.viz-na { font-size: 11px; color: var(--jev-fog); padding-left: 6px; line-height: 14px; }
+.viz-val { text-align: right; font: 500 11px/1 var(--jev-font-mono); color: var(--jev-ink); font-variant-numeric: tabular-nums; }
+#loss-chart svg { width: 100%; height: auto; display: block; max-width: 760px; }
+.viz-grid { stroke: var(--jev-silver); stroke-width: 1; }
+.viz-axis { stroke: var(--jev-ink); stroke-width: 1; }
+.viz-tick { font: 500 11px var(--jev-font-mono); fill: var(--steel); }
+.viz-line { fill: none; stroke: var(--c); stroke-width: 2; stroke-linejoin: round; }
+.viz-endlabel { font: 500 12px var(--jev-font-body); fill: var(--jev-ink); }
+.viz-cross { stroke: var(--jev-ink); stroke-width: 1; stroke-dasharray: 2 3; }
+.viz-dot { fill: var(--c); stroke: var(--jev-paper); stroke-width: 2; }
+.viz-tip { position: fixed; z-index: 10; display: none; pointer-events: none; background: var(--jev-paper); border: 1px solid var(--jev-ink); box-shadow: var(--jev-shadow-window); padding: 6px 8px; font-size: 12px; line-height: 1.4; max-width: 260px; }
+.viz-tip .sw { width: 8px; height: 8px; }
