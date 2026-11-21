@@ -36,17 +36,20 @@ const score = pick => {
 const mean = xs => xs.reduce((s, x) => s + x, 0) / xs.length;
 const tierOfArm = a => a.split(':')[0];
 const effortFor = level => level >= 2 ? 'high' : 'low'; // Off/Low -> low effort, Medium/High -> high
+// A tier this eval doesn't have (Eval 2 has no Fable) falls back to the top tier it does have.
+const TOP = Object.keys(MODELS).at(-1);
+const tierOK = t => MODELS[t] ? t : TOP;
 
 const policies = [];
 const add = (name, kind, pick, extra = {}) => { const s = score(pick); policies.push({ name, kind, ...s, ...extra }); return s; };
 
 const armName = a => { const [t, e] = a.split(':'); return `${MODEL_NAMES[t]} · ${e}`; };
 for (const a of ARMS) add(`Always ${armName(a)}`, 'fixed', () => a);
-const shipped = add('Router (shipped table)', 'router', t => { const d = decide(judge(jev[t.id].answers)); return `${d.tier}:${effortFor(d.reasoning)}`; });
+const shipped = add('Router (shipped table)', 'router', t => { const d = decide(judge(jev[t.id].answers)); return `${tierOK(d.tier)}:${effortFor(d.reasoning)}`; });
 for (const yes of [0.5, 0.6, 0.8, 0.9]) for (const unsure of [true, false]) {
-  add(`Router · yes ≥ ${yes}, unsure = ${unsure ? 'yes' : 'no'}`, 'router-variant', t => { const d = decide(judge(jev[t.id].answers, { yes, no: 1 - yes, unsureCountsAs: unsure })); return `${d.tier}:${effortFor(d.reasoning)}`; });
+  add(`Router · yes ≥ ${yes}, unsure = ${unsure ? 'yes' : 'no'}`, 'router-variant', t => { const d = decide(judge(jev[t.id].answers, { yes, no: 1 - yes, unsureCountsAs: unsure })); return `${tierOK(d.tier)}:${effortFor(d.reasoning)}`; });
 }
-for (const e of EFFORTS) add(`Choice (argmax) · ${e} effort`, 'choice', t => `${jev[t.id].answers.model_choice.choice.toLowerCase()}:${e}`);
+for (const e of EFFORTS) add(`Choice (argmax) · ${e} effort`, 'choice', t => `${tierOK(jev[t.id].answers.model_choice.choice.toLowerCase())}:${e}`);
 
 // ---- Eval 2: Router v2 (new judgments + table) and Router v3 (Jev + learned odds) ----
 let v3info = null;

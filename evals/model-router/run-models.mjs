@@ -25,8 +25,10 @@ const LADDERS = {
     names: { haiku: 'GLM 5.3 Flash', sonnet: 'DeepSeek V4.1 Flash', opus: 'GLM 5.3', fable: 'DeepSeek V4 Pro' }
   },
   v2: {
-    models: { haiku: 'qwen/qwen3.7-flash', sonnet: 'qwen/qwen3.7-plus', opus: 'qwen/qwen3.7-max', fable: 'qwen/qwen3.8-max-prime' },
-    names: { haiku: 'Qwen 3.7 Flash', sonnet: 'Qwen 3.7 Plus', opus: 'Qwen 3.7 Max', fable: 'Qwen 3.8 Max Prime' }
+    // No Fable tier: these prompts never needed one, and Qwen 3.8 Max Prime was most
+    // of the cost. The router's Fable picks map to the top tier here (Qwen 3.7 Max).
+    models: { haiku: 'qwen/qwen3.7-flash', sonnet: 'qwen/qwen3.7-plus', opus: 'qwen/qwen3.7-max' },
+    names: { haiku: 'Qwen 3.7 Flash', sonnet: 'Qwen 3.7 Plus', opus: 'Qwen 3.7 Max' }
   }
 };
 export const MODELS = LADDERS[EVAL_SET].models;
