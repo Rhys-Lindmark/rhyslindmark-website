@@ -13,10 +13,15 @@ every model on every task, plot cost against success) and Baseten's router post
 
 ## Run
 
-Create `evals/model-router/.env` (gitignored):
+Anthropic credentials, easiest first (the script uses `new Anthropic()`, which finds any of these):
+
+1. Browser login, no key to store: `brew install anthropics/tap/ant`, then `ant auth login`, then check with `ant auth status`.
+2. An API key, if your org allows them: `ANTHROPIC_API_KEY=...` in `.env`.
+3. Workload Identity Federation: for CI or servers, not needed on a laptop.
+
+Then create `evals/model-router/.env` (gitignored) with the Jev key:
 
 ```
-ANTHROPIC_API_KEY=...
 TYPESAFE_API_KEY=...
 ```
 
