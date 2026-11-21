@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Trust Meter: Is Jev Calibrated on Your Data? · Jev</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="/jev/minimal.css?v=jev-1">
+<style>
+.talk{display:grid;gap:14px}
+.frame{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--bone);border-radius:20px;overflow:hidden;background:#fff}
+.stage{position:absolute;inset:0}
+.stage>section{position:absolute;left:0;top:0;width:1920px;height:1080px;box-sizing:border-box;overflow:hidden;transform-origin:0 0;transform:scale(var(--s,0.5))}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:14px}
+.controls button{font:inherit;letter-spacing:inherit;font-weight:535;border:1px solid var(--bone);background:#fff;color:var(--ink);border-radius:12px;padding:7px 14px;cursor:pointer}
+.controls button:hover{border-color:var(--magenta);color:var(--magenta)}
+.controls .count{font-variant-numeric:tabular-nums;color:var(--steel);min-width:64px}
+.controls .spacer{flex:1}
+.notes{border:1px solid var(--bone);border-radius:20px;padding:16px 18px;font-size:15px;line-height:1.55;color:var(--ink);background:#fafafa}
+.notes[hidden]{display:none}
+.notes b{display:block;font-size:12px;font-weight:535;color:var(--steel);margin-bottom:4px}
+/* Matches ai.rhyslindmark.com/jev (minimal.css): white canvas, Inter 485 at -0.02em, ink/steel/bone neutrals, one magenta accent, 20px-radius hairline cards, soft color orbs. Scaled ~1.6x for a 1920px slide. */
+:root{--ink:#131313;--charcoal:#222222;--steel:#6a6a6a;--fog:#acacac;--bone:#f2f2f2;--line:#ececec;--paper:#ffffff;--paper2:#fafafa;--magenta:#ff37c7;--magenta-soft:#fdeef8;--violet:#8251fb;--green:#0c8911;--coral:#e01a2b;--code:#f7f7f7}
+.stage{font-family:'Inter',Arial,sans-serif;color:var(--ink);letter-spacing:-0.02em}
+.stage section{padding:128px;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;gap:40px;counter-increment:page}
+.stage section.dark{background:var(--paper2)}
+.stage section.alt{background:var(--paper)}
+.stage section.sun{background:var(--magenta-soft);color:var(--ink)}
+.stage h1{font-family:'Inter',Arial,sans-serif;font-size:120px;font-weight:485;line-height:1;letter-spacing:-0.03em;margin:0;color:var(--ink)}
+.stage h2{font-family:'Inter',Arial,sans-serif;font-size:72px;font-weight:485;line-height:1.08;letter-spacing:-0.025em;margin:0;color:var(--ink)}
+.stage h3{font-family:'Inter',Arial,sans-serif;font-size:44px;font-weight:535;line-height:1.15;letter-spacing:-0.02em;margin:0;color:var(--ink)}
+.stage p{font-size:32px;line-height:1.45;margin:0;font-weight:450}
+.stage .eyebrow{font-family:'Inter',Arial,sans-serif;font-size:24px;letter-spacing:0.02em;color:var(--magenta);font-weight:535}
+.stage .lede{font-size:44px;line-height:1.3;color:var(--steel);font-weight:450}
+.stage .body{color:var(--steel)}
+.stage .quote{font-family:'Inter',Arial,sans-serif;font-size:72px;line-height:1.12;font-weight:485;letter-spacing:-0.025em;color:var(--ink)}
+.stage .cite{font-size:28px;color:var(--steel)}
+.stage .code{font-family:'JetBrains Mono',monospace;font-size:28px;line-height:1.55;letter-spacing:0;background:var(--code);color:var(--ink);padding:32px 40px;border-radius:32px;border:2px solid var(--bone)}
+.stage .code .k{color:var(--magenta)}
+.stage .code .s{color:var(--violet)}
+.stage .code .c{color:var(--fog)}
+.stage .row{display:flex;gap:32px;align-items:stretch}
+.stage .col{display:flex;flex-direction:column;gap:24px;flex:1}
+.stage .card{background:var(--paper);border:2px solid var(--bone);border-radius:32px;padding:36px;display:flex;flex-direction:column;gap:16px;flex:1}
+.stage section.dark .card{background:var(--paper)}
+.stage section.sun .card{background:var(--paper);border-color:#f8d3ec}
+.stage .card .label{font-family:'Inter',Arial,sans-serif;font-size:24px;font-weight:535;letter-spacing:0.02em;color:var(--steel)}
+.stage .big{font-family:'Inter',Arial,sans-serif;font-size:120px;font-weight:485;letter-spacing:-0.03em;line-height:1;color:var(--ink)}
+.stage .good{color:var(--green)}
+.stage .bad{color:var(--coral)}
+.stage table{font-size:30px;width:100%;color:var(--ink)}
+.stage .footer{position:absolute;left:128px;bottom:64px;width:1664px;font-family:'Inter',Arial,sans-serif;font-size:24px;color:var(--fog)}
+.stage .spacer{flex:1}
+.stage .pill{font-size:24px;font-weight:535;background:var(--magenta);color:var(--paper);padding:8px 24px;border-radius:999px;align-self:flex-start}
+.stage .orbs{position:absolute;left:0;top:0;width:1920px;height:1080px;opacity:.6}
+.stage .fragment{opacity:0;transform:translateY(16px);transition:opacity .4s, transform .4s}
+.stage .fragment.visible{opacity:1;transform:none}
+.stage .rise{animation:rise .6s both}
+
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.stage x-shape{display:block;flex:none}
+.stage x-shape[kind="arrow-right"]{clip-path:polygon(0 30%,60% 30%,60% 0,100% 50%,60% 100%,60% 70%,0 70%)}
+.stage x-shape[kind="arrow-left"]{clip-path:polygon(100% 30%,40% 30%,40% 0,0 50%,40% 100%,40% 70%,100% 70%)}
+.stage table{border-collapse:collapse}.stage th{text-align:left;font-weight:600}.stage th,.stage td{padding:.35em .6em;border-bottom:2px solid #f2f2f2;vertical-align:top}
+.stage .fragment{opacity:1;transform:none}
+</style></head>
+<body><div class="shell"><header><a href="/jev">Jev</a><span class="mono-label">Talk · Trust Meter: Is Jev Calibrated on Your Data?</span></header>
+<main class="talk">
+<div class="frame" id="frame"><div class="stage" id="stage">
+<section hidden id="cover" class="dark" data-transition="fade">
+<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#8251fb" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#ff37c7" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
+<p class="eyebrow">JEV · CONFERENCE DEMO A2</p>
+<div class="spacer"></div>
+<h1 class="rise">Trust Meter</h1>
+<p class="lede rise" style="animation-delay:200ms;max-width:1450px">Jev’s headline feature is calibrated probabilities. Every independent audit says: check it on your own data. Here’s how to do that in 20 minutes, live, on 700 human-labeled examples.</p>
+<div class="spacer"></div>
+<p class="cite">Rhys Lindmark · demos/a2-trust-meter · node trust-meter.mjs your.csv "your question"</p>
+
+</section>
+
+<section hidden id="forecaster" class="alt">
+<p class="eyebrow">CALIBRATION, FOR EVERYONE IN THE ROOM</p>
+<h2>A forecaster who says “70% chance of rain” should be right on 70% of those days.</h2>
+<div class="row">
+<div class="card"><p class="label">CALIBRATED</p><p class="body">When Jev says 0.9, it’s right about 9 times in 10. You can set a threshold and know what you’re buying.</p></div>
+<div class="card"><p class="label">OVERCONFIDENT</p><p class="body">Says 0.9, right 6 times in 10. Thresholds lie to you.</p></div>
+<div class="card"><p class="label">UNDERCONFIDENT</p><p class="body">Says 0.6, right 9 times in 10. You send too much work to humans.</p></div>
+</div>
+
+</section>
+
+<section hidden id="gates">
+<p class="eyebrow">WHY BUILDERS CARE</p>
+<h2>Every production Jev story I found has the same shape</h2>
+<div class="row" style="align-items:center">
+<div class="card" style="flex:1"><p class="label">p ≥ threshold</p><h3>Jev handles it</h3><p class="body">~100 ms, fractions of a cent</p></div>
+<x-shape kind="arrow-left" style="width:96px;height:48px;background:var(--line)"></x-shape>
+<div class="card" style="flex:1.2;border-color:var(--ink)"><p class="label">ONE QUESTION</p><h3>How sure is Jev?</h3></div>
+<x-shape kind="arrow-right" style="width:96px;height:48px;background:var(--line)"></x-shape>
+<div class="card" style="flex:1"><p class="label">p &lt; threshold</p><h3>A person or a big model</h3><p class="body">slower, costs more, right more often</p></div>
+</div>
+<p class="body">Healthcare intake gates, shell-command approval, ticket-fraud screening, eval-every-trace. The threshold is the whole product decision, and it’s only as good as the calibration under it.</p>
+
+</section>
+
+<section hidden id="skeptics" class="dark">
+<p class="eyebrow">THE SKEPTICS ARE RIGHT</p>
+<p class="quote">“Calibration has to be measured on your dataset.”</p>
+<p class="cite">Hacker News commenter. Every independent audit I read, from arXiv papers to a Banking77 vs. scikit-learn comparison to vals.ai, reaches the same conclusion: calibration varies by task and wording.</p>
+<div class="row">
+<div class="card"><p class="label">THE BOTTLENECK</p><p class="body">Builders have no 20-minute way to check. So skeptics stay skeptical, and believers ship thresholds they never tested.</p></div>
+<div class="card"><p class="label">THE DOCS TODAY</p><p class="body">“Plot confidence against accuracy on your data.” True! But no tool, no sample size, no metric, no threshold method.</p></div>
+</div>
+
+</section>
+
+<section hidden id="live">
+<p class="eyebrow">LIVE DEMO · node trust-meter.mjs banking77</p>
+<h2>400 real bank-support messages, 77 intents, labeled by humans</h2>
+<div class="row">
+<div class="card"><p class="label">ACCURACY</p><p class="big">82.5%</p><p class="body">Zero-shot. No training, no examples.</p></div>
+<div class="card"><p class="label">CALIBRATION ERROR</p><p class="big">0.058</p><p class="body">Expected calibration error (lower is better).</p></div>
+<div class="card"><p class="label">COST</p><p class="big">4¢</p><p class="body">920k input tokens. Most of it is 77 option descriptions, sent every call.</p></div>
+</div>
+<p class="footer">PolyAI/banking77 test split · seeded sample · jev-1.14.0 · one Choice question per message</p>
+
+</section>
+
+<section hidden id="reliability">
+<p class="eyebrow">WHEN JEV SAYS p, IS IT RIGHT p OF THE TIME?</p>
+<div class="row" style="align-items:center">
+<div style="position:relative;width:600px;height:600px;flex:none">
+<svg aria-label="Reliability chart for Banking77: most answers sit near 0.98 confidence and are right 96% of the time; middle-confidence answers are right less often than they claim" width="600" height="600" viewBox="0 0 600 600"><rect x="40" y="40" width="520" height="520" rx="24" fill="#fafafa" stroke="#f2f2f2" stroke-width="2"/><line x1="40" y1="560" x2="560" y2="40" stroke="#acacac" stroke-width="3" stroke-dasharray="10 10"/><circle cx="217" cy="362" r="9" fill="#ff37c7"/><circle cx="274" cy="404" r="10" fill="#ff37c7"/><circle cx="321" cy="378" r="13" fill="#ff37c7"/><circle cx="378" cy="279" r="12" fill="#ff37c7"/><circle cx="425" cy="206" r="12" fill="#ff37c7"/><circle cx="482" cy="180" r="12" fill="#ff37c7"/><circle cx="550" cy="61" r="26" fill="#ff37c7"/></svg>
+<p style="position:absolute;left:40px;top:568px;width:520px;font-size:24px;color:#6a6a6a">what Jev said → (0 to 1)</p>
+</div>
+<div class="col">
+<p class="body"><b>Dashed line = perfectly honest.</b> Dot size = number of messages.</p>
+<p class="body"><b>274 of 400</b> answers came in at ~0.98 and were right <b>96%</b> of the time.</p>
+<p class="body">In the middle, Jev is <b>overconfident</b>: answers at ~0.54 were right 35% of the time. Those are the confusable intents (card_arrival vs. card_delivery_estimate).</p>
+</div>
+</div>
+
+</section>
+
+<section hidden id="budgets" class="dark">
+<p class="eyebrow">FROM A CHART TO A THRESHOLD</p>
+<h2>Pick your error budget. Trust Meter picks the threshold.</h2>
+<table><tr><th style="width:20%">Error budget</th><th style="width:20%">Act when p ≥</th><th style="width:20%">Jev handles</th><th style="width:20%">Observed error</th><th>Could be as high as</th></tr>
+<tr><td>1%</td><td>none</td><td>—</td><td>—</td><td>no threshold meets it on this data</td></tr>
+<tr><td>5%</td><td>0.84</td><td>71.5%</td><td>4.5%</td><td>7.6% (95% CI)</td></tr>
+<tr><td>10%</td><td>0.63</td><td>84.8%</td><td>9.7%</td><td>13.4% (95% CI)</td></tr></table>
+<p class="lede">So on Banking77, Jev isn’t a 1%-error machine. It’s a “handle 72% of traffic at about 5% error, route the rest” machine. That’s a decision you can make, with a chart instead of an argument.</p>
+
+</section>
+
+<section hidden id="irony">
+<p class="eyebrow">LIVE DEMO · node trust-meter.mjs irony</p>
+<div class="row" style="align-items:center">
+<div style="position:relative;width:600px;height:600px;flex:none">
+<svg aria-label="Reliability chart for irony detection: points sit below the diagonal at low probabilities and above it at high probabilities, so Jev is underconfident" width="600" height="600" viewBox="0 0 600 600"><rect x="40" y="40" width="520" height="520" rx="24" fill="#fafafa" stroke="#f2f2f2" stroke-width="2"/><line x1="40" y1="560" x2="560" y2="40" stroke="#acacac" stroke-width="3" stroke-dasharray="10 10"/><circle cx="76" cy="560" r="14" fill="#8251fb"/><circle cx="108" cy="560" r="18" fill="#8251fb"/><circle cx="165" cy="518" r="16" fill="#8251fb"/><circle cx="222" cy="477" r="15" fill="#8251fb"/><circle cx="269" cy="420" r="13" fill="#8251fb"/><circle cx="321" cy="300" r="12" fill="#8251fb"/><circle cx="378" cy="196" r="12" fill="#8251fb"/><circle cx="430" cy="144" r="13" fill="#8251fb"/><circle cx="482" cy="40" r="13" fill="#8251fb"/><circle cx="534" cy="56" r="16" fill="#8251fb"/></svg>
+<p style="position:absolute;left:40px;top:568px;width:520px;font-size:24px;color:#6a6a6a">Jev’s p(ironic) →</p>
+</div>
+<div class="col">
+<h3>300 tweets, “Is `tweet` ironic?”</h3>
+<p class="body">88.3% accurate, but <b>underconfident</b>: when Jev says 0.13, the real rate is 0%. When it says 0.85, it’s 100%.</p>
+<p class="body">Calibration error <b>0.109</b> → <b>0.028</b> after fitting two numbers (Platt scaling, cross-fitted so it isn’t graded on its own homework).</p>
+</div>
+</div>
+
+</section>
+
+<section hidden id="honest" class="alt">
+<p class="eyebrow">READ THE MISSES BEFORE YOU TRUST ANY NUMBER</p>
+<h2>Banking77’s most common “error” isn’t Jev’s</h2>
+<table><tr><th style="width:44%">Message</th><th style="width:28%">Human label</th><th>Jev chose</th></tr>
+<tr><td>“I do not have my pin”</td><td>get_physical_card</td><td>passcode_forgotten</td></tr>
+<tr><td>“Cannot access my top up.”</td><td>topping_up_by_card</td><td>pending_top_up</td></tr>
+<tr><td>“What should I do with my atm that got stuck?”</td><td>card_swallowed</td><td>atm_support</td></tr></table>
+<p class="body">get_physical_card → change_pin was the top confusion (6 of 70 misses). Some misses are label noise, some are near-duplicate intents, and a few are Jev. Trust Meter lists the most confident misses so a person reads them first.</p>
+
+</section>
+
+<section hidden id="firstbuild">
+<p class="eyebrow">YOUR FIRST BUILD, START TO FINISH</p>
+<h2>From zero to a gate you could ship, in five steps</h2>
+<table><tr><th style="width:8%">Step</th><th style="width:16%">Time</th><th style="width:30%">Do</th><th>Why</th></tr>
+<tr><td>1</td><td>5 min</td><td>Pick one LLM call</td><td>A yes/no or pick-one call you already pay for.</td></tr>
+<tr><td>2</td><td>10 min</td><td>Label 50–200 rows</td><td>A CSV with text and label. Include hard ones and “nothing fits.”</td></tr>
+<tr><td>3</td><td>2 sec</td><td>Run Trust Meter</td><td>Accuracy, reliability chart, thresholds, misses.</td></tr>
+<tr><td>4</td><td>2 min</td><td>Pick the error budget</td><td>Act above the threshold; route the rest to a person.</td></tr>
+<tr><td>5</td><td>before shipping</td><td>Re-check on new rows</td><td>Thresholds fitted to one sample over-fit. Pin the model version.</td></tr></table>
+<p class="body"><b style="color:var(--magenta-ink,#c4128f)">Where people get stuck:</b> step 2. Nobody wants to label, and 50 rows is enough to see the shape.</p>
+
+</section>
+
+<section hidden id="philosophy" class="sun">
+<p class="eyebrow">WHAT BUILDING THIS TAUGHT ME ABOUT JEV</p>
+<div class="spacer"></div>
+<h2>A probability is an interface between a model and your code.<br>The threshold is policy, and policy lives in code.</h2>
+<p class="lede">Jev’s job is to make the number honest. Your job is to measure it on your data and decide what it’s worth.</p>
+<div class="spacer"></div>
+
+</section>
+
+<section hidden id="close" class="dark">
+<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#8251fb" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#ff37c7" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
+<p class="eyebrow">BRING YOUR OWN DATA</p>
+<div class="spacer"></div>
+<h1>Turn trust into a chart.</h1>
+<p class="code" style="max-width:1500px">node trust-meter.mjs tickets.csv "Is `text` a refund request?"<br><span class="c"># → tickets-report.html: reliability chart, coverage curve, thresholds, misses</span></p>
+<div class="spacer"></div>
+<p class="cite">700 human-labeled examples, two datasets, 700 Jev calls, under 5¢ · Rhys Lindmark</p>
+
+</section>
+
+</div></div>
+<div class="controls"><button id="prev" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button><span class="count" id="count"></span><span class="spacer"></span><button id="notesbtn" aria-pressed="false">Speaker notes</button><a href="/jev/docs/takehome/demos/a2-trust-meter/">Code</a></div>
+<div class="notes" id="notes" hidden><b>Speaker notes</b><p id="notestext"></p></div>
+<p class="small" style="color:var(--steel)">Arrow keys or space to move · N for notes · each slide has its own link (#3).</p>
+</main></div>
+<script>
+const NOTES = ["This talk is the second bottleneck I found in the research: trust. People don't doubt that Jev is fast or cheap. They doubt whether its probabilities mean anything on their data. And the honest answer, from every independent audit, is \"it depends, go check.\" Today I'll show you how to check, and you'll see real numbers, including some that aren't flattering.","For anyone new to this: calibration means the probability means what it says. A weather forecaster who says 70 percent should see rain on about 70 percent of those days. Accuracy asks whether the top answer is right. Calibration asks whether the confidence is honest. Jev's whole design depends on the second one, because your code makes decisions with those numbers.","In the corpus I built, roughly 94,000 public posts, issues and repos, the production stories all look like this. Jev handles what it's sure about, and everything else goes to a person or a bigger model. That's a great architecture. But notice that the threshold is where all the business value sits. Set it from vibes and you either ship errors or pay humans to re-check cases Jev already had right.","I want to agree with the skeptics out loud, because they're right. Independent evaluations all say calibration depends on the task and the wording. The official docs say the same thing in one line: plot confidence against accuracy on your data. What's missing is the how. How many examples? Which chart? How do I turn it into a threshold? That gap is the bottleneck, and it's a tooling and teaching problem, which is good news, because those are fixable.","Let's run it. Banking77 is a public dataset of real customer-service messages with 77 intent labels, labeled by humans. It's the same dataset a widely read article used to argue that scikit-learn matches Jev's calibration. [Run node trust-meter.mjs banking77.] 400 messages, one Choice question each. 82.5 percent accuracy zero-shot, calibration error 0.058, four cents. Side note for the product team: most of those tokens are the 77 option descriptions, re-sent on every call. That's the \"cache my criteria\" GitHub issue in a single number.","Here's the reliability chart, the picture the docs tell you to make. The diagonal is perfect calibration. The big dot in the top right is the story: most messages, Jev is sure, and it's right 96 percent of the time. In the middle it's overconfident. When it says 54 percent, it's right 35 percent of the time. Read the misses and you find Banking77's famous near-duplicate intents. That's a fact about your label set as much as about the model.","This is the slide I'd want a skeptic to see. If your error budget is one percent, no threshold works on this dataset, and Trust Meter says so instead of pretending. At five percent, act when Jev is at least 0.84 sure and it handles 72 percent of messages. Note the last column. With 400 examples, the true error at that threshold could be as high as 7.6 percent. Small samples need honesty, so the tool prints the upper bound and doesn't hide it.","Second dataset: irony detection on tweets, which is genuinely hard and noisy. Jev gets 88 percent, but the chart has an S shape: it's underconfident. When it says 13 percent it's never ironic, and when it says 85 percent it always is. So the audits are right that calibration varies by task. Here's the good news: the fix is two numbers. Fit a logistic curve on half the data, check it on the other half, and calibration error drops from 0.109 to 0.028. That's 15 lines of code in calibration.mjs.","Before you trust any number, including mine, read the misses. The most common Banking77 \"error\" is Jev reading PIN questions as PIN questions, which the dataset files under get_physical_card. Some misses are label noise, some are near-duplicate intents, a few are real. This is why the tool ends with a table of misses, not a score. A score invites an argument. A table of misses invites a better question or better labels.","This is my answer to the \"first build\" focus. The shortest path to something real isn't hello world. It's taking one call you already pay for, labeling 50 to 200 examples, which is the part everyone skips, running the meter, and choosing a threshold on purpose. Step 5 matters: pin the model version, because aliases move, and re-check on rows you didn't tune on.","The philosophy lesson: Jev doesn't give you answers, it gives you an interface, a probability your code can reason about. The threshold is a business decision, so it belongs in code, chosen with evidence. That's the same idea as judgments from Jev and decisions in code, applied to confidence. And it's why calibration is the feature, and checking it is the developer's half of the deal.","Bring a CSV with text and label columns. Two labels gives you a Noul, more gives you a Choice. You get a self-contained HTML report you can paste into a design review. Everything I showed today cost under five cents. Questions?"];
+const secs = [...document.querySelectorAll('#stage > section')], frame = document.getElementById('frame');
+let i = 0;
+function fit() { frame.style.setProperty('--s', frame.clientWidth / 1920); }
+function show(n, push) {
+  i = Math.max(0, Math.min(secs.length - 1, n));
+  secs.forEach((s, k) => s.hidden = k !== i);
+  document.getElementById('count').textContent = (i + 1) + ' / ' + secs.length;
+  document.getElementById('notestext').textContent = NOTES[i] || 'No notes for this slide.';
+  if (push !== false) history.replaceState(null, '', '#' + (i + 1));
+}
+document.getElementById('prev').onclick = () => show(i - 1);
+document.getElementById('next').onclick = () => show(i + 1);
+document.getElementById('notesbtn').onclick = e => { const n = document.getElementById('notes'); n.hidden = !n.hidden; e.currentTarget.setAttribute('aria-pressed', String(!n.hidden)); };
+addEventListener('keydown', e => {
+  if (e.target.closest && e.target.closest('input,textarea,select')) return;
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(i + 1); }
+  else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+  else if (e.key === 'n' || e.key === 'N') document.getElementById('notesbtn').click();
+});
+new ResizeObserver(fit).observe(frame); fit();
+show((parseInt(location.hash.slice(1), 10) || 1) - 1, false);
+</script></body></html>

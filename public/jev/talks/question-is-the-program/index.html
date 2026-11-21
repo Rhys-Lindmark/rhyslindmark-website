@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>The Question Is the Program · Jev</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="/jev/minimal.css?v=jev-1">
+<style>
+.talk{display:grid;gap:14px}
+.frame{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--bone);border-radius:20px;overflow:hidden;background:#fff}
+.stage{position:absolute;inset:0}
+.stage>section{position:absolute;left:0;top:0;width:1920px;height:1080px;box-sizing:border-box;overflow:hidden;transform-origin:0 0;transform:scale(var(--s,0.5))}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:14px}
+.controls button{font:inherit;letter-spacing:inherit;font-weight:535;border:1px solid var(--bone);background:#fff;color:var(--ink);border-radius:12px;padding:7px 14px;cursor:pointer}
+.controls button:hover{border-color:var(--magenta);color:var(--magenta)}
+.controls .count{font-variant-numeric:tabular-nums;color:var(--steel);min-width:64px}
+.controls .spacer{flex:1}
+.notes{border:1px solid var(--bone);border-radius:20px;padding:16px 18px;font-size:15px;line-height:1.55;color:var(--ink);background:#fafafa}
+.notes[hidden]{display:none}
+.notes b{display:block;font-size:12px;font-weight:535;color:var(--steel);margin-bottom:4px}
+/* Matches ai.rhyslindmark.com/jev (minimal.css): white canvas, Inter 485 at -0.02em, ink/steel/bone neutrals, one magenta accent, 20px-radius hairline cards, soft color orbs. Scaled ~1.6x for a 1920px slide. */
+:root{--ink:#131313;--charcoal:#222222;--steel:#6a6a6a;--fog:#acacac;--bone:#f2f2f2;--line:#ececec;--paper:#ffffff;--paper2:#fafafa;--magenta:#ff37c7;--magenta-soft:#fdeef8;--violet:#8251fb;--green:#0c8911;--coral:#e01a2b;--code:#f7f7f7}
+.stage{font-family:'Inter',Arial,sans-serif;color:var(--ink);letter-spacing:-0.02em}
+.stage section{padding:128px;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;gap:40px;counter-increment:page}
+.stage section.dark{background:var(--paper2)}
+.stage section.alt{background:var(--paper)}
+.stage section.sun{background:var(--magenta-soft);color:var(--ink)}
+.stage h1{font-family:'Inter',Arial,sans-serif;font-size:120px;font-weight:485;line-height:1;letter-spacing:-0.03em;margin:0;color:var(--ink)}
+.stage h2{font-family:'Inter',Arial,sans-serif;font-size:72px;font-weight:485;line-height:1.08;letter-spacing:-0.025em;margin:0;color:var(--ink)}
+.stage h3{font-family:'Inter',Arial,sans-serif;font-size:44px;font-weight:535;line-height:1.15;letter-spacing:-0.02em;margin:0;color:var(--ink)}
+.stage p{font-size:32px;line-height:1.45;margin:0;font-weight:450}
+.stage .eyebrow{font-family:'Inter',Arial,sans-serif;font-size:24px;letter-spacing:0.02em;color:var(--magenta);font-weight:535}
+.stage .lede{font-size:44px;line-height:1.3;color:var(--steel);font-weight:450}
+.stage .body{color:var(--steel)}
+.stage .quote{font-family:'Inter',Arial,sans-serif;font-size:72px;line-height:1.12;font-weight:485;letter-spacing:-0.025em;color:var(--ink)}
+.stage .cite{font-size:28px;color:var(--steel)}
+.stage .code{font-family:'JetBrains Mono',monospace;font-size:28px;line-height:1.55;letter-spacing:0;background:var(--code);color:var(--ink);padding:32px 40px;border-radius:32px;border:2px solid var(--bone)}
+.stage .code .k{color:var(--magenta)}
+.stage .code .s{color:var(--violet)}
+.stage .code .c{color:var(--fog)}
+.stage .row{display:flex;gap:32px;align-items:stretch}
+.stage .col{display:flex;flex-direction:column;gap:24px;flex:1}
+.stage .card{background:var(--paper);border:2px solid var(--bone);border-radius:32px;padding:36px;display:flex;flex-direction:column;gap:16px;flex:1}
+.stage section.dark .card{background:var(--paper)}
+.stage section.sun .card{background:var(--paper);border-color:#f8d3ec}
+.stage .card .label{font-family:'Inter',Arial,sans-serif;font-size:24px;font-weight:535;letter-spacing:0.02em;color:var(--steel)}
+.stage .big{font-family:'Inter',Arial,sans-serif;font-size:120px;font-weight:485;letter-spacing:-0.03em;line-height:1;color:var(--ink)}
+.stage .good{color:var(--green)}
+.stage .bad{color:var(--coral)}
+.stage table{font-size:30px;width:100%;color:var(--ink)}
+.stage .footer{position:absolute;left:128px;bottom:64px;width:1664px;font-family:'Inter',Arial,sans-serif;font-size:24px;color:var(--fog)}
+.stage .spacer{flex:1}
+.stage .pill{font-size:24px;font-weight:535;background:var(--magenta);color:var(--paper);padding:8px 24px;border-radius:999px;align-self:flex-start}
+.stage .orbs{position:absolute;left:0;top:0;width:1920px;height:1080px;opacity:.6}
+.stage .fragment{opacity:0;transform:translateY(16px);transition:opacity .4s, transform .4s}
+.stage .fragment.visible{opacity:1;transform:none}
+.stage .rise{animation:rise .6s both}
+
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.stage x-shape{display:block;flex:none}
+.stage x-shape[kind="arrow-right"]{clip-path:polygon(0 30%,60% 30%,60% 0,100% 50%,60% 100%,60% 70%,0 70%)}
+.stage x-shape[kind="arrow-left"]{clip-path:polygon(100% 30%,40% 30%,40% 0,0 50%,40% 100%,40% 70%,100% 70%)}
+.stage table{border-collapse:collapse}.stage th{text-align:left;font-weight:600}.stage th,.stage td{padding:.35em .6em;border-bottom:2px solid #f2f2f2;vertical-align:top}
+.stage .fragment{opacity:1;transform:none}
+</style></head>
+<body><div class="shell"><header><a href="/jev">Jev</a><span class="mono-label">Talk · The Question Is the Program</span></header>
+<main class="talk">
+<div class="frame" id="frame"><div class="stage" id="stage">
+<section hidden id="cover" class="dark" data-transition="fade">
+<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#8251fb" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#ff37c7" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
+<p class="eyebrow">JEV · CONFERENCE DEMO A1</p>
+<div class="spacer"></div>
+<h1 class="rise">The Question<br>Is the Program</h1>
+<p class="lede rise" style="animation-delay:200ms;max-width:1400px">Why smart engineers decide Jev is “horrendously wrong,” and the one idea that turns it into something you can ship.</p>
+<div class="spacer"></div>
+<p class="cite">Rhys Lindmark · live code: github.com/Rhys-Lindmark/jev/takehome/demos/a1-wrong-question</p>
+
+</section>
+
+<section hidden id="complaint" class="alt">
+<p class="eyebrow">WHAT BUILDERS SAY</p>
+<div class="spacer"></div>
+<p class="quote">“I have tested jev for my use cases and its horrendously wrong… I’ll pass for now.”</p>
+<p class="cite">Hacker News, launch week. The reply from the team: “you need to boil the question down further.”</p>
+<div class="spacer"></div>
+<p class="body">This talk is about what “boil the question down” actually means, and why it’s the main thing standing between people and their first Jev build.</p>
+
+</section>
+
+<section hidden id="whatis">
+<p class="eyebrow">JEV IN ONE SLIDE</p>
+<h2>A model that answers typed questions about your data, with probabilities your code can use</h2>
+<div class="row">
+<div class="col"><p class="code"><span class="c">// state: what a person would look at</span><br>{ <span class="s">"message"</span>: "Charged twice for March, refund the duplicate?" }<br><br><span class="c">// questions: small, typed</span><br>refund: { type: <span class="s">"noul"</span>,<br>&#160;&#160;instructions: <span class="s">"Is the sender asking for money back?"</span> }</p></div>
+<div class="col" style="flex:0.7"><p class="code">refund → { noul: <span class="k">0.99</span> }<br>topic&#160;&#160;→ { choice: <span class="k">"billing"</span>, p: 1.0 }<br><br><span class="c">201 ms · 416 tokens · $0.00002</span></p>
+<p class="body">Four question types: <b>Noul</b> (yes/no), <b>Choice</b>, <b>Score</b>, <b>Box</b>. No free text, so nothing your code can choke on.</p></div>
+</div>
+
+</section>
+
+<section hidden id="experiment" class="dark">
+<p class="eyebrow">LIVE DEMO · THE SETUP</p>
+<h2>40 support tickets. One escalation policy. Three ways to ask.</h2>
+<div class="row">
+<div class="card"><p class="label">THE POLICY · escalate when</p><p>1. our product lost or corrupted data</p><p>2. a security incident on the account</p><p>3. enterprise plan + production is down</p><p>4. threatens to cancel + waited ≥ 3 days</p></div>
+<div class="card"><p class="label">THE DATA</p><p>Each ticket is labeled on the four <b>judgments</b> a person can make from the message alone.</p><p>The escalation decision is never hand-labeled. Code computes it from the policy.</p></div>
+</div>
+<p class="footer">node run.mjs · demos/a1-wrong-question</p>
+
+</section>
+
+<section hidden id="fuzzy">
+<p class="eyebrow">VERSION 1 · THE QUESTION EVERYONE WRITES FIRST</p>
+<div class="row" style="align-items:center">
+<div class="col"><p class="code">escalate: { type: <span class="s">"noul"</span>,<br>&#160;&#160;instructions: <span class="s">"Should `ticket` be escalated?"</span> }</p></div>
+<div class="col" style="flex:0.6"><p class="big bad">73%</p><p class="body">11 false alarms, 0 missed</p></div>
+</div>
+<table><tr><th style="width:12%">Jev said</th><th>Ticket</th><th style="width:20%">Policy says</th></tr>
+<tr><td>0.91</td><td>Pro plan: “Login page has returned 500 for 10 minutes. We’re blocked.”</td><td>normal queue</td></tr>
+<tr><td>0.70</td><td>“Do you have a SOC 2 report? Our security team is asking.”</td><td>normal queue</td></tr>
+<tr><td>0.61</td><td>“I lost my password and the reset email never arrives.”</td><td>normal queue</td></tr>
+<tr><td>0.58</td><td>“Still waiting on a reply about the invoice. Almost a week.”</td><td>normal queue</td></tr></table>
+
+</section>
+
+<section hidden id="notwrong" class="sun">
+<p class="eyebrow">THE TURN</p>
+<div class="spacer"></div>
+<h1>Jev wasn’t wrong.<br>It answered the question you asked.</h1>
+<p class="lede">“Should this be escalated?” has no right answer without your policy. A smart new hire couldn’t answer it either.</p>
+<div class="spacer"></div>
+
+</section>
+
+<section hidden id="pasted">
+<p class="eyebrow">VERSION 2 · THE PROMPT ENGINEER’S FIX</p>
+<div class="row" style="align-items:center">
+<div class="col"><p class="code">escalate: { type: <span class="s">"noul"</span>,<br>&#160;&#160;instructions: <span class="s">"Should `ticket` be escalated<br>&#160;&#160;under this policy?<br>&#160;&#160;1. lost or corrupted data…<br>&#160;&#160;2. security incident…<br>&#160;&#160;3. enterprise + prod down…<br>&#160;&#160;4. cancel threat + ≥3 days…"</span> }</p></div>
+<div class="col" style="flex:0.6"><p class="big good">100%</p><p class="body">0 false alarms, 0 missed</p></div>
+</div>
+<p class="lede">Honest result: Jev is good enough that pasting the rulebook in works, for four rules. So why not stop here?</p>
+
+</section>
+
+<section hidden id="change" class="dark">
+<p class="eyebrow">NEXT QUARTER · THE POLICY CHANGES</p>
+<h2>Five rules, per-plan wait times. Same 40 tickets.</h2>
+<div class="row">
+<div class="card"><p class="label">POLICY PASTED INTO THE QUESTION</p><p class="big bad">38/40</p><p class="body">New prompt, 40 new API calls, a new eval. Misses sit at 0.50 and 0.65: Jev is unsure, because now it’s doing per-plan date math.</p></div>
+<div class="card"><p class="label">SAME JUDGMENTS · NEW policy() IN CODE</p><p class="big good">40/40</p><p class="body">One function changed. Zero new API calls: the four judgments about each ticket didn’t move. Every decision says which rule fired.</p></div>
+</div>
+<p class="footer">node policy-change.mjs</p>
+
+</section>
+
+<section hidden id="truth">
+<p class="eyebrow">VERSION 3 · THE IDEA</p>
+<h2>Judgments from Jev. Decisions in code.</h2>
+<div class="row">
+<div class="col"><p class="code"><span class="c">// Jev: what a person sees at a glance</span><br>data_loss&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;0.02<br>security_incident 0.03<br>prod_outage&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="k">0.94</span><br>cancel_threat&#160;&#160;&#160;&#160;&#160;0.03<br><span class="c">// code already knows</span><br>plan = "pro", days_waiting = 0</p></div>
+<div class="col"><p class="code"><span class="k">function</span> policy(j, t) {<br>&#160;&#160;if (j.data_loss) <span class="k">return</span> esc(<span class="s">'data loss'</span>)<br>&#160;&#160;if (j.security_incident) <span class="k">return</span> esc(…)<br>&#160;&#160;if (j.prod_outage &amp;&amp;<br>&#160;&#160;&#160;&#160;&#160;&#160;t.plan === <span class="s">'enterprise'</span>) …<br>&#160;&#160;<span class="k">return</span> normal(<span class="s">'no rule fired'</span>)<br>}</p></div>
+</div>
+<p class="body">Ticket #19 → <b>normal queue</b>. Jev saw the outage (0.94). The policy, which lives in code, says pro-plan outages don’t escalate.</p>
+
+</section>
+
+<section hidden id="humantest" class="alt">
+<p class="eyebrow">THE CHECKLIST</p>
+<h2>Five checks before you send a question</h2>
+<div class="row">
+<div class="card"><h3>1 · The human test</h3><p class="body">Could a smart person, shown only this state, answer at a glance?</p></div>
+<div class="card"><h3>2 · Judgment, not decision</h3><p class="body">“Is production down?” not “Should we escalate?”</p></div>
+<div class="card"><h3>3 · Beware the “or”</h3><p class="body">“Rude or drunk?” is two Nouls. Combine them in code.</p></div>
+</div>
+<div class="row">
+<div class="card"><h3>4 · Ask about nothing</h3><p class="body">A Choice always picks. Pair it with a Noul: “does anything fit?”</p></div>
+<div class="card"><h3>5 · Math goes in code</h3><p class="body">Extract the date with Jev; compare it in code. Jev isn’t a calculator.</p></div>
+<div class="card"><h3>Then name the confusing case</h3><p class="body">In the criteria: “a SOC 2 question is not an incident.”</p></div>
+</div>
+
+</section>
+
+<section hidden id="lint" class="dark">
+<p class="eyebrow">LIVE DEMO · jev-lint</p>
+<h2>Jev, reviewing Jev questions</h2>
+<table><tr><th style="width:38%">First draft</th><th style="width:22%">Jev flags</th><th>Fix</th></tr>
+<tr><td>“Should `ticket` be escalated?”</td><td>decision 0.98</td><td>Split into judgments; decide in code</td></tr>
+<tr><td>“Which model should I use for this prompt?”</td><td>decision 0.98</td><td>Same, and it was my own first draft</td></tr>
+<tr><td>“Is the guest rude or drunk?”</td><td>compound 0.97</td><td>Two Nouls</td></tr>
+<tr><td>“Invoice sent more than 30 days ago?”</td><td>needs math 0.98</td><td>Extract the date; compare in code</td></tr>
+<tr><td>“Does `ticket.message` report data loss…”</td><td>clean ✓</td><td>Ship it</td></tr></table>
+<p class="footer">node lint.mjs [questions.json] · 8 questions, 8 calls, $0.0002</p>
+
+</section>
+
+<section hidden id="bottleneck">
+<p class="eyebrow">THE BOTTLENECK</p>
+<h2>Jev moves the hard part from writing prompts to designing questions. Nobody teaches that yet.</h2>
+<div class="row">
+<div class="card"><p class="label">FROM HACKER NEWS</p><p class="body">“There is no way to mark absentia.” Fix: always give an explicit option for the “none of the above” cases.</p></div>
+<div class="card"><p class="label">FROM GITHUB ISSUES</p><p class="body">An empty <b>STATE:</b> header changes Choice answers. Single-select Choice forced onto multi-label jobs.</p></div>
+<div class="card"><p class="label">FROM PRACTITIONERS</p><p class="body">The best builders ask several yes/no questions and feed the probabilities into a logistic regression.</p></div>
+</div>
+<p class="body">Prompt skills don’t transfer. The unit of work is no longer “write instructions.” It’s “design a question a smart person could answer from this state alone.”</p>
+
+</section>
+
+<section hidden id="takeaways" class="alt">
+<p class="eyebrow">WHAT TO TAKE HOME</p>
+<div class="row">
+<div class="card"><p class="label">IF YOU’VE HEARD THE HYPE</p><h3>Jev answers what a smart person could answer at a glance.</h3><p class="body">Your job is to ask that question. The rest is ordinary code you can read.</p></div>
+<div class="card"><p class="label">IF YOU’RE ABOUT TO BUILD</p><h3>Write the truth table first.</h3><p class="body">List the inputs it needs. The ones that need language understanding are your questions. Lint them. Policy, math and dates stay in code.</p></div>
+</div>
+
+</section>
+
+<section hidden id="close" class="dark">
+<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#8251fb" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#ff37c7" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
+<p class="eyebrow">TRY IT</p>
+<div class="spacer"></div>
+<h1>The question<br>is the program.</h1>
+<p class="code" style="max-width:1300px">git clone github.com/Rhys-Lindmark/jev<br>cd takehome/demos/a1-wrong-question<br>node run.mjs · node lint.mjs your-questions.json</p>
+<div class="spacer"></div>
+<p class="cite">40 tickets × 3 versions: 40 requests, $0.0013, ~105 ms each · Rhys Lindmark</p>
+
+</section>
+
+</div></div>
+<div class="controls"><button id="prev" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button><span class="count" id="count"></span><span class="spacer"></span><button id="notesbtn" aria-pressed="false">Speaker notes</button><a href="/jev/docs/takehome/demos/a1-wrong-question/">Code</a></div>
+<div class="notes" id="notes" hidden><b>Speaker notes</b><p id="notestext"></p></div>
+<p class="small" style="color:var(--steel)">Arrow keys or space to move · N for notes · each slide has its own link (#3).</p>
+</main></div>
+<script>
+const NOTES = ["Hi, I'm Rhys. This talk is for two groups at once: engineers who've read the Jev docs but haven't shipped with it, and people who've heard the hype and want to know what Jev actually is. By the end, the first group gets a method and a tool, and the second group gets the mental model. Everything you'll see runs live against jev-1.14.0, and every request is cached on disk, so if the Wi-Fi dies we replay real recorded answers, not mock data.","This is a real comment from the launch thread. It's not a troll. It's an engineer who tried Jev on a real problem, got bad answers, got told to \"boil the question down\", didn't know what that meant, and left. I read about 1,400 HN comments and a few hundred GitHub issues about Jev for this talk, and this pattern is the most common way people bounce. The skill they're missing has no name yet. Let's give it one.","For the people who've heard the hype: Jev is not a chatbot. You send it state, meaning the stuff a person would look at, plus small typed questions. It answers each one with a probability. A Noul is the probability a statement is true. A Choice picks one of your options. That real call on the slide took 201 milliseconds and cost two thousandths of a cent. The builders I studied love it for one reason above speed and price: it can't hand their code a made-up answer. Keep that in mind, because the failure mode we're about to see isn't Jev making things up. It's Jev answering exactly what it was asked.","Here's the setup. Forty support tickets, plus the kind of escalation policy every support team has. Note how the data is labeled: I labeled the four judgments, which a human can make by reading a message. Did our product lose their data? Is this a security incident? Then the decision, escalate or not, falls out of the policy in code. Now three ways to ask Jev. [Switch to terminal and run node run.mjs.]","Version one is the question everyone writes first: should this ticket be escalated? 73 percent. Eleven false alarms. This is the \"horrendously wrong\" experience. But look at the misses. A pro-plan team with a login outage: a reasonable human would escalate that too! Our policy only escalates outages for enterprise. The SOC 2 question mentions security. A week of waiting sounds bad. Jev is making reasonable calls. It just doesn't know our rules.","This is the moment I want everyone to hold onto. Jev wasn't wrong. \"Should this be escalated?\" isn't a fact about the ticket. It's a fact about your company. Give that question to a smart new hire on their first day and they'd guess just like Jev did. The docs have a name for the check we just failed: the human test. Could a smart person, shown only this state, answer at a glance? If not, the fix isn't better wording. It's a different question.","Version two: what a prompt engineer does. Paste the policy into the question. And... 100 percent. I expected this to fail when I built the demo, and it didn't. Jev 1.14 is good enough to read four rules and apply them. So I want to be honest with you: on accuracy alone, at this size, you could stop here. But accuracy on today's policy isn't the whole job. Watch what happens next quarter.","Here's next quarter. Support adds a rule for stale tickets and different wait times per plan. Version two needs a new prompt, and you have to re-run everything to know whether it still works. It drops to 38 out of 40, and the two misses sit right at 0.50 and 0.65. Jev is telling you it's unsure, because now it's doing arithmetic across plans, which is System Two work. Version three: I changed one function. Zero new API calls, because whether a ticket reports data loss didn't change when the policy did. 40 out of 40, and each decision tells you which rule fired.","This is the philosophy in one slide. Jev answers judgments: things a person can see at a glance. Did their data get lost? Is production down? Code makes the decision, with facts code already knows, like plan and days waiting. You never ask Jev to compute days waiting. Look at ticket 19, the one version one got wrong: Jev saw the outage at 0.94. It didn't escalate because our policy says so, and you can read that policy, test it, diff it, and change it without touching a question. The TypeSafe docs call this a truth table. I'd put it this way: the question is the program, and the policy is the code.","Here's the method, compressed. Everything on this slide is in the TypeSafe skill or scattered across the docs. My contribution is putting it in an order you check before you send a question. Number one is the human test. Number two is the one that bit us today. Three, four and five are the bugs I found most often in GitHub issues: compound questions, a Choice forced to pick when nothing fits, and arithmetic. And when two answers keep getting confused, name the specific case in the criteria. That's how version three got the SOC 2 ticket right.","And because the checklist is made of judgments, Jev can run it. jev-lint asks Jev four Nouls about each of your questions: does it ask for a decision? Does it join two conditions? Does it depend on rules that aren't written down? Does it need math? Code adds the checks code can do, like positional option names. [Run node lint.mjs.] The second row is my own first draft of a model router. I asked Jev \"which model should I use?\", and it took me building an eval to see why that was wrong. Now a linter catches it in 200 milliseconds.","So here's my answer to the take-home question: what stops people from building with Jev? It isn't the API. The SDK paper cuts are real but small. It's question design. People who skip it decide Jev is wrong. People who learn it, like the practitioner who decomposes into yes/no questions and feeds the probabilities into a regression, get production gates. Every GitHub issue on this slide is a question-design bug that looks like a model bug. The skill has no name, no checklist and no debugger yet. Today you saw a name, a checklist and a debugger.","Two takeaways, one for each half of the room. If you came for the hype: Jev isn't a smarter chatbot. It's a fast, cheap, calibrated way to answer the questions a smart person answers at a glance, and your job is to ask that question. If you're about to build: start from the decision, write the truth table, and only then write questions for the inputs that need language understanding. Lint them before you ship.","That's it. The repo has the tickets, the three versions, the policy-change script and jev-lint. The whole live demo cost a tenth of a cent. Run lint on your own questions tonight. Questions?"];
+const secs = [...document.querySelectorAll('#stage > section')], frame = document.getElementById('frame');
+let i = 0;
+function fit() { frame.style.setProperty('--s', frame.clientWidth / 1920); }
+function show(n, push) {
+  i = Math.max(0, Math.min(secs.length - 1, n));
+  secs.forEach((s, k) => s.hidden = k !== i);
+  document.getElementById('count').textContent = (i + 1) + ' / ' + secs.length;
+  document.getElementById('notestext').textContent = NOTES[i] || 'No notes for this slide.';
+  if (push !== false) history.replaceState(null, '', '#' + (i + 1));
+}
+document.getElementById('prev').onclick = () => show(i - 1);
+document.getElementById('next').onclick = () => show(i + 1);
+document.getElementById('notesbtn').onclick = e => { const n = document.getElementById('notes'); n.hidden = !n.hidden; e.currentTarget.setAttribute('aria-pressed', String(!n.hidden)); };
+addEventListener('keydown', e => {
+  if (e.target.closest && e.target.closest('input,textarea,select')) return;
+  if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); show(i + 1); }
+  else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); show(i - 1); }
+  else if (e.key === 'n' || e.key === 'N') document.getElementById('notesbtn').click();
+});
+new ResizeObserver(fit).observe(frame); fit();
+show((parseInt(location.hash.slice(1), 10) || 1) - 1, false);
+</script></body></html>
