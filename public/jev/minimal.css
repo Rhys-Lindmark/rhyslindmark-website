@@ -225,3 +225,8 @@ code, .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 
 .rs-row > span { min-width: 0; }
 .rs-result code { font-size: 12px; }
 .eval-finding { margin: 0 0 12px; padding: 10px 14px; border-radius: 14px; background: #f6f2ff; font-size: 14px; max-width: 80ch; }
+/* Model Router v2 card */
+.router-v2 { border-color: #e3dafe; }
+.v2-tag { display: inline-block; font: 600 11px ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: .04em; color: #5b34c9; background: #f6f2ff; padding: 3px 8px; border-radius: 999px; margin-bottom: 8px; }
+.router-v2 .route-output { background: linear-gradient(135deg, #fff, #f6f2ff); }
+.router-v2 .tt td:nth-child(2) { width: 52%; }

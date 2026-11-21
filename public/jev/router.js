@@ -5,6 +5,7 @@
 const $ = id => document.getElementById(id);
 
 import { YES, NO, UNSURE_COUNTS_AS, DEPTH, LEVELS, MODELS, REASONING_TABLE, MODEL_RULES, NOULS, read, judge, decide } from './router-policy.js?v=router-13';
+import { ROUTER_V2_TABLE, V2_JUDGMENTS, judgeV2, decideV2 } from './router-v2-policy.js?v=router-21';
 
 const PROMPTS = [
   'hi! how’s it going?',
@@ -30,7 +31,7 @@ const cache = new Map();
 let current = null, widgetId, token = '', busy = false, rendered = false;
 const human = () => window.jevHuman?.ok() || !!token;
 let lastError = '';
-const showError = m => { lastError = m; for (const id of ['route-error', 'anti-error']) { $(id).textContent = m; $(id).hidden = !m; } };
+const showError = m => { lastError = m; for (const id of ['route-error', 'anti-error', 'v2-error']) { const e = $(id); if (e) { e.textContent = m; e.hidden = !m; } } };
 const setBusy = b => { busy = b; for (const el of document.querySelectorAll('[data-prompt], #route-run, #route-prompt')) el.disabled = b; };
 
 function renderOutput() {
@@ -151,7 +152,50 @@ function renderCompare() {
     h('div', 'cmp-scroll', table(['Prompt', 'Router (truth table)', 'Choice (argmax)', ''], rows)),
     h('p', 'note', 'Each prompt is one Jev call; answers are saved for this visit.')].filter(Boolean));
 }
-const renderAll = () => { renderOutput(); renderTrace(); renderTables(); renderApi(); renderAnti(); renderCompare(); };
+// ---- Model Router v2: rebuilt from the eval (bottom card) ----------------------
+// Same Jev call as everything above; it also asks Router v2's four judgments.
+// The table is router-v2-policy.js, the exact one the eval tested.
+const EFFORT_LABEL = { low: 'Low', high: 'High' };
+function initV2() {
+  const sec = $('router-v2'); if (!sec) return;
+  sec.replaceChildren(
+    h('div', 'demo-heading', h('span', 'v2-tag', 'Built from the eval'), h('h2', null, h('span', null, 'Model Router v2'))),
+    h('p', 'eval-intro', 'The eval showed where models actually fail: exact, letter-level work and long step-by-step procedures, not “expertise” or “stakes”. So Router v2 asks Jev four new questions aimed at those, and uses a new truth table set from the 60 training prompts. On the eval’s 168 held-out prompts it passed 91.1% against the original router’s 80.4%, at about the same cost. A learned version on the same judgments (Router v3) did a little better, 93.5%, but v2 keeps a table you can read.'),
+    h('div', 'chips', ...PROMPTS.map(p => { const b = h('button', 'chip', p); b.type = 'button'; b.dataset.prompt = p; b.addEventListener('click', () => route(p)); return b; })),
+    (() => { const e = h('p', 'error'); e.id = 'v2-error'; e.setAttribute('role', 'alert'); e.hidden = true; return e; })(),
+    (() => { const o = h('div', 'route-output'); o.id = 'v2-output'; o.setAttribute('aria-live', 'polite'); return o; })(),
+    h('div', 'route-grid',
+      h('section', null, h('div', 'section-heading', h('h3', null, 'Judgment Trace'), h('span', 'status', 'Jev')), (() => { const d = h('div'); d.id = 'v2-trace'; return d; })()),
+      h('section', 'route-tables', h('div', 'section-heading', h('h3', null, 'Truth Table v2'), h('span', 'status', 'Code')), (() => { const d = h('div'); d.id = 'v2-table'; return d; })())));
+  sec.hidden = false;
+}
+function renderV2() {
+  if (!$('v2-output')) return;
+  const a = current?.data.answers, hasV2 = a && 'exact_details' in a;
+  const j = hasV2 ? judgeV2(a, a) : null, d = j ? decideV2(j) : null;
+  if (!current) $('v2-output').replaceChildren(h('p', 'route-empty', 'Pick a prompt to see where Router v2 sends it.'));
+  else if (!hasV2) $('v2-output').replaceChildren(h('p', 'route-empty', 'This answer came from before Router v2 existed. Reload the page and pick the prompt again.'));
+  else {
+    const [tier, effort] = d.arm.split(':');
+    $('v2-output').replaceChildren(
+      h('div', 'route-pick',
+        h('div', null, h('span', 'route-k', 'Model'), h('strong', null, MODELS[tier])),
+        h('div', null, h('span', 'route-k', 'Effort'), h('strong', null, EFFORT_LABEL[effort]))),
+      h('p', 'route-meta', `Row ${d.row + 1}: ${ROUTER_V2_TABLE[d.row].when.toLowerCase()} · ${current.data.model}`));
+  }
+  const p = k => typeof a?.[k] === 'object' ? a[k].noul : a?.[k];
+  $('v2-trace').replaceChildren(...(hasV2
+    ? [...Object.entries(V2_JUDGMENTS).map(([k, label]) => traceRow('noul', label, [h('span', p(k) >= .5 ? 'opt on' : 'opt', `true ${pct(p(k))}`), h('span', p(k) < .5 ? 'opt on' : 'opt', `false ${pct(1 - p(k))}`)], j[k] ? 'yes' : 'no', j[k] ? 'is-yes' : 'is-no')),
+       traceRow('score', 'Reasoning depth (from the original questions)', [h('span', 'opt on', DEPTH[j.depth])], DEPTH[j.depth], 'is-level')]
+    : [h('p', 'route-empty', 'Jev’s answers to Router v2’s questions, with the probabilities code reads.')]));
+  $('v2-table').replaceChildren(
+    table(['#', 'If', 'Model', 'Effort'], ROUTER_V2_TABLE.map((r, i) => {
+      const state = !d ? '' : i === d.row ? 'hit' : i < d.row ? 'miss' : 'skip', [tier, effort] = r.arm.split(':');
+      return h('tr', state, h('td', null, String(i + 1)), h('td', null, r.when), h('td', null, MODELS[tier]), h('td', null, EFFORT_LABEL[effort]));
+    })),
+    h('p', 'note', 'First match wins. Yes means Jev’s probability is at least 0.5. No row needs Claude Fable: on the eval’s prompts the top tier never earned its cost.'));
+}
+const renderAll = () => { renderOutput(); renderTrace(); renderTables(); renderApi(); renderAnti(); renderCompare(); renderV2(); };
 
 function renderWidget() {
   if (rendered || !window.turnstile || window.jevHuman?.ok()) return;
@@ -176,6 +220,7 @@ async function route(prompt) {
   setBusy(true); showError('');
   $('route-output').replaceChildren(h('p', 'route-empty', `Asking Jev about “${prompt}”…`));
   renderAnti(true);
+  if ($('v2-output')) $('v2-output').replaceChildren(h('p', 'route-empty', `Asking Jev about “${prompt}”…`));
   try {
     const response = await fetch('/api/jev', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ demo: 'route', prompt, verification_token: token || undefined }), signal: AbortSignal.timeout(45000) });
     let data; try { data = await response.json(); } catch { throw new Error('The server returned an unreadable response. Please try again.'); }
@@ -197,6 +242,7 @@ async function route(prompt) {
 const chips = () => PROMPTS.map(p => { const b = h('button', 'chip', p); b.type = 'button'; b.dataset.prompt = p; b.addEventListener('click', () => route(p)); return b; });
 $('route-chips').replaceChildren(...chips());
 $('anti-chips').replaceChildren(...chips());
+initV2();
 $('route-form').addEventListener('submit', e => { e.preventDefault(); route($('route-prompt').value); });
 $('route-human-check').hidden = !!window.jevHuman?.ok();
 renderWidget();

@@ -77,7 +77,33 @@ export const ANTI_OPTIONS = ['Haiku', 'Sonnet', 'Opus', 'Fable'];
 export function antiQuestions() {
   return { model_choice: { type: 'choice', instructions: 'Which model should I use for this prompt?', criteria: { Haiku: 'Claude Haiku', Sonnet: 'Claude Sonnet', Opus: 'Claude Opus', Fable: 'Claude Fable' } } };
 }
-// Returns the validated answers in the API's own shape, or null.
+// Router v2's extra judgments, written from what the eval showed: failures came
+// from exact, letter-level work and long step-by-step procedures, which the
+// original five questions didn't capture. Same call; decisions stay in code
+// (public/jev/router-v2-policy.js).
+export function routerV2Questions() {
+  return {
+    exact_details: { type: 'noul', instructions: 'Does a correct answer to `prompt` depend on getting exact letters, words or digits right?', criteria: {
+      true: 'One miscounted or misplaced letter, word or digit makes the answer wrong: counting letters, writing exactly N words, avoiding a letter, or multiplying large numbers exactly.',
+      false: 'Small slips in wording would not make the answer wrong: explaining a concept, chatting, recalling a fact, or writing ordinary prose.'
+    } },
+    quick_recall: { type: 'noul', instructions: 'Can `prompt` be answered by recalling one well-known fact or doing one simple step?', criteria: {
+      true: 'A capital city, a chemical symbol, a definition, a single small calculation or a greeting.',
+      false: 'The answer needs several steps of reasoning, a piece of writing, or code.'
+    } },
+    writes_code: { type: 'noul', instructions: 'Does `prompt` ask for code to be written?', criteria: {
+      true: 'The user wants a function, script, class or program.',
+      false: 'The user wants an answer, an explanation or prose, not code.'
+    } },
+    long_procedure: { type: 'noul', instructions: 'Does answering `prompt` require carrying out a long procedure step by step, such as checking many cases or tracking many items?', criteria: {
+      true: 'The answer comes from many repeated steps: counting dates across decades, checking every number in a large range, or tracking several people’s statements.',
+      false: 'The answer takes a few steps at most.'
+    } }
+  };
+}
+export const ROUTER_V2_NOULS = ['exact_details', 'quick_recall', 'writes_code', 'long_procedure'];
+// Returns the validated answers in the API's own shape, or null. Router v2's
+// judgments are included when present (the live call always asks them).
 export function routerAnswers(answers) {
   const d = answers?.reasoning_depth, keys = Array.from({ length: DEPTH_LEVELS }, (_, i) => String(i));
   if (!d || !keys.every(k => probability(d.probabilities?.[k])) || Math.abs(keys.reduce((s, k) => s + d.probabilities[k], 0) - 1) > .02) return null;
@@ -88,6 +114,10 @@ export function routerAnswers(answers) {
   const c = answers.model_choice;
   if (!ANTI_OPTIONS.includes(c?.choice) || !ANTI_OPTIONS.every(k => probability(c.probabilities?.[k])) || Math.abs(ANTI_OPTIONS.reduce((s, k) => s + c.probabilities[k], 0) - 1) > .02) return null;
   out.model_choice = { type: 'choice', choice: c.choice, probabilities: Object.fromEntries(ANTI_OPTIONS.map(k => [k, c.probabilities[k]])), confidence: probability(c.confidence) ? c.confidence : null };
+  if (ROUTER_V2_NOULS.some(id => id in answers)) {
+    if (!ROUTER_V2_NOULS.every(id => probability(answers[id]?.noul))) return null;
+    for (const id of ROUTER_V2_NOULS) out[id] = { type: 'noul', noul: answers[id].noul };
+  }
   return out;
 }
 export async function readJSON(request) {
@@ -156,7 +186,7 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     const out = (b, status = 200) => json(status === 200 ? { ...b, human_until: humanUntil } : b, status, setCookie ? { 'Set-Cookie': setCookie.header } : {});
     const started = Date.now();
     try {
-      const upstream = route ? { model: MODEL, state: { prompt: body.prompt.trim() }, questions: { ...routerQuestions(), ...antiQuestions() } } : rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
+      const upstream = route ? { model: MODEL, state: { prompt: body.prompt.trim() }, questions: { ...routerQuestions(), ...routerV2Questions(), ...antiQuestions() } } : rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
       const response = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(upstream), signal: AbortSignal.timeout(25000), redirect: 'manual' });
       if (!response.ok) {
         const messages = { 401: 'Claim Check is temporarily unavailable.', 402: 'Claim Check is paused: its usage allowance has been reached.', 403: 'Claim Check is temporarily unavailable.', 429: 'Jev is busy. Wait a moment and try again.' };

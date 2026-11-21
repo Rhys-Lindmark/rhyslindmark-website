@@ -13,36 +13,8 @@
 // arm with the best (chance of passing − λ × cost). λ is chosen on the training
 // prompts only.
 
-const yes = p => p >= 0.5;
-
-// Tiers named as in the shipped router: haiku (cheapest) .. opus (top in Eval 2).
-// Rows set from the 60 training prompts' Qwen results only (never the test
-// prompts), in order, first match wins. What training showed:
-// - "exact details" fires on most prompts, so it needs depth to split it: with
-//   quick recall or no reasoning, Flash at high effort passed 100%; otherwise
-//   Plus at high effort passed 96-100% where Flash got 88%.
-// - Exact details plus a long procedure: Plus high matched Max high (80%) at a third of the cost.
-// - Code: Flash at high effort passed 100% for a third of Plus's cost.
-export const ROUTER_V2_TABLE = [
-  { when: 'Exact details and a long procedure', test: j => j.exact_details && j.long_procedure, arm: 'sonnet:high' },
-  { when: 'Exact details, quick recall or no reasoning', test: j => j.exact_details && (j.quick_recall || j.depth === 0), arm: 'haiku:high' },
-  { when: 'Exact letters, words or digits', test: j => j.exact_details, arm: 'sonnet:high' },
-  { when: 'Long step-by-step procedure', test: j => j.long_procedure, arm: 'sonnet:high' },
-  { when: 'Large piece of work', test: j => j.large_output, arm: 'opus:low' },
-  { when: 'Writes code', test: j => j.writes_code, arm: 'haiku:high' },
-  { when: 'Quick recall', test: j => j.quick_recall, arm: 'haiku:low' },
-  { when: 'Otherwise', test: () => true, arm: 'sonnet:low' }
-];
-
-// Most likely reasoning-depth level, as the shipped router reads it.
-const depthOf = old => [0, 1, 2, 3].reduce((b, i) => old.reasoning_depth.probabilities[String(i)] >= old.reasoning_depth.probabilities[String(b)] ? i : b, 0);
-export function judgeV2(old, extra) {
-  return {
-    exact_details: yes(extra.exact_details), quick_recall: yes(extra.quick_recall), writes_code: yes(extra.writes_code), long_procedure: yes(extra.long_procedure),
-    large_output: yes(old.large_output.noul), depth: depthOf(old)
-  };
-}
-export const routerV2 = (old, extra, table = ROUTER_V2_TABLE) => { const j = judgeV2(old, extra); return table.find(r => r.test(j)).arm; };
+// Router v2's table is shared with the page; see public/jev/router-v2-policy.js.
+export { ROUTER_V2_TABLE, judgeV2, routerV2 } from '../../public/jev/router-v2-policy.js';
 
 // ---- Router v3 ---------------------------------------------------------------
 export const features = (old, extra) => [1,
@@ -77,11 +49,12 @@ export function trainRouterV3(train, arms) {
 // choice isn't fit to prompts the model already saw): the cheapest λ whose
 // pass rate is within 1 point of the best λ's.
 export function chooseLambda(train, arms, lambdas) {
+  // Fit once per held-out prompt, then try every λ on that fit.
+  const folds = train.map((t, i) => trainRouterV3(train.filter((_, k) => k !== i), arms));
   const scored = lambdas.map(lambda => {
     let pass = 0, cost = 0;
     train.forEach((t, i) => {
-      const r = trainRouterV3(train.filter((_, k) => k !== i), arms), a = r.pick(t.x, lambda);
-      const runs = t.runs[a] || [];
+      const a = folds[i].pick(t.x, lambda), runs = t.runs[a] || [];
       pass += runs.length ? runs.reduce((s, v) => s + v, 0) / runs.length : 0; cost += t.cost[a] ?? 0;
     });
     return { lambda, pass: pass / train.length, cost: cost / train.length };

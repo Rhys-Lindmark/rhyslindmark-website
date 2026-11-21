@@ -7,11 +7,11 @@ const pct = x => `${(x * 100).toFixed(1)}%`;
 const usd = x => x < 1 ? `$${x.toFixed(2)}` : x < 10 ? `$${x.toFixed(1)}` : `$${Math.round(x)}`;
 
 const EVALS = [
-  { section: 'router-eval', title: 'Eval 1: mixed open models', summary: '/jev/eval-summary.json', replay: '/jev/eval-replay.json',
-    intro: 'The first run. Four open models from two families stood in for the router’s four tiers.',
+  { section: 'router-eval', title: 'Eval v0: a first pass', summary: '/jev/eval-summary.json', replay: '/jev/eval-replay.json',
+    intro: 'The first pass. Four open models from two families stood in for the router’s four tiers. Its lessons shaped the eval below.',
     finding: 'Price didn’t track skill: DeepSeek V4.1 Flash, the second-cheapest model, passed everything, while pricier GLM 5.3 stumbled on letter-level tasks. So the original router mostly paid for capability it didn’t need, and did no better than random routing with the same model mix.' },
-  { section: 'router-eval-2', title: 'Eval 2: one model family, new prompts', summary: '/jev/eval-summary-v2.json', replay: '/jev/eval-replay-v2.json',
-    intro: 'Eval 1 showed that differences between model families (GLM vs. DeepSeek) swamped differences between tiers, so this run uses one family, Qwen 3.7, at three sizes, with no Fable tier (a Fable pick falls back to Max). Router v2 and v3 were built from Eval 1’s lessons using only the 60 original prompts, then tested on 168 new prompts sorted into easy, medium and hard by how many of the six model/effort combinations actually failed them.',
+  { section: 'router-eval-2', title: 'Eval', summary: '/jev/eval-summary-v2.json', replay: '/jev/eval-replay-v2.json',
+    intro: 'This is the eval. Qwen 3.7 Flash, Plus and Max play the router’s tiers (a Fable pick falls back to Max). Router v2 and v3 were built from Eval v0’s lessons using only its 60 prompts, then tested on 168 new prompts, sorted into easy, medium and hard by how many of the six model/effort combinations failed them.',
     finding: 'Both new routers beat the original by 11–13 points at about the same cost, and do far better on hard prompts. But neither beats simply sending everything to Qwen 3.7 Plus at high effort (93.5% for $3.32 per 1,000), so with this family there is little left for routing to win.' }
 ];
 
