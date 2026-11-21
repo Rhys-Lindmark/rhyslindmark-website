@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><meta name="referrer" content="no-referrer"><title>Search the feedback · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/feedback/search.css?v=fs-1"></head>
+<body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><a href="/jev/docs/feedback/">Feedback</a><span class="here">Search</span></header>
+<main class="fs">
+<header class="fs-head">
+<span class="fs-tag">feedback corpus</span>
+<h1 class="fs-title">Search the feedback</h1>
+<p class="fs-sub" id="corpus-meta">Everything public people have said about Jev since launch: GitHub, Hacker News, X, the web.</p>
+</header>
+
+<form class="fs-form" id="search" role="search">
+<div class="fs-query">
+<input id="q" name="q" type="search" placeholder="question engineering" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Search the corpus">
+<button type="submit" class="fs-go">Search</button>
+</div>
+<p class="fs-help">Words must all appear. <code>"exact phrase"</code>, <code>calibrat*</code> for a prefix, <code>-word</code> to exclude, <code>latency OR speed</code>.</p>
+<details class="fs-filters" id="filters">
+<summary>Filters <span id="filter-count"></span></summary>
+<div class="fs-grid">
+<label class="fs-field"><span>Source</span><select id="kind" name="kind"><option value="">Everything</option></select></label>
+<label class="fs-field"><span>From</span><input id="from" name="from" type="date"></label>
+<label class="fs-field"><span>To</span><input id="to" name="to" type="date"></label>
+<label class="fs-field"><span>Jev says it shows</span><select id="label" name="label"><option value="">Any</option></select></label>
+<label class="fs-field"><span>Builder type (Jev)</span><select id="segment" name="segment"><option value="">Any</option></select></label>
+<label class="fs-field"><span>Sort</span><select id="sort" name="sort">
+<option value="">Default (best match, or newest)</option><option value="newest">Newest</option><option value="oldest">Oldest</option>
+<option value="label">Most likely to show the label</option><option value="sentiment">Most positive (Jev)</option><option value="-sentiment">Most negative (Jev)</option>
+</select></label>
+<label class="fs-check"><input id="about" name="about" type="checkbox" value="1"><span>Only items Jev says are about Jev</span></label>
+</div>
+<button type="button" class="text-button" id="clear">Clear filters</button>
+</details>
+</form>
+
+<div class="fs-try" id="try">Try: <button type="button" data-q="&quot;question engineering&quot;">“question engineering”</button><button type="button" data-q="latency OR slow">latency OR slow</button><button type="button" data-label="pain_trust" data-about="1">doubts about calibration</button><button type="button" data-label="in_production" data-about="1">running in production</button><button type="button" data-q="open weights" data-kind="hn">open weights on HN</button></div>
+
+<p class="fs-status" id="status" aria-live="polite"></p>
+<ol class="fs-results" id="results"></ol>
+<button type="button" class="fs-more" id="more" hidden>More results</button>
+<p class="fs-foot">Labels are Jev’s own judgments (jev-1.14, questions in <a href="/jev/docs/labeling/questions.py">labeling/questions.py</a>), shown when Jev gives 70% or more. Items are other people’s words: link to them, don’t repost them.</p>
+</main></div>
+<script src="/jev/feedback/search.js?v=fs-1" defer></script>
+</body></html>

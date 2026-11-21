@@ -38,3 +38,10 @@ binding = "JOBBOT_DB"
 database_name = "jobbot-draft"
 database_id = "76c1456c-b801-4b6b-bc59-9584a7728db5"
 migrations_dir = "migrations/jobbot"
+
+# Jev feedback corpus search (/jev/feedback/), filled by feedback/upload_d1.py in the jev repo.
+[[d1_databases]]
+binding = "JEV_FEEDBACK_DB"
+database_name = "jev-feedback"
+database_id = "248226dc-92da-4797-8fcd-5da13ce82c7e"
+migrations_dir = "migrations/jev-feedback"

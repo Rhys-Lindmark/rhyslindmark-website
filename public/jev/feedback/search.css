@@ -1,0 +1,58 @@
+/* /jev/feedback/: search the feedback corpus. Loaded after minimal.css; same look as /jev/docs. */
+.shell > header .here { font-size: 14px; color: var(--steel); }
+.fs { max-width: 760px; margin: 0 auto; }
+.fs-head { display: grid; justify-items: center; gap: 22px; text-align: center; margin: 40px 0 36px; }
+.fs-tag { font: 500 var(--jev-text-label, 12px)/1 var(--jev-font-mono); letter-spacing: .02em; padding: 5px 8px; background: var(--jev-ink); color: var(--jev-paper); text-transform: uppercase; }
+.fs-title { font: 500 clamp(40px, 8vw, 72px)/.9 var(--jev-font-display); letter-spacing: var(--jev-tracking-display); color: var(--jev-graphite); margin: 0; }
+.fs-sub { margin: 0; max-width: 52ch; color: var(--steel); font-size: 15px; }
+
+.fs-form { border: var(--jev-rule); background: var(--jev-paper); padding: 16px; }
+.fs-query { display: flex; gap: 8px; }
+.fs-query input { flex: 1; min-width: 0; font-size: 17px; padding: 12px 14px; }
+.fs-go { border: 0; background: var(--jev-ink); color: var(--jev-paper); padding: 0 18px; font-weight: 535; font-size: 15px; }
+.fs-go:hover { background: var(--jev-graphite); }
+.fs-help { margin: 10px 0 0; font-size: 12px; color: var(--steel); }
+.fs-help code { font: 12px var(--jev-font-mono); background: var(--jev-mist, #f3f3f3); padding: 1px 4px; }
+.fs-filters { margin-top: 14px; border-top: var(--jev-rule); padding-top: 12px; }
+.fs-filters summary { cursor: pointer; font: 500 12px/1 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--ink); }
+.fs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px 16px; margin: 14px 0 12px; }
+.fs .fs-field { display: grid; gap: 6px; margin: 0; justify-content: stretch; }
+.fs .fs-field > span { font: 500 11px/1 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--steel); }
+.fs select, .fs .fs-field input { width: 100%; min-width: 0; background: #fafafa; color: var(--ink); border: 1px solid var(--bone); padding: 10px 12px; font: inherit; font-size: 15px; border-radius: 0; -webkit-appearance: none; appearance: none; }
+.fs select { background-image: linear-gradient(45deg, transparent 50%, var(--steel) 50%), linear-gradient(135deg, var(--steel) 50%, transparent 50%); background-position: calc(100% - 16px) 55%, calc(100% - 11px) 55%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 30px; }
+.fs select:focus, .fs .fs-field input:focus { outline: none; border-color: var(--ink); background-color: #fff; }
+.fs .fs-check { display: flex; align-items: center; justify-content: flex-start; gap: 10px; margin: 0; grid-column: 1 / -1; font-size: 14px; }
+.fs .fs-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--jev-ink); }
+.fs .fs-check span { font-size: 14px; color: var(--ink); }
+
+.fs-try { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 18px 0 0; font-size: 13px; color: var(--steel); }
+.fs-try button { border: 1px solid var(--bone); background: none; padding: 6px 10px; font-size: 13px; color: var(--ink); }
+.fs-try button:hover { border-color: var(--ink); }
+.fs-status { margin: 24px 0 8px; font: 500 12px/1.4 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--steel); min-height: 1.4em; }
+
+.fs-results { list-style: none; margin: 0; padding: 0; border-top: var(--jev-rule); }
+.fs-item { padding: 20px 0 20px 20px; border-bottom: 1px solid var(--jev-silver); border-left: var(--jev-rule); display: grid; gap: 8px; min-width: 0; }
+.fs-meta { display: flex; flex-wrap: wrap; gap: 4px 12px; font: 12px/1.3 var(--jev-font-mono); color: var(--steel); }
+.fs-kind { color: var(--ink); font-weight: 500; }
+.fs-item-title { font: 535 17px/1.3 var(--jev-font-body); margin: 0; overflow-wrap: anywhere; }
+.fs-snippet { margin: 0; font-size: 15px; line-height: 1.5; color: var(--jev-graphite); overflow-wrap: anywhere; }
+.fs-snippet mark { background: var(--jev-signal-soft, #fde68a); color: var(--ink); padding: 0 1px; }
+.fs-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.fs-chip { font: 11px/1 var(--jev-font-mono); padding: 5px 7px; border: 1px solid var(--ink); color: var(--ink); white-space: nowrap; }
+.fs-chip-pain { background: var(--jev-rose-soft, #fde2e2); border-color: transparent; }
+.fs-chip-dim { border-color: var(--bone); color: var(--steel); }
+.fs-open { font-size: 13px; justify-self: start; }
+.fs-more { display: block; margin: 24px auto 0; border: 1px solid var(--ink); background: none; padding: 10px 18px; font-size: 14px; font-weight: 535; }
+.fs-more:hover { background: var(--jev-ink); color: var(--jev-paper); }
+.fs-foot { margin: 40px 0 0; font-size: 12px; color: var(--steel); max-width: 64ch; }
+.fs-foot a { text-decoration: underline; text-underline-offset: 2px; }
+
+@media (max-width: 560px) {
+	.shell > header { flex-wrap: wrap; gap: 8px 16px; }
+	.fs-head { margin: 24px 0 24px; gap: 16px; }
+	.fs-form { padding: 12px; }
+	.fs-go { padding: 0 14px; }
+	.fs-grid { grid-template-columns: 1fr 1fr; }
+	.fs .fs-field:first-child, .fs .fs-field:nth-child(4), .fs .fs-field:nth-child(5), .fs .fs-field:nth-child(6) { grid-column: 1 / -1; }
+	.fs-item { padding-left: 14px; }
+}
