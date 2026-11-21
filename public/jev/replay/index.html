@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="A replay of the live demo from The Question Is the Program: three ways to ask Jev about 40 support tickets, recorded output."><title>Demo replay</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/replay/replay.css?v=replay-1"><meta name="robots" content="noindex"></head>
+<body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>Demo replay</h1></header>
+<main>
+<p class="rp-lede">The live demo from <a href="/jev/talks/question-is-the-program/">The Question Is the Program</a>, replayed from its recorded output. For when the terminal won’t cooperate, or for anyone who missed the talk.</p>
+<div class="rp-window" role="region" aria-label="Terminal replay">
+<div class="titlebar-dark rp-bar"><span>~/jev/takehome/demos/a1-wrong-question</span><span id="rp-count"></span></div>
+<pre class="rp-term" id="rp-term" aria-live="polite"></pre>
+</div>
+<div class="actions">
+<button class="run" id="rp-play" type="button">▶ Run the next command</button>
+<button class="chip" id="rp-all" type="button">Show everything</button>
+<button class="chip" id="rp-reset" type="button">Start over</button>
+<span class="note" id="rp-say"></span>
+</div>
+<p class="note">Keys: <b>space</b> runs the next command. Output is exactly what the scripts print with <code>JEV_CACHE=replay</code>: real Jev answers recorded on jev-1.14.0, which is why they show $0 and “replayed from cache”. Run fresh, the same 40 tickets cost $0.0013 at ~105 ms per request.</p>
+</main></div>
+<script type="module" src="/jev/replay/replay.js?v=replay-1"></script></body></html>
