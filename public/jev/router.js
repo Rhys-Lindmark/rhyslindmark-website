@@ -76,8 +76,8 @@ const pct = n => n.toFixed(2);
 const cache = new Map();
 let current = null, widgetId, token = '', busy = false, rendered = false;
 const human = () => window.jevHuman?.ok() || !!token;
-const showError = m => { $('route-error').textContent = m; $('route-error').hidden = !m; };
-const setBusy = b => { busy = b; for (const el of document.querySelectorAll('#router [data-prompt], #route-run, #route-prompt')) el.disabled = b; };
+const showError = m => { for (const id of ['route-error', 'anti-error']) { $(id).textContent = m; $(id).hidden = !m; } };
+const setBusy = b => { busy = b; for (const el of document.querySelectorAll('[data-prompt], #route-run, #route-prompt')) el.disabled = b; };
 
 function renderOutput() {
   const out = $('route-output');
@@ -179,7 +179,7 @@ async function route(prompt) {
   prompt = prompt.trim();
   if (!prompt || busy) return;
   $('route-prompt').value = prompt;
-  for (const c of document.querySelectorAll('#router [data-prompt]')) c.classList.toggle('active', c.dataset.prompt === prompt);
+  for (const c of document.querySelectorAll('[data-prompt]')) c.classList.toggle('active', c.dataset.prompt === prompt);
   if (cache.has(prompt)) { current = { prompt, data: { ...cache.get(prompt), cached: true } }; renderAll(); return; }
   if (!human()) { showError('Complete the human check above first.'); renderWidget(); return; }
   setBusy(true); showError('');
@@ -200,7 +200,10 @@ async function route(prompt) {
   }
 }
 
-$('route-chips').replaceChildren(...PROMPTS.map(p => { const b = h('button', 'chip', p); b.type = 'button'; b.dataset.prompt = p; b.addEventListener('click', () => route(p)); return b; }));
+// The same prompts appear in both cards; either set runs the one shared call.
+const chips = () => PROMPTS.map(p => { const b = h('button', 'chip', p); b.type = 'button'; b.dataset.prompt = p; b.addEventListener('click', () => route(p)); return b; });
+$('route-chips').replaceChildren(...chips());
+$('anti-chips').replaceChildren(...chips());
 $('route-form').addEventListener('submit', e => { e.preventDefault(); route($('route-prompt').value); });
 $('route-human-check').hidden = !!window.jevHuman?.ok();
 renderWidget();
