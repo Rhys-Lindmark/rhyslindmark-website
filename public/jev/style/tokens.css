@@ -1,0 +1,56 @@
+/* Jev design system: CSS variables (v1, 2026-11-21).
+   Derived from typesafe.ai. Source of truth for every /jev page.
+   Fonts: Inter Tight and JetBrains Mono from Google Fonts, standing in for
+   Die Grotesk C and LisaTerminal Paper, which typesafe.ai licenses. */
+:root {
+  /* Neutrals */
+  --jev-paper: #fefefe;        /* page canvas, window bodies */
+  --jev-ink: #1e1e1e;          /* text, rules, title bars, filled buttons */
+  --jev-ink-86: rgba(30, 30, 30, .86); /* display type on rose */
+  --jev-graphite: #3d3d3d;     /* secondary headings */
+  --jev-steel: #5e5e5e;        /* helper text, captions */
+  --jev-fog: #9a9a9a;          /* disabled, placeholders */
+  --jev-ash: #c4c4c4;          /* inactive window panels */
+  --jev-silver: #dedede;       /* panels, quiet borders, table rules */
+  --jev-mist: #f3f3f3;         /* code wells, hover fills */
+
+  /* Chroma: one brand colour, one status colour */
+  --jev-rose: #f386a1;         /* brand field: section backgrounds, highlights */
+  --jev-rose-soft: #fbe1e8;    /* selected rows, soft highlight */
+  --jev-signal: #03aa5c;       /* pass, live, positive data only */
+  --jev-signal-soft: #d9f2e6;
+  --jev-alert: #c8102e;        /* errors only */
+
+  /* Type */
+  --jev-font-display: "Inter Tight", "Die Grotesk C", "Helvetica Neue", Arial, sans-serif;
+  --jev-font-body: "Inter Tight", "Die Grotesk C", "Helvetica Neue", Arial, sans-serif;
+  --jev-font-mono: "JetBrains Mono", "LisaTerminal Paper", ui-monospace, Menlo, monospace;
+  --jev-text-display: 64px;    /* lh .8,  500, capitalized */
+  --jev-text-h1: 40px;         /* lh .9,  500 */
+  --jev-text-h2: 24px;         /* lh 1,   500 */
+  --jev-text-h3: 18px;         /* lh 1.1, 500 */
+  --jev-text-body: 16px;       /* lh 1.45, 400 */
+  --jev-text-small: 14px;      /* lh 1.4, 400 */
+  --jev-text-label: 12px;      /* mono, lh 1, 500, .02em */
+  --jev-tracking-display: -.03em;
+  --jev-tracking-body: .01em;
+
+  /* Space (4px base) */
+  --jev-space-1: 4px;
+  --jev-space-2: 8px;
+  --jev-space-3: 12px;
+  --jev-space-4: 16px;
+  --jev-space-5: 24px;
+  --jev-space-6: 32px;
+  --jev-space-7: 48px;
+  --jev-space-8: 64px;
+  --jev-max-width: 1200px;
+
+  /* Shape */
+  --jev-radius: 0;             /* everything is square */
+  --jev-rule: 1px solid var(--jev-ink);
+  --jev-rule-quiet: 1px solid var(--jev-silver);
+  --jev-shadow-window: 3px 3px 0 var(--jev-ink);  /* hard, offset, no blur */
+  --jev-titlebar-height: 20px;
+  --jev-dots: radial-gradient(var(--jev-ink) .6px, transparent .8px) 0 0 / 6px 6px; /* 1-bit dot field */
+}

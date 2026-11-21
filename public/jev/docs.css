@@ -1,21 +1,40 @@
 /* /jev/docs pages and the /jev hub; loaded after minimal.css */
-.crumbs { font-size: 14px; color: var(--steel); }
+.crumbs { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; color: var(--steel); text-transform: uppercase; }
 .crumbs span { color: var(--ink); }
 .doc { max-width: 760px; }
 .listing { list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 6px; font-size: 15px; }
 .markdown { font-size: 15px; line-height: 1.6; }
 .markdown h1 { margin: 0 0 16px; }
-.markdown h2 { font-size: 22px; margin: 32px 0 10px; }
-.markdown h3 { font-size: 18px; margin: 24px 0 8px; }
+.markdown h2 { font: 500 var(--jev-text-h2)/1 var(--jev-font-display); letter-spacing: -.02em; margin: 40px 0 12px; padding-top: 12px; border-top: var(--jev-rule); }
+.markdown h3 { font: 500 var(--jev-text-h3)/1.1 var(--jev-font-body); margin: 24px 0 8px; }
 .markdown strong, .markdown th { font-weight: 600; }
 .markdown a { text-decoration: underline; text-decoration-color: var(--fog); text-underline-offset: 3px; }
 .markdown table { border-collapse: collapse; margin: 16px 0; font-size: 14px; display: block; overflow-x: auto; }
-.markdown th, .markdown td { border: 1px solid var(--bone); padding: 6px 10px; text-align: left; vertical-align: top; }
-.markdown code { background: #f6f6f6; padding: 1px 5px; border-radius: 6px; font-size: .92em; }
-.markdown pre, .file { background: #fafafa; border: 1px solid var(--bone); border-radius: 12px; padding: 14px 16px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+.markdown th, .markdown td { border: 1px solid var(--jev-silver); padding: 6px 10px; text-align: left; vertical-align: top; }
+.markdown th { background: var(--jev-ink); color: var(--jev-paper); border-color: var(--jev-ink); font: 500 var(--jev-text-label)/1.3 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; }
+.markdown code { font-family: var(--jev-font-mono); background: var(--jev-mist); padding: 1px 5px; border-radius: 0; font-size: .88em; }
+.markdown pre, .file { font-family: var(--jev-font-mono); background: var(--jev-mist); border: var(--jev-rule); border-radius: 0; padding: 14px 16px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
 .markdown pre code { background: none; padding: 0; }
-.markdown blockquote { margin: 16px 0; padding-left: 14px; border-left: 3px solid var(--bone); color: var(--steel); }
-.hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-.hub-grid .demo { margin: 0; }
-.hub-label { font-size: 12px; color: var(--steel); text-transform: uppercase; letter-spacing: .04em; margin: 28px 0 12px; }
-.hub-rule { border: 0; border-top: 1px solid var(--bone); margin: 40px 0 8px; }
+.markdown blockquote { margin: 16px 0; padding-left: 14px; border-left: 3px solid var(--jev-rose); color: var(--steel); }
+.markdown hr { border: 0; border-top: var(--jev-rule); margin: 32px 0; }
+
+/* Hub */
+.hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.hub-grid .demo { margin: 0; padding: 0; }
+.hub-grid .demo-heading { margin: 0; padding: 16px; }
+.hub-label { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; color: var(--jev-steel); text-transform: uppercase; margin: 40px 0 14px; }
+.hub-rule { border: 0; border-top: var(--jev-rule); margin: 56px 0 8px; }
+
+/* Components from the Jev design system (see /jev/style/) */
+.titlebar { display: flex; align-items: center; justify-content: space-between; height: var(--jev-titlebar-height); padding: 0 8px; background: var(--jev-ink); color: var(--jev-paper); font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; }
+.titlebar a { color: var(--jev-paper); font-weight: 500; }
+.rose-band { position: relative; background: var(--jev-rose); border: var(--jev-rule); padding: 40px 32px 32px; margin: 0 0 8px; }
+.rose-band .display { color: var(--jev-ink-86); }
+.rose-band p { margin: 16px 0 0; max-width: 60ch; color: var(--jev-ink); }
+.display { font: 500 var(--jev-text-display)/.8 var(--jev-font-display); letter-spacing: var(--jev-tracking-display); text-transform: capitalize; margin: 0; }
+.crop { position: relative; }
+.crop::before, .crop::after { content: ''; position: absolute; width: 10px; height: 10px; border: 0 solid var(--jev-ink); }
+.crop::before { top: 10px; left: 10px; border-top-width: 1px; border-left-width: 1px; }
+.crop::after { bottom: 10px; right: 10px; border-bottom-width: 1px; border-right-width: 1px; }
+.dots { background: var(--jev-dots); }
+.mono-label { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; color: var(--jev-steel); text-transform: uppercase; }

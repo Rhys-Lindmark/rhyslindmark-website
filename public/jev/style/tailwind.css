@@ -1,0 +1,63 @@
+/* Jev design system for Tailwind CSS v4 (v1, 2026-11-21).
+   Usage: put this in your main CSS file, then use classes like
+   bg-paper text-ink font-mono text-label border-ink shadow-window rounded-none. */
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..600&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@theme {
+  --color-paper: #fefefe;
+  --color-ink: #1e1e1e;
+  --color-ink-86: rgb(30 30 30 / .86);
+  --color-graphite: #3d3d3d;
+  --color-steel: #5e5e5e;
+  --color-fog: #9a9a9a;
+  --color-ash: #c4c4c4;
+  --color-silver: #dedede;
+  --color-mist: #f3f3f3;
+  --color-rose: #f386a1;
+  --color-rose-soft: #fbe1e8;
+  --color-signal: #03aa5c;
+  --color-signal-soft: #d9f2e6;
+  --color-alert: #c8102e;
+
+  --font-display: "Inter Tight", "Die Grotesk C", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Inter Tight", "Die Grotesk C", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "LisaTerminal Paper", ui-monospace, Menlo, monospace;
+
+  --text-display: 64px;
+  --text-display--line-height: .8;
+  --text-display--letter-spacing: -.03em;
+  --text-display--font-weight: 500;
+  --text-h1: 40px;
+  --text-h1--line-height: .9;
+  --text-h1--letter-spacing: -.03em;
+  --text-h2: 24px;
+  --text-h2--line-height: 1;
+  --text-h3: 18px;
+  --text-h3--line-height: 1.1;
+  --text-body: 16px;
+  --text-body--line-height: 1.45;
+  --text-small: 14px;
+  --text-small--line-height: 1.4;
+  --text-label: 12px;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: .02em;
+
+  --spacing: 4px;
+  --container-page: 1200px;
+
+  --radius-*: initial;
+  --radius-none: 0;
+
+  --shadow-*: initial;
+  --shadow-window: 3px 3px 0 #1e1e1e;
+}
+
+@layer components {
+  .jev-window { @apply border border-ink bg-paper shadow-window; }
+  .jev-titlebar { @apply flex h-5 items-center bg-ink px-2 font-mono text-label text-paper; }
+  .jev-label { @apply font-mono text-label uppercase text-steel; }
+  .jev-button { @apply bg-ink px-4 py-2 font-sans text-small font-medium text-paper hover:bg-graphite; }
+  .jev-button-ghost { @apply border border-ink px-4 py-2 font-sans text-small font-medium text-ink hover:bg-ink hover:text-paper; }
+  .jev-dots { background: radial-gradient(var(--color-ink) .6px, transparent .8px) 0 0 / 6px 6px; }
+}

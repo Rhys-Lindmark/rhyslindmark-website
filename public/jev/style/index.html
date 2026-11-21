@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="robots" content="noindex"><meta name="description" content="The Jev design system: CSS variables, Tailwind v4, design tokens and DESIGN.md, derived from typesafe.ai."><title>Jev design system</title><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-1"><link rel="stylesheet" href="/jev/style/style.css?v=jev-1"></head>
+<body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><span class="mono-label">Style 1.0</span></header>
+<main>
+<div class="rose-band crop"><h1 class="display">Jev Design System</h1><p><strong>A 1-bit system window on rose paper.</strong> Square, ink-ruled windows with black title bars on a near-white page. One dusty rose for whole sections, terminal-mono labels on everything. Derived from <a href="https://typesafe.ai">typesafe.ai</a>.</p></div>
+
+<div class="tabs" role="tablist" aria-label="Formats">
+<button role="tab" aria-selected="true" data-tab="preview">Preview</button>
+<button role="tab" aria-selected="false" data-tab="DESIGN.md">DESIGN.md</button>
+<button role="tab" aria-selected="false" data-tab="tailwind.css">Tailwind v4</button>
+<button role="tab" aria-selected="false" data-tab="tokens.css">CSS Variables</button>
+<button role="tab" aria-selected="false" data-tab="tokens.json">Design Tokens</button>
+</div>
+
+<section class="source window" id="source" hidden><div class="titlebar"><span id="source-name"></span><span><button class="tb-btn" id="copy">Copy</button> <a class="tb-btn" id="download" download>Download</a></span></div><pre id="source-text"></pre></section>
+
+<div id="preview">
+<p class="hub-label">Color palette</p>
+<p class="mono-label sg-sub">Brand</p>
+<div class="swatches">
+<div class="swatch"><span style="background:#f386a1"></span><b>Rose</b><code>#f386a1</code><small>The one brand colour. Whole sections and highlights, never body text.</small></div>
+<div class="swatch"><span style="background:#fbe1e8"></span><b>Rose Soft</b><code>#fbe1e8</code><small>Selected rows, soft highlight.</small></div>
+</div>
+<p class="mono-label sg-sub">Status</p>
+<div class="swatches">
+<div class="swatch"><span style="background:#03aa5c"></span><b>Signal</b><code>#03aa5c</code><small>Pass, live, positive numbers. Nothing else.</small></div>
+<div class="swatch"><span style="background:#d9f2e6"></span><b>Signal Soft</b><code>#d9f2e6</code><small>Behind signal states.</small></div>
+<div class="swatch"><span style="background:#c8102e"></span><b>Alert</b><code>#c8102e</code><small>Errors only.</small></div>
+</div>
+<p class="mono-label sg-sub">Neutrals</p>
+<div class="swatches">
+<div class="swatch"><span style="background:#1e1e1e"></span><b>Ink</b><code>#1e1e1e</code><small>Text, rules, title bars, buttons.</small></div>
+<div class="swatch"><span style="background:#3d3d3d"></span><b>Graphite</b><code>#3d3d3d</code><small>Secondary headings, hover.</small></div>
+<div class="swatch"><span style="background:#5e5e5e"></span><b>Steel</b><code>#5e5e5e</code><small>Helper text, mono labels.</small></div>
+<div class="swatch"><span style="background:#9a9a9a"></span><b>Fog</b><code>#9a9a9a</code><small>Disabled, placeholders.</small></div>
+<div class="swatch"><span style="background:#c4c4c4"></span><b>Ash</b><code>#c4c4c4</code><small>Inactive panels.</small></div>
+<div class="swatch"><span style="background:#dedede"></span><b>Silver</b><code>#dedede</code><small>Panels, quiet rules.</small></div>
+<div class="swatch"><span style="background:#f3f3f3"></span><b>Mist</b><code>#f3f3f3</code><small>Code wells, hover fills.</small></div>
+<div class="swatch"><span style="background:#fefefe"></span><b>Paper</b><code>#fefefe</code><small>Canvas, window bodies.</small></div>
+</div>
+
+<p class="hub-label">Typography</p>
+<div class="type-scale window"><div class="titlebar"><span>Inter Tight · JetBrains Mono</span><span>4px base</span></div>
+<div class="type-row"><span class="mono-label">Display · 64 / .8 · 500</span><p class="display">Typed Decisions</p></div>
+<div class="type-row"><span class="mono-label">H1 · 40 / .9 · 500</span><p class="t-h1">Calibrated by default</p></div>
+<div class="type-row"><span class="mono-label">H2 · 24 / 1 · 500</span><p class="t-h2">Question design is the bottleneck</p></div>
+<div class="type-row"><span class="mono-label">H3 · 18 / 1.1 · 500</span><p class="t-h3">Replace one high-volume step</p></div>
+<div class="type-row"><span class="mono-label">Body · 16 / 1.45 · 400</span><p class="t-body">Jev returns typed decisions with calibrated probabilities, so your software can act when it’s sure and escalate when it isn’t.</p></div>
+<div class="type-row"><span class="mono-label">Label · mono 12 · 500</span><p class="mono-label" style="color:var(--jev-ink)">Jev 1.14 · 193.6× faster · $0.042 / M</p></div>
+<p class="type-note">typesafe.ai uses Die Grotesk C and LisaTerminal Paper (licensed). Inter Tight and JetBrains Mono are the closest free pair.</p>
+</div>
+
+<p class="hub-label">Spacing &amp; shape</p>
+<div class="hub-grid">
+<div class="window"><div class="titlebar"><span>Spacing</span></div><table class="spec"><tr><td>Base unit</td><td>4px</td></tr><tr><td>Scale</td><td>4 · 8 · 12 · 16 · 24 · 32 · 48 · 64</td></tr><tr><td>Max width</td><td>1200px</td></tr><tr><td>Section gap</td><td>64px</td></tr><tr><td>Window padding</td><td>16px</td></tr></table></div>
+<div class="window"><div class="titlebar"><span>Shape</span></div><table class="spec"><tr><td>Radius</td><td>0, everywhere</td></tr><tr><td>Rule</td><td>1px Ink</td></tr><tr><td>Quiet rule</td><td>1px Silver</td></tr><tr><td>Elevation</td><td>3px 3px 0 Ink</td></tr><tr><td>Title bar</td><td>20px Ink, mono</td></tr></table></div>
+</div>
+
+<p class="hub-label">Components</p>
+<div class="hub-grid">
+<div class="window"><div class="titlebar"><span>Window 1.0</span><span>×</span></div><div class="win-body"><p class="t-h3">Title bar, rule, hard shadow</p><p class="t-small">The default container for anything interactive.</p><div class="btn-row"><button class="btn">Run</button><button class="btn btn-ghost">Cancel</button></div></div></div>
+<div class="window"><div class="titlebar"><span>Jev Confidence</span></div><div class="win-body dots fig"><div class="meter"><span class="mono-label">yes</span><div class="bar"><i style="width:82%"></i></div><b>0.82</b></div><div class="meter"><span class="mono-label">no</span><div class="bar"><i style="width:18%"></i></div><b>0.18</b></div><p class="pass">PASS · above threshold 0.70</p></div></div>
+</div>
+
+<p class="hub-label">Guidelines</p>
+<div class="hub-grid">
+<div class="window"><div class="titlebar"><span>Do</span></div><ul class="rules"><li>Keep corners square: windows, buttons, inputs, chips, bars.</li><li>Draw structure with 1px Ink rules.</li><li>Use Rose for a whole field: a band, a hero, a section.</li><li>Label in mono, like a spec sheet.</li><li>Set display type tight (0.8) and capitalized.</li><li>Use Signal green only for pass, live and positive numbers.</li></ul></div>
+<div class="window"><div class="titlebar"><span>Don’t</span></div><ul class="rules"><li>Round anything, or use pills.</li><li>Blur shadows or stack them; elevation is the 3px hard offset.</li><li>Use gradients, glows, orbs or colour washes.</li><li>Put Rose behind small UI or use it for text.</li><li>Add a second brand colour.</li><li>Use pure black; Ink is #1e1e1e.</li></ul></div>
+</div>
+</div>
+</main></div><script src="/jev/style/style.js?v=jev-1"></script></body></html>
