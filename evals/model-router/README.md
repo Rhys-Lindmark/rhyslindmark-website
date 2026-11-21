@@ -13,14 +13,24 @@ every model on every task, plot cost against success) and Baseten's router post
 
 ## Run
 
-Create `evals/model-router/.env` (gitignored):
+The scripts read two keys from the environment: `OPENROUTER_API_KEY` (best: a
+new key for this eval with a $25 credit limit set on OpenRouter) and
+`TYPESAFE_API_KEY`.
 
-```
-OPENROUTER_API_KEY=...
-TYPESAFE_API_KEY=...
+Recommended: keep both in Bitwarden Secrets Manager under exactly those names,
+and let `bws run` hand them to the scripts, so they never touch the disk:
+
+```bash
+bws run -- npm run models
 ```
 
-Then, from `evals/model-router/`:
+(`bws` needs its machine-account token in `BWS_ACCESS_TOKEN`; add
+`--project-id <id>` if the secrets live in one project.)
+
+Alternative: an `evals/model-router/.env` file (gitignored) with the same two
+lines.
+
+Then, from `evals/model-router/` (prefix the paid ones with `bws run --` if using Bitwarden):
 
 ```bash
 npm run selftest   # free
