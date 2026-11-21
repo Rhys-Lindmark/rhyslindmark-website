@@ -37,11 +37,11 @@ test('failed, mismatched or unavailable verification never reserves money or cal
     const db=database();try{let calls=0;const h=createHandler(async url=>{assert.ok(url.includes('/siteverify'));calls++;return Response.json(result);});assert.equal((await h({request:request(),env:environment(db)})).status,403);assert.equal(calls,1);assert.equal(db.raw.prepare('SELECT reserved_micros FROM jev_budget').get().reserved_micros,0);}finally{db.raw.close();}
   }
 });
-test('rate and lifetime budget SQL remain bounded under concurrent calls and persist across handler instances',async()=>{
+test('one visitor has no hourly cap, and the lifetime budget stays bounded under concurrent calls',async()=>{
   const db=database();try{
     const results=await Promise.all(Array.from({length:30},()=>reserve(db,'same-person',1793140000000)));
-    assert.equal(results.filter(x=>x===null).length,10);
-    assert.equal(db.raw.prepare('SELECT reserved_micros FROM jev_budget').get().reserved_micros,100000);
+    assert.equal(results.filter(x=>x===null).length,30);
+    assert.equal(db.raw.prepare('SELECT reserved_micros FROM jev_budget').get().reserved_micros,300000);
     db.raw.exec('UPDATE jev_budget SET reserved_micros=19990000');
     const last=await Promise.all(Array.from({length:10},(_,i)=>reserve(db,'person-'+i,1793140000000)));
     assert.equal(last.filter(x=>x===null).length,1);
