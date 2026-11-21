@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-21T05:33:22.045Z",
+  "generated": "2026-11-21T05:35:17.409Z",
   "partial": true,
   "tasks": 60,
   "reps": 1,
@@ -41,168 +41,168 @@
     "fable:low": "DeepSeek V4 Pro · low",
     "fable:high": "DeepSeek V4 Pro · high"
   },
-  "spent_usd": 0.8647754524499986,
+  "spent_usd": 0.9004643099499986,
   "budget_usd": 25,
   "jev_model": "jev-1.14.0",
   "policies": [
     {
       "name": "Always GLM 5.3 Flash · low",
       "kind": "fixed",
-      "pass": 0.8833333333333333,
-      "cost": 0.10533952166666673
+      "pass": 0.8583333333333333,
+      "cost": 0.10635363666666671
     },
     {
       "name": "Always GLM 5.3 Flash · high",
       "kind": "fixed",
-      "pass": 0.9083333333333333,
-      "cost": 0.13769187666666666
+      "pass": 0.8916666666666667,
+      "cost": 0.13431303666666664
     },
     {
       "name": "Always DeepSeek V4.1 Flash · low",
       "kind": "fixed",
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "name": "Always DeepSeek V4.1 Flash · high",
       "kind": "fixed",
       "pass": 1,
-      "cost": 0.3013136991666668
+      "cost": 0.2995811658333335
     },
     {
       "name": "Always GLM 5.3 · low",
       "kind": "fixed",
       "pass": 0.9,
-      "cost": 0.6536399341666667
+      "cost": 0.614320220833333
     },
     {
       "name": "Always GLM 5.3 · high",
       "kind": "fixed",
-      "pass": 0.8833333333333333,
-      "cost": 1.7241984791666662
+      "pass": 0.8916666666666667,
+      "cost": 1.717101025833333
     },
     {
       "name": "Always DeepSeek V4 Pro · low",
       "kind": "fixed",
       "pass": 0.9666666666666667,
-      "cost": 2.509437295833333
+      "cost": 2.4339885208333327
     },
     {
       "name": "Always DeepSeek V4 Pro · high",
       "kind": "fixed",
-      "pass": 0.9666666666666667,
-      "cost": 4.370184891666665
+      "pass": 0.9583333333333334,
+      "cost": 4.353221333333332
     },
     {
       "name": "Router (shipped table)",
       "kind": "router",
-      "pass": 0.9583333333333334,
-      "cost": 0.5415851350000003,
-      "random_p50": 0.9166666666666666,
-      "random_p95": 0.95,
+      "pass": 0.9416666666666667,
+      "cost": 0.5393518350000002,
+      "random_p50": 0.9,
+      "random_p95": 0.9333333333333333,
       "beats_random": true
     },
     {
       "name": "Router · yes ≥ 0.5, unsure = yes",
       "kind": "router-variant",
-      "pass": 0.95,
-      "cost": 0.21943859916666658,
-      "random_p50": 0.9083333333333333,
-      "random_p95": 0.9416666666666667,
+      "pass": 0.9333333333333333,
+      "cost": 0.21720529916666664,
+      "random_p50": 0.8916666666666667,
+      "random_p95": 0.925,
       "beats_random": true
     },
     {
       "name": "Router · yes ≥ 0.5, unsure = no",
       "kind": "router-variant",
-      "pass": 0.95,
-      "cost": 0.21943859916666658,
-      "random_p50": 0.9083333333333333,
-      "random_p95": 0.9416666666666667,
+      "pass": 0.9333333333333333,
+      "cost": 0.21720529916666664,
+      "random_p50": 0.8916666666666667,
+      "random_p95": 0.925,
       "beats_random": true
     },
     {
       "name": "Router · yes ≥ 0.6, unsure = yes",
       "kind": "router-variant",
-      "pass": 0.9666666666666667,
-      "cost": 0.40585547250000015,
-      "random_p50": 0.9083333333333333,
-      "random_p95": 0.9416666666666667,
+      "pass": 0.95,
+      "cost": 0.4036221725000002,
+      "random_p50": 0.8916666666666667,
+      "random_p95": 0.925,
       "beats_random": true
     },
     {
       "name": "Router · yes ≥ 0.6, unsure = no",
       "kind": "router-variant",
-      "pass": 0.9416666666666667,
-      "cost": 0.21494706583333328,
-      "random_p50": 0.9083333333333333,
-      "random_p95": 0.9416666666666667,
-      "beats_random": false
+      "pass": 0.925,
+      "cost": 0.21271376583333332,
+      "random_p50": 0.8916666666666667,
+      "random_p95": 0.9166666666666666,
+      "beats_random": true
     },
     {
       "name": "Router · yes ≥ 0.8, unsure = yes",
       "kind": "router-variant",
-      "pass": 0.9583333333333334,
-      "cost": 0.771393155,
-      "random_p50": 0.925,
-      "random_p95": 0.9666666666666667,
+      "pass": 0.95,
+      "cost": 0.7682925033333335,
+      "random_p50": 0.9166666666666666,
+      "random_p95": 0.95,
       "beats_random": false
     },
     {
       "name": "Router · yes ≥ 0.8, unsure = no",
       "kind": "router-variant",
-      "pass": 0.925,
-      "cost": 0.15979431083333334,
-      "random_p50": 0.9,
-      "random_p95": 0.9333333333333333,
+      "pass": 0.9083333333333333,
+      "cost": 0.16288809250000005,
+      "random_p50": 0.8833333333333333,
+      "random_p95": 0.9166666666666666,
       "beats_random": false
     },
     {
       "name": "Router · yes ≥ 0.9, unsure = yes",
       "kind": "router-variant",
       "pass": 0.9583333333333334,
-      "cost": 0.8925395066666667,
+      "cost": 0.8895625825,
       "random_p50": 0.9333333333333333,
-      "random_p95": 0.975,
+      "random_p95": 0.9666666666666667,
       "beats_random": false
     },
     {
       "name": "Router · yes ≥ 0.9, unsure = no",
       "kind": "router-variant",
-      "pass": 0.925,
-      "cost": 0.15979431083333334,
-      "random_p50": 0.9,
-      "random_p95": 0.9333333333333333,
+      "pass": 0.9083333333333333,
+      "cost": 0.16288809250000005,
+      "random_p50": 0.8833333333333333,
+      "random_p95": 0.9166666666666666,
       "beats_random": false
     },
     {
       "name": "Choice (argmax) · low effort",
       "kind": "choice",
-      "pass": 0.925,
-      "cost": 0.25736399249999997,
-      "random_p50": 0.9166666666666666,
-      "random_p95": 0.95,
+      "pass": 0.9166666666666666,
+      "cost": 0.22974198333333334,
+      "random_p50": 0.9,
+      "random_p95": 0.9333333333333333,
       "beats_random": false
     },
     {
       "name": "Choice (argmax) · high effort",
       "kind": "choice",
       "pass": 0.9,
-      "cost": 0.6025800429166668,
-      "random_p50": 0.925,
-      "random_p95": 0.9583333333333334,
+      "cost": 0.59145201125,
+      "random_p50": 0.9166666666666666,
+      "random_p95": 0.95,
       "beats_random": false
     },
     {
       "name": "Oracle (cheapest best arm)",
       "kind": "oracle",
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "name": "Learned router · λ=0",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.29001995708333334,
       "lambda": 0,
       "random_p50": 1,
       "random_p95": 1,
@@ -212,7 +212,7 @@
       "name": "Learned router · λ=0.5",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 0.5,
       "random_p50": 1,
       "random_p95": 1,
@@ -222,7 +222,7 @@
       "name": "Learned router · λ=1",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 1,
       "random_p50": 1,
       "random_p95": 1,
@@ -232,7 +232,7 @@
       "name": "Learned router · λ=2",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 2,
       "random_p50": 1,
       "random_p95": 1,
@@ -242,7 +242,7 @@
       "name": "Learned router · λ=4",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 4,
       "random_p50": 1,
       "random_p95": 1,
@@ -252,7 +252,7 @@
       "name": "Learned router · λ=8",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 8,
       "random_p50": 1,
       "random_p95": 1,
@@ -262,7 +262,7 @@
       "name": "Learned router · λ=16",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 16,
       "random_p50": 1,
       "random_p95": 1,
@@ -272,7 +272,7 @@
       "name": "Learned router · λ=32",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 32,
       "random_p50": 1,
       "random_p95": 1,
@@ -282,7 +282,7 @@
       "name": "Learned router · λ=64",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 64,
       "random_p50": 1,
       "random_p95": 1,
@@ -292,7 +292,7 @@
       "name": "Learned router · λ=128",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 128,
       "random_p50": 1,
       "random_p95": 1,
@@ -302,7 +302,7 @@
       "name": "Learned router · λ=256",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23909721916666674,
+      "cost": 0.23732804666666668,
       "lambda": 256,
       "random_p50": 1,
       "random_p95": 1,
@@ -313,120 +313,120 @@
     {
       "lambda": 0,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.29001995708333334
     },
     {
       "lambda": 0.5,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "lambda": 1,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "lambda": 2,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "lambda": 4,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "lambda": 8,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "lambda": 16,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "lambda": 32,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "lambda": 64,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "lambda": 128,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     },
     {
       "lambda": 256,
       "pass": 1,
-      "cost": 0.23909721916666674
+      "cost": 0.23732804666666668
     }
   ],
   "oracle_curve": [
     {
       "lambda": 0,
       "pass": 1,
-      "cost": 0.155367005
+      "cost": 0.1603016216666667
     },
     {
       "lambda": 0.5,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "lambda": 1,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "lambda": 2,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "lambda": 4,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "lambda": 8,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "lambda": 16,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "lambda": 32,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "lambda": 64,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "lambda": 128,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     },
     {
       "lambda": 256,
       "pass": 1,
-      "cost": 0.12952843416666668
+      "cost": 0.13566867749999997
     }
   ],
   "router_diagnosis": {
     "counts": {
-      "more than needed": 35,
-      "right": 23,
+      "more than needed": 34,
+      "right": 24,
       "too weak": 2
     },
     "tasks": [
@@ -779,7 +779,7 @@
         "router": "haiku:low",
         "choice": "Opus",
         "cheapest_passing": "haiku:low",
-        "router_pass": 1,
+        "router_pass": 0.5,
         "verdict": "right"
       },
       {
@@ -800,9 +800,9 @@
         "prompt": "Write at least 40 words about a city at night without using the letters \"e\" or \"a\" anywhere.",
         "router": "sonnet:low",
         "choice": "Opus",
-        "cheapest_passing": "sonnet:high",
+        "cheapest_passing": "sonnet:low",
         "router_pass": 1,
-        "verdict": "more than needed"
+        "verdict": "right"
       },
       {
         "task": "write-11",
@@ -811,9 +811,9 @@
         "prompt": "Write a sentence of exactly 6 words in which each word starts with the last letter of the word before it.",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "sonnet:high",
-        "router_pass": 1,
-        "verdict": "more than needed"
+        "cheapest_passing": "haiku:low",
+        "router_pass": 0.5,
+        "verdict": "right"
       },
       {
         "task": "write-12",
@@ -844,9 +844,9 @@
         "prompt": "What day of the week was January 1, 2000?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "haiku:low",
+        "cheapest_passing": "sonnet:high",
         "router_pass": 1,
-        "verdict": "right"
+        "verdict": "more than needed"
       },
       {
         "task": "logic-03",
@@ -855,9 +855,9 @@
         "prompt": "If today is Tuesday, what day of the week will it be 100 days from now?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "haiku:low",
+        "cheapest_passing": "sonnet:low",
         "router_pass": 1,
-        "verdict": "right"
+        "verdict": "more than needed"
       },
       {
         "task": "logic-04",
@@ -877,7 +877,7 @@
         "prompt": "How many times does the letter \"s\" appear in \"Mississippi seashells assessments\"?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "sonnet:low",
+        "cheapest_passing": "haiku:high",
         "router_pass": 0,
         "verdict": "too weak"
       },
@@ -890,7 +890,7 @@
         "choice": "Haiku",
         "cheapest_passing": "sonnet:low",
         "router_pass": 1,
-        "verdict": "more than needed"
+        "verdict": "right"
       },
       {
         "task": "logic-07",
@@ -1114,14 +1114,14 @@
       "fable:high": 0.8333333333333334
     },
     "writing": {
-      "haiku:low": 0.7083333333333334,
-      "haiku:high": 0.6666666666666666,
+      "haiku:low": 0.5833333333333334,
+      "haiku:high": 0.5833333333333334,
       "sonnet:low": 1,
       "sonnet:high": 1,
       "opus:low": 0.75,
-      "opus:high": 0.625,
+      "opus:high": 0.6666666666666666,
       "fable:low": 0.875,
-      "fable:high": 1
+      "fable:high": 0.9583333333333334
     },
     "logic": {
       "haiku:low": 0.8333333333333334,

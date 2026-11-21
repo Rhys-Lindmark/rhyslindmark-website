@@ -35,7 +35,7 @@ export const PRICES = {
 export const EFFORTS = ['low', 'high'];
 export const ARMS = Object.keys(MODELS).flatMap(m => EFFORTS.map(e => `${m}:${e}`));
 const MAX_TOKENS = { low: 8000, high: 16000 };
-const CONCURRENCY = 6;
+const CONCURRENCY = Number(process.env.EVAL_CONCURRENCY || 24);
 const PROBE_TASKS = ['math-01', 'math-09', 'code-02', 'code-09', 'write-01', 'write-09', 'logic-03', 'logic-09', 'facts-01', 'facts-12'];
 
 const DIR = new URL('./results/', import.meta.url);
@@ -74,6 +74,7 @@ async function call(job) {
     usage: { include: true },
     provider: { require_parameters: true } // only providers that honor the reasoning setting
   };
+  const started = Date.now();
   for (let attempt = 0; attempt < 5; attempt++) {
     const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST', headers: { Authorization: `Bearer ${process.env.OPENROUTER_KEY_JEV_EVAL}`, 'Content-Type': 'application/json', 'X-Title': 'model-router-eval' },
@@ -84,7 +85,7 @@ async function call(job) {
       if (data.error) throw new Error(`${job.id}: ${JSON.stringify(data.error).slice(0, 200)}`);
       const choice = data.choices?.[0], text = choice?.message?.content ?? '';
       const g = grade(job.task, text);
-      return { id: job.id, task: job.task.id, arm: job.arm, rep: job.rep, model, served_by: data.provider ?? null, finish_reason: choice?.finish_reason ?? null, usage: data.usage ?? null, cost_usd: cost(model, data.usage), pass: g.pass, detail: g.detail, text };
+      return { id: job.id, task: job.task.id, arm: job.arm, rep: job.rep, model, served_by: data.provider ?? null, finish_reason: choice?.finish_reason ?? null, usage: data.usage ?? null, cost_usd: cost(model, data.usage), latency_ms: Date.now() - started, pass: g.pass, detail: g.detail, text };
     }
     const msg = (await r.text()).slice(0, 300);
     if (r.status === 401 || r.status === 402 || r.status === 400) throw new Error(`${job.id}: HTTP ${r.status} ${msg}`); // not retryable
