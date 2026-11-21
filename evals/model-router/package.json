@@ -8,8 +8,5 @@
     "models": "node --env-file-if-exists=.env run-models.mjs run",
     "jev": "node --env-file-if-exists=.env run-jev.mjs",
     "analyze": "node analyze.mjs"
-  },
-  "dependencies": {
-    "@anthropic-ai/sdk": "^1.12.0"
   }
 }

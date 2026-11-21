@@ -3,7 +3,7 @@
 //   node analyze.mjs
 import { existsSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs';
 import { TASKS } from './tasks.mjs';
-import { ARMS, MODELS, EFFORTS, readRaw, BUDGET_USD } from './run-models.mjs';
+import { ARMS, MODELS, MODEL_NAMES, EFFORTS, readRaw, BUDGET_USD } from './run-models.mjs';
 import { judge, decide } from '../../public/jev/router-policy.js';
 
 const JEV = new URL('./results/jev.json', import.meta.url);
@@ -33,7 +33,8 @@ const effortFor = level => level >= 2 ? 'high' : 'low'; // Off/Low -> low effort
 const policies = [];
 const add = (name, kind, pick, extra = {}) => { const s = score(pick); policies.push({ name, kind, ...s, ...extra }); return s; };
 
-for (const a of ARMS) add(`Always ${a.replace(':', ' · ')}`, 'fixed', () => a);
+const armName = a => { const [t, e] = a.split(':'); return `${MODEL_NAMES[t]} · ${e}`; };
+for (const a of ARMS) add(`Always ${armName(a)}`, 'fixed', () => a);
 const shipped = add('Router (shipped table)', 'router', t => { const d = decide(judge(jev[t.id].answers)); return `${d.tier}:${effortFor(d.reasoning)}`; });
 for (const yes of [0.5, 0.6, 0.8, 0.9]) for (const unsure of [true, false]) {
   add(`Router · yes ≥ ${yes}, unsure = ${unsure ? 'yes' : 'no'}`, 'router-variant', t => { const d = decide(judge(jev[t.id].answers, { yes, no: 1 - yes, unsureCountsAs: unsure })); return `${d.tier}:${effortFor(d.reasoning)}`; });
@@ -104,6 +105,7 @@ const byCategory = Object.fromEntries(cats.map(c => [c, Object.fromEntries(ARMS.
 
 const summary = {
   generated: new Date().toISOString(), tasks: tasks.length, reps, arms: ARMS,
+  tiers: Object.fromEntries(Object.entries(MODELS).map(([t, id]) => [t, { id, name: MODEL_NAMES[t] }])), arm_names: Object.fromEntries(ARMS.map(a => [a, armName(a)])),
   spent_usd: raw.reduce((s, r) => s + r.cost_usd, 0), budget_usd: BUDGET_USD,
   jev_model: Object.values(jev)[0]?.model ?? null,
   policies: policies.map(({ arms, ...p }) => p), learned_curve: learnedCurve.map(({ arms, ...p }) => p), oracle_curve: oracleCurve.map(({ arms, ...p }) => p),

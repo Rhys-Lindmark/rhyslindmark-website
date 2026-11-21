@@ -68,6 +68,7 @@ function legend() {
 }
 
 function render(data) {
+  const armLabel = a => data.arm_names?.[a] ?? a.replace(':', ' · ');
   const best = (kind) => data.policies.filter(p => p.kind === kind);
   const router = best('router')[0], oracle = best('oracle')[0];
   // the learned point closest in cost to the router, for a like-for-like row
@@ -99,6 +100,7 @@ function render(data) {
   $('eval-body').replaceChildren(...[
     h('div', 'demo-heading', h('h2', null, 'Eval: does the router pay off?')),
     h('p', 'eval-meta', `${data.tasks} prompts with code-checked answers · ${data.reps} run${data.reps === 1 ? '' : 's'} of each on ${data.arms.length} model/effort combinations · ${usd(data.spent_usd)} spent · Jev ${data.jev_model ?? ''}`),
+    data.tiers ? h('p', 'eval-tiers', 'To keep costs low, open models played the router’s four tiers: ', ...Object.entries(data.tiers).flatMap(([t, m], i, all) => [h('strong', null, `${t[0].toUpperCase()}${t.slice(1)}`), ` → ${m.name}${i < all.length - 1 ? ', ' : '.'}`]), ' Same truth table, same Jev answers; only the models behind each tier differ.') : null,
     legend(), box,
     h('p', 'note', 'Each point routes all prompts one way. Up and to the left is better. The oracle knows every result in advance, so nothing can beat it. "vs. random routing" deals the same mix of models to prompts at random 10,000 times; a policy beats it if it scores above the 95th percentile. The learned router is fit on Jev’s five judgments with one category held out at a time.'),
     h('h3', 'eval-h3', 'Policies'), h('div', 'cmp-scroll', table),
@@ -106,7 +108,7 @@ function render(data) {
     h('div', 'eval-verdicts', ...verdicts.map(([k, label]) => h('div', `v-${k.replace(/ /g, '-')}`, h('strong', null, String(c[k])), h('span', null, label)))),
     h('p', 'note', `Compared with the cheapest combination that passed each prompt at least half the time. “Too weak” failed; “more than needed” passed but cost more than necessary. Out of ${total} prompts.`),
     misses.length ? h('details', 'eval-misses', h('summary', null, `Prompts the router under-served (${misses.length})`),
-      h('ul', null, ...misses.map(t => h('li', null, h('span', null, t.prompt), h('span', 'cmp-sub', ` — sent to ${t.router.replace(':', ' · ')}, cheapest passing: ${t.cheapest_passing ? t.cheapest_passing.replace(':', ' · ') : 'none'}`))))) : null
+      h('ul', null, ...misses.map(t => h('li', null, h('span', null, t.prompt), h('span', 'cmp-sub', ` — sent to ${armLabel(t.router)}, cheapest passing: ${t.cheapest_passing ? armLabel(t.cheapest_passing) : 'none'}`))))) : null
   ].filter(Boolean));
   $('router-eval').hidden = false;
 }

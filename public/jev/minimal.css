@@ -188,3 +188,5 @@ code, .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 
 .eval-verdicts .v-right strong { color: #08765a; }
 .eval-misses { font-size: 13px; }
 .eval-misses ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }
+.eval-tiers { margin: -4px 0 14px; font-size: 13px; color: var(--steel); }
+.eval-tiers strong { color: var(--ink); font-weight: 600; }
