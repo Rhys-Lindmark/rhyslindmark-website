@@ -17,20 +17,11 @@ The scripts read two keys from the environment, named provider-first like your o
 OpenRouter key for this eval with a $25 credit limit) and
 `TYPESAFE_KEY_JEV_EVAL`.
 
-Recommended: keep both in Bitwarden Secrets Manager under exactly those names,
-and let `bws run` hand them to the scripts, so they never touch the disk:
+Both live in Bitwarden Secrets Manager (project `development`). Save a key with
+`save-secret NAME` in Terminal; the npm scripts below use `with-secrets` to hand
+each script only the key it needs, so nothing is written to disk.
 
-```bash
-bws run -- npm run models
-```
-
-(`bws` needs its machine-account token in `BWS_ACCESS_TOKEN`; add
-`--project-id <id>` if the secrets live in one project.)
-
-Alternative: an `evals/model-router/.env` file (gitignored) with the same two
-lines.
-
-Then, from `evals/model-router/` (prefix the paid ones with `bws run --` if using Bitwarden):
+Then, from `evals/model-router/`:
 
 ```bash
 npm run selftest   # free

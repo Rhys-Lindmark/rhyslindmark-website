@@ -4,9 +4,9 @@
   "type": "module",
   "scripts": {
     "selftest": "node selftest.mjs",
-    "plan": "node --env-file-if-exists=.env run-models.mjs plan",
-    "models": "node --env-file-if-exists=.env run-models.mjs run",
-    "jev": "node --env-file-if-exists=.env run-jev.mjs",
+    "plan": "node run-models.mjs plan",
+    "models": "with-secrets --key OPENROUTER_KEY_JEV_EVAL -- node run-models.mjs run",
+    "jev": "with-secrets --key TYPESAFE_KEY_JEV_EVAL -- node run-jev.mjs",
     "analyze": "node analyze.mjs"
   }
 }
