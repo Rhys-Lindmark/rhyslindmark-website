@@ -250,7 +250,7 @@ export async function onRequest(context) {
 		}
 
 		// Serve the app and report at their canonical URLs.
-		if (['/jev', '/jobbot', '/jobbot/evals'].includes(path) && ['GET', 'HEAD'].includes(context.request.method)) {
+		if (['/jev', '/jev/model-router', '/jobbot', '/jobbot/evals'].includes(path) && ['GET', 'HEAD'].includes(context.request.method)) {
 			const canonicalPath = path === '/jobbot/evals' ? `${path}/` : path;
 			if (url.pathname !== canonicalPath) {
 				url.pathname = canonicalPath;
@@ -258,7 +258,7 @@ export async function onRequest(context) {
 			}
 			url.pathname = `${path}/`;
 			const asset = await context.env.ASSETS.fetch(new Request(url, context.request));
-			if (path === '/jev') return asset;
+			if (path === '/jev' || path === '/jev/model-router') return asset;
 			const response = new Response(asset.body, asset);
 			response.headers.set('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
 			response.headers.set('Referrer-Policy', 'no-referrer');
