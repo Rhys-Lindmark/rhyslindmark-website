@@ -1,0 +1,56 @@
+246 tasks x 8 arms = 1968 requests per round; budget $20; spent $0.000
+probe: 80 requests, projected $1.60
+  40/80 · spent $0.136
+246 tasks x 8 arms = 1968 requests per round; budget $20; spent $0.673
+rounds 1-1: 1889 requests, projected $15.91
+  40/1889 · spent $0.828
+246 tasks x 8 arms = 1968 requests per round; budget $20; spent $1.061
+rounds 1-1: 1820 requests, projected $12.38
+  40/1820 · spent $1.236
+  80/1820 · spent $1.499
+  120/1820 · spent $1.727
+  160/1820 · spent $2.492
+  200/1820 · spent $2.722
+  240/1820 · spent $2.889
+  280/1820 · spent $2.986
+  320/1820 · spent $3.188
+  360/1820 · spent $3.298
+  400/1820 · spent $3.351
+  440/1820 · spent $3.557
+  480/1820 · spent $3.658
+  520/1820 · spent $3.788
+  560/1820 · spent $3.838
+  600/1820 · spent $4.108
+  640/1820 · spent $5.013
+  680/1820 · spent $5.482
+  720/1820 · spent $5.673
+  760/1820 · spent $6.098
+  800/1820 · spent $6.670
+  840/1820 · spent $7.014
+  880/1820 · spent $7.089
+  920/1820 · spent $7.232
+  960/1820 · spent $8.093
+  1000/1820 · spent $9.115
+  1040/1820 · spent $9.563
+  1080/1820 · spent $9.938
+  1120/1820 · spent $10.326
+  1160/1820 · spent $10.550
+  1200/1820 · spent $10.924
+  1240/1820 · spent $11.200
+  1280/1820 · spent $11.412
+  1320/1820 · spent $11.968
+  1360/1820 · spent $12.678
+  1400/1820 · spent $12.959
+  1440/1820 · spent $13.436
+  1480/1820 · spent $13.755
+  1520/1820 · spent $13.978
+  1560/1820 · spent $14.310
+  The operation was aborted due to timeout
+246 tasks x 6 arms = 1476 requests per round; budget $20; spent $14.603
+rounds 1-1: 180 requests, projected $0.83
+  40/180 · spent $14.729
+  80/180 · spent $14.801
+  120/180 · spent $14.834
+  160/180 · spent $14.976
+  rounds 1-1: 180 ok, 0 failed (failed ones rerun next time). Spent $15.078 of $20
+done. Spent $15.078 of $20.

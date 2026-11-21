@@ -1,0 +1,33 @@
+246 tasks x 8 arms = 1968 requests per round; budget $25; spent $0.000
+probe: 80 requests
+  40/80 · spent $0.010
+  80/80 · spent $0.137
+  probe done: 80 ok, 0 failed. Spent so far: $0.137 of $25
+round 1: 1888 requests, projected $3.24
+round 1, chunk 1: 120 requests
+  40/120 · spent $0.150
+  80/120 · spent $0.192
+246 tasks x 8 arms = 1968 requests per round; budget $25; spent $0.221
+rounds 1-1: 1770 requests, projected $2.02
+  40/1770 · spent $0.238
+  80/1770 · spent $0.271
+  120/1770 · spent $0.338
+  160/1770 · spent $0.370
+  200/1770 · spent $0.412
+  240/1770 · spent $0.420
+  280/1770 · spent $0.452
+  320/1770 · spent $0.459
+  360/1770 · spent $0.467
+  400/1770 · spent $0.478
+  440/1770 · spent $0.514
+  480/1770 · spent $0.534
+  520/1770 · spent $0.546
+  560/1770 · spent $0.603
+  600/1770 · spent $0.801
+  640/1770 · spent $0.844
+  680/1770 · spent $0.895
+  720/1770 · spent $0.975
+  760/1770 · spent $1.062
+  800/1770 · spent $1.144
+  840/1770 · spent $1.180
+  880/1770 · spent $1.199

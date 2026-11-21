@@ -27,12 +27,13 @@ replayed `decision-v7` records, lr 2e-5, seed 0. The arms differ only in each qu
 Training sources (all with per-item votes): Scruples AITA anecdotes (Apache-2.0), Measuring Hate Speech (CC-BY-4.0),
 HelpSteer2 disagreements (CC-BY-4.0). None is a source of any evaluation panel below.
 
-Panels, every arm scored the same way (one temperature fitted on transfer-v4's calibration partition, Kev's rule):
+Panels, every arm scored the same way (one temperature fitted on transfer-r3's calibration partition: 580 questions from
+held-out datasets, Kev's registered temperature pool):
 
 - `breadth`: Kev's breadth-v1 development, 14 held-out public datasets, 3,075 questions. Jev's, Kev-27B's and AutoJev's
   rows are committed in Kev's repo (copied to `reference/`). The partition itself is not redistributable, so
   `modal_app.py::build_breadth` rebuilds it from its public sources and checks the sha256 against the frozen manifest.
-- `transfer`: Kev's transfer-v4 development, 656 questions from never-trained datasets.
+- `transfer`: Kev's transfer-v4 development, 764 questions from never-trained datasets and held-out policies (656 clean; the rest are permuted variants, which the metrics leave out).
 - `crowd_dev`: 1,200 held-out records from the three training sources, scored against the human vote shares.
 - `chaosnli`: ChaosNLI (100 annotators per item; SNLI, MNLI, alpha-NLI), never trained: does learning to disagree transfer?
 

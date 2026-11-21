@@ -1,0 +1,2058 @@
+[
+  {
+    "id": "musr/team_allocation/55",
+    "error": "state exceeds 384 tokens: 620"
+  },
+  {
+    "id": "cfcolor/user/1076",
+    "error": "state exceeds 384 tokens: 563"
+  },
+  {
+    "id": "bright/robotics/66",
+    "error": "branch too long: 1550 tokens with a 333-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/murder_mystery/21",
+    "error": "state exceeds 384 tokens: 1258"
+  },
+  {
+    "id": "musr/team_allocation/205",
+    "error": "state exceeds 384 tokens: 556"
+  },
+  {
+    "id": "sgd/development/13_00104/32",
+    "error": "state exceeds 384 tokens: 524"
+  },
+  {
+    "id": "musr/object_placements/28",
+    "error": "state exceeds 384 tokens: 795"
+  },
+  {
+    "id": "contractnli/development/27",
+    "error": "state exceeds 384 tokens: 2540"
+  },
+  {
+    "id": "cfcolor/user/244",
+    "error": "state exceeds 384 tokens: 554"
+  },
+  {
+    "id": "musr/team_allocation/61",
+    "error": "state exceeds 384 tokens: 614"
+  },
+  {
+    "id": "musr/murder_mystery/222",
+    "error": "state exceeds 384 tokens: 1393"
+  },
+  {
+    "id": "cfcolor/user/415",
+    "error": "state exceeds 384 tokens: 546"
+  },
+  {
+    "id": "bfcl/parallel_multiple_161",
+    "error": "state exceeds 384 tokens: 464"
+  },
+  {
+    "id": "musr/object_placements/20",
+    "error": "state exceeds 384 tokens: 826"
+  },
+  {
+    "id": "musr/murder_mystery/54",
+    "error": "state exceeds 384 tokens: 1205"
+  },
+  {
+    "id": "apibank/level-1/303",
+    "error": "state exceeds 384 tokens: 402"
+  },
+  {
+    "id": "sata_bench/86",
+    "error": "state exceeds 384 tokens: 434"
+  },
+  {
+    "id": "musr/murder_mystery/64",
+    "error": "state exceeds 384 tokens: 1180"
+  },
+  {
+    "id": "musr/team_allocation/211",
+    "error": "state exceeds 384 tokens: 586"
+  },
+  {
+    "id": "musr/murder_mystery/144",
+    "error": "state exceeds 384 tokens: 1189"
+  },
+  {
+    "id": "cfcolor/user/143",
+    "error": "state exceeds 384 tokens: 531"
+  },
+  {
+    "id": "bright/robotics/44",
+    "error": "branch too long: 1065 tokens with a 162-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/35",
+    "error": "state exceeds 384 tokens: 535"
+  },
+  {
+    "id": "sata_bench/307",
+    "error": "state exceeds 384 tokens: 688"
+  },
+  {
+    "id": "musr/object_placements/76",
+    "error": "state exceeds 384 tokens: 1021"
+  },
+  {
+    "id": "musr/team_allocation/190",
+    "error": "state exceeds 384 tokens: 577"
+  },
+  {
+    "id": "cfcolor/user/711",
+    "error": "state exceeds 384 tokens: 516"
+  },
+  {
+    "id": "contractnli/development/205",
+    "error": "state exceeds 384 tokens: 2728"
+  },
+  {
+    "id": "musr/object_placements/92",
+    "error": "state exceeds 384 tokens: 908"
+  },
+  {
+    "id": "bfcl/live_multiple_124-47-0",
+    "error": "state exceeds 384 tokens: 821"
+  },
+  {
+    "id": "bfcl/live_irrelevance_820-314-4",
+    "error": "state exceeds 384 tokens: 659"
+  },
+  {
+    "id": "bright/economics/42",
+    "error": "branch too long: 1024 tokens with a 250-token state (row limit 1024)"
+  },
+  {
+    "id": "bfcl/live_irrelevance_801-305-5",
+    "error": "state exceeds 384 tokens: 859"
+  },
+  {
+    "id": "sata_bench/166",
+    "error": "state exceeds 384 tokens: 651"
+  },
+  {
+    "id": "musr/team_allocation/115",
+    "error": "state exceeds 384 tokens: 612"
+  },
+  {
+    "id": "cfcolor/user/797",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "bfcl/live_multiple_372-134-17",
+    "error": "state exceeds 384 tokens: 770"
+  },
+  {
+    "id": "sgd/development/15_00085/22",
+    "error": "state exceeds 384 tokens: 409"
+  },
+  {
+    "id": "cfcolor/user/514",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "cfcolor/user/671",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "bright/robotics/95",
+    "error": "branch too long: 1330 tokens with a 106-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/team_allocation/77",
+    "error": "state exceeds 384 tokens: 548"
+  },
+  {
+    "id": "contractnli/development/44",
+    "error": "state exceeds 384 tokens: 1186"
+  },
+  {
+    "id": "sata_bench/1181",
+    "error": "state exceeds 384 tokens: 1314"
+  },
+  {
+    "id": "cfcolor/user/251",
+    "error": "state exceeds 384 tokens: 459"
+  },
+  {
+    "id": "sata_bench/1260",
+    "error": "state exceeds 384 tokens: 536"
+  },
+  {
+    "id": "sata_bench/1176",
+    "error": "state exceeds 384 tokens: 503"
+  },
+  {
+    "id": "cfcolor/user/586",
+    "error": "state exceeds 384 tokens: 555"
+  },
+  {
+    "id": "sgd/development/8_00014/28",
+    "error": "state exceeds 384 tokens: 705"
+  },
+  {
+    "id": "sgd/development/3_00049/28",
+    "error": "state exceeds 384 tokens: 524"
+  },
+  {
+    "id": "cfcolor/user/767",
+    "error": "state exceeds 384 tokens: 535"
+  },
+  {
+    "id": "cfcolor/user/105",
+    "error": "state exceeds 384 tokens: 560"
+  },
+  {
+    "id": "bright/earth_science/98",
+    "error": "branch too long: 846 tokens with a 240-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/object_placements/48",
+    "error": "state exceeds 384 tokens: 749"
+  },
+  {
+    "id": "musr/team_allocation/111",
+    "error": "state exceeds 384 tokens: 571"
+  },
+  {
+    "id": "bright/stackoverflow/93",
+    "error": "state exceeds 384 tokens: 428"
+  },
+  {
+    "id": "bfcl/live_parallel_multiple_18-16-0",
+    "error": "state exceeds 384 tokens: 1509"
+  },
+  {
+    "id": "cfcolor/user/89",
+    "error": "state exceeds 384 tokens: 548"
+  },
+  {
+    "id": "musr/team_allocation/34",
+    "error": "state exceeds 384 tokens: 579"
+  },
+  {
+    "id": "contractnli/development/598",
+    "error": "state exceeds 384 tokens: 2283"
+  },
+  {
+    "id": "sgd/development/12_00054/20",
+    "error": "state exceeds 384 tokens: 418"
+  },
+  {
+    "id": "musr/team_allocation/54",
+    "error": "state exceeds 384 tokens: 608"
+  },
+  {
+    "id": "musr/team_allocation/31",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "cfcolor/user/424",
+    "error": "state exceeds 384 tokens: 551"
+  },
+  {
+    "id": "sata_bench/727",
+    "error": "state exceeds 384 tokens: 602"
+  },
+  {
+    "id": "musr/murder_mystery/31",
+    "error": "state exceeds 384 tokens: 1299"
+  },
+  {
+    "id": "contractnli/development/411",
+    "error": "state exceeds 384 tokens: 2012"
+  },
+  {
+    "id": "bfcl/live_irrelevance_331-76-29",
+    "error": "state exceeds 384 tokens: 756"
+  },
+  {
+    "id": "cfcolor/user/1110",
+    "error": "state exceeds 384 tokens: 558"
+  },
+  {
+    "id": "musr/object_placements/244",
+    "error": "state exceeds 384 tokens: 854"
+  },
+  {
+    "id": "musr/team_allocation/197",
+    "error": "state exceeds 384 tokens: 605"
+  },
+  {
+    "id": "cfcolor/user/369",
+    "error": "state exceeds 384 tokens: 529"
+  },
+  {
+    "id": "musr/murder_mystery/59",
+    "error": "state exceeds 384 tokens: 1114"
+  },
+  {
+    "id": "musr/murder_mystery/200",
+    "error": "state exceeds 384 tokens: 1039"
+  },
+  {
+    "id": "cfcolor/user/1104",
+    "error": "state exceeds 384 tokens: 557"
+  },
+  {
+    "id": "cfcolor/user/948",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "musr/team_allocation/132",
+    "error": "state exceeds 384 tokens: 589"
+  },
+  {
+    "id": "sata_bench/1221",
+    "error": "state exceeds 384 tokens: 631"
+  },
+  {
+    "id": "cfcolor/user/894",
+    "error": "state exceeds 384 tokens: 541"
+  },
+  {
+    "id": "musr/team_allocation/57",
+    "error": "state exceeds 384 tokens: 722"
+  },
+  {
+    "id": "contractnli/development/82",
+    "error": "state exceeds 384 tokens: 1146"
+  },
+  {
+    "id": "musr/murder_mystery/190",
+    "error": "state exceeds 384 tokens: 1192"
+  },
+  {
+    "id": "musr/team_allocation/244",
+    "error": "state exceeds 384 tokens: 655"
+  },
+  {
+    "id": "sgd/development/15_00045/26",
+    "error": "state exceeds 384 tokens: 392"
+  },
+  {
+    "id": "bfcl/parallel_multiple_147",
+    "error": "state exceeds 384 tokens: 660"
+  },
+  {
+    "id": "contractnli/development/582",
+    "error": "state exceeds 384 tokens: 2643"
+  },
+  {
+    "id": "bfcl/live_multiple_695-164-11",
+    "error": "state exceeds 384 tokens: 690"
+  },
+  {
+    "id": "contractnli/development/152",
+    "error": "state exceeds 384 tokens: 1351"
+  },
+  {
+    "id": "sata_bench/242",
+    "error": "state exceeds 384 tokens: 459"
+  },
+  {
+    "id": "cfcolor/user/212",
+    "error": "state exceeds 384 tokens: 546"
+  },
+  {
+    "id": "musr/murder_mystery/118",
+    "error": "state exceeds 384 tokens: 1424"
+  },
+  {
+    "id": "musr/team_allocation/143",
+    "error": "state exceeds 384 tokens: 675"
+  },
+  {
+    "id": "musr/murder_mystery/154",
+    "error": "state exceeds 384 tokens: 1230"
+  },
+  {
+    "id": "musr/murder_mystery/111",
+    "error": "state exceeds 384 tokens: 904"
+  },
+  {
+    "id": "cfcolor/user/1037",
+    "error": "state exceeds 384 tokens: 565"
+  },
+  {
+    "id": "cfcolor/user/1070",
+    "error": "state exceeds 384 tokens: 547"
+  },
+  {
+    "id": "cfcolor/user/902",
+    "error": "state exceeds 384 tokens: 572"
+  },
+  {
+    "id": "musr/team_allocation/137",
+    "error": "state exceeds 384 tokens: 642"
+  },
+  {
+    "id": "musr/murder_mystery/209",
+    "error": "state exceeds 384 tokens: 1258"
+  },
+  {
+    "id": "cfcolor/user/479",
+    "error": "state exceeds 384 tokens: 541"
+  },
+  {
+    "id": "bright/stackoverflow/29",
+    "error": "state exceeds 384 tokens: 1157"
+  },
+  {
+    "id": "routerbench/mmlu-professional-law.val.1013",
+    "error": "state exceeds 384 tokens: 512"
+  },
+  {
+    "id": "musr/murder_mystery/181",
+    "error": "state exceeds 384 tokens: 1021"
+  },
+  {
+    "id": "cfcolor/user/481",
+    "error": "state exceeds 384 tokens: 540"
+  },
+  {
+    "id": "cfcolor/user/841",
+    "error": "state exceeds 384 tokens: 560"
+  },
+  {
+    "id": "cfcolor/user/142",
+    "error": "state exceeds 384 tokens: 526"
+  },
+  {
+    "id": "cfcolor/user/354",
+    "error": "state exceeds 384 tokens: 543"
+  },
+  {
+    "id": "musr/murder_mystery/159",
+    "error": "state exceeds 384 tokens: 1176"
+  },
+  {
+    "id": "bfcl/multiple_94",
+    "error": "state exceeds 384 tokens: 408"
+  },
+  {
+    "id": "sata_bench/128",
+    "error": "state exceeds 384 tokens: 480"
+  },
+  {
+    "id": "sgd/development/9_00059/26",
+    "error": "state exceeds 384 tokens: 601"
+  },
+  {
+    "id": "cfcolor/user/811",
+    "error": "state exceeds 384 tokens: 554"
+  },
+  {
+    "id": "bright/robotics/81",
+    "error": "branch too long: 1487 tokens with a 286-token state (row limit 1024)"
+  },
+  {
+    "id": "bright/robotics/18",
+    "error": "branch too long: 929 tokens with a 174-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/385",
+    "error": "state exceeds 384 tokens: 537"
+  },
+  {
+    "id": "sgd/development/8_00066/20",
+    "error": "state exceeds 384 tokens: 390"
+  },
+  {
+    "id": "cfcolor/user/46",
+    "error": "state exceeds 384 tokens: 553"
+  },
+  {
+    "id": "cfcolor/user/361",
+    "error": "state exceeds 384 tokens: 555"
+  },
+  {
+    "id": "musr/team_allocation/135",
+    "error": "state exceeds 384 tokens: 601"
+  },
+  {
+    "id": "sgd/development/8_00043/18",
+    "error": "state exceeds 384 tokens: 440"
+  },
+  {
+    "id": "musr/murder_mystery/246",
+    "error": "state exceeds 384 tokens: 1303"
+  },
+  {
+    "id": "sgd/development/13_00093/18",
+    "error": "state exceeds 384 tokens: 394"
+  },
+  {
+    "id": "cfcolor/user/609",
+    "error": "state exceeds 384 tokens: 537"
+  },
+  {
+    "id": "cfcolor/user/378",
+    "error": "state exceeds 384 tokens: 565"
+  },
+  {
+    "id": "bright/psychology/41",
+    "error": "branch too long: 1138 tokens with a 40-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/178",
+    "error": "state exceeds 384 tokens: 561"
+  },
+  {
+    "id": "cfcolor/user/1116",
+    "error": "state exceeds 384 tokens: 545"
+  },
+  {
+    "id": "bright/economics/33",
+    "error": "branch too long: 1037 tokens with a 71-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/903",
+    "error": "state exceeds 384 tokens: 557"
+  },
+  {
+    "id": "cfcolor/user/323",
+    "error": "state exceeds 384 tokens: 543"
+  },
+  {
+    "id": "musr/object_placements/56",
+    "error": "state exceeds 384 tokens: 923"
+  },
+  {
+    "id": "musr/murder_mystery/117",
+    "error": "state exceeds 384 tokens: 993"
+  },
+  {
+    "id": "cfcolor/user/639",
+    "error": "state exceeds 384 tokens: 554"
+  },
+  {
+    "id": "cfcolor/user/622",
+    "error": "state exceeds 384 tokens: 545"
+  },
+  {
+    "id": "bright/stackoverflow/112",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "musr/team_allocation/110",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "bright/robotics/32",
+    "error": "branch too long: 1110 tokens with a 119-token state (row limit 1024)"
+  },
+  {
+    "id": "sgd/development/9_00025/28",
+    "error": "state exceeds 384 tokens: 447"
+  },
+  {
+    "id": "musr/murder_mystery/153",
+    "error": "state exceeds 384 tokens: 1016"
+  },
+  {
+    "id": "bfcl/live_irrelevance_169-23-1",
+    "error": "state exceeds 384 tokens: 501"
+  },
+  {
+    "id": "musr/object_placements/120",
+    "error": "state exceeds 384 tokens: 872"
+  },
+  {
+    "id": "sgd/development/16_00026/20",
+    "error": "state exceeds 384 tokens: 449"
+  },
+  {
+    "id": "sata_bench/1256",
+    "error": "state exceeds 384 tokens: 859"
+  },
+  {
+    "id": "musr/team_allocation/171",
+    "error": "state exceeds 384 tokens: 512"
+  },
+  {
+    "id": "bright/economics/25",
+    "error": "branch too long: 1011 tokens with a 172-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/murder_mystery/51",
+    "error": "state exceeds 384 tokens: 1234"
+  },
+  {
+    "id": "musr/team_allocation/9",
+    "error": "state exceeds 384 tokens: 712"
+  },
+  {
+    "id": "cfcolor/user/138",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "cfcolor/user/685",
+    "error": "state exceeds 384 tokens: 538"
+  },
+  {
+    "id": "cfcolor/user/998",
+    "error": "state exceeds 384 tokens: 542"
+  },
+  {
+    "id": "musr/object_placements/204",
+    "error": "state exceeds 384 tokens: 1003"
+  },
+  {
+    "id": "contractnli/development/586",
+    "error": "state exceeds 384 tokens: 4070"
+  },
+  {
+    "id": "cfcolor/user/776",
+    "error": "state exceeds 384 tokens: 563"
+  },
+  {
+    "id": "cfcolor/user/1052",
+    "error": "state exceeds 384 tokens: 540"
+  },
+  {
+    "id": "bright/robotics/70",
+    "error": "state exceeds 384 tokens: 1970"
+  },
+  {
+    "id": "bfcl/live_parallel_multiple_10-9-0",
+    "error": "state exceeds 384 tokens: 1526"
+  },
+  {
+    "id": "cfcolor/user/966",
+    "error": "state exceeds 384 tokens: 538"
+  },
+  {
+    "id": "sgd/development/16_00010/22",
+    "error": "state exceeds 384 tokens: 440"
+  },
+  {
+    "id": "cfcolor/user/721",
+    "error": "state exceeds 384 tokens: 555"
+  },
+  {
+    "id": "musr/team_allocation/44",
+    "error": "state exceeds 384 tokens: 578"
+  },
+  {
+    "id": "sata_bench/1149",
+    "error": "state exceeds 384 tokens: 809"
+  },
+  {
+    "id": "contractnli/development/605",
+    "error": "state exceeds 384 tokens: 2529"
+  },
+  {
+    "id": "sata_bench/1186",
+    "error": "state exceeds 384 tokens: 450"
+  },
+  {
+    "id": "cfcolor/user/953",
+    "error": "state exceeds 384 tokens: 542"
+  },
+  {
+    "id": "bright/robotics/51",
+    "error": "branch too long: 1128 tokens with a 53-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/murder_mystery/74",
+    "error": "state exceeds 384 tokens: 1284"
+  },
+  {
+    "id": "toolret/t_eval_dialog_query_38",
+    "error": "state exceeds 384 tokens: 504"
+  },
+  {
+    "id": "musr/murder_mystery/228",
+    "error": "state exceeds 384 tokens: 1017"
+  },
+  {
+    "id": "sata_bench/1218",
+    "error": "state exceeds 384 tokens: 928"
+  },
+  {
+    "id": "cfcolor/user/27",
+    "error": "state exceeds 384 tokens: 558"
+  },
+  {
+    "id": "cfcolor/user/327",
+    "error": "state exceeds 384 tokens: 557"
+  },
+  {
+    "id": "bright/stackoverflow/6",
+    "error": "state exceeds 384 tokens: 581"
+  },
+  {
+    "id": "sgd/development/13_00111/22",
+    "error": "state exceeds 384 tokens: 513"
+  },
+  {
+    "id": "musr/murder_mystery/65",
+    "error": "state exceeds 384 tokens: 1237"
+  },
+  {
+    "id": "musr/team_allocation/74",
+    "error": "state exceeds 384 tokens: 639"
+  },
+  {
+    "id": "musr/object_placements/240",
+    "error": "state exceeds 384 tokens: 961"
+  },
+  {
+    "id": "cfcolor/user/933",
+    "error": "state exceeds 384 tokens: 548"
+  },
+  {
+    "id": "musr/team_allocation/76",
+    "error": "state exceeds 384 tokens: 670"
+  },
+  {
+    "id": "musr/murder_mystery/166",
+    "error": "state exceeds 384 tokens: 1368"
+  },
+  {
+    "id": "cfcolor/user/783",
+    "error": "state exceeds 384 tokens: 541"
+  },
+  {
+    "id": "contractnli/development/16",
+    "error": "state exceeds 384 tokens: 1614"
+  },
+  {
+    "id": "contractnli/development/590",
+    "error": "state exceeds 384 tokens: 4534"
+  },
+  {
+    "id": "musr/object_placements/168",
+    "error": "state exceeds 384 tokens: 1062"
+  },
+  {
+    "id": "cfcolor/user/159",
+    "error": "state exceeds 384 tokens: 561"
+  },
+  {
+    "id": "musr/murder_mystery/172",
+    "error": "state exceeds 384 tokens: 1115"
+  },
+  {
+    "id": "bright/psychology/56",
+    "error": "branch too long: 841 tokens with a 240-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/39",
+    "error": "state exceeds 384 tokens: 533"
+  },
+  {
+    "id": "sgd/development/20_00057/18",
+    "error": "state exceeds 384 tokens: 407"
+  },
+  {
+    "id": "bfcl/live_irrelevance_795-304-0",
+    "error": "state exceeds 384 tokens: 422"
+  },
+  {
+    "id": "musr/team_allocation/206",
+    "error": "state exceeds 384 tokens: 498"
+  },
+  {
+    "id": "cfcolor/user/790",
+    "error": "state exceeds 384 tokens: 558"
+  },
+  {
+    "id": "musr/team_allocation/4",
+    "error": "state exceeds 384 tokens: 532"
+  },
+  {
+    "id": "bfcl/live_multiple_391-137-9",
+    "error": "state exceeds 384 tokens: 758"
+  },
+  {
+    "id": "musr/murder_mystery/88",
+    "error": "state exceeds 384 tokens: 1082"
+  },
+  {
+    "id": "musr/object_placements/176",
+    "error": "state exceeds 384 tokens: 880"
+  },
+  {
+    "id": "sata_bench/305",
+    "error": "state exceeds 384 tokens: 535"
+  },
+  {
+    "id": "cfcolor/user/652",
+    "error": "state exceeds 384 tokens: 525"
+  },
+  {
+    "id": "bfcl/parallel_multiple_177",
+    "error": "state exceeds 384 tokens: 405"
+  },
+  {
+    "id": "cfcolor/user/352",
+    "error": "state exceeds 384 tokens: 543"
+  },
+  {
+    "id": "cfcolor/user/230",
+    "error": "state exceeds 384 tokens: 528"
+  },
+  {
+    "id": "bfcl/live_irrelevance_242-45-1",
+    "error": "state exceeds 384 tokens: 772"
+  },
+  {
+    "id": "musr/team_allocation/123",
+    "error": "state exceeds 384 tokens: 625"
+  },
+  {
+    "id": "sata_bench/2",
+    "error": "state exceeds 384 tokens: 608"
+  },
+  {
+    "id": "musr/murder_mystery/106",
+    "error": "state exceeds 384 tokens: 1089"
+  },
+  {
+    "id": "musr/murder_mystery/128",
+    "error": "state exceeds 384 tokens: 950"
+  },
+  {
+    "id": "bfcl/live_multiple_777-172-2",
+    "error": "state exceeds 384 tokens: 586"
+  },
+  {
+    "id": "bright/economics/98",
+    "error": "branch too long: 921 tokens with a 245-token state (row limit 1024)"
+  },
+  {
+    "id": "contractnli/development/486",
+    "error": "state exceeds 384 tokens: 1479"
+  },
+  {
+    "id": "bfcl/parallel_multiple_181",
+    "error": "state exceeds 384 tokens: 507"
+  },
+  {
+    "id": "cfcolor/user/1004",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "sgd/development/14_00071/24",
+    "error": "state exceeds 384 tokens: 414"
+  },
+  {
+    "id": "musr/murder_mystery/96",
+    "error": "state exceeds 384 tokens: 1265"
+  },
+  {
+    "id": "cfcolor/user/715",
+    "error": "state exceeds 384 tokens: 542"
+  },
+  {
+    "id": "contractnli/development/75",
+    "error": "state exceeds 384 tokens: 1513"
+  },
+  {
+    "id": "sgd/development/20_00089/18",
+    "error": "state exceeds 384 tokens: 409"
+  },
+  {
+    "id": "apibank/level-1/10",
+    "error": "state exceeds 384 tokens: 457"
+  },
+  {
+    "id": "contractnli/development/595",
+    "error": "state exceeds 384 tokens: 4369"
+  },
+  {
+    "id": "cfcolor/user/183",
+    "error": "state exceeds 384 tokens: 547"
+  },
+  {
+    "id": "cfcolor/user/313",
+    "error": "state exceeds 384 tokens: 554"
+  },
+  {
+    "id": "cfcolor/user/1009",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "cfcolor/user/716",
+    "error": "state exceeds 384 tokens: 551"
+  },
+  {
+    "id": "sata_bench/1287",
+    "error": "state exceeds 384 tokens: 592"
+  },
+  {
+    "id": "musr/team_allocation/136",
+    "error": "state exceeds 384 tokens: 627"
+  },
+  {
+    "id": "cfcolor/user/828",
+    "error": "state exceeds 384 tokens: 554"
+  },
+  {
+    "id": "routerbench/mmlu-high-school-european-history.val.87",
+    "error": "state exceeds 384 tokens: 387"
+  },
+  {
+    "id": "cfcolor/user/102",
+    "error": "state exceeds 384 tokens: 548"
+  },
+  {
+    "id": "musr/object_placements/128",
+    "error": "state exceeds 384 tokens: 922"
+  },
+  {
+    "id": "contractnli/development/56",
+    "error": "state exceeds 384 tokens: 2287"
+  },
+  {
+    "id": "sata_bench/133",
+    "error": "state exceeds 384 tokens: 566"
+  },
+  {
+    "id": "sata_bench/1126",
+    "error": "state exceeds 384 tokens: 593"
+  },
+  {
+    "id": "sata_bench/169",
+    "error": "state exceeds 384 tokens: 537"
+  },
+  {
+    "id": "cfcolor/user/777",
+    "error": "state exceeds 384 tokens: 542"
+  },
+  {
+    "id": "cfcolor/user/962",
+    "error": "state exceeds 384 tokens: 566"
+  },
+  {
+    "id": "musr/murder_mystery/23",
+    "error": "state exceeds 384 tokens: 1247"
+  },
+  {
+    "id": "bright/sustainable_living/2",
+    "error": "branch too long: 1003 tokens with a 321-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/659",
+    "error": "state exceeds 384 tokens: 553"
+  },
+  {
+    "id": "sgd/development/4_00101/22",
+    "error": "state exceeds 384 tokens: 395"
+  },
+  {
+    "id": "cfcolor/user/238",
+    "error": "state exceeds 384 tokens: 549"
+  },
+  {
+    "id": "bfcl/live_multiple_874-182-11",
+    "error": "state exceeds 384 tokens: 1506"
+  },
+  {
+    "id": "musr/team_allocation/187",
+    "error": "state exceeds 384 tokens: 599"
+  },
+  {
+    "id": "bfcl/multiple_178",
+    "error": "state exceeds 384 tokens: 635"
+  },
+  {
+    "id": "musr/team_allocation/16",
+    "error": "state exceeds 384 tokens: 666"
+  },
+  {
+    "id": "cfcolor/user/368",
+    "error": "state exceeds 384 tokens: 538"
+  },
+  {
+    "id": "sata_bench/314",
+    "error": "state exceeds 384 tokens: 688"
+  },
+  {
+    "id": "bright/stackoverflow/2",
+    "error": "branch too long: 1221 tokens with a 113-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/murder_mystery/69",
+    "error": "state exceeds 384 tokens: 966"
+  },
+  {
+    "id": "contractnli/development/547",
+    "error": "state exceeds 384 tokens: 1371"
+  },
+  {
+    "id": "cfcolor/user/450",
+    "error": "state exceeds 384 tokens: 547"
+  },
+  {
+    "id": "bright/economics/85",
+    "error": "branch too long: 985 tokens with a 131-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/958",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "musr/team_allocation/5",
+    "error": "state exceeds 384 tokens: 655"
+  },
+  {
+    "id": "cfcolor/user/918",
+    "error": "state exceeds 384 tokens: 554"
+  },
+  {
+    "id": "bright/economics/88",
+    "error": "branch too long: 1013 tokens with a 53-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/team_allocation/27",
+    "error": "state exceeds 384 tokens: 710"
+  },
+  {
+    "id": "musr/team_allocation/153",
+    "error": "state exceeds 384 tokens: 655"
+  },
+  {
+    "id": "musr/team_allocation/149",
+    "error": "state exceeds 384 tokens: 598"
+  },
+  {
+    "id": "sata_bench/1100",
+    "error": "state exceeds 384 tokens: 1154"
+  },
+  {
+    "id": "contractnli/development/488",
+    "error": "state exceeds 384 tokens: 782"
+  },
+  {
+    "id": "bfcl/multiple_5",
+    "error": "state exceeds 384 tokens: 419"
+  },
+  {
+    "id": "cfcolor/user/774",
+    "error": "state exceeds 384 tokens: 561"
+  },
+  {
+    "id": "sata_bench/115",
+    "error": "state exceeds 384 tokens: 560"
+  },
+  {
+    "id": "musr/team_allocation/160",
+    "error": "state exceeds 384 tokens: 571"
+  },
+  {
+    "id": "musr/object_placements/188",
+    "error": "state exceeds 384 tokens: 751"
+  },
+  {
+    "id": "cfcolor/user/562",
+    "error": "state exceeds 384 tokens: 543"
+  },
+  {
+    "id": "musr/team_allocation/105",
+    "error": "state exceeds 384 tokens: 520"
+  },
+  {
+    "id": "musr/murder_mystery/52",
+    "error": "state exceeds 384 tokens: 1181"
+  },
+  {
+    "id": "bright/stackoverflow/116",
+    "error": "branch too long: 1191 tokens with a 345-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/murder_mystery/206",
+    "error": "state exceeds 384 tokens: 1118"
+  },
+  {
+    "id": "bfcl/multiple_16",
+    "error": "state exceeds 384 tokens: 438"
+  },
+  {
+    "id": "cfcolor/user/692",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "apibank/level-1/352",
+    "error": "state exceeds 384 tokens: 685"
+  },
+  {
+    "id": "cfcolor/user/538",
+    "error": "state exceeds 384 tokens: 536"
+  },
+  {
+    "id": "musr/murder_mystery/110",
+    "error": "state exceeds 384 tokens: 961"
+  },
+  {
+    "id": "sata_bench/318",
+    "error": "state exceeds 384 tokens: 593"
+  },
+  {
+    "id": "musr/murder_mystery/192",
+    "error": "state exceeds 384 tokens: 1070"
+  },
+  {
+    "id": "bfcl/live_parallel_multiple_12-10-1",
+    "error": "state exceeds 384 tokens: 719"
+  },
+  {
+    "id": "bfcl/live_parallel_multiple_20-17-0",
+    "error": "state exceeds 384 tokens: 2289"
+  },
+  {
+    "id": "musr/murder_mystery/105",
+    "error": "state exceeds 384 tokens: 1121"
+  },
+  {
+    "id": "musr/team_allocation/70",
+    "error": "state exceeds 384 tokens: 533"
+  },
+  {
+    "id": "toolret/t_eval_dialog_query_47",
+    "error": "state exceeds 384 tokens: 476"
+  },
+  {
+    "id": "cfcolor/user/307",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "musr/team_allocation/37",
+    "error": "state exceeds 384 tokens: 669"
+  },
+  {
+    "id": "musr/object_placements/196",
+    "error": "state exceeds 384 tokens: 889"
+  },
+  {
+    "id": "cfcolor/user/779",
+    "error": "state exceeds 384 tokens: 554"
+  },
+  {
+    "id": "cfcolor/user/448",
+    "error": "state exceeds 384 tokens: 549"
+  },
+  {
+    "id": "cfcolor/user/999",
+    "error": "state exceeds 384 tokens: 539"
+  },
+  {
+    "id": "apibank/level-1/88",
+    "error": "state exceeds 384 tokens: 563"
+  },
+  {
+    "id": "cfcolor/user/1044",
+    "error": "state exceeds 384 tokens: 539"
+  },
+  {
+    "id": "cfcolor/user/474",
+    "error": "state exceeds 384 tokens: 543"
+  },
+  {
+    "id": "musr/murder_mystery/124",
+    "error": "state exceeds 384 tokens: 1044"
+  },
+  {
+    "id": "cfcolor/user/873",
+    "error": "state exceeds 384 tokens: 553"
+  },
+  {
+    "id": "musr/murder_mystery/207",
+    "error": "state exceeds 384 tokens: 1198"
+  },
+  {
+    "id": "musr/murder_mystery/204",
+    "error": "state exceeds 384 tokens: 1255"
+  },
+  {
+    "id": "bright/robotics/68",
+    "error": "branch too long: 957 tokens with a 122-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/73",
+    "error": "state exceeds 384 tokens: 549"
+  },
+  {
+    "id": "cfcolor/user/87",
+    "error": "state exceeds 384 tokens: 540"
+  },
+  {
+    "id": "cfcolor/user/763",
+    "error": "state exceeds 384 tokens: 552"
+  },
+  {
+    "id": "musr/murder_mystery/205",
+    "error": "state exceeds 384 tokens: 1152"
+  },
+  {
+    "id": "musr/team_allocation/216",
+    "error": "state exceeds 384 tokens: 583"
+  },
+  {
+    "id": "musr/murder_mystery/38",
+    "error": "state exceeds 384 tokens: 989"
+  },
+  {
+    "id": "contractnli/development/381",
+    "error": "state exceeds 384 tokens: 2897"
+  },
+  {
+    "id": "cfcolor/user/732",
+    "error": "state exceeds 384 tokens: 566"
+  },
+  {
+    "id": "cfcolor/user/110",
+    "error": "state exceeds 384 tokens: 542"
+  },
+  {
+    "id": "sata_bench/1134",
+    "error": "state exceeds 384 tokens: 1476"
+  },
+  {
+    "id": "musr/murder_mystery/237",
+    "error": "state exceeds 384 tokens: 1238"
+  },
+  {
+    "id": "cfcolor/user/325",
+    "error": "state exceeds 384 tokens: 555"
+  },
+  {
+    "id": "sgd/development/12_00025/28",
+    "error": "state exceeds 384 tokens: 605"
+  },
+  {
+    "id": "cfcolor/user/1066",
+    "error": "state exceeds 384 tokens: 552"
+  },
+  {
+    "id": "musr/object_placements/40",
+    "error": "state exceeds 384 tokens: 707"
+  },
+  {
+    "id": "cfcolor/user/1051",
+    "error": "state exceeds 384 tokens: 537"
+  },
+  {
+    "id": "musr/team_allocation/0",
+    "error": "state exceeds 384 tokens: 596"
+  },
+  {
+    "id": "sata_bench/1263",
+    "error": "state exceeds 384 tokens: 459"
+  },
+  {
+    "id": "sgd/development/8_00028/22",
+    "error": "state exceeds 384 tokens: 479"
+  },
+  {
+    "id": "contractnli/development/28",
+    "error": "state exceeds 384 tokens: 1974"
+  },
+  {
+    "id": "cfcolor/user/1080",
+    "error": "state exceeds 384 tokens: 526"
+  },
+  {
+    "id": "bright/sustainable_living/14",
+    "error": "state exceeds 384 tokens: 447"
+  },
+  {
+    "id": "cfcolor/user/195",
+    "error": "state exceeds 384 tokens: 551"
+  },
+  {
+    "id": "cfcolor/user/974",
+    "error": "state exceeds 384 tokens: 562"
+  },
+  {
+    "id": "bfcl/live_irrelevance_263-56-6",
+    "error": "state exceeds 384 tokens: 730"
+  },
+  {
+    "id": "musr/murder_mystery/18",
+    "error": "state exceeds 384 tokens: 1065"
+  },
+  {
+    "id": "routerbench/mmlu-professional-law.val.1331",
+    "error": "state exceeds 384 tokens: 589"
+  },
+  {
+    "id": "cfcolor/user/650",
+    "error": "state exceeds 384 tokens: 551"
+  },
+  {
+    "id": "sata_bench/734",
+    "error": "state exceeds 384 tokens: 385"
+  },
+  {
+    "id": "musr/team_allocation/237",
+    "error": "state exceeds 384 tokens: 500"
+  },
+  {
+    "id": "musr/murder_mystery/238",
+    "error": "state exceeds 384 tokens: 787"
+  },
+  {
+    "id": "bright/robotics/50",
+    "error": "branch too long: 1535 tokens with a 87-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/84",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "cfcolor/user/1107",
+    "error": "state exceeds 384 tokens: 541"
+  },
+  {
+    "id": "cfcolor/user/234",
+    "error": "state exceeds 384 tokens: 552"
+  },
+  {
+    "id": "cfcolor/user/70",
+    "error": "state exceeds 384 tokens: 560"
+  },
+  {
+    "id": "cfcolor/user/108",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "musr/team_allocation/90",
+    "error": "state exceeds 384 tokens: 532"
+  },
+  {
+    "id": "contractnli/development/575",
+    "error": "state exceeds 384 tokens: 2085"
+  },
+  {
+    "id": "sata_bench/1168",
+    "error": "state exceeds 384 tokens: 527"
+  },
+  {
+    "id": "musr/object_placements/220",
+    "error": "state exceeds 384 tokens: 937"
+  },
+  {
+    "id": "cfcolor/user/412",
+    "error": "state exceeds 384 tokens: 558"
+  },
+  {
+    "id": "musr/object_placements/156",
+    "error": "state exceeds 384 tokens: 887"
+  },
+  {
+    "id": "contractnli/development/507",
+    "error": "state exceeds 384 tokens: 1375"
+  },
+  {
+    "id": "contractnli/development/405",
+    "error": "state exceeds 384 tokens: 2762"
+  },
+  {
+    "id": "sgd/development/12_00101/24",
+    "error": "state exceeds 384 tokens: 418"
+  },
+  {
+    "id": "apibank/level-1/81",
+    "error": "state exceeds 384 tokens: 413"
+  },
+  {
+    "id": "apibank/level-1/139",
+    "error": "state exceeds 384 tokens: 412"
+  },
+  {
+    "id": "contractnli/development/64",
+    "error": "state exceeds 384 tokens: 5814"
+  },
+  {
+    "id": "bright/economics/76",
+    "error": "state exceeds 384 tokens: 412"
+  },
+  {
+    "id": "sata_bench/127",
+    "error": "state exceeds 384 tokens: 452"
+  },
+  {
+    "id": "musr/team_allocation/67",
+    "error": "state exceeds 384 tokens: 616"
+  },
+  {
+    "id": "musr/team_allocation/214",
+    "error": "state exceeds 384 tokens: 527"
+  },
+  {
+    "id": "bfcl/live_multiple_432-141-21",
+    "error": "state exceeds 384 tokens: 866"
+  },
+  {
+    "id": "contractnli/development/35",
+    "error": "state exceeds 384 tokens: 4668"
+  },
+  {
+    "id": "musr/team_allocation/83",
+    "error": "state exceeds 384 tokens: 478"
+  },
+  {
+    "id": "cfcolor/user/428",
+    "error": "state exceeds 384 tokens: 553"
+  },
+  {
+    "id": "cfcolor/user/463",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "cfcolor/user/1065",
+    "error": "state exceeds 384 tokens: 561"
+  },
+  {
+    "id": "bright/stackoverflow/16",
+    "error": "branch too long: 969 tokens with a 315-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/427",
+    "error": "state exceeds 384 tokens: 539"
+  },
+  {
+    "id": "toolret/t_eval_dialog_query_33",
+    "error": "state exceeds 384 tokens: 491"
+  },
+  {
+    "id": "contractnli/development/7",
+    "error": "state exceeds 384 tokens: 6015"
+  },
+  {
+    "id": "cfcolor/user/310",
+    "error": "state exceeds 384 tokens: 541"
+  },
+  {
+    "id": "cfcolor/user/339",
+    "error": "state exceeds 384 tokens: 548"
+  },
+  {
+    "id": "sata_bench/1179",
+    "error": "state exceeds 384 tokens: 947"
+  },
+  {
+    "id": "sata_bench/163",
+    "error": "state exceeds 384 tokens: 571"
+  },
+  {
+    "id": "cfcolor/user/430",
+    "error": "state exceeds 384 tokens: 543"
+  },
+  {
+    "id": "cfcolor/user/973",
+    "error": "state exceeds 384 tokens: 557"
+  },
+  {
+    "id": "musr/team_allocation/68",
+    "error": "state exceeds 384 tokens: 495"
+  },
+  {
+    "id": "cfcolor/user/574",
+    "error": "state exceeds 384 tokens: 535"
+  },
+  {
+    "id": "bfcl/live_multiple_134-51-0",
+    "error": "state exceeds 384 tokens: 397"
+  },
+  {
+    "id": "contractnli/development/398",
+    "error": "state exceeds 384 tokens: 2779"
+  },
+  {
+    "id": "musr/object_placements/132",
+    "error": "state exceeds 384 tokens: 934"
+  },
+  {
+    "id": "musr/team_allocation/225",
+    "error": "state exceeds 384 tokens: 685"
+  },
+  {
+    "id": "cfcolor/user/66",
+    "error": "state exceeds 384 tokens: 549"
+  },
+  {
+    "id": "contractnli/development/32",
+    "error": "state exceeds 384 tokens: 2840"
+  },
+  {
+    "id": "musr/team_allocation/103",
+    "error": "state exceeds 384 tokens: 500"
+  },
+  {
+    "id": "contractnli/development/610",
+    "error": "state exceeds 384 tokens: 3346"
+  },
+  {
+    "id": "bfcl/parallel_multiple_172",
+    "error": "state exceeds 384 tokens: 593"
+  },
+  {
+    "id": "musr/murder_mystery/197",
+    "error": "state exceeds 384 tokens: 1243"
+  },
+  {
+    "id": "cfcolor/user/286",
+    "error": "state exceeds 384 tokens: 514"
+  },
+  {
+    "id": "bfcl/parallel_multiple_69",
+    "error": "state exceeds 384 tokens: 598"
+  },
+  {
+    "id": "cfcolor/user/824",
+    "error": "state exceeds 384 tokens: 558"
+  },
+  {
+    "id": "bfcl/live_parallel_multiple_9-8-0",
+    "error": "state exceeds 384 tokens: 1240"
+  },
+  {
+    "id": "bfcl/live_irrelevance_694-225-4",
+    "error": "state exceeds 384 tokens: 1501"
+  },
+  {
+    "id": "apibank/level-1/178",
+    "error": "state exceeds 384 tokens: 470"
+  },
+  {
+    "id": "musr/object_placements/252",
+    "error": "state exceeds 384 tokens: 1110"
+  },
+  {
+    "id": "musr/murder_mystery/216",
+    "error": "state exceeds 384 tokens: 1110"
+  },
+  {
+    "id": "cfcolor/user/1098",
+    "error": "state exceeds 384 tokens: 560"
+  },
+  {
+    "id": "cfcolor/user/597",
+    "error": "state exceeds 384 tokens: 543"
+  },
+  {
+    "id": "sata_bench/1129",
+    "error": "state exceeds 384 tokens: 528"
+  },
+  {
+    "id": "musr/team_allocation/87",
+    "error": "state exceeds 384 tokens: 618"
+  },
+  {
+    "id": "bright/psychology/98",
+    "error": "branch too long: 961 tokens with a 261-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/murder_mystery/27",
+    "error": "state exceeds 384 tokens: 1239"
+  },
+  {
+    "id": "sata_bench/1111",
+    "error": "state exceeds 384 tokens: 841"
+  },
+  {
+    "id": "sgd/development/17_00080/30",
+    "error": "state exceeds 384 tokens: 592"
+  },
+  {
+    "id": "bright/sustainable_living/9",
+    "error": "branch too long: 1266 tokens with a 354-token state (row limit 1024)"
+  },
+  {
+    "id": "apibank/level-1/115",
+    "error": "state exceeds 384 tokens: 471"
+  },
+  {
+    "id": "musr/team_allocation/138",
+    "error": "state exceeds 384 tokens: 624"
+  },
+  {
+    "id": "cfcolor/user/401",
+    "error": "state exceeds 384 tokens: 521"
+  },
+  {
+    "id": "cfcolor/user/852",
+    "error": "state exceeds 384 tokens: 551"
+  },
+  {
+    "id": "cfcolor/user/243",
+    "error": "state exceeds 384 tokens: 556"
+  },
+  {
+    "id": "apibank/level-1/132",
+    "error": "state exceeds 384 tokens: 467"
+  },
+  {
+    "id": "cfcolor/user/702",
+    "error": "state exceeds 384 tokens: 538"
+  },
+  {
+    "id": "musr/object_placements/144",
+    "error": "state exceeds 384 tokens: 1042"
+  },
+  {
+    "id": "musr/murder_mystery/43",
+    "error": "state exceeds 384 tokens: 1200"
+  },
+  {
+    "id": "bfcl/live_simple_78-39-0",
+    "error": "state exceeds 384 tokens: 496"
+  },
+  {
+    "id": "bright/psychology/28",
+    "error": "branch too long: 771 tokens with a 369-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/object_placements/124",
+    "error": "state exceeds 384 tokens: 1039"
+  },
+  {
+    "id": "cfcolor/user/113",
+    "error": "state exceeds 384 tokens: 554"
+  },
+  {
+    "id": "cfcolor/user/869",
+    "error": "state exceeds 384 tokens: 555"
+  },
+  {
+    "id": "bright/psychology/64",
+    "error": "branch too long: 1391 tokens with a 69-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/murder_mystery/169",
+    "error": "state exceeds 384 tokens: 1270"
+  },
+  {
+    "id": "musr/team_allocation/199",
+    "error": "state exceeds 384 tokens: 564"
+  },
+  {
+    "id": "cfcolor/user/523",
+    "error": "state exceeds 384 tokens: 535"
+  },
+  {
+    "id": "sata_bench/67",
+    "error": "state exceeds 384 tokens: 633"
+  },
+  {
+    "id": "sata_bench/135",
+    "error": "state exceeds 384 tokens: 456"
+  },
+  {
+    "id": "bright/sustainable_living/78",
+    "error": "state exceeds 384 tokens: 408"
+  },
+  {
+    "id": "cfcolor/user/735",
+    "error": "state exceeds 384 tokens: 557"
+  },
+  {
+    "id": "sgd/development/9_00063/14",
+    "error": "state exceeds 384 tokens: 423"
+  },
+  {
+    "id": "sata_bench/1",
+    "error": "state exceeds 384 tokens: 740"
+  },
+  {
+    "id": "sgd/development/4_00106/24",
+    "error": "state exceeds 384 tokens: 425"
+  },
+  {
+    "id": "musr/murder_mystery/221",
+    "error": "state exceeds 384 tokens: 1080"
+  },
+  {
+    "id": "cfcolor/user/166",
+    "error": "state exceeds 384 tokens: 555"
+  },
+  {
+    "id": "cfcolor/user/85",
+    "error": "state exceeds 384 tokens: 567"
+  },
+  {
+    "id": "bfcl/parallel_multiple_127",
+    "error": "state exceeds 384 tokens: 458"
+  },
+  {
+    "id": "cfcolor/user/175",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "apibank/level-1/196",
+    "error": "state exceeds 384 tokens: 476"
+  },
+  {
+    "id": "cfcolor/user/516",
+    "error": "state exceeds 384 tokens: 553"
+  },
+  {
+    "id": "contractnli/development/79",
+    "error": "state exceeds 384 tokens: 1424"
+  },
+  {
+    "id": "bfcl/parallel_multiple_76",
+    "error": "state exceeds 384 tokens: 501"
+  },
+  {
+    "id": "contractnli/development/435",
+    "error": "state exceeds 384 tokens: 1217"
+  },
+  {
+    "id": "musr/murder_mystery/129",
+    "error": "state exceeds 384 tokens: 1152"
+  },
+  {
+    "id": "contractnli/development/63",
+    "error": "state exceeds 384 tokens: 2164"
+  },
+  {
+    "id": "musr/team_allocation/241",
+    "error": "state exceeds 384 tokens: 593"
+  },
+  {
+    "id": "bfcl/live_irrelevance_265-57-0",
+    "error": "state exceeds 384 tokens: 1021"
+  },
+  {
+    "id": "sata_bench/273",
+    "error": "state exceeds 384 tokens: 553"
+  },
+  {
+    "id": "bfcl/live_multiple_114-44-1",
+    "error": "state exceeds 384 tokens: 1503"
+  },
+  {
+    "id": "contractnli/development/482",
+    "error": "state exceeds 384 tokens: 966"
+  },
+  {
+    "id": "cfcolor/user/278",
+    "error": "state exceeds 384 tokens: 555"
+  },
+  {
+    "id": "cfcolor/user/288",
+    "error": "state exceeds 384 tokens: 528"
+  },
+  {
+    "id": "musr/murder_mystery/94",
+    "error": "state exceeds 384 tokens: 1130"
+  },
+  {
+    "id": "musr/murder_mystery/41",
+    "error": "state exceeds 384 tokens: 1257"
+  },
+  {
+    "id": "cfcolor/user/880",
+    "error": "state exceeds 384 tokens: 568"
+  },
+  {
+    "id": "bfcl/live_parallel_multiple_1-1-0",
+    "error": "state exceeds 384 tokens: 595"
+  },
+  {
+    "id": "cfcolor/user/1010",
+    "error": "state exceeds 384 tokens: 553"
+  },
+  {
+    "id": "musr/team_allocation/152",
+    "error": "state exceeds 384 tokens: 566"
+  },
+  {
+    "id": "contractnli/development/563",
+    "error": "state exceeds 384 tokens: 2511"
+  },
+  {
+    "id": "bfcl/live_multiple_331-132-21",
+    "error": "state exceeds 384 tokens: 933"
+  },
+  {
+    "id": "musr/object_placements/228",
+    "error": "state exceeds 384 tokens: 948"
+  },
+  {
+    "id": "musr/murder_mystery/109",
+    "error": "state exceeds 384 tokens: 1068"
+  },
+  {
+    "id": "sata_bench/1210",
+    "error": "state exceeds 384 tokens: 468"
+  },
+  {
+    "id": "sata_bench/709",
+    "error": "state exceeds 384 tokens: 610"
+  },
+  {
+    "id": "bright/sustainable_living/24",
+    "error": "branch too long: 1088 tokens with a 163-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/410",
+    "error": "state exceeds 384 tokens: 548"
+  },
+  {
+    "id": "musr/team_allocation/191",
+    "error": "state exceeds 384 tokens: 531"
+  },
+  {
+    "id": "musr/team_allocation/2",
+    "error": "state exceeds 384 tokens: 557"
+  },
+  {
+    "id": "musr/team_allocation/134",
+    "error": "state exceeds 384 tokens: 532"
+  },
+  {
+    "id": "musr/murder_mystery/167",
+    "error": "state exceeds 384 tokens: 1004"
+  },
+  {
+    "id": "bright/stackoverflow/92",
+    "error": "state exceeds 384 tokens: 590"
+  },
+  {
+    "id": "bright/economics/46",
+    "error": "branch too long: 1437 tokens with a 88-token state (row limit 1024)"
+  },
+  {
+    "id": "bright/robotics/38",
+    "error": "branch too long: 1222 tokens with a 336-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/object_placements/164",
+    "error": "state exceeds 384 tokens: 1015"
+  },
+  {
+    "id": "musr/object_placements/44",
+    "error": "state exceeds 384 tokens: 1085"
+  },
+  {
+    "id": "sata_bench/87",
+    "error": "state exceeds 384 tokens: 580"
+  },
+  {
+    "id": "musr/murder_mystery/123",
+    "error": "state exceeds 384 tokens: 1309"
+  },
+  {
+    "id": "cfcolor/user/580",
+    "error": "state exceeds 384 tokens: 539"
+  },
+  {
+    "id": "cfcolor/user/335",
+    "error": "state exceeds 384 tokens: 554"
+  },
+  {
+    "id": "contractnli/development/406",
+    "error": "state exceeds 384 tokens: 1612"
+  },
+  {
+    "id": "musr/murder_mystery/133",
+    "error": "state exceeds 384 tokens: 1463"
+  },
+  {
+    "id": "cfcolor/user/504",
+    "error": "state exceeds 384 tokens: 549"
+  },
+  {
+    "id": "musr/murder_mystery/13",
+    "error": "state exceeds 384 tokens: 1183"
+  },
+  {
+    "id": "sgd/development/4_00056/20",
+    "error": "state exceeds 384 tokens: 462"
+  },
+  {
+    "id": "musr/team_allocation/38",
+    "error": "state exceeds 384 tokens: 550"
+  },
+  {
+    "id": "bright/robotics/42",
+    "error": "branch too long: 988 tokens with a 293-token state (row limit 1024)"
+  },
+  {
+    "id": "musr/object_placements/80",
+    "error": "state exceeds 384 tokens: 1047"
+  },
+  {
+    "id": "sgd/development/15_00022/26",
+    "error": "state exceeds 384 tokens: 473"
+  },
+  {
+    "id": "bfcl/live_multiple_495-148-5",
+    "error": "state exceeds 384 tokens: 767"
+  },
+  {
+    "id": "contractnli/development/33",
+    "error": "state exceeds 384 tokens: 2617"
+  },
+  {
+    "id": "cfcolor/user/901",
+    "error": "state exceeds 384 tokens: 571"
+  },
+  {
+    "id": "contractnli/development/440",
+    "error": "state exceeds 384 tokens: 2238"
+  },
+  {
+    "id": "cfcolor/user/117",
+    "error": "state exceeds 384 tokens: 552"
+  },
+  {
+    "id": "contractnli/development/10",
+    "error": "state exceeds 384 tokens: 2556"
+  },
+  {
+    "id": "musr/murder_mystery/155",
+    "error": "state exceeds 384 tokens: 1291"
+  },
+  {
+    "id": "musr/team_allocation/113",
+    "error": "state exceeds 384 tokens: 508"
+  },
+  {
+    "id": "sgd/development/16_00085/18",
+    "error": "state exceeds 384 tokens: 411"
+  },
+  {
+    "id": "cfcolor/user/931",
+    "error": "state exceeds 384 tokens: 537"
+  },
+  {
+    "id": "bfcl/live_parallel_multiple_3-2-1",
+    "error": "state exceeds 384 tokens: 1174"
+  },
+  {
+    "id": "musr/team_allocation/13",
+    "error": "state exceeds 384 tokens: 575"
+  },
+  {
+    "id": "sata_bench/298",
+    "error": "state exceeds 384 tokens: 581"
+  },
+  {
+    "id": "cfcolor/user/507",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "contractnli/development/478",
+    "error": "state exceeds 384 tokens: 2543"
+  },
+  {
+    "id": "bfcl/live_multiple_51-21-0",
+    "error": "state exceeds 384 tokens: 719"
+  },
+  {
+    "id": "cfcolor/user/843",
+    "error": "state exceeds 384 tokens: 547"
+  },
+  {
+    "id": "musr/object_placements/4",
+    "error": "state exceeds 384 tokens: 806"
+  },
+  {
+    "id": "contractnli/development/456",
+    "error": "state exceeds 384 tokens: 453"
+  },
+  {
+    "id": "bright/economics/17",
+    "error": "branch too long: 851 tokens with a 203-token state (row limit 1024)"
+  },
+  {
+    "id": "cfcolor/user/653",
+    "error": "state exceeds 384 tokens: 538"
+  },
+  {
+    "id": "sata_bench/271",
+    "error": "state exceeds 384 tokens: 571"
+  },
+  {
+    "id": "sata_bench/120",
+    "error": "state exceeds 384 tokens: 600"
+  },
+  {
+    "id": "musr/murder_mystery/2",
+    "error": "state exceeds 384 tokens: 1217"
+  },
+  {
+    "id": "musr/object_placements/36",
+    "error": "state exceeds 384 tokens: 994"
+  },
+  {
+    "id": "musr/team_allocation/229",
+    "error": "state exceeds 384 tokens: 574"
+  },
+  {
+    "id": "musr/object_placements/224",
+    "error": "state exceeds 384 tokens: 816"
+  },
+  {
+    "id": "cfcolor/user/788",
+    "error": "state exceeds 384 tokens: 565"
+  },
+  {
+    "id": "musr/murder_mystery/107",
+    "error": "state exceeds 384 tokens: 1245"
+  },
+  {
+    "id": "cfcolor/user/750",
+    "error": "state exceeds 384 tokens: 544"
+  },
+  {
+    "id": "sata_bench/1177",
+    "error": "state exceeds 384 tokens: 1392"
+  },
+  {
+    "id": "sata_bench/85",
+    "error": "state exceeds 384 tokens: 406"
+  },
+  {
+    "id": "bright/stackoverflow/64",
+    "error": "state exceeds 384 tokens: 500"
+  },
+  {
+    "id": "cfcolor/user/403",
+    "error": "state exceeds 384 tokens: 565"
+  },
+  {
+    "id": "bright/robotics/84",
+    "error": "state exceeds 384 tokens: 3525"
+  },
+  {
+    "id": "cfcolor/user/57",
+    "error": "state exceeds 384 tokens: 558"
+  },
+  {
+    "id": "bright/economics/75",
+    "error": "branch too long: 1083 tokens with a 316-token state (row limit 1024)"
+  },
+  {
+    "id": "bright/stackoverflow/17",
+    "error": "state exceeds 384 tokens: 529"
+  },
+  {
+    "id": "cfcolor/user/14",
+    "error": "state exceeds 384 tokens: 543"
+  },
+  {
+    "id": "sata_bench/1241",
+    "error": "state exceeds 384 tokens: 595"
+  },
+  {
+    "id": "musr/murder_mystery/247",
+    "error": "state exceeds 384 tokens: 1416"
+  },
+  {
+    "id": "cfcolor/user/915",
+    "error": "state exceeds 384 tokens: 567"
+  }
+]

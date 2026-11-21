@@ -89,17 +89,45 @@ def entropy(p):
     p = np.asarray(p, dtype=float); p = p[p > 0]; return float(-(p * np.log(p)).sum())
 
 
+def crowd_scores(r, targets):
+    """Per-question crowd scores for one row, or None when the question has no human vote shares."""
+    t = targets.get(f"{r['id']}|{r['question']}")
+    if t is None: return None
+    tv = np.array([t[k] for k in (r["keys"] if r["type"] != "score" else [str(i) for i in range(len(r["keys"]))])], dtype=float)
+    # Jev's API rounds probabilities to 0.01, so it reports 0.00 for options some annotators chose; floor every model at
+    # half that step so soft_nll compares like with like (jsd, the headline, is bounded and barely moves)
+    p = np.clip(np.asarray(r["p"], dtype=float), 0.005, 1); p = p / p.sum()
+    m = 0.5 * (p + tv)
+    jsd = 0.5 * sum(x * math.log2(x / y) for x, y in zip(p, m) if x > 0) + 0.5 * sum(x * math.log2(x / y) for x, y in zip(tv, m) if x > 0)
+    return {"acc": float(p.argmax() == r["label"]), "agreement": float((p * tv).sum()),
+            "soft_nll": float(-(tv * np.log(p)).sum()), "jsd": jsd, "h_model": entropy(p), "h_crowd": entropy(tv)}
+
+
+def crowd_paired(a, b, targets, metrics=("acc", "agreement", "soft_nll", "jsd"), samples=2000, seed=0):
+    """a minus b, micro over the questions both answered; 95% interval from resampling whole records."""
+    sa = {(r["id"], r["question"]): crowd_scores(r, targets) for r in a}
+    sb = {(r["id"], r["question"]): crowd_scores(r, targets) for r in b}
+    keys = [k for k in sa if k in sb and sa[k] is not None and sb[k] is not None]
+    by_rec = defaultdict(list)
+    for k in keys: by_rec[k[0]].append(k)
+    recs = sorted(by_rec)
+    diffs = {m: np.array([[sa[k][m] - sb[k][m] for k in by_rec[rid]] for rid in recs], dtype=object) for m in metrics}
+    sums = {m: np.array([sum(d) for d in diffs[m]]) for m in metrics}
+    counts = np.array([len(by_rec[rid]) for rid in recs])
+    rng = np.random.default_rng(seed)
+    out = {}
+    idx = rng.integers(0, len(recs), size=(samples, len(recs)))
+    for m in metrics:
+        boot = sums[m][idx].sum(1) / counts[idx].sum(1)
+        out[m] = {"delta": float(sums[m].sum() / counts.sum()), "ci95": [float(np.percentile(boot, 2.5)), float(np.percentile(boot, 97.5))], "n": int(counts.sum())}
+    return out
+
+
 def crowd_metrics(rows, targets):
     by_task = defaultdict(list)
     for r in rows:
-        t = targets.get(f"{r['id']}|{r['question']}")
-        if t is None: continue
-        tv = np.array([t[k] for k in (r["keys"] if r["type"] != "score" else [str(i) for i in range(len(r["keys"]))])], dtype=float)
-        p = np.clip(np.asarray(r["p"], dtype=float), 1e-9, 1); p = p / p.sum()
-        m = 0.5 * (p + tv)
-        jsd = 0.5 * sum(x * math.log2(x / y) for x, y in zip(p, m) if x > 0) + 0.5 * sum(x * math.log2(x / y) for x, y in zip(tv, m) if x > 0)
-        by_task[r["task"]].append({"acc": float(p.argmax() == r["label"]), "agreement": float((p * tv).sum()),
-                                   "soft_nll": float(-(tv * np.log(p)).sum()), "jsd": jsd, "h_model": entropy(p), "h_crowd": entropy(tv)})
+        s = crowd_scores(r, targets)
+        if s is not None: by_task[r["task"]].append(s)
     tasks = {}
     for task, xs in sorted(by_task.items()):
         tasks[task] = {k: float(np.mean([x[k] for x in xs])) for k in ("acc", "agreement", "soft_nll", "jsd")}
@@ -133,12 +161,20 @@ def main():
     out = {"panels": {}, "temperatures": {}, "labels": LABELS}
     # crowd panels
     for read in ("crowd_dev", "chaosnli"):
-        panel = {}
-        if (ROOT / "runs/jev" / f"{read}.jsonl").exists(): panel["jev"] = crowd_metrics(jev_rows(read), targets)
+        rows_by = {}
+        if (ROOT / "runs/jev" / f"{read}.jsonl").exists(): rows_by["jev"] = jev_rows(read)
         for arm in ARMS:
             rows = arm_rows(arm, read)
-            if rows: panel[arm] = crowd_metrics(rows, targets)
+            if rows: rows_by[arm] = rows
+        # score every model on the same questions: those all of them answered
+        common = set.intersection(*({(r["id"], r["question"]) for r in rows} for rows in rows_by.values())) if rows_by else set()
+        rows_by = {name: [r for r in rows if (r["id"], r["question"]) in common] for name, rows in rows_by.items()}
+        panel = {name: crowd_metrics(rows, targets) for name, rows in rows_by.items()}
+        if "parent" in rows_by:
+            for name in rows_by:
+                if name != "parent": panel[name]["vs_parent"] = crowd_paired(rows_by[name], rows_by["parent"], targets)
         out["panels"][read] = panel
+        out.setdefault("common_questions", {})[read] = len(common)
     # selective-prediction panels
     for read in ("breadth", "transfer"):
         panel, rows_by = {}, {}
@@ -180,6 +216,9 @@ def report(out):
         print(f"{'model':10s} " + " ".join(f"{k:>10s}" for k in ("acc", "agreement", "soft_nll", "jsd", "ent_corr")))
         for name, m in panel.items():
             print(f"{name:10s} " + " ".join(f"{m['macro'][k]:10.3f}" for k in ("acc", "agreement", "soft_nll", "jsd", "ent_corr")))
+        for name, m in panel.items():
+            for metric, d in (m.get("vs_parent") or {}).items():
+                print(f"  {name} - parent {metric:10s} {d['delta']:+.4f} [{d['ci95'][0]:+.4f}, {d['ci95'][1]:+.4f}] n={d['n']}")
         tasks = sorted({t for m in panel.values() for t in m["tasks"]})
         print("  per task: " + " | ".join(panel.keys()))
         for t in tasks:

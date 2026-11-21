@@ -11,7 +11,7 @@
 Every arm is a one-epoch delta from jaredpalmer/kev-4b (LoRA + pointer head, Kev's --init_from path) on the same 7,500
 crowd records plus 2,000 replayed decision-v7 records, lr 2e-5, seed 0. The arms differ only in each question's target.
 
-Every arm, the parent included, is scored the same way: one temperature fitted (min NLL, micro) on transfer-v4's
+Every arm, the parent included, is scored the same way: one temperature fitted (min NLL, micro) on transfer-r3's
 calibration partition (held-out datasets, as Kev's rules require), then transfer-v4 development, breadth-v1 development,
 the held-out crowd items and ChaosNLI are read at that temperature. Rows keep raw logits, so analyze.py can rescore them.
 """
@@ -30,6 +30,7 @@ KEV_ROOT, RUNS, HF = "/kev", "/runs", "/hf"
 INIT = "jaredpalmer/kev-4b"
 SUITE = f"{KEV_ROOT}/evals/v7/decision-v7"
 TRANSFER = f"{KEV_ROOT}/evals/v4/transfer-v4"
+CALIBRATION = f"{KEV_ROOT}/evals/round3/transfer-r3"   # its calibration partition (580 questions, held-out sources) is Kev's registered T pool; transfer-v4's is empty
 BREADTH = f"{RUNS}/suites/breadth-v1"
 BREADTH_DEV_SHA = "9aad8f4a7374988b2768d31135d5690137df3a3d6cbc1e771db4ee95ca515a94"   # evals/breadth-v1/manifest.json at KEV_REF
 GPU = os.environ.get("OPEN_JEV_GPU", "H100")              # training
@@ -80,12 +81,14 @@ def run_build_breadth():
 
 
 @app.function(image=image, gpu=GPU, cpu=4, memory=(32768, 131072), timeout=5 * 3600, volumes=VOLUMES)
-def run_train(arm, data, hard=False, epochs=1, lr=2e-5, replay=2000, seed=0, max_state=2048):
+def run_train(arm, data, hard=False, epochs=1, lr=2e-5, replay=2000, seed=0, max_state=2048, max_steps=0):
     from kev.checkpoint import Checkpoint
     runs.reload()
     out = Path(RUNS) / arm
+    subprocess.run(["rm", "-rf", str(out / "eval")], check=True)
     if (out / "checkpoint/head.pt").exists():
         raise FileExistsError(f"/runs/{arm} already holds a checkpoint")
+    subprocess.run(["rm", "-rf", str(out / "checkpoint")], check=True)   # an unfinished (stopped) run's partial directory
     out.mkdir(parents=True, exist_ok=True)
     records = [json.loads(l) for l in data.splitlines() if l.strip()]
     if hard:   # the hard-label arm: same records, majority labels only
@@ -99,10 +102,10 @@ def run_train(arm, data, hard=False, epochs=1, lr=2e-5, replay=2000, seed=0, max
            "--base", meta.base, "--lora", meta.lora, "--head_dim", meta.head_dim, "--lora_targets", args["lora_targets"],
            "--option_isolation", int(meta.option_isolation), "--special_embeddings", int(meta.special_embeddings), "--weights_dtype", meta.weights_dtype,
            "--epochs", epochs, "--lr", lr, "--batch", args["batch"], "--accum", args["accum"], "--checkpointing", args["checkpointing"],
-           "--seed", seed, "--p_none_pair", 0, "--max_state", max_state]
+           "--seed", seed, "--p_none_pair", 0, "--max_state", max_state, "--max_steps", max_steps]
     if meta.base_revision: cmd += ["--base_revision", meta.base_revision]
     cmd = [str(c) for c in cmd]
-    config = {"arm": arm, "hard": hard, "records": len(records), "cmd": cmd[2:], "kev_ref": KEV_REF, "data_sha256": hashlib.sha256(data.encode()).hexdigest()}
+    config = {"arm": arm, "hard": hard, "max_steps": max_steps, "records": len(records), "cmd": cmd[2:], "kev_ref": KEV_REF, "data_sha256": hashlib.sha256(data.encode()).hexdigest()}
     (out / "config.json").write_text(json.dumps(config, indent=2))
     stage("training: " + " ".join(cmd[2:]))
     started = time.time()
@@ -124,12 +127,15 @@ def score_reads(arm, run, files):
     from kev.data import load_records
     from kev.metrics import fit_temperature
     from kev.predictors import LocalPredictor
-    from kev.suite import load_split, read_manifest, write_json
+    from kev.suite import SERVING_CONTEXT_8K, load_split, read_manifest, write_json
     out = Path(RUNS) / arm / "eval"
     subprocess.run(["rm", "-rf", str(out)], check=True)
-    predictor = LocalPredictor(run, "cuda", LoadOptions(temperature=1.0))
-    stage(f"{arm}: fitting T on transfer-v4 calibration")
-    _, cal_rows = evaluate_records(load_split(TRANSFER, "calibration"), predictor, out / "calibration")
+    # breadth-v1 is admitted at the 8k serving context (its manifest's `context`); the default training context would
+    # reject a third of it, and of the crowd panel, as overlong. Records that fit a smaller context score the same.
+    assert read_manifest(BREADTH)["context"]["max_state"] == SERVING_CONTEXT_8K["max_state"]
+    predictor = LocalPredictor(run, "cuda", LoadOptions(temperature=1.0), context=SERVING_CONTEXT_8K)
+    stage(f"{arm}: fitting T on transfer-r3 calibration")
+    _, cal_rows = evaluate_records(load_split(CALIBRATION, "calibration"), predictor, out / "calibration")
     T = fit_temperature(cal_rows, aggregation="micro")
     stage(f"{arm}: T = {T:.3f}")
     reads = {"transfer": (load_split(TRANSFER, "development"), tuple(read_manifest(TRANSFER)["holdout_sources"]), False),
@@ -167,6 +173,16 @@ def run_pull(arm):
     return out
 
 
+@app.function(image=image, cpu=1, memory=2048, timeout=6 * 3600, volumes=VOLUMES)
+def run_pipeline(arm, data, hard, max_steps, files):
+    """Server-side train-then-evaluate, so a dropped laptop connection cannot stop it halfway."""
+    out = {}
+    if arm != "parent":
+        out["train"] = run_train.remote(arm, data, hard, max_steps=max_steps)
+    out["eval"] = run_evaluate.remote(arm, files)
+    return out
+
+
 # --- local entrypoints --------------------------------------------------------------------------------------------------
 
 EVAL_FILES = {"crowd_dev": "data/crowd_dev.jsonl", "chaosnli": "data/chaosnli.jsonl"}
@@ -189,12 +205,11 @@ def evaluate(arm: str):
 
 
 @app.local_entrypoint()
-def pipeline(arm: str, data: str = "", hard: bool = False):
-    """Train (unless arm == parent) then evaluate, in one detached-friendly call."""
+def pipeline(arm: str, data: str = "", hard: bool = False, max_steps: int = 0):
+    """Train (unless arm == parent) then evaluate. Run with `modal run --detach`: the orchestration lives on Modal."""
     files = {k: Path(v).read_text(encoding="utf-8") for k, v in EVAL_FILES.items()}
-    if arm != "parent":
-        print(json.dumps(run_train.remote(arm, Path(data).read_text(encoding="utf-8"), hard), indent=2))
-    print(json.dumps(run_evaluate.remote(arm, files), indent=2))
+    text = Path(data).read_text(encoding="utf-8") if arm != "parent" else ""
+    print(json.dumps(run_pipeline.remote(arm, text, hard, max_steps, files), indent=2))
 
 
 @app.local_entrypoint()
