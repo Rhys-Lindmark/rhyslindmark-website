@@ -96,7 +96,8 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     }
     const started = Date.now();
     try {
-      const response = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() }), signal: AbortSignal.timeout(25000), redirect: 'manual' });
+      const upstream = rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
+      const response = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(upstream), signal: AbortSignal.timeout(25000), redirect: 'manual' });
       if (!response.ok) {
         const messages = { 401: 'Claim Check is temporarily unavailable.', 402: 'Claim Check is paused: its usage allowance has been reached.', 403: 'Claim Check is temporarily unavailable.', 429: 'Jev is busy. Wait a moment and try again.' };
         await response.body?.cancel().catch(() => {});
@@ -106,7 +107,9 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
       if (rps) {
         const n = data?.answers?.jev_throw;
         if (!THROWS.includes(n?.choice) || !THROWS.every(k => probability(n.probabilities?.[k])) || Math.abs(THROWS.reduce((s,k)=>s+n.probabilities[k],0)-1) > .02 || !(n.confidence === null || n.confidence === undefined || probability(n.confidence))) return json({ error: 'Jev returned an unexpected response. Please try again.' }, 502);
-        return json({ model: typeof data.model === 'string' ? data.model : MODEL, throw: n.choice, probabilities: Object.fromEntries(THROWS.map(k=>[k,n.probabilities[k]])), confidence: n.confidence ?? null, elapsed_ms: Date.now()-started });
+        const probabilities = Object.fromEntries(THROWS.map(k=>[k,n.probabilities[k]])), confidence = n.confidence ?? null, model = typeof data.model === 'string' ? data.model : MODEL;
+        // Echo the exact call (minus the key) so the page can show how a Choice is asked and answered.
+        return json({ model, throw: n.choice, probabilities, confidence, elapsed_ms: Date.now()-started, request: upstream, response: { model, answers: { jev_throw: { choice: n.choice, probabilities, confidence } } } });
       }
       const a = data?.answers, v = a?.verdict;
       if (!labels.includes(v?.choice) || !labels.every(k => probability(v.probabilities?.[k])) || Math.abs(labels.reduce((s,k)=>s+v.probabilities[k],0)-1) > .02 || !(v.confidence === null || probability(v.confidence)) || !probability(a?.direct?.noul) || !probability(a?.overreach?.noul)) return json({ error: 'Jev returned an unexpected response. Please try again.' }, 502);

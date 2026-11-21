@@ -64,3 +64,17 @@ footer { margin-top: 16px; }
   .results { margin-top: 0; padding-top: 0; border-top: 0; border-left: 1px solid #ddd; padding-left: 24px; position: sticky; top: 16px; }
 }
 @media (max-width: 480px) { .shell { margin: 16px auto; padding: 0 16px; } header { gap: 16px; } textarea { font-size: 16px; } }
+.api { margin-top: 22px; padding-top: 16px; border-top: 1px dashed #ccc; }
+.fields { display: grid; gap: 4px; margin: 6px 0 14px; font-size: 13px; }
+.fields .sub { padding-left: 18px; }
+.fields div { display: flex; gap: 8px; align-items: baseline; }
+.fields .sub dt::before { content: '↳ '; color: #999; font-family: Georgia, serif; }
+.fields dt { flex: none; }
+.fields dd { margin: 0; color: #555; }
+code, .code { font-family: Menlo, Consolas, monospace; font-size: 12px; }
+.api-grid { display: grid; gap: 14px; }
+.api-grid h4 { margin: 0 0 6px; }
+.code { margin: 0; padding: 10px; background: #f7f7f7; border: 1px solid #e2e2e2; border-radius: 2px; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 360px; overflow-y: auto; color: #333; }
+.verb { font-weight: bold; margin-right: 4px; }
+.api-grid h4 code { color: #666; }
+@media (min-width: 680px) { .api-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }

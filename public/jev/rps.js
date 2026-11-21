@@ -64,6 +64,9 @@ for (const button of buttons()) button.addEventListener('click', async () => {
     }));
     $('rps-confidence').textContent = data.confidence === null ? 'Not provided' : pct(data.confidence);
     $('rps-meta').textContent = `${data.model} · ${(data.elapsed_ms / 1000).toFixed(2)}s`;
+    if (data.request) $('rps-request').textContent = JSON.stringify(data.request, null, 2);
+    if (data.response) $('rps-response').textContent = JSON.stringify(data.response, null, 2);
+    $('rps-response-status').textContent = `200 OK · ${(data.elapsed_ms / 1000).toFixed(2)}s`;
   } catch (error) {
     $('rps-status').textContent = '';
     showError(error.name === 'TimeoutError' ? 'The request timed out. Please try again.' : error.message);
