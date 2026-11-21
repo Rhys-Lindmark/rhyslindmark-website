@@ -1,8 +1,8 @@
 {
-  "generated": "2026-11-21T05:35:17.409Z",
-  "partial": true,
+  "generated": "2026-11-21T05:55:20.988Z",
+  "partial": false,
   "tasks": 60,
-  "reps": 1,
+  "reps": 3,
   "arms": [
     "haiku:low",
     "haiku:high",
@@ -41,168 +41,168 @@
     "fable:low": "DeepSeek V4 Pro · low",
     "fable:high": "DeepSeek V4 Pro · high"
   },
-  "spent_usd": 0.9004643099499986,
+  "spent_usd": 1.7320229332499961,
   "budget_usd": 25,
   "jev_model": "jev-1.14.0",
   "policies": [
     {
       "name": "Always GLM 5.3 Flash · low",
       "kind": "fixed",
-      "pass": 0.8583333333333333,
-      "cost": 0.10635363666666671
+      "pass": 0.8444444444444446,
+      "cost": 0.0858434161111111
     },
     {
       "name": "Always GLM 5.3 Flash · high",
       "kind": "fixed",
-      "pass": 0.8916666666666667,
-      "cost": 0.13431303666666664
+      "pass": 0.9,
+      "cost": 0.15076015555555555
     },
     {
       "name": "Always DeepSeek V4.1 Flash · low",
       "kind": "fixed",
-      "pass": 1,
-      "cost": 0.23732804666666668
+      "pass": 0.9888888888888889,
+      "cost": 0.22765232111111114
     },
     {
       "name": "Always DeepSeek V4.1 Flash · high",
       "kind": "fixed",
       "pass": 1,
-      "cost": 0.2995811658333335
+      "cost": 0.2739138458333334
     },
     {
       "name": "Always GLM 5.3 · low",
       "kind": "fixed",
       "pass": 0.9,
-      "cost": 0.614320220833333
+      "cost": 0.641210453888889
     },
     {
       "name": "Always GLM 5.3 · high",
       "kind": "fixed",
-      "pass": 0.8916666666666667,
-      "cost": 1.717101025833333
+      "pass": 0.9166666666666666,
+      "cost": 1.7225494894444442
     },
     {
       "name": "Always DeepSeek V4 Pro · low",
       "kind": "fixed",
-      "pass": 0.9666666666666667,
-      "cost": 2.4339885208333327
+      "pass": 0.9777777777777777,
+      "cost": 2.2442292861111115
     },
     {
       "name": "Always DeepSeek V4 Pro · high",
       "kind": "fixed",
-      "pass": 0.9583333333333334,
-      "cost": 4.353221333333332
+      "pass": 0.9666666666666667,
+      "cost": 4.276190661111111
     },
     {
       "name": "Router (shipped table)",
       "kind": "router",
-      "pass": 0.9416666666666667,
-      "cost": 0.5393518350000002,
-      "random_p50": 0.9,
-      "random_p95": 0.9333333333333333,
-      "beats_random": true
+      "pass": 0.9222222222222223,
+      "cost": 0.5687815261111113,
+      "random_p50": 0.8944444444444445,
+      "random_p95": 0.9277777777777778,
+      "beats_random": false
     },
     {
       "name": "Router · yes ≥ 0.5, unsure = yes",
       "kind": "router-variant",
-      "pass": 0.9333333333333333,
-      "cost": 0.21720529916666664,
-      "random_p50": 0.8916666666666667,
-      "random_p95": 0.925,
+      "pass": 0.9166666666666667,
+      "cost": 0.19844273055555559,
+      "random_p50": 0.8833333333333333,
+      "random_p95": 0.9111111111111113,
       "beats_random": true
     },
     {
       "name": "Router · yes ≥ 0.5, unsure = no",
       "kind": "router-variant",
-      "pass": 0.9333333333333333,
-      "cost": 0.21720529916666664,
-      "random_p50": 0.8916666666666667,
-      "random_p95": 0.925,
+      "pass": 0.9166666666666667,
+      "cost": 0.19844273055555559,
+      "random_p50": 0.8833333333333333,
+      "random_p95": 0.9111111111111113,
       "beats_random": true
     },
     {
       "name": "Router · yes ≥ 0.6, unsure = yes",
       "kind": "router-variant",
-      "pass": 0.95,
-      "cost": 0.4036221725000002,
-      "random_p50": 0.8916666666666667,
-      "random_p95": 0.925,
+      "pass": 0.9333333333333335,
+      "cost": 0.3455215205555556,
+      "random_p50": 0.8833333333333334,
+      "random_p95": 0.9166666666666666,
       "beats_random": true
     },
     {
       "name": "Router · yes ≥ 0.6, unsure = no",
       "kind": "router-variant",
-      "pass": 0.925,
-      "cost": 0.21271376583333332,
-      "random_p50": 0.8916666666666667,
-      "random_p95": 0.9166666666666666,
+      "pass": 0.9111111111111112,
+      "cost": 0.19425354722222224,
+      "random_p50": 0.8777777777777779,
+      "random_p95": 0.9055555555555557,
       "beats_random": true
     },
     {
       "name": "Router · yes ≥ 0.8, unsure = yes",
       "kind": "router-variant",
-      "pass": 0.95,
-      "cost": 0.7682925033333335,
-      "random_p50": 0.9166666666666666,
-      "random_p95": 0.95,
+      "pass": 0.9388888888888889,
+      "cost": 0.7441810294444444,
+      "random_p50": 0.9111111111111111,
+      "random_p95": 0.9444444444444444,
       "beats_random": false
     },
     {
       "name": "Router · yes ≥ 0.8, unsure = no",
       "kind": "router-variant",
-      "pass": 0.9083333333333333,
-      "cost": 0.16288809250000005,
-      "random_p50": 0.8833333333333333,
-      "random_p95": 0.9166666666666666,
+      "pass": 0.8944444444444445,
+      "cost": 0.14225537055555554,
+      "random_p50": 0.8722222222222223,
+      "random_p95": 0.9000000000000001,
       "beats_random": false
     },
     {
       "name": "Router · yes ≥ 0.9, unsure = yes",
       "kind": "router-variant",
-      "pass": 0.9583333333333334,
-      "cost": 0.8895625825,
-      "random_p50": 0.9333333333333333,
-      "random_p95": 0.9666666666666667,
+      "pass": 0.9444444444444444,
+      "cost": 0.895843045,
+      "random_p50": 0.9277777777777778,
+      "random_p95": 0.9611111111111111,
       "beats_random": false
     },
     {
       "name": "Router · yes ≥ 0.9, unsure = no",
       "kind": "router-variant",
-      "pass": 0.9083333333333333,
-      "cost": 0.16288809250000005,
-      "random_p50": 0.8833333333333333,
-      "random_p95": 0.9166666666666666,
+      "pass": 0.8944444444444445,
+      "cost": 0.14225537055555554,
+      "random_p50": 0.8722222222222223,
+      "random_p95": 0.9000000000000002,
       "beats_random": false
     },
     {
       "name": "Choice (argmax) · low effort",
       "kind": "choice",
-      "pass": 0.9166666666666666,
-      "cost": 0.22974198333333334,
-      "random_p50": 0.9,
-      "random_p95": 0.9333333333333333,
+      "pass": 0.8777777777777778,
+      "cost": 0.23682712500000003,
+      "random_p50": 0.8833333333333335,
+      "random_p95": 0.9166666666666667,
       "beats_random": false
     },
     {
       "name": "Choice (argmax) · high effort",
       "kind": "choice",
-      "pass": 0.9,
-      "cost": 0.59145201125,
-      "random_p50": 0.9166666666666666,
-      "random_p95": 0.95,
+      "pass": 0.9222222222222222,
+      "cost": 0.6171668327777777,
+      "random_p50": 0.9277777777777777,
+      "random_p95": 0.9500000000000001,
       "beats_random": false
     },
     {
       "name": "Oracle (cheapest best arm)",
       "kind": "oracle",
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "name": "Learned router · λ=0",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.29001995708333334,
+      "cost": 0.2739138458333334,
       "lambda": 0,
       "random_p50": 1,
       "random_p95": 1,
@@ -212,7 +212,7 @@
       "name": "Learned router · λ=0.5",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23732804666666668,
+      "cost": 0.2739138458333334,
       "lambda": 0.5,
       "random_p50": 1,
       "random_p95": 1,
@@ -222,7 +222,7 @@
       "name": "Learned router · λ=1",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23732804666666668,
+      "cost": 0.2739138458333334,
       "lambda": 1,
       "random_p50": 1,
       "random_p95": 1,
@@ -232,7 +232,7 @@
       "name": "Learned router · λ=2",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23732804666666668,
+      "cost": 0.2739138458333334,
       "lambda": 2,
       "random_p50": 1,
       "random_p95": 1,
@@ -242,7 +242,7 @@
       "name": "Learned router · λ=4",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23732804666666668,
+      "cost": 0.2739138458333334,
       "lambda": 4,
       "random_p50": 1,
       "random_p95": 1,
@@ -252,7 +252,7 @@
       "name": "Learned router · λ=8",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23732804666666668,
+      "cost": 0.2739138458333334,
       "lambda": 8,
       "random_p50": 1,
       "random_p95": 1,
@@ -262,7 +262,7 @@
       "name": "Learned router · λ=16",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23732804666666668,
+      "cost": 0.2739138458333334,
       "lambda": 16,
       "random_p50": 1,
       "random_p95": 1,
@@ -272,7 +272,7 @@
       "name": "Learned router · λ=32",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23732804666666668,
+      "cost": 0.2739138458333334,
       "lambda": 32,
       "random_p50": 1,
       "random_p95": 1,
@@ -282,7 +282,7 @@
       "name": "Learned router · λ=64",
       "kind": "learned",
       "pass": 1,
-      "cost": 0.23732804666666668,
+      "cost": 0.2739138458333334,
       "lambda": 64,
       "random_p50": 1,
       "random_p95": 1,
@@ -291,20 +291,20 @@
     {
       "name": "Learned router · λ=128",
       "kind": "learned",
-      "pass": 1,
-      "cost": 0.23732804666666668,
+      "pass": 0.9944444444444446,
+      "cost": 0.267419071388889,
       "lambda": 128,
-      "random_p50": 1,
+      "random_p50": 0.9944444444444446,
       "random_p95": 1,
       "beats_random": false
     },
     {
       "name": "Learned router · λ=256",
       "kind": "learned",
-      "pass": 1,
-      "cost": 0.23732804666666668,
+      "pass": 0.9888888888888889,
+      "cost": 0.2519231661111111,
       "lambda": 256,
-      "random_p50": 1,
+      "random_p50": 0.9944444444444444,
       "random_p95": 1,
       "beats_random": false
     }
@@ -313,121 +313,121 @@
     {
       "lambda": 0,
       "pass": 1,
-      "cost": 0.29001995708333334
+      "cost": 0.2739138458333334
     },
     {
       "lambda": 0.5,
       "pass": 1,
-      "cost": 0.23732804666666668
+      "cost": 0.2739138458333334
     },
     {
       "lambda": 1,
       "pass": 1,
-      "cost": 0.23732804666666668
+      "cost": 0.2739138458333334
     },
     {
       "lambda": 2,
       "pass": 1,
-      "cost": 0.23732804666666668
+      "cost": 0.2739138458333334
     },
     {
       "lambda": 4,
       "pass": 1,
-      "cost": 0.23732804666666668
+      "cost": 0.2739138458333334
     },
     {
       "lambda": 8,
       "pass": 1,
-      "cost": 0.23732804666666668
+      "cost": 0.2739138458333334
     },
     {
       "lambda": 16,
       "pass": 1,
-      "cost": 0.23732804666666668
+      "cost": 0.2739138458333334
     },
     {
       "lambda": 32,
       "pass": 1,
-      "cost": 0.23732804666666668
+      "cost": 0.2739138458333334
     },
     {
       "lambda": 64,
       "pass": 1,
-      "cost": 0.23732804666666668
+      "cost": 0.2739138458333334
     },
     {
       "lambda": 128,
-      "pass": 1,
-      "cost": 0.23732804666666668
+      "pass": 0.9944444444444446,
+      "cost": 0.267419071388889
     },
     {
       "lambda": 256,
-      "pass": 1,
-      "cost": 0.23732804666666668
+      "pass": 0.9888888888888889,
+      "cost": 0.2519231661111111
     }
   ],
   "oracle_curve": [
     {
       "lambda": 0,
       "pass": 1,
-      "cost": 0.1603016216666667
+      "cost": 0.16293769472222222
     },
     {
       "lambda": 0.5,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "lambda": 1,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "lambda": 2,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "lambda": 4,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "lambda": 8,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "lambda": 16,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "lambda": 32,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "lambda": 64,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "lambda": 128,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     },
     {
       "lambda": 256,
       "pass": 1,
-      "cost": 0.13566867749999997
+      "cost": 0.14532049472222228
     }
   ],
   "router_diagnosis": {
     "counts": {
-      "more than needed": 34,
-      "right": 24,
-      "too weak": 2
+      "more than needed": 29,
+      "right": 27,
+      "too weak": 4
     },
     "tasks": [
       {
@@ -437,7 +437,7 @@
         "prompt": "What is 17 × 23?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "haiku:high",
+        "cheapest_passing": "sonnet:high",
         "router_pass": 1,
         "verdict": "more than needed"
       },
@@ -470,9 +470,9 @@
         "prompt": "How many positive integers up to 1000 are divisible by 3 or 5, but not by 15?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "sonnet:high",
+        "cheapest_passing": "haiku:low",
         "router_pass": 1,
-        "verdict": "more than needed"
+        "verdict": "right"
       },
       {
         "task": "math-05",
@@ -514,7 +514,7 @@
         "prompt": "How many binary strings of length 12 have no two consecutive 1s?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "sonnet:high",
+        "cheapest_passing": "haiku:low",
         "router_pass": 1,
         "verdict": "right"
       },
@@ -525,7 +525,7 @@
         "prompt": "How many lattice paths go from (0,0) to (10,10) using unit steps right or up and never go above the line y = x?",
         "router": "sonnet:low",
         "choice": "Sonnet",
-        "cheapest_passing": "haiku:low",
+        "cheapest_passing": "haiku:high",
         "router_pass": 1,
         "verdict": "more than needed"
       },
@@ -559,7 +559,7 @@
         "router": "opus:high",
         "choice": "Opus",
         "cheapest_passing": "haiku:high",
-        "router_pass": 0.5,
+        "router_pass": 0.6666666666666666,
         "verdict": "more than needed"
       },
       {
@@ -658,7 +658,7 @@
         "router": "opus:high",
         "choice": "Sonnet",
         "cheapest_passing": "haiku:low",
-        "router_pass": 1,
+        "router_pass": 0.6666666666666666,
         "verdict": "more than needed"
       },
       {
@@ -679,7 +679,7 @@
         "prompt": "Write a Python function is_match(s, p) for regular-expression matching where \".\" matches any single character and \"*\" matches zero or more of the preceding element. The match must cover the whole string. Do not use the re module.",
         "router": "opus:high",
         "choice": "Sonnet",
-        "cheapest_passing": "haiku:high",
+        "cheapest_passing": "haiku:low",
         "router_pass": 1,
         "verdict": "more than needed"
       },
@@ -779,7 +779,7 @@
         "router": "haiku:low",
         "choice": "Opus",
         "cheapest_passing": "haiku:low",
-        "router_pass": 0.5,
+        "router_pass": 0.6666666666666666,
         "verdict": "right"
       },
       {
@@ -789,9 +789,9 @@
         "prompt": "Write a ten-line acrostic poem whose lines start with the letters of LIGHTHOUSE, where every line is exactly 7 words long.",
         "router": "sonnet:high",
         "choice": "Opus",
-        "cheapest_passing": "haiku:high",
+        "cheapest_passing": "sonnet:high",
         "router_pass": 1,
-        "verdict": "more than needed"
+        "verdict": "right"
       },
       {
         "task": "write-10",
@@ -800,9 +800,9 @@
         "prompt": "Write at least 40 words about a city at night without using the letters \"e\" or \"a\" anywhere.",
         "router": "sonnet:low",
         "choice": "Opus",
-        "cheapest_passing": "sonnet:low",
+        "cheapest_passing": "sonnet:high",
         "router_pass": 1,
-        "verdict": "right"
+        "verdict": "more than needed"
       },
       {
         "task": "write-11",
@@ -811,9 +811,9 @@
         "prompt": "Write a sentence of exactly 6 words in which each word starts with the last letter of the word before it.",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "haiku:low",
-        "router_pass": 0.5,
-        "verdict": "right"
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 0.3333333333333333,
+        "verdict": "too weak"
       },
       {
         "task": "write-12",
@@ -844,9 +844,9 @@
         "prompt": "What day of the week was January 1, 2000?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "sonnet:high",
+        "cheapest_passing": "haiku:low",
         "router_pass": 1,
-        "verdict": "more than needed"
+        "verdict": "right"
       },
       {
         "task": "logic-03",
@@ -855,9 +855,9 @@
         "prompt": "If today is Tuesday, what day of the week will it be 100 days from now?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "sonnet:low",
+        "cheapest_passing": "haiku:low",
         "router_pass": 1,
-        "verdict": "more than needed"
+        "verdict": "right"
       },
       {
         "task": "logic-04",
@@ -867,7 +867,7 @@
         "router": "haiku:low",
         "choice": "Haiku",
         "cheapest_passing": "haiku:low",
-        "router_pass": 1,
+        "router_pass": 0.6666666666666666,
         "verdict": "right"
       },
       {
@@ -878,7 +878,7 @@
         "router": "haiku:low",
         "choice": "Haiku",
         "cheapest_passing": "haiku:high",
-        "router_pass": 0,
+        "router_pass": 0.3333333333333333,
         "verdict": "too weak"
       },
       {
@@ -888,7 +888,7 @@
         "prompt": "A bat and a ball cost $1.10 in total. The bat costs $1.00 more than the ball. How many cents does the ball cost?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "sonnet:low",
+        "cheapest_passing": "haiku:low",
         "router_pass": 1,
         "verdict": "right"
       },
@@ -900,7 +900,7 @@
         "router": "haiku:low",
         "choice": "Haiku",
         "cheapest_passing": "haiku:low",
-        "router_pass": 1,
+        "router_pass": 0.6666666666666666,
         "verdict": "right"
       },
       {
@@ -954,9 +954,9 @@
         "prompt": "Take the sentence \"quiet rivers carry ancient stones toward bright harbors\". Reverse the order of its words, then take the third letter of each word and join them. What string do you get?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "haiku:low",
-        "router_pass": 1,
-        "verdict": "right"
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0.3333333333333333,
+        "verdict": "too weak"
       },
       {
         "task": "facts-01",
@@ -965,7 +965,7 @@
         "prompt": "What’s the capital of Australia?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "sonnet:low",
+        "cheapest_passing": "sonnet:high",
         "router_pass": 1,
         "verdict": "more than needed"
       },
@@ -976,9 +976,9 @@
         "prompt": "What is the chemical symbol for gold?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "haiku:high",
+        "cheapest_passing": "haiku:low",
         "router_pass": 1,
-        "verdict": "more than needed"
+        "verdict": "right"
       },
       {
         "task": "facts-03",
@@ -987,9 +987,9 @@
         "prompt": "What is the largest planet in our solar system?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "haiku:low",
+        "cheapest_passing": "sonnet:high",
         "router_pass": 1,
-        "verdict": "right"
+        "verdict": "more than needed"
       },
       {
         "task": "facts-04",
@@ -1009,7 +1009,7 @@
         "prompt": "In what year did the Berlin Wall fall?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "sonnet:low",
+        "cheapest_passing": "sonnet:high",
         "router_pass": 1,
         "verdict": "more than needed"
       },
@@ -1031,7 +1031,7 @@
         "prompt": "How many bones are in a typical adult human body?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "haiku:high",
+        "cheapest_passing": "sonnet:high",
         "router_pass": 1,
         "verdict": "more than needed"
       },
@@ -1042,9 +1042,9 @@
         "prompt": "What is the boiling point of water at sea level in degrees Fahrenheit?",
         "router": "haiku:low",
         "choice": "Haiku",
-        "cheapest_passing": "haiku:high",
+        "cheapest_passing": "haiku:low",
         "router_pass": 1,
-        "verdict": "more than needed"
+        "verdict": "right"
       },
       {
         "task": "facts-09",
@@ -1086,51 +1086,51 @@
         "prompt": "What is the sum of all prime numbers less than 2000?",
         "router": "haiku:low",
         "choice": "Opus",
-        "cheapest_passing": "haiku:high",
+        "cheapest_passing": "haiku:low",
         "router_pass": 1,
-        "verdict": "more than needed"
+        "verdict": "right"
       }
     ]
   },
   "by_category": {
     "math": {
-      "haiku:low": 0.9166666666666666,
+      "haiku:low": 0.9444444444444445,
       "haiku:high": 1,
       "sonnet:low": 1,
       "sonnet:high": 1,
       "opus:low": 1,
-      "opus:high": 0.9583333333333334,
+      "opus:high": 0.9722222222222222,
       "fable:low": 1,
       "fable:high": 1
     },
     "code": {
-      "haiku:low": 0.9583333333333334,
-      "haiku:high": 0.9583333333333334,
-      "sonnet:low": 1,
+      "haiku:low": 0.9444444444444445,
+      "haiku:high": 0.9444444444444445,
+      "sonnet:low": 0.9722222222222222,
       "sonnet:high": 1,
       "opus:low": 1,
-      "opus:high": 1,
-      "fable:low": 0.9583333333333334,
-      "fable:high": 0.8333333333333334
+      "opus:high": 0.9722222222222222,
+      "fable:low": 0.9722222222222222,
+      "fable:high": 0.9166666666666666
     },
     "writing": {
-      "haiku:low": 0.5833333333333334,
-      "haiku:high": 0.5833333333333334,
+      "haiku:low": 0.5833333333333333,
+      "haiku:high": 0.611111111111111,
       "sonnet:low": 1,
       "sonnet:high": 1,
-      "opus:low": 0.75,
-      "opus:high": 0.6666666666666666,
-      "fable:low": 0.875,
-      "fable:high": 0.9583333333333334
+      "opus:low": 0.6944444444444445,
+      "opus:high": 0.7222222222222223,
+      "fable:low": 0.9444444444444445,
+      "fable:high": 0.9166666666666665
     },
     "logic": {
-      "haiku:low": 0.8333333333333334,
-      "haiku:high": 0.9166666666666666,
-      "sonnet:low": 1,
+      "haiku:low": 0.7500000000000001,
+      "haiku:high": 0.9444444444444445,
+      "sonnet:low": 0.9722222222222222,
       "sonnet:high": 1,
-      "opus:low": 0.8333333333333334,
-      "opus:high": 0.8333333333333334,
-      "fable:low": 1,
+      "opus:low": 0.8333333333333335,
+      "opus:high": 0.9166666666666666,
+      "fable:low": 0.9722222222222222,
       "fable:high": 1
     },
     "facts": {
@@ -1138,10 +1138,12 @@
       "haiku:high": 1,
       "sonnet:low": 1,
       "sonnet:high": 1,
-      "opus:low": 0.9166666666666666,
+      "opus:low": 0.9722222222222223,
       "opus:high": 1,
       "fable:low": 1,
       "fable:high": 1
     }
-  }
+  },
+  "by_bucket": null,
+  "bucket_counts": null
 }
