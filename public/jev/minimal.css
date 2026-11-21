@@ -11,7 +11,8 @@ h4 { font-size: 14px; font-weight: normal; margin: 14px 0 8px; }
 .section-heading, .bar-label, .confidence, .result-footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .section-heading { margin-bottom: 8px; }
 label { display: flex; justify-content: space-between; gap: 12px; margin: 10px 0 4px; }
-label span, #status, #meta { font-size: 12px; color: #666; }
+label span, #status, #meta, .status, .meta { font-size: 12px; color: #666; }
+.section-heading h3 { font-size: 16px; font-weight: normal; margin: 0; }
 textarea, input { width: 100%; background: white; color: #222; border: 1px solid #aaa; padding: 7px; font: 14px/1.4 Arial, sans-serif; border-radius: 2px; }
 textarea { display: block; resize: vertical; }
 #claim { height: 64px; min-height: 54px; }
@@ -38,7 +39,24 @@ details p, .note { font-size: 12px; color: #555; }
 .confidence { font-size: 13px; margin: 14px 0; }
 .result-footer { margin: 14px 0; }
 .note { margin: 14px 0 0; }
-#error { color: #a02020; }
+#error, .error { color: #a02020; }
+.demo { margin-bottom: 28px; }
+.demo + .demo { padding-top: 22px; border-top: 1px solid #ddd; }
+.demo-heading { margin-bottom: 14px; }
+.demo-heading h2 { font-size: 19px; }
+.demo-heading p { margin: 4px 0 0; font-size: 13px; color: #555; max-width: 70ch; }
+.throws { display: flex; gap: 8px; margin-top: 10px; }
+.throws button { flex: 1; padding: 12px 8px; font-size: 16px; background: #f6f6f6; color: #222; border: 1px solid #999; border-radius: 2px; }
+.throws button:not(:disabled):hover { background: #ececec; }
+.throws span { margin-right: 4px; }
+.score { font-size: 14px; margin: 10px 0 0; }
+.history { margin: 0; padding: 0; list-style: none; font-size: 12px; color: #555; max-height: 170px; overflow-y: auto; }
+.history li { padding: 2px 0; }
+.matchup { display: flex; gap: 24px; font-size: 14px; margin: 10px 0 0; }
+.matchup strong { font-size: 18px; margin-left: 4px; }
+.verdict { font-size: 22px; font-weight: bold; margin: 10px 0; }
+.picked .fill { background: #1659a5; }
+.picked .bar-label { font-weight: bold; }
 footer { margin-top: 16px; }
 [hidden] { display: none !important; }
 @media (min-width: 680px) {

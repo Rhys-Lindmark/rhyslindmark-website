@@ -20,6 +20,7 @@ window.jevTurnstileReady = () => {
     'expired-callback': () => { verificationToken = ''; $('run').disabled = true; },
     'error-callback': () => { verificationToken = ''; $('run').disabled = true; $('error').textContent = 'Human verification unavailable. Reload to try again.'; $('error').hidden = false; }
   });
+  window.jevRenderRps?.();
 };
 const verificationScript = document.createElement('script');
 verificationScript.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=jevTurnstileReady&render=explicit';
@@ -30,7 +31,7 @@ $('check-form').addEventListener('submit',async event=>{
   event.preventDefault();
   if(!verificationToken){$('error').textContent='Complete the human verification.';$('error').hidden=false;return;}
   const claim=$('claim').value.trim(), evidence=$('evidence').value.trim();
-  reset();busy=true;$('run').disabled=true;document.querySelector('.results').setAttribute('aria-busy','true');$('status').textContent='Checking…';
+  reset();busy=true;$('run').disabled=true;document.querySelector('#claim-check .results').setAttribute('aria-busy','true');$('status').textContent='Checking…';
   for(const el of document.querySelectorAll('textarea, [data-example], #clear')) el.disabled=true;
   try{
     const response=await fetch('/api/jev',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({claim,evidence,verification_token:verificationToken}),signal:AbortSignal.timeout(45000)});
@@ -42,9 +43,9 @@ $('check-form').addEventListener('submit',async event=>{
       const row=document.createElement('div');row.className='bar-row';const line=document.createElement('div');line.className='bar-label';const title=document.createElement('span');title.textContent=label;const amount=document.createElement('span');amount.textContent=pct(data.probabilities[id]);line.append(title,amount);const track=document.createElement('div');track.className='track';const fill=document.createElement('div');fill.className='fill';fill.style.width=pct(data.probabilities[id]);track.append(fill);row.append(line,track);$('bars').append(row);
     }
     $('direct').textContent=pct(data.direct);$('overreach').textContent=pct(data.overreach);$('confidence').textContent=data.confidence===null?'Not provided':pct(data.confidence);$('meta').textContent=`${data.model} · ${(data.elapsed_ms/1000).toFixed(2)}s`;
-    if(window.matchMedia('(max-width: 679px)').matches)document.querySelector('.results').scrollIntoView({block:'start',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+    if(window.matchMedia('(max-width: 679px)').matches)document.querySelector('#claim-check .results').scrollIntoView({block:'start',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
   }catch(error){$('error').textContent=error.name==='TimeoutError'?'The request timed out. Please try again.':error.message;$('error').hidden=false;$('status').textContent='';}
-  finally{busy=false;verificationToken='';$('run').disabled=true;if(widgetId!==undefined)window.turnstile.reset(widgetId);document.querySelector('.results').setAttribute('aria-busy','false');for(const el of document.querySelectorAll('textarea, [data-example], #clear'))el.disabled=false;}
+  finally{busy=false;verificationToken='';$('run').disabled=true;if(widgetId!==undefined)window.turnstile.reset(widgetId);document.querySelector('#claim-check .results').setAttribute('aria-busy','false');for(const el of document.querySelectorAll('textarea, [data-example], #clear'))el.disabled=false;}
 });
 $('copy').addEventListener('click',async()=>{if(!last)return;try{await navigator.clipboard.writeText(JSON.stringify(last,null,2));$('copy').textContent='Copied';setTimeout(()=>$('copy').textContent='Copy result',1800);}catch{$('error').textContent='Clipboard access is unavailable in this browser.';$('error').hidden=false;}});
 counts();

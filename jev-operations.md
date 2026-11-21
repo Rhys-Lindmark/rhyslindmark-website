@@ -1,6 +1,7 @@
 # Claim Check operations
 
 - Route: https://ai.rhyslindmark.com/jev/
+- Demos on the page share `/api/jev`, the Turnstile widget key and action, and every limit below: Claim Check (Choice + two Nouls) and Rock, Paper, Scissors (`demo: "rps"`, one Choice per round; the client sends only previous rounds, at most 30).
 - Every paid attempt requires a fresh Turnstile token, verified server-side with action `jev_check` and hostname `ai.rhyslindmark.com`. There is no service-key, header, cookie, or session bypass.
 - Turnstile reduces automation; no CAPTCHA guarantees a visitor is human.
 - Model pinned to `jev-1.14.0`. Published price checked 2026-10-27: $0.042 per million input tokens; output free; normal request context <=65,536 tokens. Source: https://docs.typesafe.ai/models
