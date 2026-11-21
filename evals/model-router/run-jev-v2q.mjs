@@ -1,14 +1,15 @@
 // Asks Jev the Router v2 questions for every prompt in the v1 set and the v2
 // pool (the pool contains v1's prompts too). Saves results/jev-v2q.json.
-//   with-secrets --key TYPESAFE_KEY_JEV_EVAL -- node run-jev-v2q.mjs
+//   node run-jev-v2q.mjs    (reads TYPESAFE_KEY_JEV_EVAL from evals/.env)
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { POOL } from './tasks-v2.mjs';
 import { routerV2Questions, V2_NOULS } from './router-v2-questions.mjs';
 import { MODEL } from '../../functions/_lib/jev-access.js';
 
 const OUT = new URL('./results/jev-v2q.json', import.meta.url);
+try { process.loadEnvFile(new URL('../.env', import.meta.url)); } catch {}
 const key = process.env.TYPESAFE_KEY_JEV_EVAL;
-if (!key) { console.error('TYPESAFE_KEY_JEV_EVAL is not set. See README.'); process.exit(1); }
+if (!key) { console.error('TYPESAFE_KEY_JEV_EVAL is not set (add it to evals/.env). See README.'); process.exit(1); }
 const out = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
 const probability = v => typeof v === 'number' && v >= 0 && v <= 1;
 const todo = POOL.filter(t => !out[t.id]);

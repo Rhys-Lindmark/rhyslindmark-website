@@ -5,8 +5,8 @@
   "scripts": {
     "selftest": "node selftest.mjs",
     "plan": "node run-models.mjs plan",
-    "models": "with-secrets --key OPENROUTER_KEY_JEV_EVAL -- node run-models.mjs run",
-    "jev": "with-secrets --key TYPESAFE_KEY_JEV_EVAL -- node run-jev.mjs",
+    "models": "node run-models.mjs run",
+    "jev": "node run-jev.mjs",
     "analyze": "node analyze.mjs"
   }
 }

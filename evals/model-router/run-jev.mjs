@@ -1,6 +1,6 @@
 // Asks Jev the exact questions the /jev page asks (imported from the API
 // handler), once per task, on the bare prompt a user would type.
-//   node --env-file-if-exists=.env run-jev.mjs
+//   node run-jev.mjs        (reads TYPESAFE_KEY_JEV_EVAL from evals/.env)
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { TASKS, RESULTS } from './eval-set.mjs';
 import { routerQuestions, antiQuestions, routerAnswers } from '../../functions/api/jev.js';
@@ -8,8 +8,9 @@ import { MODEL } from '../../functions/_lib/jev-access.js';
 
 const OUT = new URL('jev.json', RESULTS);
 mkdirSync(RESULTS, { recursive: true });
+try { process.loadEnvFile(new URL('../.env', import.meta.url)); } catch {}
 const key = process.env.TYPESAFE_KEY_JEV_EVAL;
-if (!key) { console.error('TYPESAFE_KEY_JEV_EVAL is not set (use bws run, or .env). See README.'); process.exit(1); }
+if (!key) { console.error('TYPESAFE_KEY_JEV_EVAL is not set (add it to evals/.env). See README.'); process.exit(1); }
 
 const out = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
 for (const t of TASKS) {

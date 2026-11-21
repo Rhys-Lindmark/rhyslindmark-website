@@ -2,8 +2,9 @@
 // tiers, x 2 reasoning-effort levels) through OpenRouter, grades each reply,
 // and never spends past the budget.
 //
-//   node --env-file-if-exists=.env run-models.mjs plan   # print the plan, spend nothing
-//   node --env-file-if-exists=.env run-models.mjs run    # probe, then full rounds while budget allows
+//   node run-models.mjs plan   # print the plan, spend nothing
+//   node run-models.mjs run    # probe, then full rounds while budget allows
+// Reads OPENROUTER_KEY_JEV_EVAL from evals/.env.
 //
 // Spending is staged: a small probe first, then each round goes out in chunks
 // of 15 tasks, each sent only if its projected cost (from what has actually
@@ -141,7 +142,8 @@ async function main() {
     return;
   }
   if (cmd !== 'run') throw new Error(`unknown command ${cmd}`);
-  if (!process.env.OPENROUTER_KEY_JEV_EVAL) { console.error('OPENROUTER_KEY_JEV_EVAL is not set (use bws run, or .env). See README.'); process.exit(1); }
+  try { process.loadEnvFile(new URL('../.env', import.meta.url)); } catch {}
+  if (!process.env.OPENROUTER_KEY_JEV_EVAL) { console.error('OPENROUTER_KEY_JEV_EVAL is not set (add it to evals/.env). See README.'); process.exit(1); }
   // Every remaining (task, arm, repeat) as one stream: the probe tasks first, so
   // real per-arm costs are known early for the budget check, then everything
   // else, first repeats first. Nothing waits for a slow request to finish.

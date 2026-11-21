@@ -17,9 +17,8 @@ The scripts read two keys from the environment, named provider-first like your o
 OpenRouter key for this eval with a $25 credit limit) and
 `TYPESAFE_KEY_JEV_EVAL`.
 
-Both live in Bitwarden Secrets Manager (project `development`). Save a key with
-`save-secret NAME` in Terminal; the npm scripts below use `with-secrets` to hand
-each script only the key it needs, so nothing is written to disk.
+Both live in `evals/.env` (gitignored, shared with `evals/open-jev/`), one
+`NAME=value` per line. Each script loads that file itself, so no wrapper is needed.
 
 Then, from `evals/model-router/`:
 
