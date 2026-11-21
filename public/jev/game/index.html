@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><link rel="stylesheet" href="/jev/style/tokens.css?v=jev-1"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400..600&family=JetBrains+Mono:wght@400;500&display=swap">
 <title>Night Shift at Hotel Null · Jev</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -77,6 +77,7 @@ details summary{cursor:pointer;font-size:13px;color:var(--steel)}
 </style>
 
 <div class="shell">
+  <nav class="sitebar"><a href="/jev">Jev</a><span>Game · Night Shift at Hotel Null</span></nav>
   <header class="top">
     <div style="display:grid;gap:8px;max-width:720px">
       <span class="tag">A game about asking Jev the right questions</span>
@@ -310,4 +311,37 @@ fetch('data.json').then(r => r.json()).then(d => {
 </script>
 <style>.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}</style>
 
+<style>
+:root{--ink:var(--jev-ink);--steel:var(--jev-steel);--fog:var(--jev-fog);--bone:var(--jev-silver);--paper:var(--jev-paper);--wash:var(--jev-mist);
+  --magenta:var(--jev-ink);--magenta-ink:var(--jev-ink);--magenta-soft:var(--jev-rose-soft);--green:var(--jev-signal);--green-soft:var(--jev-signal-soft);
+  --coral:var(--jev-alert);--coral-soft:#f9e3e6;--violet:var(--jev-graphite);--sans:var(--jev-font-body);--mono:var(--jev-font-mono)}
+*{border-radius:0!important}
+body{font-weight:400;letter-spacing:.01em}
+body::after{display:none}
+.sitebar{display:flex;gap:20px;align-items:baseline;font-size:14px}
+.sitebar a{color:var(--jev-ink);font-weight:500;text-decoration:none}
+.sitebar span,.tag{font:500 var(--jev-text-label)/1 var(--jev-font-mono);letter-spacing:.02em;text-transform:uppercase;color:var(--jev-steel)}
+.tag{background:none;padding:0}
+h1{font:500 56px/.9 var(--jev-font-display);letter-spacing:-.03em}
+h2,h3{font-family:var(--jev-font-display);font-weight:500}
+.card{border:var(--jev-rule)}
+.how .card{border:var(--jev-rule-quiet)}
+.grid>.col>.card:first-child{box-shadow:var(--jev-shadow-window)}
+.qcard{border:var(--jev-rule-quiet)}
+.qcard.on{border:var(--jev-rule);background:var(--jev-rose-soft)}
+.type{font:500 11px/1.4 var(--jev-font-mono);text-transform:uppercase;letter-spacing:.02em;background:var(--jev-mist)}
+.toggle,.btn,.nights button,select{border:var(--jev-rule)}
+.qcard.on .toggle,.btn.primary,.nights button[aria-current="true"]{background:var(--jev-ink);border-color:var(--jev-ink);color:var(--jev-paper)}
+.btn:hover,.toggle:hover,.nights button:hover{background:var(--jev-ink);color:var(--jev-paper)}
+.stars,.nights button[aria-current="true"] .stars{color:inherit}
+.chip{background:var(--jev-paper);border:var(--jev-rule-quiet)}
+.fact{border:1px dashed var(--jev-ink)}
+.rule{background:var(--jev-mist);border:var(--jev-rule-quiet)}
+.entry.ok{border-color:var(--jev-signal)}.entry.bad{border-color:var(--jev-alert)}.entry.mgr{border-color:var(--jev-graphite)}
+.debrief{background:var(--jev-rose);border:var(--jev-rule)}
+.debrief .btn{background:var(--jev-paper);color:var(--jev-ink)}.debrief .btn.primary{background:var(--jev-ink);color:var(--jev-paper)}
+.warn{background:var(--jev-mist);border:var(--jev-rule);color:var(--jev-ink)}
+.lint.good{background:var(--jev-signal-soft);color:#05663a}.lint.bad{color:var(--jev-alert)}
+pre{background:var(--jev-mist);border:var(--jev-rule-quiet)}
+</style>
 </html>

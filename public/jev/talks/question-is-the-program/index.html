@@ -1,70 +1,77 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>The Question Is the Program · Jev</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/jev/minimal.css?v=jev-1">
 <style>
-.talk{display:grid;gap:14px}
-.frame{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--bone);border-radius:20px;overflow:hidden;background:#fff}
+.talk{display:grid;gap:16px}
+.window{border:var(--jev-rule);background:var(--jev-paper);box-shadow:var(--jev-shadow-window)}
+.titlebar-dark{display:flex;justify-content:space-between;align-items:center;height:var(--jev-titlebar-height);padding:0 8px;background:var(--jev-ink);color:var(--jev-paper);font:500 var(--jev-text-label)/1 var(--jev-font-mono);letter-spacing:.02em;text-transform:uppercase}
+.frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--jev-paper)}
 .stage{position:absolute;inset:0}
 .stage>section{position:absolute;left:0;top:0;width:1920px;height:1080px;box-sizing:border-box;overflow:hidden;transform-origin:0 0;transform:scale(var(--s,0.5))}
-.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:14px}
-.controls button{font:inherit;letter-spacing:inherit;font-weight:535;border:1px solid var(--bone);background:#fff;color:var(--ink);border-radius:12px;padding:7px 14px;cursor:pointer}
-.controls button:hover{border-color:var(--magenta);color:var(--magenta)}
-.controls .count{font-variant-numeric:tabular-nums;color:var(--steel);min-width:64px}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px}
+.controls button{font:500 var(--jev-text-small)/1 var(--jev-font-body);border:var(--jev-rule);background:var(--jev-paper);color:var(--jev-ink);border-radius:0;padding:9px 14px;cursor:pointer}
+.controls button:hover,.controls button[aria-pressed="true"]{background:var(--jev-ink);color:var(--jev-paper)}
+.controls .count{font:500 var(--jev-text-label)/1 var(--jev-font-mono);letter-spacing:.02em;color:var(--jev-steel);min-width:64px;padding-left:4px}
 .controls .spacer{flex:1}
-.notes{border:1px solid var(--bone);border-radius:20px;padding:16px 18px;font-size:15px;line-height:1.55;color:var(--ink);background:#fafafa}
+.controls a{font:500 var(--jev-text-label)/1 var(--jev-font-mono);letter-spacing:.02em;text-transform:uppercase}
+.notes{border:var(--jev-rule);padding:16px;font-size:15px;line-height:1.55;color:var(--jev-ink);background:var(--jev-paper)}
 .notes[hidden]{display:none}
-.notes b{display:block;font-size:12px;font-weight:535;color:var(--steel);margin-bottom:4px}
-/* Matches ai.rhyslindmark.com/jev (minimal.css): white canvas, Inter 485 at -0.02em, ink/steel/bone neutrals, one magenta accent, 20px-radius hairline cards, soft color orbs. Scaled ~1.6x for a 1920px slide. */
-:root{--ink:#131313;--charcoal:#222222;--steel:#6a6a6a;--fog:#acacac;--bone:#f2f2f2;--line:#ececec;--paper:#ffffff;--paper2:#fafafa;--magenta:#ff37c7;--magenta-soft:#fdeef8;--violet:#8251fb;--green:#0c8911;--coral:#e01a2b;--code:#f7f7f7}
-.stage{font-family:'Inter',Arial,sans-serif;color:var(--ink);letter-spacing:-0.02em}
-.stage section{padding:128px;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;gap:40px;counter-increment:page}
-.stage section.dark{background:var(--paper2)}
-.stage section.alt{background:var(--paper)}
-.stage section.sun{background:var(--magenta-soft);color:var(--ink)}
-.stage h1{font-family:'Inter',Arial,sans-serif;font-size:120px;font-weight:485;line-height:1;letter-spacing:-0.03em;margin:0;color:var(--ink)}
-.stage h2{font-family:'Inter',Arial,sans-serif;font-size:72px;font-weight:485;line-height:1.08;letter-spacing:-0.025em;margin:0;color:var(--ink)}
-.stage h3{font-family:'Inter',Arial,sans-serif;font-size:44px;font-weight:535;line-height:1.15;letter-spacing:-0.02em;margin:0;color:var(--ink)}
-.stage p{font-size:32px;line-height:1.45;margin:0;font-weight:450}
-.stage .eyebrow{font-family:'Inter',Arial,sans-serif;font-size:24px;letter-spacing:0.02em;color:var(--magenta);font-weight:535}
-.stage .lede{font-size:44px;line-height:1.3;color:var(--steel);font-weight:450}
-.stage .body{color:var(--steel)}
-.stage .quote{font-family:'Inter',Arial,sans-serif;font-size:72px;line-height:1.12;font-weight:485;letter-spacing:-0.025em;color:var(--ink)}
-.stage .cite{font-size:28px;color:var(--steel)}
-.stage .code{font-family:'JetBrains Mono',monospace;font-size:28px;line-height:1.55;letter-spacing:0;background:var(--code);color:var(--ink);padding:32px 40px;border-radius:32px;border:2px solid var(--bone)}
-.stage .code .k{color:var(--magenta)}
-.stage .code .s{color:var(--violet)}
-.stage .code .c{color:var(--fog)}
+.notes b{display:block;font:500 var(--jev-text-label)/1 var(--jev-font-mono);letter-spacing:.02em;text-transform:uppercase;color:var(--jev-steel);margin-bottom:10px}
+.hint{font:500 var(--jev-text-label)/1.4 var(--jev-font-mono);letter-spacing:.02em;text-transform:uppercase;color:var(--jev-steel)}
+
+.stage{--ink:var(--jev-ink);--steel:var(--jev-steel);--fog:var(--jev-fog);--bone:var(--jev-silver);--line:var(--jev-ink);--paper:var(--jev-paper);--paper2:var(--jev-paper);
+  --magenta:var(--jev-ink);--magenta-ink:var(--jev-ink);--magenta-soft:var(--jev-rose-soft);--violet:var(--jev-graphite);--green:var(--jev-signal);--coral:var(--jev-alert);--code:var(--jev-mist);
+  font-family:var(--jev-font-body);color:var(--jev-ink);letter-spacing:.01em}
+.stage section{padding:128px;background:var(--jev-paper);color:var(--jev-ink);display:flex;flex-direction:column;gap:40px}
+.stage section.sun,.stage section#cover,.stage section#close{background:var(--jev-rose);color:var(--jev-ink-86)}
+.stage .orbs{display:none}
+.stage h1{font:500 140px/.88 var(--jev-font-display);letter-spacing:-.03em;margin:0;color:var(--jev-ink)}
+.stage section.sun h1,.stage section.sun h2{color:var(--jev-ink-86)}
+.stage h2{font:500 72px/1 var(--jev-font-display);letter-spacing:-.025em;margin:0;color:var(--jev-ink)}
+.stage h3{font:500 42px/1.1 var(--jev-font-display);letter-spacing:-.01em;margin:0}
+.stage p{font-size:32px;line-height:1.45;margin:0}
+.stage .eyebrow{font:500 26px/1 var(--jev-font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--jev-steel)}
+.stage section.sun .eyebrow,.stage section#cover .eyebrow,.stage section#close .eyebrow{color:var(--jev-ink)}
+.stage .lede{font-size:44px;line-height:1.3;color:var(--jev-graphite)}
+.stage section.sun .lede,.stage section#cover .lede{color:var(--jev-ink-86)}
+.stage .body{color:var(--jev-graphite)}
+.stage .quote{font:500 72px/1.1 var(--jev-font-display);letter-spacing:-.025em}
+.stage .cite{font-size:28px;color:var(--jev-steel)}
+.stage section#cover .cite,.stage section#close .cite{color:var(--jev-ink)}
+.stage .code{font:400 28px/1.55 var(--jev-font-mono);background:var(--jev-mist);color:var(--jev-ink);padding:32px 40px;border:3px solid var(--jev-ink)}
+.stage section#close .code{background:var(--jev-paper)}
+.stage .code .k{font-weight:600;color:var(--jev-ink)}
+.stage .code .s{color:var(--jev-graphite)}
+.stage .code .c{color:var(--jev-steel)}
 .stage .row{display:flex;gap:32px;align-items:stretch}
 .stage .col{display:flex;flex-direction:column;gap:24px;flex:1}
-.stage .card{background:var(--paper);border:2px solid var(--bone);border-radius:32px;padding:36px;display:flex;flex-direction:column;gap:16px;flex:1}
-.stage section.dark .card{background:var(--paper)}
-.stage section.sun .card{background:var(--paper);border-color:#f8d3ec}
-.stage .card .label{font-family:'Inter',Arial,sans-serif;font-size:24px;font-weight:535;letter-spacing:0.02em;color:var(--steel)}
-.stage .big{font-family:'Inter',Arial,sans-serif;font-size:120px;font-weight:485;letter-spacing:-0.03em;line-height:1;color:var(--ink)}
-.stage .good{color:var(--green)}
-.stage .bad{color:var(--coral)}
-.stage table{font-size:30px;width:100%;color:var(--ink)}
-.stage .footer{position:absolute;left:128px;bottom:64px;width:1664px;font-family:'Inter',Arial,sans-serif;font-size:24px;color:var(--fog)}
 .stage .spacer{flex:1}
-.stage .pill{font-size:24px;font-weight:535;background:var(--magenta);color:var(--paper);padding:8px 24px;border-radius:999px;align-self:flex-start}
-.stage .orbs{position:absolute;left:0;top:0;width:1920px;height:1080px;opacity:.6}
-.stage .fragment{opacity:0;transform:translateY(16px);transition:opacity .4s, transform .4s}
-.stage .fragment.visible{opacity:1;transform:none}
-.stage .rise{animation:rise .6s both}
-
-@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.stage x-shape{display:block;flex:none}
+.stage .card{background:var(--jev-paper);border:3px solid var(--jev-ink);padding:32px;display:flex;flex-direction:column;gap:14px;flex:1}
+.stage .card .label{font:500 24px/1.2 var(--jev-font-mono);letter-spacing:.03em;text-transform:uppercase;color:var(--jev-steel)}
+.stage .big{font:500 128px/1 var(--jev-font-display);letter-spacing:-.03em}
+.stage .good{color:var(--jev-signal)}
+.stage .bad{color:var(--jev-alert)}
+.stage .footer{position:absolute;left:128px;bottom:64px;width:1664px;font:500 24px/1 var(--jev-font-mono);letter-spacing:.03em;text-transform:uppercase;color:var(--jev-steel)}
+.stage table{width:100%;border-collapse:collapse;font-size:30px;border-top:3px solid var(--jev-ink)}
+.stage th{text-align:left;font:500 24px/1.2 var(--jev-font-mono);letter-spacing:.03em;text-transform:uppercase;color:var(--jev-steel)}
+.stage th,.stage td{padding:.4em .6em;border-bottom:2px solid var(--jev-silver);vertical-align:top}
+.stage svg rect{fill:var(--jev-paper);stroke:var(--jev-ink);stroke-width:3}
+.stage svg line{stroke:var(--jev-fog)}
+.stage svg circle{fill:var(--jev-ink)}
+.stage x-shape{display:block;flex:none;background:var(--jev-ink)!important}
 .stage x-shape[kind="arrow-right"]{clip-path:polygon(0 30%,60% 30%,60% 0,100% 50%,60% 100%,60% 70%,0 70%)}
 .stage x-shape[kind="arrow-left"]{clip-path:polygon(100% 30%,40% 30%,40% 0,0 50%,40% 100%,40% 70%,100% 70%)}
-.stage table{border-collapse:collapse}.stage th{text-align:left;font-weight:600}.stage th,.stage td{padding:.35em .6em;border-bottom:2px solid #f2f2f2;vertical-align:top}
 .stage .fragment{opacity:1;transform:none}
+.stage .rise{animation:rise .6s both}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 </style></head>
 <body><div class="shell"><header><a href="/jev">Jev</a><span class="mono-label">Talk · The Question Is the Program</span></header>
 <main class="talk">
+<div class="window"><div class="titlebar-dark"><span>The Question Is the Program</span><span id="count2"></span></div>
 <div class="frame" id="frame"><div class="stage" id="stage">
 <section hidden id="cover" class="dark" data-transition="fade">
-<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#8251fb" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#ff37c7" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
+<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#1e1e1e" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#1e1e1e" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
 <p class="eyebrow">JEV · CONFERENCE DEMO A1</p>
 <div class="spacer"></div>
 <h1 class="rise">The Question<br>Is the Program</h1>
@@ -212,7 +219,7 @@
 </section>
 
 <section hidden id="close" class="dark">
-<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#8251fb" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#ff37c7" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
+<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#1e1e1e" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#1e1e1e" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
 <p class="eyebrow">TRY IT</p>
 <div class="spacer"></div>
 <h1>The question<br>is the program.</h1>
@@ -222,10 +229,10 @@
 
 </section>
 
-</div></div>
+</div></div></div>
 <div class="controls"><button id="prev" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button><span class="count" id="count"></span><span class="spacer"></span><button id="notesbtn" aria-pressed="false">Speaker notes</button><a href="/jev/docs/takehome/demos/a1-wrong-question/">Code</a></div>
 <div class="notes" id="notes" hidden><b>Speaker notes</b><p id="notestext"></p></div>
-<p class="small" style="color:var(--steel)">Arrow keys or space to move · N for notes · each slide has its own link (#3).</p>
+<p class="hint">Arrow keys or space to move · N for notes · each slide has its own link (#3)</p>
 </main></div>
 <script>
 const NOTES = ["Hi, I'm Rhys. This talk is for two groups at once: engineers who've read the Jev docs but haven't shipped with it, and people who've heard the hype and want to know what Jev actually is. By the end, the first group gets a method and a tool, and the second group gets the mental model. Everything you'll see runs live against jev-1.14.0, and every request is cached on disk, so if the Wi-Fi dies we replay real recorded answers, not mock data.","This is a real comment from the launch thread. It's not a troll. It's an engineer who tried Jev on a real problem, got bad answers, got told to \"boil the question down\", didn't know what that meant, and left. I read about 1,400 HN comments and a few hundred GitHub issues about Jev for this talk, and this pattern is the most common way people bounce. The skill they're missing has no name yet. Let's give it one.","For the people who've heard the hype: Jev is not a chatbot. You send it state, meaning the stuff a person would look at, plus small typed questions. It answers each one with a probability. A Noul is the probability a statement is true. A Choice picks one of your options. That real call on the slide took 201 milliseconds and cost two thousandths of a cent. The builders I studied love it for one reason above speed and price: it can't hand their code a made-up answer. Keep that in mind, because the failure mode we're about to see isn't Jev making things up. It's Jev answering exactly what it was asked.","Here's the setup. Forty support tickets, plus the kind of escalation policy every support team has. Note how the data is labeled: I labeled the four judgments, which a human can make by reading a message. Did our product lose their data? Is this a security incident? Then the decision, escalate or not, falls out of the policy in code. Now three ways to ask Jev. [Switch to terminal and run node run.mjs.]","Version one is the question everyone writes first: should this ticket be escalated? 73 percent. Eleven false alarms. This is the \"horrendously wrong\" experience. But look at the misses. A pro-plan team with a login outage: a reasonable human would escalate that too! Our policy only escalates outages for enterprise. The SOC 2 question mentions security. A week of waiting sounds bad. Jev is making reasonable calls. It just doesn't know our rules.","This is the moment I want everyone to hold onto. Jev wasn't wrong. \"Should this be escalated?\" isn't a fact about the ticket. It's a fact about your company. Give that question to a smart new hire on their first day and they'd guess just like Jev did. The docs have a name for the check we just failed: the human test. Could a smart person, shown only this state, answer at a glance? If not, the fix isn't better wording. It's a different question.","Version two: what a prompt engineer does. Paste the policy into the question. And... 100 percent. I expected this to fail when I built the demo, and it didn't. Jev 1.14 is good enough to read four rules and apply them. So I want to be honest with you: on accuracy alone, at this size, you could stop here. But accuracy on today's policy isn't the whole job. Watch what happens next quarter.","Here's next quarter. Support adds a rule for stale tickets and different wait times per plan. Version two needs a new prompt, and you have to re-run everything to know whether it still works. It drops to 38 out of 40, and the two misses sit right at 0.50 and 0.65. Jev is telling you it's unsure, because now it's doing arithmetic across plans, which is System Two work. Version three: I changed one function. Zero new API calls, because whether a ticket reports data loss didn't change when the policy did. 40 out of 40, and each decision tells you which rule fired.","This is the philosophy in one slide. Jev answers judgments: things a person can see at a glance. Did their data get lost? Is production down? Code makes the decision, with facts code already knows, like plan and days waiting. You never ask Jev to compute days waiting. Look at ticket 19, the one version one got wrong: Jev saw the outage at 0.94. It didn't escalate because our policy says so, and you can read that policy, test it, diff it, and change it without touching a question. The TypeSafe docs call this a truth table. I'd put it this way: the question is the program, and the policy is the code.","Here's the method, compressed. Everything on this slide is in the TypeSafe skill or scattered across the docs. My contribution is putting it in an order you check before you send a question. Number one is the human test. Number two is the one that bit us today. Three, four and five are the bugs I found most often in GitHub issues: compound questions, a Choice forced to pick when nothing fits, and arithmetic. And when two answers keep getting confused, name the specific case in the criteria. That's how version three got the SOC 2 ticket right.","And because the checklist is made of judgments, Jev can run it. jev-lint asks Jev four Nouls about each of your questions: does it ask for a decision? Does it join two conditions? Does it depend on rules that aren't written down? Does it need math? Code adds the checks code can do, like positional option names. [Run node lint.mjs.] The second row is my own first draft of a model router. I asked Jev \"which model should I use?\", and it took me building an eval to see why that was wrong. Now a linter catches it in 200 milliseconds.","So here's my answer to the take-home question: what stops people from building with Jev? It isn't the API. The SDK paper cuts are real but small. It's question design. People who skip it decide Jev is wrong. People who learn it, like the practitioner who decomposes into yes/no questions and feeds the probabilities into a regression, get production gates. Every GitHub issue on this slide is a question-design bug that looks like a model bug. The skill has no name, no checklist and no debugger yet. Today you saw a name, a checklist and a debugger.","Two takeaways, one for each half of the room. If you came for the hype: Jev isn't a smarter chatbot. It's a fast, cheap, calibrated way to answer the questions a smart person answers at a glance, and your job is to ask that question. If you're about to build: start from the decision, write the truth table, and only then write questions for the inputs that need language understanding. Lint them before you ship.","That's it. The repo has the tickets, the three versions, the policy-change script and jev-lint. The whole live demo cost a tenth of a cent. Run lint on your own questions tonight. Questions?"];
@@ -235,7 +242,7 @@ function fit() { frame.style.setProperty('--s', frame.clientWidth / 1920); }
 function show(n, push) {
   i = Math.max(0, Math.min(secs.length - 1, n));
   secs.forEach((s, k) => s.hidden = k !== i);
-  document.getElementById('count').textContent = (i + 1) + ' / ' + secs.length;
+  document.getElementById('count').textContent = document.getElementById('count2').textContent = (i + 1) + ' / ' + secs.length;
   document.getElementById('notestext').textContent = NOTES[i] || 'No notes for this slide.';
   if (push !== false) history.replaceState(null, '', '#' + (i + 1));
 }

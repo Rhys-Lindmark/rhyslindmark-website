@@ -1,70 +1,77 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Trust Meter: Is Jev Calibrated on Your Data? · Jev</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="/jev/minimal.css?v=jev-1">
 <style>
-.talk{display:grid;gap:14px}
-.frame{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--bone);border-radius:20px;overflow:hidden;background:#fff}
+.talk{display:grid;gap:16px}
+.window{border:var(--jev-rule);background:var(--jev-paper);box-shadow:var(--jev-shadow-window)}
+.titlebar-dark{display:flex;justify-content:space-between;align-items:center;height:var(--jev-titlebar-height);padding:0 8px;background:var(--jev-ink);color:var(--jev-paper);font:500 var(--jev-text-label)/1 var(--jev-font-mono);letter-spacing:.02em;text-transform:uppercase}
+.frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--jev-paper)}
 .stage{position:absolute;inset:0}
 .stage>section{position:absolute;left:0;top:0;width:1920px;height:1080px;box-sizing:border-box;overflow:hidden;transform-origin:0 0;transform:scale(var(--s,0.5))}
-.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:14px}
-.controls button{font:inherit;letter-spacing:inherit;font-weight:535;border:1px solid var(--bone);background:#fff;color:var(--ink);border-radius:12px;padding:7px 14px;cursor:pointer}
-.controls button:hover{border-color:var(--magenta);color:var(--magenta)}
-.controls .count{font-variant-numeric:tabular-nums;color:var(--steel);min-width:64px}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px}
+.controls button{font:500 var(--jev-text-small)/1 var(--jev-font-body);border:var(--jev-rule);background:var(--jev-paper);color:var(--jev-ink);border-radius:0;padding:9px 14px;cursor:pointer}
+.controls button:hover,.controls button[aria-pressed="true"]{background:var(--jev-ink);color:var(--jev-paper)}
+.controls .count{font:500 var(--jev-text-label)/1 var(--jev-font-mono);letter-spacing:.02em;color:var(--jev-steel);min-width:64px;padding-left:4px}
 .controls .spacer{flex:1}
-.notes{border:1px solid var(--bone);border-radius:20px;padding:16px 18px;font-size:15px;line-height:1.55;color:var(--ink);background:#fafafa}
+.controls a{font:500 var(--jev-text-label)/1 var(--jev-font-mono);letter-spacing:.02em;text-transform:uppercase}
+.notes{border:var(--jev-rule);padding:16px;font-size:15px;line-height:1.55;color:var(--jev-ink);background:var(--jev-paper)}
 .notes[hidden]{display:none}
-.notes b{display:block;font-size:12px;font-weight:535;color:var(--steel);margin-bottom:4px}
-/* Matches ai.rhyslindmark.com/jev (minimal.css): white canvas, Inter 485 at -0.02em, ink/steel/bone neutrals, one magenta accent, 20px-radius hairline cards, soft color orbs. Scaled ~1.6x for a 1920px slide. */
-:root{--ink:#131313;--charcoal:#222222;--steel:#6a6a6a;--fog:#acacac;--bone:#f2f2f2;--line:#ececec;--paper:#ffffff;--paper2:#fafafa;--magenta:#ff37c7;--magenta-soft:#fdeef8;--violet:#8251fb;--green:#0c8911;--coral:#e01a2b;--code:#f7f7f7}
-.stage{font-family:'Inter',Arial,sans-serif;color:var(--ink);letter-spacing:-0.02em}
-.stage section{padding:128px;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;gap:40px;counter-increment:page}
-.stage section.dark{background:var(--paper2)}
-.stage section.alt{background:var(--paper)}
-.stage section.sun{background:var(--magenta-soft);color:var(--ink)}
-.stage h1{font-family:'Inter',Arial,sans-serif;font-size:120px;font-weight:485;line-height:1;letter-spacing:-0.03em;margin:0;color:var(--ink)}
-.stage h2{font-family:'Inter',Arial,sans-serif;font-size:72px;font-weight:485;line-height:1.08;letter-spacing:-0.025em;margin:0;color:var(--ink)}
-.stage h3{font-family:'Inter',Arial,sans-serif;font-size:44px;font-weight:535;line-height:1.15;letter-spacing:-0.02em;margin:0;color:var(--ink)}
-.stage p{font-size:32px;line-height:1.45;margin:0;font-weight:450}
-.stage .eyebrow{font-family:'Inter',Arial,sans-serif;font-size:24px;letter-spacing:0.02em;color:var(--magenta);font-weight:535}
-.stage .lede{font-size:44px;line-height:1.3;color:var(--steel);font-weight:450}
-.stage .body{color:var(--steel)}
-.stage .quote{font-family:'Inter',Arial,sans-serif;font-size:72px;line-height:1.12;font-weight:485;letter-spacing:-0.025em;color:var(--ink)}
-.stage .cite{font-size:28px;color:var(--steel)}
-.stage .code{font-family:'JetBrains Mono',monospace;font-size:28px;line-height:1.55;letter-spacing:0;background:var(--code);color:var(--ink);padding:32px 40px;border-radius:32px;border:2px solid var(--bone)}
-.stage .code .k{color:var(--magenta)}
-.stage .code .s{color:var(--violet)}
-.stage .code .c{color:var(--fog)}
+.notes b{display:block;font:500 var(--jev-text-label)/1 var(--jev-font-mono);letter-spacing:.02em;text-transform:uppercase;color:var(--jev-steel);margin-bottom:10px}
+.hint{font:500 var(--jev-text-label)/1.4 var(--jev-font-mono);letter-spacing:.02em;text-transform:uppercase;color:var(--jev-steel)}
+
+.stage{--ink:var(--jev-ink);--steel:var(--jev-steel);--fog:var(--jev-fog);--bone:var(--jev-silver);--line:var(--jev-ink);--paper:var(--jev-paper);--paper2:var(--jev-paper);
+  --magenta:var(--jev-ink);--magenta-ink:var(--jev-ink);--magenta-soft:var(--jev-rose-soft);--violet:var(--jev-graphite);--green:var(--jev-signal);--coral:var(--jev-alert);--code:var(--jev-mist);
+  font-family:var(--jev-font-body);color:var(--jev-ink);letter-spacing:.01em}
+.stage section{padding:128px;background:var(--jev-paper);color:var(--jev-ink);display:flex;flex-direction:column;gap:40px}
+.stage section.sun,.stage section#cover,.stage section#close{background:var(--jev-rose);color:var(--jev-ink-86)}
+.stage .orbs{display:none}
+.stage h1{font:500 140px/.88 var(--jev-font-display);letter-spacing:-.03em;margin:0;color:var(--jev-ink)}
+.stage section.sun h1,.stage section.sun h2{color:var(--jev-ink-86)}
+.stage h2{font:500 72px/1 var(--jev-font-display);letter-spacing:-.025em;margin:0;color:var(--jev-ink)}
+.stage h3{font:500 42px/1.1 var(--jev-font-display);letter-spacing:-.01em;margin:0}
+.stage p{font-size:32px;line-height:1.45;margin:0}
+.stage .eyebrow{font:500 26px/1 var(--jev-font-mono);letter-spacing:.04em;text-transform:uppercase;color:var(--jev-steel)}
+.stage section.sun .eyebrow,.stage section#cover .eyebrow,.stage section#close .eyebrow{color:var(--jev-ink)}
+.stage .lede{font-size:44px;line-height:1.3;color:var(--jev-graphite)}
+.stage section.sun .lede,.stage section#cover .lede{color:var(--jev-ink-86)}
+.stage .body{color:var(--jev-graphite)}
+.stage .quote{font:500 72px/1.1 var(--jev-font-display);letter-spacing:-.025em}
+.stage .cite{font-size:28px;color:var(--jev-steel)}
+.stage section#cover .cite,.stage section#close .cite{color:var(--jev-ink)}
+.stage .code{font:400 28px/1.55 var(--jev-font-mono);background:var(--jev-mist);color:var(--jev-ink);padding:32px 40px;border:3px solid var(--jev-ink)}
+.stage section#close .code{background:var(--jev-paper)}
+.stage .code .k{font-weight:600;color:var(--jev-ink)}
+.stage .code .s{color:var(--jev-graphite)}
+.stage .code .c{color:var(--jev-steel)}
 .stage .row{display:flex;gap:32px;align-items:stretch}
 .stage .col{display:flex;flex-direction:column;gap:24px;flex:1}
-.stage .card{background:var(--paper);border:2px solid var(--bone);border-radius:32px;padding:36px;display:flex;flex-direction:column;gap:16px;flex:1}
-.stage section.dark .card{background:var(--paper)}
-.stage section.sun .card{background:var(--paper);border-color:#f8d3ec}
-.stage .card .label{font-family:'Inter',Arial,sans-serif;font-size:24px;font-weight:535;letter-spacing:0.02em;color:var(--steel)}
-.stage .big{font-family:'Inter',Arial,sans-serif;font-size:120px;font-weight:485;letter-spacing:-0.03em;line-height:1;color:var(--ink)}
-.stage .good{color:var(--green)}
-.stage .bad{color:var(--coral)}
-.stage table{font-size:30px;width:100%;color:var(--ink)}
-.stage .footer{position:absolute;left:128px;bottom:64px;width:1664px;font-family:'Inter',Arial,sans-serif;font-size:24px;color:var(--fog)}
 .stage .spacer{flex:1}
-.stage .pill{font-size:24px;font-weight:535;background:var(--magenta);color:var(--paper);padding:8px 24px;border-radius:999px;align-self:flex-start}
-.stage .orbs{position:absolute;left:0;top:0;width:1920px;height:1080px;opacity:.6}
-.stage .fragment{opacity:0;transform:translateY(16px);transition:opacity .4s, transform .4s}
-.stage .fragment.visible{opacity:1;transform:none}
-.stage .rise{animation:rise .6s both}
-
-@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
-.stage x-shape{display:block;flex:none}
+.stage .card{background:var(--jev-paper);border:3px solid var(--jev-ink);padding:32px;display:flex;flex-direction:column;gap:14px;flex:1}
+.stage .card .label{font:500 24px/1.2 var(--jev-font-mono);letter-spacing:.03em;text-transform:uppercase;color:var(--jev-steel)}
+.stage .big{font:500 128px/1 var(--jev-font-display);letter-spacing:-.03em}
+.stage .good{color:var(--jev-signal)}
+.stage .bad{color:var(--jev-alert)}
+.stage .footer{position:absolute;left:128px;bottom:64px;width:1664px;font:500 24px/1 var(--jev-font-mono);letter-spacing:.03em;text-transform:uppercase;color:var(--jev-steel)}
+.stage table{width:100%;border-collapse:collapse;font-size:30px;border-top:3px solid var(--jev-ink)}
+.stage th{text-align:left;font:500 24px/1.2 var(--jev-font-mono);letter-spacing:.03em;text-transform:uppercase;color:var(--jev-steel)}
+.stage th,.stage td{padding:.4em .6em;border-bottom:2px solid var(--jev-silver);vertical-align:top}
+.stage svg rect{fill:var(--jev-paper);stroke:var(--jev-ink);stroke-width:3}
+.stage svg line{stroke:var(--jev-fog)}
+.stage svg circle{fill:var(--jev-ink)}
+.stage x-shape{display:block;flex:none;background:var(--jev-ink)!important}
 .stage x-shape[kind="arrow-right"]{clip-path:polygon(0 30%,60% 30%,60% 0,100% 50%,60% 100%,60% 70%,0 70%)}
 .stage x-shape[kind="arrow-left"]{clip-path:polygon(100% 30%,40% 30%,40% 0,0 50%,40% 100%,40% 70%,100% 70%)}
-.stage table{border-collapse:collapse}.stage th{text-align:left;font-weight:600}.stage th,.stage td{padding:.35em .6em;border-bottom:2px solid #f2f2f2;vertical-align:top}
 .stage .fragment{opacity:1;transform:none}
+.stage .rise{animation:rise .6s both}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 </style></head>
 <body><div class="shell"><header><a href="/jev">Jev</a><span class="mono-label">Talk · Trust Meter: Is Jev Calibrated on Your Data?</span></header>
 <main class="talk">
+<div class="window"><div class="titlebar-dark"><span>Trust Meter: Is Jev Calibrated on Your Data?</span><span id="count2"></span></div>
 <div class="frame" id="frame"><div class="stage" id="stage">
 <section hidden id="cover" class="dark" data-transition="fade">
-<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#8251fb" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#ff37c7" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
+<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#1e1e1e" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#1e1e1e" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
 <p class="eyebrow">JEV · CONFERENCE DEMO A2</p>
 <div class="spacer"></div>
 <h1 class="rise">Trust Meter</h1>
@@ -126,7 +133,7 @@
 <p class="eyebrow">WHEN JEV SAYS p, IS IT RIGHT p OF THE TIME?</p>
 <div class="row" style="align-items:center">
 <div style="position:relative;width:600px;height:600px;flex:none">
-<svg aria-label="Reliability chart for Banking77: most answers sit near 0.98 confidence and are right 96% of the time; middle-confidence answers are right less often than they claim" width="600" height="600" viewBox="0 0 600 600"><rect x="40" y="40" width="520" height="520" rx="24" fill="#fafafa" stroke="#f2f2f2" stroke-width="2"/><line x1="40" y1="560" x2="560" y2="40" stroke="#acacac" stroke-width="3" stroke-dasharray="10 10"/><circle cx="217" cy="362" r="9" fill="#ff37c7"/><circle cx="274" cy="404" r="10" fill="#ff37c7"/><circle cx="321" cy="378" r="13" fill="#ff37c7"/><circle cx="378" cy="279" r="12" fill="#ff37c7"/><circle cx="425" cy="206" r="12" fill="#ff37c7"/><circle cx="482" cy="180" r="12" fill="#ff37c7"/><circle cx="550" cy="61" r="26" fill="#ff37c7"/></svg>
+<svg aria-label="Reliability chart for Banking77: most answers sit near 0.98 confidence and are right 96% of the time; middle-confidence answers are right less often than they claim" width="600" height="600" viewBox="0 0 600 600"><rect x="40" y="40" width="520" height="520" rx="24" fill="#fafafa" stroke="#f2f2f2" stroke-width="2"/><line x1="40" y1="560" x2="560" y2="40" stroke="#acacac" stroke-width="3" stroke-dasharray="10 10"/><circle cx="217" cy="362" r="9" fill="#1e1e1e"/><circle cx="274" cy="404" r="10" fill="#1e1e1e"/><circle cx="321" cy="378" r="13" fill="#1e1e1e"/><circle cx="378" cy="279" r="12" fill="#1e1e1e"/><circle cx="425" cy="206" r="12" fill="#1e1e1e"/><circle cx="482" cy="180" r="12" fill="#1e1e1e"/><circle cx="550" cy="61" r="26" fill="#1e1e1e"/></svg>
 <p style="position:absolute;left:40px;top:568px;width:520px;font-size:24px;color:#6a6a6a">what Jev said → (0 to 1)</p>
 </div>
 <div class="col">
@@ -153,7 +160,7 @@
 <p class="eyebrow">LIVE DEMO · node trust-meter.mjs irony</p>
 <div class="row" style="align-items:center">
 <div style="position:relative;width:600px;height:600px;flex:none">
-<svg aria-label="Reliability chart for irony detection: points sit below the diagonal at low probabilities and above it at high probabilities, so Jev is underconfident" width="600" height="600" viewBox="0 0 600 600"><rect x="40" y="40" width="520" height="520" rx="24" fill="#fafafa" stroke="#f2f2f2" stroke-width="2"/><line x1="40" y1="560" x2="560" y2="40" stroke="#acacac" stroke-width="3" stroke-dasharray="10 10"/><circle cx="76" cy="560" r="14" fill="#8251fb"/><circle cx="108" cy="560" r="18" fill="#8251fb"/><circle cx="165" cy="518" r="16" fill="#8251fb"/><circle cx="222" cy="477" r="15" fill="#8251fb"/><circle cx="269" cy="420" r="13" fill="#8251fb"/><circle cx="321" cy="300" r="12" fill="#8251fb"/><circle cx="378" cy="196" r="12" fill="#8251fb"/><circle cx="430" cy="144" r="13" fill="#8251fb"/><circle cx="482" cy="40" r="13" fill="#8251fb"/><circle cx="534" cy="56" r="16" fill="#8251fb"/></svg>
+<svg aria-label="Reliability chart for irony detection: points sit below the diagonal at low probabilities and above it at high probabilities, so Jev is underconfident" width="600" height="600" viewBox="0 0 600 600"><rect x="40" y="40" width="520" height="520" rx="24" fill="#fafafa" stroke="#f2f2f2" stroke-width="2"/><line x1="40" y1="560" x2="560" y2="40" stroke="#acacac" stroke-width="3" stroke-dasharray="10 10"/><circle cx="76" cy="560" r="14" fill="#1e1e1e"/><circle cx="108" cy="560" r="18" fill="#1e1e1e"/><circle cx="165" cy="518" r="16" fill="#1e1e1e"/><circle cx="222" cy="477" r="15" fill="#1e1e1e"/><circle cx="269" cy="420" r="13" fill="#1e1e1e"/><circle cx="321" cy="300" r="12" fill="#1e1e1e"/><circle cx="378" cy="196" r="12" fill="#1e1e1e"/><circle cx="430" cy="144" r="13" fill="#1e1e1e"/><circle cx="482" cy="40" r="13" fill="#1e1e1e"/><circle cx="534" cy="56" r="16" fill="#1e1e1e"/></svg>
 <p style="position:absolute;left:40px;top:568px;width:520px;font-size:24px;color:#6a6a6a">Jev’s p(ironic) →</p>
 </div>
 <div class="col">
@@ -185,7 +192,7 @@
 <tr><td>3</td><td>2 sec</td><td>Run Trust Meter</td><td>Accuracy, reliability chart, thresholds, misses.</td></tr>
 <tr><td>4</td><td>2 min</td><td>Pick the error budget</td><td>Act above the threshold; route the rest to a person.</td></tr>
 <tr><td>5</td><td>before shipping</td><td>Re-check on new rows</td><td>Thresholds fitted to one sample over-fit. Pin the model version.</td></tr></table>
-<p class="body"><b style="color:var(--magenta-ink,#c4128f)">Where people get stuck:</b> step 2. Nobody wants to label, and 50 rows is enough to see the shape.</p>
+<p class="body"><b style="color:var(--magenta-ink,#1e1e1e)">Where people get stuck:</b> step 2. Nobody wants to label, and 50 rows is enough to see the shape.</p>
 
 </section>
 
@@ -199,7 +206,7 @@
 </section>
 
 <section hidden id="close" class="dark">
-<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#8251fb" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#ff37c7" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
+<svg class="orbs" aria-label="Soft color orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><defs><filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="60"/></filter></defs><g filter="url(#blur)"><circle cx="140" cy="120" r="100" fill="#1e1e1e" fill-opacity=".35"/><circle cx="1790" cy="110" r="120" fill="#1e1e1e" fill-opacity=".35"/><circle cx="1720" cy="700" r="90" fill="#2abdff" fill-opacity=".3"/><circle cx="90" cy="860" r="90" fill="#ff4d00" fill-opacity=".25"/><circle cx="980" cy="1070" r="100" fill="#00c3a0" fill-opacity=".25"/></g></svg>
 <p class="eyebrow">BRING YOUR OWN DATA</p>
 <div class="spacer"></div>
 <h1>Turn trust into a chart.</h1>
@@ -209,10 +216,10 @@
 
 </section>
 
-</div></div>
+</div></div></div>
 <div class="controls"><button id="prev" aria-label="Previous slide">←</button><button id="next" aria-label="Next slide">→</button><span class="count" id="count"></span><span class="spacer"></span><button id="notesbtn" aria-pressed="false">Speaker notes</button><a href="/jev/docs/takehome/demos/a2-trust-meter/">Code</a></div>
 <div class="notes" id="notes" hidden><b>Speaker notes</b><p id="notestext"></p></div>
-<p class="small" style="color:var(--steel)">Arrow keys or space to move · N for notes · each slide has its own link (#3).</p>
+<p class="hint">Arrow keys or space to move · N for notes · each slide has its own link (#3)</p>
 </main></div>
 <script>
 const NOTES = ["This talk is the second bottleneck I found in the research: trust. People don't doubt that Jev is fast or cheap. They doubt whether its probabilities mean anything on their data. And the honest answer, from every independent audit, is \"it depends, go check.\" Today I'll show you how to check, and you'll see real numbers, including some that aren't flattering.","For anyone new to this: calibration means the probability means what it says. A weather forecaster who says 70 percent should see rain on about 70 percent of those days. Accuracy asks whether the top answer is right. Calibration asks whether the confidence is honest. Jev's whole design depends on the second one, because your code makes decisions with those numbers.","In the corpus I built, roughly 94,000 public posts, issues and repos, the production stories all look like this. Jev handles what it's sure about, and everything else goes to a person or a bigger model. That's a great architecture. But notice that the threshold is where all the business value sits. Set it from vibes and you either ship errors or pay humans to re-check cases Jev already had right.","I want to agree with the skeptics out loud, because they're right. Independent evaluations all say calibration depends on the task and the wording. The official docs say the same thing in one line: plot confidence against accuracy on your data. What's missing is the how. How many examples? Which chart? How do I turn it into a threshold? That gap is the bottleneck, and it's a tooling and teaching problem, which is good news, because those are fixable.","Let's run it. Banking77 is a public dataset of real customer-service messages with 77 intent labels, labeled by humans. It's the same dataset a widely read article used to argue that scikit-learn matches Jev's calibration. [Run node trust-meter.mjs banking77.] 400 messages, one Choice question each. 82.5 percent accuracy zero-shot, calibration error 0.058, four cents. Side note for the product team: most of those tokens are the 77 option descriptions, re-sent on every call. That's the \"cache my criteria\" GitHub issue in a single number.","Here's the reliability chart, the picture the docs tell you to make. The diagonal is perfect calibration. The big dot in the top right is the story: most messages, Jev is sure, and it's right 96 percent of the time. In the middle it's overconfident. When it says 54 percent, it's right 35 percent of the time. Read the misses and you find Banking77's famous near-duplicate intents. That's a fact about your label set as much as about the model.","This is the slide I'd want a skeptic to see. If your error budget is one percent, no threshold works on this dataset, and Trust Meter says so instead of pretending. At five percent, act when Jev is at least 0.84 sure and it handles 72 percent of messages. Note the last column. With 400 examples, the true error at that threshold could be as high as 7.6 percent. Small samples need honesty, so the tool prints the upper bound and doesn't hide it.","Second dataset: irony detection on tweets, which is genuinely hard and noisy. Jev gets 88 percent, but the chart has an S shape: it's underconfident. When it says 13 percent it's never ironic, and when it says 85 percent it always is. So the audits are right that calibration varies by task. Here's the good news: the fix is two numbers. Fit a logistic curve on half the data, check it on the other half, and calibration error drops from 0.109 to 0.028. That's 15 lines of code in calibration.mjs.","Before you trust any number, including mine, read the misses. The most common Banking77 \"error\" is Jev reading PIN questions as PIN questions, which the dataset files under get_physical_card. Some misses are label noise, some are near-duplicate intents, a few are real. This is why the tool ends with a table of misses, not a score. A score invites an argument. A table of misses invites a better question or better labels.","This is my answer to the \"first build\" focus. The shortest path to something real isn't hello world. It's taking one call you already pay for, labeling 50 to 200 examples, which is the part everyone skips, running the meter, and choosing a threshold on purpose. Step 5 matters: pin the model version, because aliases move, and re-check on rows you didn't tune on.","The philosophy lesson: Jev doesn't give you answers, it gives you an interface, a probability your code can reason about. The threshold is a business decision, so it belongs in code, chosen with evidence. That's the same idea as judgments from Jev and decisions in code, applied to confidence. And it's why calibration is the feature, and checking it is the developer's half of the deal.","Bring a CSV with text and label columns. Two labels gives you a Noul, more gives you a Choice. You get a self-contained HTML report you can paste into a design review. Everything I showed today cost under five cents. Questions?"];
@@ -222,7 +229,7 @@ function fit() { frame.style.setProperty('--s', frame.clientWidth / 1920); }
 function show(n, push) {
   i = Math.max(0, Math.min(secs.length - 1, n));
   secs.forEach((s, k) => s.hidden = k !== i);
-  document.getElementById('count').textContent = (i + 1) + ' / ' + secs.length;
+  document.getElementById('count').textContent = document.getElementById('count2').textContent = (i + 1) + ' / ' + secs.length;
   document.getElementById('notestext').textContent = NOTES[i] || 'No notes for this slide.';
   if (push !== false) history.replaceState(null, '', '#' + (i + 1));
 }
