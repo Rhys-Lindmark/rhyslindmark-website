@@ -37,7 +37,9 @@ function gradeAnswer(g, text) {
 
 export function extractPython(text) {
   const blocks = [...String(text).matchAll(/```(?:python|py)?\s*\n([\s\S]*?)```/g)].map(m => m[1]);
-  return blocks.length ? blocks[blocks.length - 1] : null;
+  // All blocks, in order: replies often put the function in one block and usage
+  // examples in another, and the examples need the function defined first.
+  return blocks.length ? blocks.join('\n\n') : null;
 }
 
 // Model-written code runs in a throwaway directory, isolated mode (-I), with a

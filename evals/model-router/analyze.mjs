@@ -9,7 +9,10 @@ import { judge, decide } from '../../public/jev/router-policy.js';
 const JEV = new URL('./results/jev.json', import.meta.url);
 const SUMMARY = new URL('./results/summary.json', import.meta.url);
 const PAGE_COPY = new URL('../../public/jev/eval-summary.json', import.meta.url);
-const raw = readRaw();
+import { grade } from './graders.mjs';
+// Re-grade every stored reply, so grader fixes apply to past runs for free.
+const byTask = Object.fromEntries(TASKS.map(t => [t.id, t]));
+const raw = readRaw().map(r => ({ ...r, pass: r.finish_reason === 'length' && !r.text?.trim() ? false : grade(byTask[r.task], r.text ?? '').pass }));
 const jev = existsSync(JEV) ? JSON.parse(readFileSync(JEV, 'utf8')) : {};
 
 // ---- per task x arm: success rate and mean cost over repeats -----------------
