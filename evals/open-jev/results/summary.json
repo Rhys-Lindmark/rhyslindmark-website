@@ -1,0 +1,579 @@
+{
+ "panels": {
+  "crowd_dev": {
+   "jev": {
+    "macro": {
+     "acc": 0.55875,
+     "agreement": 0.47281130292351864,
+     "soft_nll": 1.9754284589510531,
+     "jsd": 0.24937891113849148,
+     "ent_corr": 0.22402393921212008
+    },
+    "tasks": {
+     "helpsteer2_coherence": {
+      "acc": 0.6875,
+      "agreement": 0.5601941736087496,
+      "soft_nll": 1.2972799444666234,
+      "jsd": 0.17480074347518038,
+      "ent_corr": 0.35208051300320625,
+      "n": 400
+     },
+     "helpsteer2_correctness": {
+      "acc": 0.295,
+      "agreement": 0.2801941457593317,
+      "soft_nll": 2.8478680549362156,
+      "jsd": 0.4121528728599312,
+      "ent_corr": 0.07581909886936794,
+      "n": 400
+     },
+     "helpsteer2_helpfulness": {
+      "acc": 0.3125,
+      "agreement": 0.28388413899381043,
+      "soft_nll": 2.990609057610561,
+      "jsd": 0.4001372437910038,
+      "ent_corr": 0.15765717285733036,
+      "n": 400
+     },
+     "mhs_hatespeech": {
+      "acc": 0.615,
+      "agreement": 0.5815984177015933,
+      "soft_nll": 1.555241625732956,
+      "jsd": 0.22599819592410728,
+      "ent_corr": 0.06793054956593478,
+      "n": 400
+     },
+     "mhs_insult": {
+      "acc": 0.4925,
+      "agreement": 0.4261584149897284,
+      "soft_nll": 2.1884835992478604,
+      "jsd": 0.24844495496843635,
+      "ent_corr": 0.2235812723829524,
+      "n": 400
+     },
+     "mhs_violence": {
+      "acc": 0.6675,
+      "agreement": 0.5742595813287998,
+      "soft_nll": 2.7077029196845057,
+      "jsd": 0.22919611683264848,
+      "ent_corr": 0.34280708004425026,
+      "n": 400
+     },
+     "scruples_author_wrong": {
+      "acc": 0.78,
+      "agreement": 0.6144453813,
+      "soft_nll": 0.551431437283175,
+      "jsd": 0.0908879729010403,
+      "ent_corr": 0.29579622372639824,
+      "n": 400
+     },
+     "scruples_who": {
+      "acc": 0.62,
+      "agreement": 0.461756169706136,
+      "soft_nll": 1.664811032646528,
+      "jsd": 0.21341318835558393,
+      "ent_corr": 0.2765196032475203,
+      "n": 400
+     }
+    }
+   }
+  },
+  "chaosnli": {
+   "jev": {
+    "macro": {
+     "acc": 0.762,
+     "agreement": 0.6661460662166007,
+     "soft_nll": 1.396944481085976,
+     "jsd": 0.08800949939425427,
+     "ent_corr": 0.43789208756835024
+    },
+    "tasks": {
+     "chaosnli_alphanli": {
+      "acc": 0.904,
+      "agreement": 0.8218731996843199,
+      "soft_nll": 0.560171307254548,
+      "jsd": 0.03863421237584704,
+      "ent_corr": 0.6496187584750338,
+      "n": 500
+     },
+     "chaosnli_mnli_m": {
+      "acc": 0.596,
+      "agreement": 0.5172295996548884,
+      "soft_nll": 2.241936457970118,
+      "jsd": 0.1422596194845471,
+      "ent_corr": 0.14118766875067498,
+      "n": 500
+     },
+     "chaosnli_snli": {
+      "acc": 0.786,
+      "agreement": 0.6593353993105939,
+      "soft_nll": 1.3887256780332617,
+      "jsd": 0.08313466632236864,
+      "ent_corr": 0.5228698354793418,
+      "n": 500
+     }
+    }
+   }
+  },
+  "breadth": {
+   "jev": {
+    "acc": 0.7573983739837399,
+    "brier": 0.3154896305420966,
+    "nll": 0.6713981099125158,
+    "ece": 0.056086917960088696,
+    "aurc": 0.07484981751832175,
+    "coverage_at_5pct_error": 0.5417886178861788,
+    "confident_error_rate": 0.021788617886178863,
+    "n": 3075,
+    "tasks": {
+     "apibank": {
+      "acc": 0.9466666666666667,
+      "n": 150
+     },
+     "bfcl_irrelevance": {
+      "acc": 1.0,
+      "n": 17
+     },
+     "bfcl_live_irrelevance": {
+      "acc": 0.925,
+      "n": 40
+     },
+     "bfcl_live_multiple": {
+      "acc": 1.0,
+      "n": 58
+     },
+     "bfcl_live_parallel": {
+      "acc": 1.0,
+      "n": 9
+     },
+     "bfcl_live_parallel_multiple": {
+      "acc": 1.0,
+      "n": 51
+     },
+     "bfcl_live_simple": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bfcl_multiple": {
+      "acc": 1.0,
+      "n": 41
+     },
+     "bfcl_parallel": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bfcl_parallel_multiple": {
+      "acc": 1.0,
+      "n": 42
+     },
+     "bfcl_simple": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bright": {
+      "acc": 0.6933333333333334,
+      "n": 150
+     },
+     "cfcolor": {
+      "acc": 0.5466666666666666,
+      "n": 150
+     },
+     "chessbench": {
+      "acc": 0.31333333333333335,
+      "n": 150
+     },
+     "clinc150": {
+      "acc": 0.9733333333333334,
+      "n": 150
+     },
+     "contractnli": {
+      "acc": 0.79375,
+      "n": 160
+     },
+     "hellaswag": {
+      "acc": 0.8933333333333333,
+      "n": 150
+     },
+     "humicroedit": {
+      "acc": 0.58,
+      "n": 150
+     },
+     "musr_murder_mystery": {
+      "acc": 0.7213114754098361,
+      "n": 61
+     },
+     "musr_object_placements": {
+      "acc": 0.6551724137931034,
+      "n": 29
+     },
+     "musr_team_allocation": {
+      "acc": 0.6833333333333333,
+      "n": 60
+     },
+     "routerbench": {
+      "acc": 0.2866666666666667,
+      "n": 150
+     },
+     "sata_bench": {
+      "acc": 0.8300312825860271,
+      "n": 959
+     },
+     "sgd": {
+      "acc": 0.7933333333333333,
+      "n": 150
+     },
+     "toolret": {
+      "acc": 0.6333333333333333,
+      "n": 150
+     }
+    }
+   },
+   "kev-27b": {
+    "acc": 0.745040650406504,
+    "brier": 0.3213296227633101,
+    "nll": 0.5899637696239499,
+    "ece": 0.011822307606708295,
+    "aurc": 0.08070705393900668,
+    "coverage_at_5pct_error": 0.49853658536585366,
+    "confident_error_rate": 0.013333333333333334,
+    "n": 3075,
+    "tasks": {
+     "apibank": {
+      "acc": 0.9333333333333333,
+      "n": 150
+     },
+     "bfcl_irrelevance": {
+      "acc": 1.0,
+      "n": 17
+     },
+     "bfcl_live_irrelevance": {
+      "acc": 0.925,
+      "n": 40
+     },
+     "bfcl_live_multiple": {
+      "acc": 1.0,
+      "n": 58
+     },
+     "bfcl_live_parallel": {
+      "acc": 1.0,
+      "n": 9
+     },
+     "bfcl_live_parallel_multiple": {
+      "acc": 0.9607843137254902,
+      "n": 51
+     },
+     "bfcl_live_simple": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bfcl_multiple": {
+      "acc": 1.0,
+      "n": 41
+     },
+     "bfcl_parallel": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bfcl_parallel_multiple": {
+      "acc": 1.0,
+      "n": 42
+     },
+     "bfcl_simple": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bright": {
+      "acc": 0.6666666666666666,
+      "n": 150
+     },
+     "cfcolor": {
+      "acc": 0.58,
+      "n": 150
+     },
+     "chessbench": {
+      "acc": 0.29333333333333333,
+      "n": 150
+     },
+     "clinc150": {
+      "acc": 0.8733333333333333,
+      "n": 150
+     },
+     "contractnli": {
+      "acc": 0.7875,
+      "n": 160
+     },
+     "hellaswag": {
+      "acc": 0.8733333333333333,
+      "n": 150
+     },
+     "humicroedit": {
+      "acc": 0.5666666666666667,
+      "n": 150
+     },
+     "musr_murder_mystery": {
+      "acc": 0.6557377049180327,
+      "n": 61
+     },
+     "musr_object_placements": {
+      "acc": 0.5172413793103449,
+      "n": 29
+     },
+     "musr_team_allocation": {
+      "acc": 0.6666666666666666,
+      "n": 60
+     },
+     "routerbench": {
+      "acc": 0.3,
+      "n": 150
+     },
+     "sata_bench": {
+      "acc": 0.8435870698644421,
+      "n": 959
+     },
+     "sgd": {
+      "acc": 0.6466666666666666,
+      "n": 150
+     },
+     "toolret": {
+      "acc": 0.6666666666666666,
+      "n": 150
+     }
+    }
+   },
+   "autojev": {
+    "acc": 0.7554471544715448,
+    "brier": 0.31385322722813125,
+    "nll": 0.5860257604882279,
+    "ece": 0.04519735702779446,
+    "aurc": 0.07244150544738984,
+    "coverage_at_5pct_error": 0.5313821138211382,
+    "confident_error_rate": 0.011707317073170732,
+    "n": 3075,
+    "tasks": {
+     "apibank": {
+      "acc": 0.9533333333333334,
+      "n": 150
+     },
+     "bfcl_irrelevance": {
+      "acc": 0.9411764705882353,
+      "n": 17
+     },
+     "bfcl_live_irrelevance": {
+      "acc": 0.925,
+      "n": 40
+     },
+     "bfcl_live_multiple": {
+      "acc": 1.0,
+      "n": 58
+     },
+     "bfcl_live_parallel": {
+      "acc": 1.0,
+      "n": 9
+     },
+     "bfcl_live_parallel_multiple": {
+      "acc": 0.9803921568627451,
+      "n": 51
+     },
+     "bfcl_live_simple": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bfcl_multiple": {
+      "acc": 1.0,
+      "n": 41
+     },
+     "bfcl_parallel": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bfcl_parallel_multiple": {
+      "acc": 1.0,
+      "n": 42
+     },
+     "bfcl_simple": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bright": {
+      "acc": 0.6533333333333333,
+      "n": 150
+     },
+     "cfcolor": {
+      "acc": 0.5266666666666666,
+      "n": 150
+     },
+     "chessbench": {
+      "acc": 0.3,
+      "n": 150
+     },
+     "clinc150": {
+      "acc": 0.98,
+      "n": 150
+     },
+     "contractnli": {
+      "acc": 0.80625,
+      "n": 160
+     },
+     "hellaswag": {
+      "acc": 0.8866666666666667,
+      "n": 150
+     },
+     "humicroedit": {
+      "acc": 0.5666666666666667,
+      "n": 150
+     },
+     "musr_murder_mystery": {
+      "acc": 0.5737704918032787,
+      "n": 61
+     },
+     "musr_object_placements": {
+      "acc": 0.5517241379310345,
+      "n": 29
+     },
+     "musr_team_allocation": {
+      "acc": 0.65,
+      "n": 60
+     },
+     "routerbench": {
+      "acc": 0.22666666666666666,
+      "n": 150
+     },
+     "sata_bench": {
+      "acc": 0.848800834202294,
+      "n": 959
+     },
+     "sgd": {
+      "acc": 0.8333333333333334,
+      "n": 150
+     },
+     "toolret": {
+      "acc": 0.6666666666666666,
+      "n": 150
+     }
+    }
+   },
+   "kev-4b-committed": {
+    "acc": 0.6956097560975609,
+    "brier": 0.3909352561706662,
+    "nll": 0.7101193295278435,
+    "ece": 0.027671159407392395,
+    "aurc": 0.12497162179252178,
+    "coverage_at_5pct_error": 0.3339837398373984,
+    "confident_error_rate": 0.00943089430894309,
+    "n": 3075,
+    "tasks": {
+     "apibank": {
+      "acc": 0.88,
+      "n": 150
+     },
+     "bfcl_irrelevance": {
+      "acc": 0.9411764705882353,
+      "n": 17
+     },
+     "bfcl_live_irrelevance": {
+      "acc": 0.8,
+      "n": 40
+     },
+     "bfcl_live_multiple": {
+      "acc": 1.0,
+      "n": 58
+     },
+     "bfcl_live_parallel": {
+      "acc": 1.0,
+      "n": 9
+     },
+     "bfcl_live_parallel_multiple": {
+      "acc": 0.9607843137254902,
+      "n": 51
+     },
+     "bfcl_live_simple": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bfcl_multiple": {
+      "acc": 1.0,
+      "n": 41
+     },
+     "bfcl_parallel": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bfcl_parallel_multiple": {
+      "acc": 1.0,
+      "n": 42
+     },
+     "bfcl_simple": {
+      "acc": 1.0,
+      "n": 16
+     },
+     "bright": {
+      "acc": 0.56,
+      "n": 150
+     },
+     "cfcolor": {
+      "acc": 0.5,
+      "n": 150
+     },
+     "chessbench": {
+      "acc": 0.18,
+      "n": 150
+     },
+     "clinc150": {
+      "acc": 0.88,
+      "n": 150
+     },
+     "contractnli": {
+      "acc": 0.6375,
+      "n": 160
+     },
+     "hellaswag": {
+      "acc": 0.78,
+      "n": 150
+     },
+     "humicroedit": {
+      "acc": 0.5733333333333334,
+      "n": 150
+     },
+     "musr_murder_mystery": {
+      "acc": 0.45901639344262296,
+      "n": 61
+     },
+     "musr_object_placements": {
+      "acc": 0.4827586206896552,
+      "n": 29
+     },
+     "musr_team_allocation": {
+      "acc": 0.6333333333333333,
+      "n": 60
+     },
+     "routerbench": {
+      "acc": 0.34,
+      "n": 150
+     },
+     "sata_bench": {
+      "acc": 0.8091762252346194,
+      "n": 959
+     },
+     "sgd": {
+      "acc": 0.5933333333333334,
+      "n": 150
+     },
+     "toolret": {
+      "acc": 0.62,
+      "n": 150
+     }
+    }
+   }
+  },
+  "transfer": {}
+ },
+ "temperatures": {},
+ "labels": {
+  "jev": "Jev 1.14 (hosted)",
+  "parent": "Kev-4B (released)",
+  "hard": "+ crowd, majority labels",
+  "soft": "+ crowd, human vote shares",
+  "synth": "+ crowd, synthetic votes",
+  "kev-27b": "Kev-27B (released)",
+  "autojev": "AutoJev-27B"
+ }
+}

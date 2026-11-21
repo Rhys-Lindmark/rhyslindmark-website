@@ -1,0 +1,40 @@
+{
+  "pins": {
+    "tasksource/scruples": "3d8d8255",
+    "ucberkeley-dlab/measuring-hate-speech": "5468f6e1",
+    "nvidia/HelpSteer2": "990b2711",
+    "earino/chaosnli": "bf8d66a1"
+  },
+  "seed": 0,
+  "train": {
+    "records": 7500,
+    "questions": 19500,
+    "by_source": {
+      "helpsteer2": 2500,
+      "mhs": 2000,
+      "scruples": 3000
+    }
+  },
+  "crowd_dev": {
+    "records": 1200,
+    "by_source": {
+      "scruples": 400,
+      "mhs": 400,
+      "helpsteer2": 400
+    }
+  },
+  "chaosnli": {
+    "records": 1500,
+    "by_source": {
+      "chaosnli_snli": 500,
+      "chaosnli_mnli_m": 500,
+      "chaosnli_alphanli": 500
+    }
+  },
+  "sha256": {
+    "train.jsonl": "75921f03804809282f98d88bcb80e7a1d3401db571bdca1a66f1b837750a3eac",
+    "crowd_dev.jsonl": "184a40df81f71b0c40e2de3855926813f41af7c28f50e14333f185439ba52963",
+    "chaosnli.jsonl": "77d5eac839fc4054d119445915d9893b488fe574c06a85069081ad45129eae9a",
+    "targets.json": "5b159bcec61c1909b06eababb41ee3b3bbea23c5e2e5336df163cd28f7ca299d"
+  }
+}
