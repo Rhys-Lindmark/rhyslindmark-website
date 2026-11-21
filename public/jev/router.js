@@ -145,11 +145,10 @@ function renderAnti(pending) {
     $('anti-trace').replaceChildren(h('p', 'route-empty', 'One question. Jev answers it with a decision.'));
   } else {
     $('anti-output').replaceChildren(
-      h('p', 'route-quote', `“${current.prompt}”`),
       h('div', 'route-pick',
-        h('div', null, h('span', 'route-k', 'Model'), h('strong', null, `Claude ${c.choice}`), h('span', 'route-sub', `${pct(c.probabilities[c.choice])} probability`)),
-        h('div', null, h('span', 'route-k', 'Reasoning'), h('strong', 'muted', '—'), h('span', 'route-sub', 'not asked, so no answer'))),
-      h('p', 'route-meta', 'Same call as the router'));
+        h('div', null, h('span', 'route-k', 'Model'), h('strong', null, `Claude ${c.choice}`)),
+        h('div', null, h('span', 'route-k', 'Reasoning'), h('strong', 'muted', '—'))),
+      h('p', 'route-meta', `${current.data.model} · ${Math.round(current.data.elapsed_ms)}ms`));
     $('anti-trace').replaceChildren(traceRow('choice', 'Which model should I use for this prompt?',
       ANTI.map(k => h('span', k === c.choice ? 'opt on' : 'opt', `${k} ${pct(c.probabilities[k])}`)), c.choice, 'is-anti'));
   }
