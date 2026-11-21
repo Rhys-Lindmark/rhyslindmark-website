@@ -1,15 +1,8 @@
 # Jev design system
 
-*A 1-bit system window on rose paper.* Square ink-ruled windows with black
-title bars sit on a near-white page. A single dusty rose marks whole sections,
-never small details, and terminal-mono labels tag everything like a
-spec sheet.
+*A 1-bit system window on rose paper.* Square ink-ruled windows with black title bars sit on a near-white page. A single dusty rose marks whole sections, never small details, and terminal-mono labels tag everything like a spec sheet.
 
-Derived from [typesafe.ai](https://typesafe.ai), v1, 2026-11-21. It feels like a
-research instrument from a 1984 desktop: precise, a little dry, confident
-enough not to decorate. Headlines are tight, capitalized grotesk set close to
-their own line height. Body copy is plain and readable. Every surface is a
-window or a rule; nothing is rounded, nothing glows, nothing floats.
+Derived from [typesafe.ai](https://typesafe.ai), v1, 2026-11-21. It feels like a research instrument from a 1984 desktop: precise, a little dry, confident enough not to decorate. Headlines are tight, capitalized grotesk set close to their own line height. Body copy is plain and readable. Every surface is a window or a rule; nothing is rounded, nothing glows, nothing floats.
 
 ## Color palette
 
@@ -54,11 +47,7 @@ window or a rule; nothing is rounded, nothing glows, nothing floats.
 | Small | Inter Tight | 14px | 400 | 1.4 | 0.01em |
 | Label | JetBrains Mono | 12px | 500 | 1.0 | 0.02em, often uppercase |
 
-**Fonts.** typesafe.ai sets display and body in *Die Grotesk C* and labels in
-*LisaTerminal Paper*. Both are licensed, so this system uses the closest free
-pair: **Inter Tight** (tight neo-grotesk) and **JetBrains Mono**, which
-typesafe.ai also uses for code. Swap the families in `tokens.css` if you hold
-the licences.
+**Fonts.** typesafe.ai sets display and body in *Die Grotesk C* and labels in *LisaTerminal Paper*. Both are licensed, so this system uses the closest free pair: **Inter Tight** (tight neo-grotesk) and **JetBrains Mono**, which typesafe.ai also uses for code. Swap the families in `tokens.css` if you hold the licences.
 
 ## Spacing and shape
 
@@ -77,16 +66,11 @@ the licences.
 
 ## Components
 
-- **Window.** 1px Ink border, Paper body, hard 3px shadow, an Ink title bar with
-  a mono label (`Model Router 1.0`). The default container for anything
-  interactive or important.
+- **Window.** 1px Ink border, Paper body, hard 3px shadow, an Ink title bar with a mono label (`Model Router 1.0`). The default container for anything interactive or important.
 - **Card.** A window without the shadow, for lists of links.
-- **Label.** Mono, 12px, uppercase, Steel. Sits above sections and inside
-  title bars.
-- **Button.** Ink fill, Paper text, square. Hover: Graphite. Secondary is a
-  1px Ink outline that fills Ink on hover.
-- **Rule and crop marks.** Separate parts with a 1px rule. Frame display
-  headings with small corner crop marks.
+- **Label.** Mono, 12px, uppercase, Steel. Sits above sections and inside title bars.
+- **Button.** Ink fill, Paper text, square. Hover: Graphite. Secondary is a 1px Ink outline that fills Ink on hover.
+- **Rule and crop marks.** Separate parts with a 1px rule. Frame display headings with small corner crop marks.
 - **Rose band.** A full-width Rose field for the one section a page is about.
 
 ## Guidelines
