@@ -42,6 +42,14 @@ for (const t of TASKS) {
   const g = grade(t, good), b = grade(t, bad);
   if (!g.pass || b.pass) { failures++; console.log(`FAIL ${t.id}: good=${g.pass} (${g.detail}) bad=${b.pass} (${b.detail})`); }
 }
+// Formats real models used for correct answers, plus near-misses that must fail.
+const byId = Object.fromEntries(TASKS.map(t => [t.id, t]));
+for (const [id, reply, want] of [
+  ['facts-10', 'ANSWER: 299,792,458 m/s', true], ['facts-10', 'ANSWER: 299792458 m/s', true],
+  ['facts-09', 'ANSWER: Tungsten (W)', true], ['facts-07', 'ANSWER: 206 bones', true],
+  ['math-03', 'ANSWER: 22.2°C', true], ['math-10', 'ANSWER: 300 or 331', false],
+  ['facts-09', 'ANSWER: Tin (Sn)', false], ['logic-05', 'ANSWER: 11', false]
+]) { const g = grade(byId[id], reply); if (g.pass !== want) { failures++; console.log(`FAIL format case ${id} "${reply}": got ${g.pass}`); } }
 console.log(failures ? `${failures} grader problems` : `all ${TASKS.length} graders pass good replies and reject bad ones`);
 console.log(TASKS.filter(t => t.grader.type === 'answer').map(t => `${t.id}=${t.grader.answer}`).join('  '));
 process.exit(failures ? 1 : 0);

@@ -7,7 +7,11 @@ import { join } from 'node:path';
 const norm = s => String(s).trim().toLowerCase()
   .replace(/^[`*"'“”‘’\s]+|[`*"'“”‘’.\s]+$/g, '')
   .replace(/^the\s+/, '');
-const asNumber = s => { const t = String(s).replace(/[,$%\s]|cents?$|°[cf]?$/gi, ''); return /^-?\d+(\.\d+)?$/.test(t) ? Number(t) : null; };
+// A number, optionally with $ in front and units after ("299,792,458 m/s",
+// "206 bones", "22.2°C"). Anything else with digits in it ("300 or 331") is not a number.
+const asNumber = s => { const m = String(s).trim().match(/^\$?\s*(-?\d[\d,]*(?:\.\d+)?)\s*[a-z°%/.\s]*$/i); return m ? Number(m[1].replace(/,/g, '')) : null; };
+// Drop a trailing note in parentheses: "Tungsten (W)" -> "Tungsten".
+const stripNote = s => String(s).replace(/\s*\([^)]*\)\s*\.?$/, '');
 
 export function finalAnswer(text) {
   const lines = String(text).trim().split('\n').map(l => l.trim()).filter(Boolean);
@@ -30,7 +34,7 @@ function gradeAnswer(g, text) {
   for (const w of want) {
     const wn = asNumber(w);
     if (wn != null && gn != null && Math.abs(gn - wn) < 1e-9) return { pass: true, detail: got };
-    if (norm(got) === norm(w)) return { pass: true, detail: got };
+    if (norm(got) === norm(w) || norm(stripNote(got)) === norm(w)) return { pass: true, detail: got };
   }
   return { pass: false, detail: got };
 }
