@@ -21,7 +21,10 @@ function timingSafeEqual(a, b) {
 
 // Returns a 401 Response when the request must log in, or null when it may pass.
 export function jevGate(request, env) {
-	const password = env.JEV_VIEW_PASSWORD;
+	// Forgiving on purpose: a shared, spoken password. Phones capitalize the first
+	// letter and pasted values carry stray spaces, so compare trimmed and lowercased.
+	const norm = s => String(s).trim().toLowerCase();
+	const password = env.JEV_VIEW_PASSWORD ? norm(env.JEV_VIEW_PASSWORD) : '';
 	if (!password) return null;
 	const header = request.headers.get('authorization') || '';
 	const match = header.match(/^Basic\s+([A-Za-z0-9+/=]+)$/i);
@@ -29,7 +32,7 @@ export function jevGate(request, env) {
 		let decoded = '';
 		try { decoded = new TextDecoder().decode(Uint8Array.from(atob(match[1]), c => c.charCodeAt(0))); } catch {}
 		const sep = decoded.indexOf(':');
-		if (sep > 0 && timingSafeEqual(decoded.slice(0, sep), VIEW_USER) && timingSafeEqual(decoded.slice(sep + 1), password)) return null;
+		if (sep > 0 && timingSafeEqual(norm(decoded.slice(0, sep)), VIEW_USER) && timingSafeEqual(norm(decoded.slice(sep + 1)), password)) return null;
 	}
 	return new Response('Log in to see the Jev pages.', {
 		status: 401,

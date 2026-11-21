@@ -22,6 +22,11 @@ test('gate lets the shared login through', () => {
 	assert.equal(jevGate(req('/jev', basic('jev', 'test-password')), env), null);
 });
 
+test('gate forgives capitals and stray spaces on either side', () => {
+	assert.equal(jevGate(req('/jev', basic('Jev ', ' Test-Password')), env), null);
+	assert.equal(jevGate(req('/jev', basic('jev', 'test-password')), { JEV_VIEW_PASSWORD: 'Test-Password\n' }), null);
+});
+
 test('docs paths map to repo paths and reject traversal and dotfiles', () => {
 	assert.equal(docsRepoPath('/jev/docs'), '');
 	assert.equal(docsRepoPath('/jev/docs/'), '');
