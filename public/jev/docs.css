@@ -1,0 +1,20 @@
+/* /jev/docs pages and the /jev hub; loaded after minimal.css */
+.crumbs { font-size: 14px; color: var(--steel); }
+.crumbs span { color: var(--ink); }
+.doc { max-width: 760px; }
+.listing { list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 6px; font-size: 15px; }
+.markdown { font-size: 15px; line-height: 1.6; }
+.markdown h1 { margin: 0 0 16px; }
+.markdown h2 { font-size: 22px; margin: 32px 0 10px; }
+.markdown h3 { font-size: 18px; margin: 24px 0 8px; }
+.markdown strong, .markdown th { font-weight: 600; }
+.markdown a { text-decoration: underline; text-decoration-color: var(--fog); text-underline-offset: 3px; }
+.markdown table { border-collapse: collapse; margin: 16px 0; font-size: 14px; display: block; overflow-x: auto; }
+.markdown th, .markdown td { border: 1px solid var(--bone); padding: 6px 10px; text-align: left; vertical-align: top; }
+.markdown code { background: #f6f6f6; padding: 1px 5px; border-radius: 6px; font-size: .92em; }
+.markdown pre, .file { background: #fafafa; border: 1px solid var(--bone); border-radius: 12px; padding: 14px 16px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+.markdown pre code { background: none; padding: 0; }
+.markdown blockquote { margin: 16px 0; padding-left: 14px; border-left: 3px solid var(--bone); color: var(--steel); }
+.hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.hub-grid .demo { margin: 0; }
+.hub-label { font-size: 12px; color: var(--steel); text-transform: uppercase; letter-spacing: .04em; margin: 28px 0 12px; }

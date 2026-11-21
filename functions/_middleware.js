@@ -2,6 +2,7 @@
 // main site may redirect to Substack; unknown URLs keep their local 404.
 import { LEGACY_POST_SLUGS } from './_legacy/posts.js';
 import { poppyDiscovery } from './_lib/poppy-discovery.js';
+import { jevGate, serveJevDocs } from './_lib/jev-view.js';
 
 const AI_SITES = {
 	'/tools/lean-coffee': 'https://lean-coffee-together.rhyslindmark.chatgpt.site',
@@ -232,6 +233,19 @@ export async function onRequest(context) {
 	if (url.hostname === 'www.ai.rhyslindmark.com') {
 		url.hostname = 'ai.rhyslindmark.com';
 		return Response.redirect(url.toString(), 308);
+	}
+
+	// /jev/* sits behind one shared login on every host (see _lib/jev-view.js).
+	// /api/jev is outside it and keeps its own Turnstile check.
+	if (url.pathname === '/jev' || url.pathname.startsWith('/jev/')) {
+		const denied = jevGate(context.request, context.env);
+		if (denied) return denied;
+		if (url.pathname === '/jev/docs' || url.pathname.startsWith('/jev/docs/')) {
+			if (!['GET', 'HEAD'].includes(context.request.method)) {
+				return new Response(null, { status: 405, headers: { Allow: 'GET, HEAD' } });
+			}
+			return serveJevDocs(context.request, context.env);
+		}
 	}
 
 	if (url.pathname === '/.well-known/poppy.json' && url.hostname === 'ai.rhyslindmark.com') {
