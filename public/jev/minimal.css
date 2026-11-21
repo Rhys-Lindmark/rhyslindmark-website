@@ -164,3 +164,27 @@ code, .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 
 .disagree .agree-tag { background: #fdecee; color: var(--coral); }
 #anti-compare tr.pending td { color: var(--fog); }
 #anti-compare tr.now td { background: #fafafa; }
+/* Eval card */
+.eval-meta { margin: -8px 0 12px; font-size: 13px; color: var(--steel); }
+.eval-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; color: var(--steel); margin-bottom: 6px; }
+.eval-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.eval-chart-box { position: relative; }
+.eval-chart { width: 100%; height: auto; display: block; overflow: visible; }
+.eval-chart .grid { stroke: #f0f0f0; stroke-width: 1; }
+.eval-chart .tick, .eval-chart .axis-label { font: 11px Inter, system-ui, sans-serif; fill: var(--steel); letter-spacing: 0; }
+.eval-chart .curve { fill: none; stroke-width: 2; opacity: .75; }
+.eval-chart .pt { cursor: default; outline: none; }
+.eval-chart .pt:focus-visible circle:last-child { stroke: var(--ink); stroke-width: 1.5; }
+.eval-chart .pt-label { font: 600 11px Inter, system-ui, sans-serif; fill: var(--ink); letter-spacing: 0; paint-order: stroke; stroke: #fff; stroke-width: 3px; }
+.eval-tip { position: absolute; transform: translate(-50%, calc(-100% - 14px)); background: #fff; border: 1px solid var(--bone); border-radius: 10px; padding: 7px 10px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.08); pointer-events: none; display: flex; flex-direction: column; gap: 2px; white-space: nowrap; z-index: 2; }
+.eval-tip span { color: var(--steel); }
+.eval-h3 { font-size: 18px; font-weight: 535; margin: 22px 0 8px; }
+.eval-table td:first-child { width: 40%; }
+.agree-tag.win { background: #ddf6ee; color: #08765a; }
+.eval-verdicts { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+.eval-verdicts > div { padding: 12px 14px; border: 1px solid var(--bone); border-radius: 16px; font-size: 13px; color: var(--steel); }
+.eval-verdicts strong { display: block; font-size: 26px; font-weight: 485; color: var(--ink); }
+.eval-verdicts .v-too-weak strong { color: var(--coral); }
+.eval-verdicts .v-right strong { color: #08765a; }
+.eval-misses { font-size: 13px; }
+.eval-misses ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; }

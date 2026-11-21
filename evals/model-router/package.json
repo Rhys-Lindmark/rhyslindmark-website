@@ -1,0 +1,15 @@
+{
+  "name": "model-router-eval",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "selftest": "node selftest.mjs",
+    "plan": "node --env-file-if-exists=.env run-models.mjs plan",
+    "models": "node --env-file-if-exists=.env run-models.mjs run",
+    "jev": "node --env-file-if-exists=.env run-jev.mjs",
+    "analyze": "node analyze.mjs"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0"
+  }
+}

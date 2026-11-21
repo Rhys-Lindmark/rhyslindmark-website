@@ -1,7 +1,7 @@
 # Claim Check operations
 
 - Route: https://ai.rhyslindmark.com/jev/
-- Demos on the page share `/api/jev`, the Turnstile widget key and action, and every limit below: Claim Check (Choice + two Nouls) and Rock, Paper, Scissors (`demo: "rps"`, one Choice per round; the client sends only previous rounds, at most 30).
+- The page shows one demo, the Model Router (`demo: "route"`: one Score, four Nouls and the anti-pattern Choice in a single call; prompt up to 1,000 characters), plus an Eval card read from `public/jev/eval-summary.json` (from `evals/model-router`). Since 2026-11-20 the page no longer shows Claim Check or Rock, Paper, Scissors; `/api/jev` still accepts both (`demo: "rps"`, or a claim and evidence). All demos share `/api/jev`, the Turnstile widget key and action, and every limit below.
 - A visitor passes Turnstile once (verified server-side with action `jev_check` and hostname `ai.rhyslindmark.com`). The server then sets `jev_human`, an HttpOnly, Secure, SameSite=Strict cookie scoped to `/api/jev` that lasts 7 days, signed with HMAC-SHA-256 under a key derived from `JEV_KEY_SECRET`. Calls with a valid cookie skip Turnstile; without one, the API returns 403 with `needs_human: true` and the page shows the widget again. The owner asked for this on 2026-11-20. Rotating `JEV_KEY_SECRET` invalidates every cookie. There is no service-key or header bypass.
 - Turnstile reduces automation; no CAPTCHA guarantees a visitor is human.
 - Model pinned to `jev-1.14.0`. Published price checked 2026-10-27: $0.042 per million input tokens; output free; normal request context <=65,536 tokens. Source: https://docs.typesafe.ai/models

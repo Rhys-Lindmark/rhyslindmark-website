@@ -4,38 +4,8 @@
 // to change routing policy.
 const $ = id => document.getElementById(id);
 
-// ---- Policy: everything a person would audit lives in this block ----------
-const YES = 0.7, NO = 0.3;            // Noul thresholds; the band between is "unsure"
-const UNSURE_COUNTS_AS = true;        // err toward more capability when Jev is unsure
-const DEPTH = ['none', 'few steps', 'plan', 'long'];
-const DEPTH_TEXT = ['None', 'A few steps', 'A multi-step plan', 'Long, careful reasoning'];
-const LEVELS = ['Off', 'Low', 'Medium', 'High'];
-const MODELS = { haiku: 'Claude Haiku', sonnet: 'Claude Sonnet', opus: 'Claude Opus', fable: 'Claude Fable' };
-// Reasoning level: one row per (depth, high stakes). Every combination has an outcome.
-const REASONING_TABLE = [
-  { depth: 0, stakes: false, level: 0 }, { depth: 0, stakes: true, level: 1 },
-  { depth: 1, stakes: false, level: 1 }, { depth: 1, stakes: true, level: 2 },
-  { depth: 2, stakes: false, level: 2 }, { depth: 2, stakes: true, level: 3 },
-  { depth: 3, stakes: null,  level: 3 }
-];
-// Model level: ordered rules, first match wins. The last row always matches.
-const MODEL_RULES = [
-  { when: 'Large piece of work', test: j => j.large_output, tier: 'fable' },
-  { when: 'Depth is long', test: j => j.depth === 3, tier: 'fable' },
-  { when: 'Expertise and depth is plan', test: j => j.expertise && j.depth >= 2, tier: 'opus' },
-  { when: 'Expertise and high stakes', test: j => j.expertise && j.high_stakes, tier: 'opus' },
-  { when: 'Expertise', test: j => j.expertise, tier: 'sonnet' },
-  { when: 'Depth is plan', test: j => j.depth === 2, tier: 'sonnet' },
-  { when: 'Nuanced writing', test: j => j.nuanced_writing, tier: 'sonnet' },
-  { when: 'High stakes', test: j => j.high_stakes, tier: 'sonnet' },
-  { when: 'Otherwise', test: () => true, tier: 'haiku' }
-];
-const NOULS = {
-  expertise: { label: 'Expertise', q: 'Does answering `prompt` well take specialist expertise?' },
-  high_stakes: { label: 'High stakes', q: 'Could a wrong answer to `prompt` cause real harm or cost?' },
-  large_output: { label: 'Large piece of work', q: 'Does `prompt` ask for a large piece of work?' },
-  nuanced_writing: { label: 'Nuanced writing', q: 'Does `prompt` ask for writing where tone and style matter?' }
-};
+import { YES, NO, UNSURE_COUNTS_AS, DEPTH, LEVELS, MODELS, REASONING_TABLE, MODEL_RULES, NOULS, read, judge, decide } from './router-policy.js?v=router-13';
+
 const PROMPTS = [
   'hi! how’s it going?',
   'What’s the capital of Australia?',
@@ -53,23 +23,6 @@ const PROMPTS = [
   'Design the database schema and API for a multi-tenant SaaS billing system',
   'Can you rebuild this OS in Rust?'
 ];
-// ---- Reading Jev's answers --------------------------------------------------
-const read = p => p >= YES ? 'yes' : p <= NO ? 'no' : 'unsure';
-const truthy = p => read(p) === 'yes' || (read(p) === 'unsure' && UNSURE_COUNTS_AS);
-// The Score's `score` is a weighted mean and can sit between two peaks, so code
-// reads the most likely level instead (ties go to the higher level).
-const topLevel = probs => DEPTH.reduce((best, _, i) => probs[i] >= probs[best] ? i : best, 0);
-export function judge(answers) {
-  const j = { depth: topLevel(DEPTH.map((_, i) => answers.reasoning_depth.probabilities[String(i)])) };
-  for (const id of Object.keys(NOULS)) j[id] = truthy(answers[id].noul);
-  return j;
-}
-export function decide(j) {
-  const reasoningRow = REASONING_TABLE.findIndex(r => r.depth === j.depth && (r.stakes === null || r.stakes === j.high_stakes));
-  const ruleRow = MODEL_RULES.findIndex(r => r.test(j));
-  return { reasoningRow, reasoning: REASONING_TABLE[reasoningRow].level, ruleRow, tier: MODEL_RULES[ruleRow].tier };
-}
-
 // ---- Page -------------------------------------------------------------------
 const h = (tag, cls, ...kids) => { const el = document.createElement(tag); if (cls) el.className = cls; for (const k of kids) if (k != null) el.append(k); return el; };
 const pct = n => n.toFixed(2);
@@ -191,12 +144,12 @@ function renderCompare() {
   const all = h('button', 'text-button', runningAll ? `Running ${runningAll.done + 1} of ${runningAll.total}…` : run.length === PROMPTS.length ? 'All run' : `Run the other ${PROMPTS.length - run.length}`);
   all.type = 'button'; all.disabled = busy || runningAll || run.length === PROMPTS.length;
   all.addEventListener('click', runAll);
-  $('anti-compare').replaceChildren(
+  $('anti-compare').replaceChildren(...[
     h('div', 'section-heading', h('h3', null, 'Router vs. Choice'), all),
     lastError && !busy ? h('p', 'error', `Stopped: ${lastError}`) : null,
     h('p', 'cmp-summary', run.length ? `They agree on ${agree} of ${run.length} prompts run.` : 'Run prompts to compare the two approaches.'),
     h('div', 'cmp-scroll', table(['Prompt', 'Router (truth table)', 'Choice (argmax)', ''], rows)),
-    h('p', 'note', 'Each prompt is one Jev call; answers are saved for this visit.'));
+    h('p', 'note', 'Each prompt is one Jev call; answers are saved for this visit.')].filter(Boolean));
 }
 const renderAll = () => { renderOutput(); renderTrace(); renderTables(); renderApi(); renderAnti(); renderCompare(); };
 
