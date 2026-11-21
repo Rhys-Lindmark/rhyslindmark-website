@@ -8,8 +8,8 @@ import { MODEL } from '../../functions/_lib/jev-access.js';
 
 const OUT = new URL('./results/jev.json', import.meta.url);
 mkdirSync(new URL('./results/', import.meta.url), { recursive: true });
-const key = process.env.TYPESAFE_API_KEY;
-if (!key) { console.error('Set TYPESAFE_API_KEY in evals/model-router/.env'); process.exit(1); }
+const key = process.env.JEV_EVAL_TYPESAFE_KEY;
+if (!key) { console.error('JEV_EVAL_TYPESAFE_KEY is not set (use bws run, or .env). See README.'); process.exit(1); }
 
 const out = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {};
 for (const t of TASKS) {

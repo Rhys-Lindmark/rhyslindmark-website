@@ -76,7 +76,7 @@ async function call(job) {
   };
   for (let attempt = 0; attempt < 5; attempt++) {
     const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST', headers: { Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`, 'Content-Type': 'application/json', 'X-Title': 'model-router-eval' },
+      method: 'POST', headers: { Authorization: `Bearer ${process.env.JEV_EVAL_OPENROUTER_KEY}`, 'Content-Type': 'application/json', 'X-Title': 'model-router-eval' },
       body: JSON.stringify(body), signal: AbortSignal.timeout(600000)
     }).catch(e => ({ ok: false, status: 0, text: async () => String(e) }));
     if (r.ok) {
@@ -117,7 +117,7 @@ async function main() {
     return;
   }
   if (cmd !== 'run') throw new Error(`unknown command ${cmd}`);
-  if (!process.env.OPENROUTER_API_KEY) { console.error('Set OPENROUTER_API_KEY in evals/model-router/.env'); process.exit(1); }
+  if (!process.env.JEV_EVAL_OPENROUTER_KEY) { console.error('JEV_EVAL_OPENROUTER_KEY is not set (use bws run, or .env). See README.'); process.exit(1); }
   if (!readRaw().length) await runJobs(todo(0, PROBE_TASKS), 'probe');
   const CHUNK = 15 * ARMS.length;
   outer: for (let rep = 0; rep < MAX_REPS; rep++) {

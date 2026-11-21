@@ -13,9 +13,10 @@ every model on every task, plot cost against success) and Baseten's router post
 
 ## Run
 
-The scripts read two keys from the environment: `OPENROUTER_API_KEY` (best: a
-new key for this eval with a $25 credit limit set on OpenRouter) and
-`TYPESAFE_API_KEY`.
+The scripts read two keys from the environment, named for this eval so they
+don't collide with your other keys: `JEV_EVAL_OPENROUTER_KEY` (best: a new
+OpenRouter key for this eval with a $25 credit limit) and
+`JEV_EVAL_TYPESAFE_KEY`.
 
 Recommended: keep both in Bitwarden Secrets Manager under exactly those names,
 and let `bws run` hand them to the scripts, so they never touch the disk:
