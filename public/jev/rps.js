@@ -8,7 +8,7 @@ const pct = n => `${Math.round(n * 100)}%`;
 let history = [], widgetId, token = '', busy = false, rendered = false;
 const score = { you: 0, jev: 0, tie: 0 };
 const buttons = () => document.querySelectorAll('[data-throw]');
-const setButtons = () => { for (const b of buttons()) b.disabled = busy || !token; };
+const setButtons = () => { for (const b of buttons()) b.disabled = busy || !(token || window.jevHuman.ok()); };
 const showError = message => { $('rps-error').textContent = message; $('rps-error').hidden = false; };
 function outcome(player, jev) { return player === jev ? 'tie' : BEATS[jev] === player ? 'you' : 'jev'; }
 function renderScore() { $('rps-score').textContent = `You ${score.you} · Jev ${score.jev} · Ties ${score.tie}`; }
@@ -23,8 +23,9 @@ function renderHistory() {
   $('rps-history-wrap').hidden = history.length === 0;
 }
 function render() {
-  if (rendered || !window.turnstile) return;
+  if (rendered || !window.turnstile || window.jevHuman.ok()) return;
   rendered = true;
+  $('rps-human-check').hidden = false;
   widgetId = window.turnstile.render('#rps-human-check', {
     sitekey: '0x4AAAAAAFoxX_DwyD2--6xP', action: 'jev_check', theme: 'light',
     callback: t => { token = t; setButtons(); },
@@ -33,18 +34,21 @@ function render() {
   });
 }
 window.jevRenderRps = render;
+window.addEventListener('jev-human-needed', () => { setButtons(); render(); });
+$('rps-human-check').hidden = window.jevHuman.ok();
 render();
 for (const button of buttons()) button.addEventListener('click', async () => {
-  if (!token) { showError('Complete the human verification.'); return; }
+  if (!token && !window.jevHuman.ok()) { showError('Complete the human verification.'); return; }
   const player = button.dataset.throw;
   busy = true; setButtons(); $('rps-error').hidden = true;
   $('rps-status').textContent = 'Jev is throwing…';
   document.querySelector('#choice .results').setAttribute('aria-busy', 'true');
   try {
     // Only previous rounds are sent. Jev never sees the throw you just clicked.
-    const response = await fetch('/api/jev', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ demo: 'rps', history: history.slice(-MAX_ROUNDS).map(({ player, jev }) => ({ player, jev })), verification_token: token }), signal: AbortSignal.timeout(45000) });
+    const response = await fetch('/api/jev', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ demo: 'rps', history: history.slice(-MAX_ROUNDS).map(({ player, jev }) => ({ player, jev })), verification_token: token || undefined }), signal: AbortSignal.timeout(45000) });
     let data; try { data = await response.json(); } catch { throw new Error('The server returned an unreadable response. Please try again.'); }
-    if (!response.ok) throw new Error(data.error || 'The round failed. Please try again.');
+    if (data.human_until) window.jevHuman.set(data.human_until);
+    if (!response.ok) { if (data.needs_human) window.jevHuman.clear(); throw new Error(data.error || 'The round failed. Please try again.'); }
     const jev = data.throw, result = outcome(player, jev);
     score[result]++; history.push({ player, jev, p: data.probabilities[jev] });
     renderScore(); renderHistory();
@@ -82,3 +86,4 @@ $('rps-reset').addEventListener('click', () => {
   $('rps-output').hidden = true; $('rps-empty').hidden = false; $('rps-error').hidden = true;
 });
 renderScore();
+setButtons();

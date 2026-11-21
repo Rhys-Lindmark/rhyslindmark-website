@@ -2,7 +2,7 @@
 
 - Route: https://ai.rhyslindmark.com/jev/
 - Demos on the page share `/api/jev`, the Turnstile widget key and action, and every limit below: Claim Check (Choice + two Nouls) and Rock, Paper, Scissors (`demo: "rps"`, one Choice per round; the client sends only previous rounds, at most 30).
-- Every paid attempt requires a fresh Turnstile token, verified server-side with action `jev_check` and hostname `ai.rhyslindmark.com`. There is no service-key, header, cookie, or session bypass.
+- A visitor passes Turnstile once (verified server-side with action `jev_check` and hostname `ai.rhyslindmark.com`). The server then sets `jev_human`, an HttpOnly, Secure, SameSite=Strict cookie scoped to `/api/jev` that lasts 7 days, signed with HMAC-SHA-256 under a key derived from `JEV_KEY_SECRET`. Calls with a valid cookie skip Turnstile; without one, the API returns 403 with `needs_human: true` and the page shows the widget again. The owner asked for this on 2026-11-20. Rotating `JEV_KEY_SECRET` invalidates every cookie. There is no service-key or header bypass.
 - Turnstile reduces automation; no CAPTCHA guarantees a visitor is human.
 - Model pinned to `jev-1.14.0`. Published price checked 2026-10-27: $0.042 per million input tokens; output free; normal request context <=65,536 tokens. Source: https://docs.typesafe.ai/models
 - Atomically reserve $0.01 before each API attempt, including upstream failures/timeouts; never refund. Lifetime reserve ceiling $20 (2,000 attempts), no automatic reset. At the documented context and price, those attempts cost at most about $5.51 in total. The headroom is intentional. Other applications using the same TypeSafe account are outside this cap.
