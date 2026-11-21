@@ -82,22 +82,14 @@ const setBusy = b => { busy = b; for (const el of document.querySelectorAll('[da
 function renderOutput() {
   const out = $('route-output');
   if (!current) { out.replaceChildren(h('p', 'route-empty', 'Pick a prompt to see where it goes.')); return; }
-  const { prompt, data } = current, d = decide(judge(data.answers));
-  const level = LEVELS[d.reasoning];
+  const { data } = current, d = decide(judge(data.answers));
   out.replaceChildren(
-    h('p', 'route-quote', `“${prompt}”`),
     h('div', 'route-pick',
-      h('div', null, h('span', 'route-k', 'Model'), h('strong', null, MODELS[d.tier]), h('span', 'route-sub', `rule ${d.ruleRow + 1}: ${MODEL_RULES[d.ruleRow].when.toLowerCase()}`)),
-      h('div', null, h('span', 'route-k', 'Reasoning'), h('strong', null, level), h('span', 'route-sub', h('code', null, d.reasoning === 0 ? 'thinking: off' : `effort: "${level.toLowerCase()}"`)))),
-    h('p', 'route-meta', `${data.model} ·${Math.round(data.elapsed_ms)}ms · 1 call, 5 questions${data.cached ? ' · cached, no new call' : ''}`));
+      h('div', null, h('span', 'route-k', 'Model'), h('strong', null, MODELS[d.tier])),
+      h('div', null, h('span', 'route-k', 'Reasoning'), h('strong', null, LEVELS[d.reasoning]))),
+    h('p', 'route-meta', `${data.model} · ${Math.round(data.elapsed_ms)}ms`));
 }
 
-function traceRow(type, question, options, readout, tone) {
-  return h('div', 'trace-row' + (tone ? ` ${tone}` : ''),
-    h('span', 'trace-type', type),
-    h('div', 'trace-body', h('p', 'trace-q', question), h('p', 'trace-opts', ...options)),
-    h('span', 'trace-read', readout));
-}
 function renderTrace() {
   const box = $('route-trace');
   if (!current) { box.replaceChildren(h('p', 'route-empty', 'Each question Jev answered, with its probabilities and how code reads them.')); return; }
