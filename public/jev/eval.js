@@ -8,9 +8,11 @@ const usd = x => x < 1 ? `$${x.toFixed(2)}` : x < 10 ? `$${x.toFixed(1)}` : `$${
 
 const EVALS = [
   { section: 'router-eval', title: 'Eval 1: mixed open models', summary: '/jev/eval-summary.json', replay: '/jev/eval-replay.json',
-    intro: 'The first run. Four open models from two families stood in for the router’s four tiers.' },
+    intro: 'The first run. Four open models from two families stood in for the router’s four tiers.',
+    finding: 'Price didn’t track skill: DeepSeek V4.1 Flash, the second-cheapest model, passed everything, while pricier GLM 5.3 stumbled on letter-level tasks. So the original router mostly paid for capability it didn’t need, and did no better than random routing with the same model mix.' },
   { section: 'router-eval-2', title: 'Eval 2: one model family, new prompts', summary: '/jev/eval-summary-v2.json', replay: '/jev/eval-replay-v2.json',
-    intro: 'Eval 1 showed that differences between model families (GLM vs. DeepSeek) swamped differences between tiers, so this run uses one family, Qwen, for every tier. Router v2 and v3 were built from Eval 1’s lessons using only the 60 original prompts, then tested on new prompts sorted into easy, medium and hard by how many models actually failed them.' }
+    intro: 'Eval 1 showed that differences between model families (GLM vs. DeepSeek) swamped differences between tiers, so this run uses one family, Qwen 3.7, at three sizes, with no Fable tier (a Fable pick falls back to Max). Router v2 and v3 were built from Eval 1’s lessons using only the 60 original prompts, then tested on 168 new prompts sorted into easy, medium and hard by how many of the six model/effort combinations actually failed them.',
+    finding: 'Both new routers beat the original by 11–13 points at about the same cost, and do far better on hard prompts. But neither beats simply sending everything to Qwen 3.7 Plus at high effort (93.5% for $3.32 per 1,000), so with this family there is little left for routing to win.' }
 ];
 
 // Series: color carries identity, shape repeats it (validated palette, light surface).
@@ -156,6 +158,7 @@ function render(cfg, data, rep) {
   section.replaceChildren(...[
     h('div', 'demo-heading', h('h2', null, cfg.title)),
     h('p', 'eval-intro', cfg.intro),
+    cfg.finding ? h('p', 'eval-finding', h('strong', null, 'Finding: '), cfg.finding) : null,
     data.partial ? h('p', 'eval-partial', `Results so far: more runs are in progress. Updated ${new Date(data.generated).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}.`) : null,
     h('p', 'eval-meta', `${data.tasks} prompts with code-checked answers · ${data.reps} run${data.reps === 1 ? '' : 's'} of each on ${data.arms.length} model/effort combinations · ${usd(data.spent_usd)} spent · ${data.jev_model ?? ''}`),
     data.tiers ? h('p', 'eval-tiers', 'Open models played the router’s four tiers: ', ...Object.entries(data.tiers).flatMap(([t, m], i, all) => [h('strong', null, `${t[0].toUpperCase()}${t.slice(1)}`), ` → ${m.name}${i < all.length - 1 ? ', ' : '.'}`])) : null,

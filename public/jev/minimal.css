@@ -224,3 +224,4 @@ code, .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 
 @media (max-width: 480px) { .rs-row { grid-template-columns: 1fr; gap: 2px; } .replay-counter { margin-left: 0; width: 100%; } }
 .rs-row > span { min-width: 0; }
 .rs-result code { font-size: 12px; }
+.eval-finding { margin: 0 0 12px; padding: 10px 14px; border-radius: 14px; background: #f6f2ff; font-size: 14px; max-width: 80ch; }

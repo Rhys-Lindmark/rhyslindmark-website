@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-21T06:00:53.336Z",
+  "generated": "2026-11-21T06:51:59.737Z",
   "partial": false,
   "tasks": 60,
   "reps": 3,
@@ -94,12 +94,12 @@
       "cost": 4.276190661111111
     },
     {
-      "name": "Router (shipped table)",
+      "name": "Router v1 (original table)",
       "kind": "router",
       "pass": 0.9222222222222223,
       "cost": 0.5687815261111113,
       "random_p50": 0.8944444444444445,
-      "random_p95": 0.9277777777777777,
+      "random_p95": 0.9277777777777778,
       "beats_random": false
     },
     {
@@ -143,8 +143,8 @@
       "kind": "router-variant",
       "pass": 0.9388888888888889,
       "cost": 0.7441810294444444,
-      "random_p50": 0.9055555555555558,
-      "random_p95": 0.938888888888889,
+      "random_p50": 0.9111111111111111,
+      "random_p95": 0.9444444444444444,
       "beats_random": false
     },
     {
@@ -153,7 +153,7 @@
       "pass": 0.8944444444444445,
       "cost": 0.14225537055555554,
       "random_p50": 0.8722222222222223,
-      "random_p95": 0.9055555555555554,
+      "random_p95": 0.9000000000000002,
       "beats_random": false
     },
     {
@@ -161,7 +161,7 @@
       "kind": "router-variant",
       "pass": 0.9444444444444444,
       "cost": 0.895843045,
-      "random_p50": 0.9277777777777778,
+      "random_p50": 0.9277777777777779,
       "random_p95": 0.9611111111111111,
       "beats_random": false
     },
@@ -1145,5 +1145,7 @@
     }
   },
   "by_bucket": null,
+  "router_v3": null,
+  "train_tasks": 0,
   "bucket_counts": null
 }

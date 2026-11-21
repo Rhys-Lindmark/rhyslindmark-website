@@ -1,0 +1,2631 @@
+{
+  "generated": "2026-11-21T06:53:52.544Z",
+  "partial": false,
+  "tasks": 168,
+  "reps": 1,
+  "arms": [
+    "haiku:low",
+    "haiku:high",
+    "sonnet:low",
+    "sonnet:high",
+    "opus:low",
+    "opus:high"
+  ],
+  "tiers": {
+    "haiku": {
+      "id": "qwen/qwen3.7-flash",
+      "name": "Qwen 3.7 Flash"
+    },
+    "sonnet": {
+      "id": "qwen/qwen3.7-plus",
+      "name": "Qwen 3.7 Plus"
+    },
+    "opus": {
+      "id": "qwen/qwen3.7-max",
+      "name": "Qwen 3.7 Max"
+    }
+  },
+  "arm_names": {
+    "haiku:low": "Qwen 3.7 Flash · low",
+    "haiku:high": "Qwen 3.7 Flash · high",
+    "sonnet:low": "Qwen 3.7 Plus · low",
+    "sonnet:high": "Qwen 3.7 Plus · high",
+    "opus:low": "Qwen 3.7 Max · low",
+    "opus:high": "Qwen 3.7 Max · high"
+  },
+  "spent_usd": 15.07819017999999,
+  "budget_usd": 25,
+  "jev_model": "jev-1.14.0",
+  "policies": [
+    {
+      "name": "Always Qwen 3.7 Flash · low",
+      "kind": "fixed",
+      "pass": 0.6547619047619048,
+      "cost": 0.5149700000000004
+    },
+    {
+      "name": "Always Qwen 3.7 Flash · high",
+      "kind": "fixed",
+      "pass": 0.7142857142857143,
+      "cost": 0.8204862499999998
+    },
+    {
+      "name": "Always Qwen 3.7 Plus · low",
+      "kind": "fixed",
+      "pass": 0.8928571428571429,
+      "cost": 2.7377714285714276
+    },
+    {
+      "name": "Always Qwen 3.7 Plus · high",
+      "kind": "fixed",
+      "pass": 0.9345238095238095,
+      "cost": 3.3196380952380924
+    },
+    {
+      "name": "Always Qwen 3.7 Max · low",
+      "kind": "fixed",
+      "pass": 0.9107142857142857,
+      "cost": 9.038835119047617
+    },
+    {
+      "name": "Always Qwen 3.7 Max · high",
+      "kind": "fixed",
+      "pass": 0.9464285714285714,
+      "cost": 11.076284226190472
+    },
+    {
+      "name": "Router v1 (original table)",
+      "kind": "router",
+      "pass": 0.8035714285714286,
+      "cost": 2.7597941071428567,
+      "random_p50": 0.7559523809523809,
+      "random_p95": 0.7797619047619048,
+      "beats_random": true
+    },
+    {
+      "name": "Router · yes ≥ 0.5, unsure = yes",
+      "kind": "router-variant",
+      "pass": 0.7202380952380952,
+      "cost": 2.225233363095237,
+      "random_p50": 0.7202380952380952,
+      "random_p95": 0.7440476190476191,
+      "beats_random": false
+    },
+    {
+      "name": "Router · yes ≥ 0.5, unsure = no",
+      "kind": "router-variant",
+      "pass": 0.7202380952380952,
+      "cost": 2.225233363095237,
+      "random_p50": 0.7202380952380952,
+      "random_p95": 0.7440476190476191,
+      "beats_random": false
+    },
+    {
+      "name": "Router · yes ≥ 0.6, unsure = yes",
+      "kind": "router-variant",
+      "pass": 0.7797619047619048,
+      "cost": 2.50221806547619,
+      "random_p50": 0.7380952380952381,
+      "random_p95": 0.7619047619047619,
+      "beats_random": true
+    },
+    {
+      "name": "Router · yes ≥ 0.6, unsure = no",
+      "kind": "router-variant",
+      "pass": 0.7142857142857143,
+      "cost": 2.189411279761903,
+      "random_p50": 0.7142857142857143,
+      "random_p95": 0.7380952380952381,
+      "beats_random": false
+    },
+    {
+      "name": "Router · yes ≥ 0.8, unsure = yes",
+      "kind": "router-variant",
+      "pass": 0.8392857142857143,
+      "cost": 3.545103660714285,
+      "random_p50": 0.7857142857142857,
+      "random_p95": 0.8154761904761905,
+      "beats_random": true
+    },
+    {
+      "name": "Router · yes ≥ 0.8, unsure = no",
+      "kind": "router-variant",
+      "pass": 0.7142857142857143,
+      "cost": 2.189411279761903,
+      "random_p50": 0.7142857142857143,
+      "random_p95": 0.7380952380952381,
+      "beats_random": false
+    },
+    {
+      "name": "Router · yes ≥ 0.9, unsure = yes",
+      "kind": "router-variant",
+      "pass": 0.875,
+      "cost": 5.618322589285715,
+      "random_p50": 0.8273809523809523,
+      "random_p95": 0.8571428571428571,
+      "beats_random": true
+    },
+    {
+      "name": "Router · yes ≥ 0.9, unsure = no",
+      "kind": "router-variant",
+      "pass": 0.7142857142857143,
+      "cost": 2.167306517857142,
+      "random_p50": 0.7083333333333334,
+      "random_p95": 0.7321428571428571,
+      "beats_random": false
+    },
+    {
+      "name": "Choice (argmax) · low effort",
+      "kind": "choice",
+      "pass": 0.8035714285714286,
+      "cost": 5.669343988095239,
+      "random_p50": 0.7380952380952381,
+      "random_p95": 0.7678571428571429,
+      "beats_random": true
+    },
+    {
+      "name": "Choice (argmax) · high effort",
+      "kind": "choice",
+      "pass": 0.8571428571428571,
+      "cost": 7.367275803571434,
+      "random_p50": 0.7916666666666666,
+      "random_p95": 0.8214285714285714,
+      "beats_random": true
+    },
+    {
+      "name": "Router v2 (new Jev judgments)",
+      "kind": "router-v2",
+      "pass": 0.9107142857142857,
+      "cost": 3.200650357142855,
+      "random_p50": 0.8571428571428571,
+      "random_p95": 0.8869047619047619,
+      "beats_random": true
+    },
+    {
+      "name": "Router v3 (Jev + learned odds, λ=20)",
+      "kind": "router-v3",
+      "pass": 0.9345238095238095,
+      "cost": 3.254220773809522,
+      "lambda": 20,
+      "random_p50": 0.8809523809523809,
+      "random_p95": 0.9047619047619048,
+      "beats_random": true
+    },
+    {
+      "name": "Oracle (cheapest best arm)",
+      "kind": "oracle",
+      "pass": 0.9702380952380952,
+      "cost": 1.6983316666666675
+    },
+    {
+      "name": "Learned router · λ=0",
+      "kind": "learned",
+      "pass": 0.9285714285714286,
+      "cost": 8.57995952380952,
+      "lambda": 0,
+      "random_p50": 0.9404761904761905,
+      "random_p95": 0.9523809523809523,
+      "beats_random": false
+    },
+    {
+      "name": "Learned router · λ=0.5",
+      "kind": "learned",
+      "pass": 0.9226190476190477,
+      "cost": 7.741711041666664,
+      "lambda": 0.5,
+      "random_p50": 0.9404761904761905,
+      "random_p95": 0.9523809523809523,
+      "beats_random": false
+    },
+    {
+      "name": "Learned router · λ=1",
+      "kind": "learned",
+      "pass": 0.9226190476190477,
+      "cost": 7.670601190476189,
+      "lambda": 1,
+      "random_p50": 0.9404761904761905,
+      "random_p95": 0.9523809523809523,
+      "beats_random": false
+    },
+    {
+      "name": "Learned router · λ=2",
+      "kind": "learned",
+      "pass": 0.9226190476190477,
+      "cost": 5.957358601190477,
+      "lambda": 2,
+      "random_p50": 0.9404761904761905,
+      "random_p95": 0.9523809523809523,
+      "beats_random": false
+    },
+    {
+      "name": "Learned router · λ=4",
+      "kind": "learned",
+      "pass": 0.9285714285714286,
+      "cost": 5.069439285714286,
+      "lambda": 4,
+      "random_p50": 0.9345238095238095,
+      "random_p95": 0.9464285714285714,
+      "beats_random": false
+    },
+    {
+      "name": "Learned router · λ=8",
+      "kind": "learned",
+      "pass": 0.9285714285714286,
+      "cost": 4.3479287499999995,
+      "lambda": 8,
+      "random_p50": 0.9166666666666666,
+      "random_p95": 0.9345238095238095,
+      "beats_random": false
+    },
+    {
+      "name": "Learned router · λ=16",
+      "kind": "learned",
+      "pass": 0.9345238095238095,
+      "cost": 3.2994244642857127,
+      "lambda": 16,
+      "random_p50": 0.8988095238095238,
+      "random_p95": 0.9226190476190477,
+      "beats_random": true
+    },
+    {
+      "name": "Learned router · λ=32",
+      "kind": "learned",
+      "pass": 0.9345238095238095,
+      "cost": 3.283104166666665,
+      "lambda": 32,
+      "random_p50": 0.8988095238095238,
+      "random_p95": 0.9166666666666666,
+      "beats_random": true
+    },
+    {
+      "name": "Learned router · λ=64",
+      "kind": "learned",
+      "pass": 0.9166666666666666,
+      "cost": 3.194589761904761,
+      "lambda": 64,
+      "random_p50": 0.8690476190476191,
+      "random_p95": 0.8928571428571429,
+      "beats_random": true
+    },
+    {
+      "name": "Learned router · λ=128",
+      "kind": "learned",
+      "pass": 0.7261904761904762,
+      "cost": 1.4309470833333335,
+      "lambda": 128,
+      "random_p50": 0.7142857142857143,
+      "random_p95": 0.7380952380952381,
+      "beats_random": false
+    },
+    {
+      "name": "Learned router · λ=256",
+      "kind": "learned",
+      "pass": 0.7023809523809523,
+      "cost": 0.6577897023809527,
+      "lambda": 256,
+      "random_p50": 0.6785714285714286,
+      "random_p95": 0.7023809523809523,
+      "beats_random": false
+    }
+  ],
+  "learned_curve": [
+    {
+      "lambda": 0,
+      "pass": 0.9285714285714286,
+      "cost": 8.57995952380952
+    },
+    {
+      "lambda": 0.5,
+      "pass": 0.9226190476190477,
+      "cost": 7.741711041666664
+    },
+    {
+      "lambda": 1,
+      "pass": 0.9226190476190477,
+      "cost": 7.670601190476189
+    },
+    {
+      "lambda": 2,
+      "pass": 0.9226190476190477,
+      "cost": 5.957358601190477
+    },
+    {
+      "lambda": 4,
+      "pass": 0.9285714285714286,
+      "cost": 5.069439285714286
+    },
+    {
+      "lambda": 8,
+      "pass": 0.9285714285714286,
+      "cost": 4.3479287499999995
+    },
+    {
+      "lambda": 16,
+      "pass": 0.9345238095238095,
+      "cost": 3.2994244642857127
+    },
+    {
+      "lambda": 32,
+      "pass": 0.9345238095238095,
+      "cost": 3.283104166666665
+    },
+    {
+      "lambda": 64,
+      "pass": 0.9166666666666666,
+      "cost": 3.194589761904761
+    },
+    {
+      "lambda": 128,
+      "pass": 0.7261904761904762,
+      "cost": 1.4309470833333335
+    },
+    {
+      "lambda": 256,
+      "pass": 0.7023809523809523,
+      "cost": 0.6577897023809527
+    }
+  ],
+  "oracle_curve": [
+    {
+      "lambda": 0,
+      "pass": 0.9702380952380952,
+      "cost": 1.8519567857142845
+    },
+    {
+      "lambda": 0.5,
+      "pass": 0.9702380952380952,
+      "cost": 1.6983316666666675
+    },
+    {
+      "lambda": 1,
+      "pass": 0.9702380952380952,
+      "cost": 1.6983316666666675
+    },
+    {
+      "lambda": 2,
+      "pass": 0.9702380952380952,
+      "cost": 1.6983316666666675
+    },
+    {
+      "lambda": 4,
+      "pass": 0.9702380952380952,
+      "cost": 1.6983316666666675
+    },
+    {
+      "lambda": 8,
+      "pass": 0.9702380952380952,
+      "cost": 1.6983316666666675
+    },
+    {
+      "lambda": 16,
+      "pass": 0.9702380952380952,
+      "cost": 1.6983316666666675
+    },
+    {
+      "lambda": 32,
+      "pass": 0.9702380952380952,
+      "cost": 1.6983316666666675
+    },
+    {
+      "lambda": 64,
+      "pass": 0.9464285714285714,
+      "cost": 1.3070636904761903
+    },
+    {
+      "lambda": 128,
+      "pass": 0.9047619047619048,
+      "cost": 0.8678211904761907
+    },
+    {
+      "lambda": 256,
+      "pass": 0.8690476190476191,
+      "cost": 0.6647300000000003
+    }
+  ],
+  "router_diagnosis": {
+    "counts": {
+      "right": 69,
+      "more than needed": 66,
+      "too weak": 28,
+      "nothing passes": 5
+    },
+    "tasks": [
+      {
+        "task": "letters-01",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"e\" appear in: \"fennel\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "letters-02",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"l\" appear in: \"vessel\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "letters-03",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"e\" appear in: \"zephyr\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "letters-04",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"i\" appear in: \"lilac\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "letters-05",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"s\" appear in: \"tassel\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "letters-06",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"n\" appear in: \"nettle\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "letters-07",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"u\" appear in: \"wicker ermine tundra nutmeg\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "letters-08",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"a\" appear in: \"vessel velvet timber basil\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "letters-09",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"c\" appear in: \"cinder olive mango nettle\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "letters-10",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"b\" appear in: \"parsley vessel cobalt orchard\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "letters-11",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"m\" appear in: \"yarrow pepper ermine vessel\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "letters-12",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"p\" appear in: \"sapling violet saffron sapling\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "letters-13",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"a\" appear in: \"falcon ermine hollow fennel pebble pebble walnut sorrel pepper quiver\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "letters-14",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"m\" appear in: \"orchard yonder mango orchard tundra walnut umber pepper sorrel basil\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "letters-15",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "How many times does the letter \"v\" appear in: \"quill jasper hazel thistle violet mango indigo pebble ribbon stone\"?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "calendar-01",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "If today is Thursday, what day of the week will it be 2 days from now?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "calendar-02",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "If today is Sunday, what day of the week will it be 4 days from now?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "calendar-03",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "If today is Sunday, what day of the week will it be 6 days from now?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "calendar-04",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "If today is Monday, what day of the week will it be 5 days from now?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "calendar-05",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "If today is Sunday, what day of the week will it be 7 days from now?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "calendar-06",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "If today is Saturday, what day of the week will it be 3 days from now?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "calendar-07",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "What day of the week is 4,041 days after November 2, 2028?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "calendar-08",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "What day of the week is 2,425 days after August 21, 1996?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "calendar-09",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "What day of the week is 2,102 days after December 18, 2005?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "calendar-10",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "What day of the week is 4,986 days after June 21, 2001?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "calendar-11",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "What day of the week is 3,200 days after November 14, 1998?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "calendar-12",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "What day of the week is 3,411 days after February 3, 2006?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "calendar-13",
+        "category": "logic",
+        "difficulty": "hard",
+        "prompt": "How many months from January 1967 through December 1991 have a Friday that falls on day 31 of the month?",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "calendar-14",
+        "category": "logic",
+        "difficulty": "hard",
+        "prompt": "How many months from January 1964 through December 1982 have a Monday that falls on day 13 of the month?",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "calendar-15",
+        "category": "logic",
+        "difficulty": "hard",
+        "prompt": "How many months from January 1953 through December 1988 have a Friday that falls on day 13 of the month?",
+        "router": "haiku:low",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "calendar-16",
+        "category": "logic",
+        "difficulty": "hard",
+        "prompt": "How many months from January 1950 through December 1973 have a Thursday that falls on day 13 of the month?",
+        "router": "haiku:low",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "calendar-17",
+        "category": "logic",
+        "difficulty": "hard",
+        "prompt": "How many months from January 1974 through December 2002 have a Saturday that falls on day 31 of the month?",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-01",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 50 × 11? Give the exact integer.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-02",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 19 × 22? Give the exact integer.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-03",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 22 × 16? Give the exact integer.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-04",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 53 × 37? Give the exact integer.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-05",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 56 × 62? Give the exact integer.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-06",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 24 × 67? Give the exact integer.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-07",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 203 × 721? Give the exact integer.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-08",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 936 × 620? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-09",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 899 × 648? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-10",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 650 × 806? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-11",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 186 × 220? Give the exact integer.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-12",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "What is 688 × 923? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-13",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 53606 × 73662? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-14",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 19019 × 16499? Give the exact integer.",
+        "router": "haiku:low",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "multiply-15",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 62121 × 66082? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-16",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 42106 × 18563? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-17",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 29434 × 14587? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "multiply-18",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 14266 × 51858? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-19",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 6629645 × 1356981? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-20",
+        "category": "math",
+        "difficulty": "hard",
+        "prompt": "What is 6293465 × 4385843? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "multiply-21",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 3587995 × 1479690? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-22",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 2109924 × 1013287? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "multiply-23",
+        "category": "math",
+        "difficulty": "medium",
+        "prompt": "What is 2483242 × 8106370? Give the exact integer.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "count-01",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 100 are divisible by 6?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "count-02",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 100 are divisible by 7?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "count-03",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 100 are divisible by 8?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "count-04",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 100 are divisible by 3?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "count-05",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 100 are divisible by 6?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "count-06",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 5,000 are divisible by 3 or 12?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "count-07",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 5,000 are divisible by 5 or 13?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "count-08",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 5,000 are divisible by 4 or 5?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "count-09",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 5,000 are divisible by 6 or 12?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "count-10",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 5,000 are divisible by 6 or 8?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "count-11",
+        "category": "math",
+        "difficulty": "easy",
+        "prompt": "How many integers from 1 to 5,000 are divisible by 8 or 12?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "count-12",
+        "category": "math",
+        "difficulty": "hard",
+        "prompt": "How many integers from 1 to 200,000 are divisible by 4 but not by 7 and have a digit sum of 13?",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": null,
+        "router_pass": 0,
+        "verdict": "nothing passes"
+      },
+      {
+        "task": "count-13",
+        "category": "math",
+        "difficulty": "hard",
+        "prompt": "How many integers from 1 to 200,000 are divisible by 7 but not by 6 and have a digit sum of 14?",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": null,
+        "router_pass": 0,
+        "verdict": "nothing passes"
+      },
+      {
+        "task": "count-14",
+        "category": "math",
+        "difficulty": "hard",
+        "prompt": "How many integers from 1 to 200,000 are divisible by 4 but not by 7 and have a digit sum of 9?",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": null,
+        "router_pass": 0,
+        "verdict": "nothing passes"
+      },
+      {
+        "task": "count-15",
+        "category": "math",
+        "difficulty": "hard",
+        "prompt": "How many integers from 1 to 200,000 are divisible by 4 but not by 13 and have a digit sum of 13?",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": null,
+        "router_pass": 0,
+        "verdict": "nothing passes"
+      },
+      {
+        "task": "count-16",
+        "category": "math",
+        "difficulty": "hard",
+        "prompt": "How many integers from 1 to 3,000,000 are divisible by 7 but not by 6 and have a digit sum of 6?",
+        "router": "opus:high",
+        "choice": "Opus",
+        "cheapest_passing": null,
+        "router_pass": 0,
+        "verdict": "nothing passes"
+      },
+      {
+        "task": "strings-01",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"basil ribbon sapling\". Reverse the order of the words, then take letter 2 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-02",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"quiver river marrow\". Reverse the order of the words, then take letter 1 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-03",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"pepper ribbon olive\". Reverse the order of the words, then take letter 2 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-04",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"ember violet garnet\". Reverse the order of the words, then take letter 1 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-05",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"meadow nutmeg stone\". Reverse the order of the words, then take letter 2 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-06",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "Take this list of words: \"saffron lilac sorrel yonder thistle cinder\". Reverse the order of the words, then take letter 2 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-07",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"quiver ember cobalt cobalt meadow meadow\". Reverse the order of the words, then take letter 3 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "strings-08",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "Take this list of words: \"sapling velvet zephyr orchard lantern basil\". Reverse the order of the words, then take letter 2 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "strings-09",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "Take this list of words: \"walnut lantern umber violet saffron dahlia\". Reverse the order of the words, then take letter 1 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-10",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"lagoon lilac kettle harbor copper lilac\". Reverse the order of the words, then take letter 2 of each word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-11",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"acorn river acorn copper saffron saffron marrow lantern hazel dahlia umber urchin\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 1 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-12",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "Take this list of words: \"meadow hollow orchard lagoon lilac pepper bramble umber tassel quill timber stone\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 3 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "strings-13",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "Take this list of words: \"mango fennel kettle tassel falcon willow acorn cinder lantern kettle violet basil\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 2 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "strings-14",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "Take this list of words: \"hollow nettle nutmeg harbor quarry ember mango lilac bramble basil violet nutmeg\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 2 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-15",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"ribbon walnut jasper ember basil nutmeg basil umber fennel vessel umber olive\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 3 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "strings-16",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"violet kettle orchard sapling bramble sapling saffron walnut nettle meadow quarry raisin\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 1 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "strings-17",
+        "category": "logic",
+        "difficulty": "hard",
+        "prompt": "Take this list of words: \"mosaic walnut ermine yonder yarrow nettle acorn falcon orchard hollow fennel pebble parsley walnut basil hollow velvet quill cobalt wicker\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 1 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "strings-18",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"quill mango hollow umber basil falcon dahlia tundra tundra willow lilac quill pepper orchard pepper marrow lantern mango mango timber\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 1 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-19",
+        "category": "logic",
+        "difficulty": "medium",
+        "prompt": "Take this list of words: \"zephyr lantern pebble urchin ribbon pepper dahlia yonder quiver sapling sapling raisin quiver lilac mango quill dahlia ribbon meadow raisin\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 1 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "strings-20",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "Take this list of words: \"willow kettle falcon umber meadow olive lilac sapling bramble basil raisin raisin mosaic marrow willow marrow harbor basil cobalt acorn\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 1 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "strings-21",
+        "category": "logic",
+        "difficulty": "hard",
+        "prompt": "Take this list of words: \"bramble copper ribbon yonder sorrel violet jasper mango lilac harbor urchin quiver wicker juniper cedar falcon juniper yonder hollow hazel\". Reverse the order of the words, keep only every other word starting with the first one after reversing, then take letter 3 of each kept word and join them. What string do you get?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "knights-01",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Cal is a knave.\" Ben says: \"Cal and Ava are the same kind.\" Cal says: \"Ben is a knave.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-02",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Cal is a knave.\" Ben says: \"Ava and Cal are the same kind.\" Cal says: \"Ben is a knave.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-03",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Cal is a knave.\" Ben says: \"Ava and Cal are the same kind.\" Cal says: \"Exactly 1 of us 3 are knights.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-04",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Ben is a knave.\" Ben says: \"Exactly 1 of us 3 are knights.\" Cal says: \"Ava and Ben are the same kind.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-05",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Cal and Dee are the same kind.\" Ben says: \"Ava and Dee are the same kind.\" Cal says: \"Dee is a knave.\" Dee says: \"Exactly 3 of us 4 are knights.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-06",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Dee is a knave.\" Ben says: \"Cal and Ava are the same kind.\" Cal says: \"Ava and Ben are the same kind.\" Dee says: \"Exactly 3 of us 4 are knights.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-07",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Cal and Dee are the same kind.\" Ben says: \"Dee is a knave.\" Cal says: \"Exactly 1 of us 4 are knights.\" Dee says: \"Cal and Ava are the same kind.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-08",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Dee and Ben are the same kind.\" Ben says: \"Exactly 2 of us 4 are knights.\" Cal says: \"Ben and Dee are the same kind.\" Dee says: \"Cal is a knave.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-09",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Fay is a knave.\" Ben says: \"Fay and Cal are the same kind.\" Cal says: \"Dee is a knave.\" Dee says: \"Ben and Cal are the same kind.\" Eli says: \"Fay is a knave.\" Fay says: \"Exactly 1 of us 6 are knights.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-10",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Dee is a knave.\" Ben says: \"Fay and Dee are the same kind.\" Cal says: \"Ben is a knave.\" Dee says: \"Exactly 4 of us 6 are knights.\" Eli says: \"Ben is a knave.\" Fay says: \"Ben is a knave.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-11",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Dee is a knave.\" Ben says: \"Dee and Ava are the same kind.\" Cal says: \"Ben and Ava are the same kind.\" Dee says: \"Ava and Fay are the same kind.\" Eli says: \"Exactly 4 of us 6 are knights.\" Fay says: \"Exactly 1 of us 6 are knights.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "knights-12",
+        "category": "logic",
+        "difficulty": "easy",
+        "prompt": "On an island, knights always tell the truth and knaves always lie. Ava says: \"Cal and Ben are the same kind.\" Ben says: \"Dee and Cal are the same kind.\" Cal says: \"Exactly 4 of us 6 are knights.\" Dee says: \"Cal is a knave.\" Eli says: \"Cal is a knave.\" Fay says: \"Ava is a knave.\" Which of them are knights? Answer with their names separated by commas, or \"none\".",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "lipogram-01",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write at least 30 words about a library without using the letter \"z\" anywhere.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "lipogram-02",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write at least 30 words about a train station without using the letter \"z\" anywhere.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "lipogram-03",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write at least 30 words about a city bus without using the letter \"z\" anywhere.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "lipogram-04",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write at least 40 words about a train station without using the letter \"e\" anywhere.",
+        "router": "sonnet:low",
+        "choice": "Sonnet",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "lipogram-05",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write at least 40 words about a thunderstorm without using the letter \"e\" anywhere.",
+        "router": "sonnet:low",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "lipogram-06",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write at least 40 words about a library without using the letter \"e\" anywhere.",
+        "router": "sonnet:low",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "lipogram-07",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write at least 40 words about the sea without using the letters \"e\", \"a\" anywhere.",
+        "router": "sonnet:low",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "lipogram-08",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write at least 40 words about the moon without using the letters \"e\", \"a\" anywhere.",
+        "router": "haiku:low",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "lipogram-09",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write at least 40 words about a bakery without using the letters \"e\", \"a\" anywhere.",
+        "router": "sonnet:low",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "lipogram-10",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write at least 30 words about a library without using the letters \"e\", \"a\", \"o\" anywhere.",
+        "router": "sonnet:low",
+        "choice": "Opus",
+        "cheapest_passing": "opus:low",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "lipogram-11",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write at least 30 words about the sea without using the letters \"e\", \"a\", \"o\" anywhere.",
+        "router": "sonnet:low",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "lipogram-12",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write at least 30 words about the moon without using the letters \"e\", \"a\", \"o\" anywhere.",
+        "router": "haiku:low",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "wordlens-01",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 3 words whose word lengths are 1, 2, 3 letters, in that order.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "wordlens-02",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 3 words whose word lengths are 1, 2, 3 letters, in that order.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "wordlens-03",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 3 words whose word lengths are 1, 2, 3 letters, in that order.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "wordlens-04",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 5 words whose word lengths are 1, 2, 3, 4, 5 letters, in that order.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "wordlens-05",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 5 words whose word lengths are 1, 2, 3, 4, 5 letters, in that order.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "wordlens-06",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 5 words whose word lengths are 1, 2, 3, 4, 5 letters, in that order.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "wordlens-07",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write a sentence of exactly 8 words whose word lengths are 1, 2, 3, 4, 5, 6, 7, 8 letters, in that order.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "wordlens-08",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 8 words whose word lengths are 1, 2, 3, 4, 5, 6, 7, 8 letters, in that order.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "wordlens-09",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write a sentence of exactly 8 words whose word lengths are 1, 2, 3, 4, 5, 6, 7, 8 letters, in that order.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "opus:low",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "wordlens-10",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write a sentence of exactly 11 words whose word lengths are 5, 5, 8, 5, 5, 6, 2, 4, 5, 7, 4 letters, in that order.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "wordlens-11",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write a sentence of exactly 11 words whose word lengths are 8, 9, 4, 3, 8, 3, 8, 6, 3, 3, 4 letters, in that order.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "wordlens-12",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write a sentence of exactly 11 words whose word lengths are 5, 8, 9, 4, 7, 5, 9, 6, 4, 3, 9 letters, in that order.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "acrostic-01",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write a 3-line acrostic poem whose lines start with the letters of SUN.",
+        "router": "sonnet:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "acrostic-02",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write a 3-line acrostic poem whose lines start with the letters of SUN.",
+        "router": "sonnet:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "acrostic-03",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write a 6-line acrostic poem whose lines start with the letters of GARDEN.",
+        "router": "sonnet:low",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "acrostic-04",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write a 6-line acrostic poem whose lines start with the letters of GARDEN.",
+        "router": "sonnet:low",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "acrostic-05",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a 9-line acrostic poem whose lines start with the letters of WATERFALL, where every line is exactly 6 words long.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "acrostic-06",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write a 9-line acrostic poem whose lines start with the letters of WATERFALL, where every line is exactly 6 words long.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "acrostic-07",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a 13-line acrostic poem whose lines start with the letters of CONSTELLATION, where every line is exactly 5 words long.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "acrostic-08",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write a 13-line acrostic poem whose lines start with the letters of CONSTELLATION, where every line is exactly 5 words long.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "alphachain-01",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write a sentence of exactly 5 words where the words start with consecutive letters of the alphabet, beginning with \"H\".",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "alphachain-02",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write a sentence of exactly 5 words where the words start with consecutive letters of the alphabet, beginning with \"B\".",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "alphachain-03",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 10 words where the words start with consecutive letters of the alphabet, beginning with \"J\".",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "alphachain-04",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write a sentence of exactly 10 words where the words start with consecutive letters of the alphabet, beginning with \"D\".",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "alphachain-05",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 26 words where the words start with consecutive letters of the alphabet, beginning with \"A\".",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "alphachain-06",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write a sentence of exactly 26 words where the words start with consecutive letters of the alphabet, beginning with \"A\".",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "shortwords-01",
+        "category": "writing",
+        "difficulty": "easy",
+        "prompt": "Write exactly 10 words about a thunderstorm in which no word is longer than 6 letters.",
+        "router": "sonnet:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "shortwords-02",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write exactly 10 words about winter in which no word is longer than 6 letters.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "shortwords-03",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write exactly 30 words about mountains in which no word is longer than 4 letters.",
+        "router": "sonnet:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "shortwords-04",
+        "category": "writing",
+        "difficulty": "medium",
+        "prompt": "Write exactly 30 words about mountains in which no word is longer than 4 letters.",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "shortwords-05",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write exactly 60 words about a thunderstorm in which no word is longer than 3 letters.",
+        "router": "sonnet:high",
+        "choice": "Opus",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "shortwords-06",
+        "category": "writing",
+        "difficulty": "hard",
+        "prompt": "Write exactly 60 words about a garden in which no word is longer than 3 letters.",
+        "router": "sonnet:high",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "genfacts-01",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What is the capital of Japan?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "genfacts-02",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What is the capital of Canada?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "genfacts-03",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What is the capital of Brazil?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "genfacts-04",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What is the capital of Kenya?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "genfacts-05",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What is the capital of Norway?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "genfacts-06",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What is the capital of Egypt?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "genfacts-07",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What is the chemical symbol for sodium?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "genfacts-08",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What is the chemical symbol for iron?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "genfacts-09",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What is the chemical symbol for potassium?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "genfacts-10",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "How many sides does a hexagon have?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "genfacts-11",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "How many minutes are in a day?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "genfacts-12",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "How many continents are there?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "genfacts-13",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "What planet is known as the Red Planet?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "genfacts-14",
+        "category": "facts",
+        "difficulty": "easy",
+        "prompt": "Who painted the Mona Lisa?",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "gencode-01",
+        "category": "code",
+        "difficulty": "easy",
+        "prompt": "Write a Python function lis_length(nums) that returns the length of the longest strictly increasing subsequence of a list of integers.",
+        "router": "sonnet:low",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "gencode-02",
+        "category": "code",
+        "difficulty": "easy",
+        "prompt": "Write a Python function min_coins(amount, coins) that returns the fewest coins needed to make amount from unlimited coins of the given denominations, or -1 if it is impossible.",
+        "router": "opus:high",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "gencode-03",
+        "category": "code",
+        "difficulty": "medium",
+        "prompt": "Write a Python function count_paths(grid) for a grid of 0s (open) and 1s (blocked). Count the paths from the top-left to the bottom-right cell moving only right or down, never entering a blocked cell. Return 0 if the start or end is blocked.",
+        "router": "haiku:low",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 0,
+        "verdict": "too weak"
+      },
+      {
+        "task": "gencode-04",
+        "category": "code",
+        "difficulty": "easy",
+        "prompt": "Write a Python function to_words(n) that spells out a non-negative integer below 10 billion in lowercase American English, with no \"and\", hyphens between tens and ones (\"forty-two\"), and single spaces elsewhere. Examples: 0 -> \"zero\", 105 -> \"one hundred five\", 1000042 -> \"one million forty-two\".",
+        "router": "sonnet:high",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:high",
+        "router_pass": 1,
+        "verdict": "more than needed"
+      },
+      {
+        "task": "gencode-05",
+        "category": "code",
+        "difficulty": "easy",
+        "prompt": "Write a Python function spiral_order(matrix) that returns the elements of a non-empty rectangular matrix in clockwise spiral order, starting at the top-left.",
+        "router": "haiku:low",
+        "choice": "Sonnet",
+        "cheapest_passing": "haiku:low",
+        "router_pass": 1,
+        "verdict": "right"
+      },
+      {
+        "task": "gencode-06",
+        "category": "code",
+        "difficulty": "medium",
+        "prompt": "Write a Python function rle(s) that run-length encodes a string of letters, writing each run as its length followed by the letter, e.g. \"aaabcc\" -> \"3a1b2c\".",
+        "router": "haiku:low",
+        "choice": "Haiku",
+        "cheapest_passing": "sonnet:low",
+        "router_pass": 0,
+        "verdict": "too weak"
+      }
+    ]
+  },
+  "by_category": {
+    "logic": {
+      "haiku:low": 0.7692307692307693,
+      "haiku:high": 0.8307692307692308,
+      "sonnet:low": 0.9230769230769231,
+      "sonnet:high": 0.9846153846153847,
+      "opus:low": 0.8923076923076924,
+      "opus:high": 0.9538461538461539
+    },
+    "math": {
+      "haiku:low": 0.5897435897435898,
+      "haiku:high": 0.6410256410256411,
+      "sonnet:low": 0.8717948717948718,
+      "sonnet:high": 0.8461538461538461,
+      "opus:low": 0.8717948717948718,
+      "opus:high": 0.8717948717948718
+    },
+    "writing": {
+      "haiku:low": 0.4318181818181818,
+      "haiku:high": 0.4772727272727273,
+      "sonnet:low": 0.8181818181818182,
+      "sonnet:high": 0.9090909090909091,
+      "opus:low": 0.9318181818181818,
+      "opus:high": 0.9772727272727273
+    },
+    "facts": {
+      "haiku:low": 1,
+      "haiku:high": 1,
+      "sonnet:low": 1,
+      "sonnet:high": 1,
+      "opus:low": 1,
+      "opus:high": 1
+    },
+    "code": {
+      "haiku:low": 0.6666666666666666,
+      "haiku:high": 1,
+      "sonnet:low": 1,
+      "sonnet:high": 1,
+      "opus:low": 1,
+      "opus:high": 1
+    }
+  },
+  "by_bucket": [
+    {
+      "name": "Always Qwen 3.7 Flash · low",
+      "kind": "fixed",
+      "easy": {
+        "pass": 1,
+        "cost": 0.24901580000000006,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.23255813953488372,
+        "cost": 0.8388572093023257,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0,
+        "cost": 1.0217008,
+        "n": 25
+      }
+    },
+    {
+      "name": "Always Qwen 3.7 Flash · high",
+      "kind": "fixed",
+      "easy": {
+        "pass": 1,
+        "cost": 0.2725822,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.4186046511627907,
+        "cost": 1.4493220930232558,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.08,
+        "cost": 1.9305047999999996,
+        "n": 25
+      }
+    },
+    {
+      "name": "Always Qwen 3.7 Plus · low",
+      "kind": "fixed",
+      "easy": {
+        "pass": 1,
+        "cost": 1.0267904000000003,
+        "n": 100
+      },
+      "medium": {
+        "pass": 1,
+        "cost": 3.1875274418604644,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.28,
+        "cost": 8.8081152,
+        "n": 25
+      }
+    },
+    {
+      "name": "Always Qwen 3.7 Plus · high",
+      "kind": "fixed",
+      "easy": {
+        "pass": 1,
+        "cost": 1.0540928,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.9534883720930233,
+        "cost": 2.91834046511628,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.64,
+        "cost": 13.072051199999999,
+        "n": 25
+      }
+    },
+    {
+      "name": "Always Qwen 3.7 Max · low",
+      "kind": "fixed",
+      "easy": {
+        "pass": 1,
+        "cost": 3.7306142499999995,
+        "n": 100
+      },
+      "medium": {
+        "pass": 1,
+        "cost": 10.672242441860464,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.4,
+        "cost": 27.462258,
+        "n": 25
+      }
+    },
+    {
+      "name": "Always Qwen 3.7 Max · high",
+      "kind": "fixed",
+      "easy": {
+        "pass": 1,
+        "cost": 3.9100922499999986,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.9767441860465116,
+        "cost": 11.10753895348837,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.68,
+        "cost": 39.687294,
+        "n": 25
+      }
+    },
+    {
+      "name": "Router v1 (original table)",
+      "kind": "router",
+      "easy": {
+        "pass": 1,
+        "cost": 0.68407695,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.6046511627906976,
+        "cost": 2.2035467441860472,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.36,
+        "cost": 12.0194082,
+        "n": 25
+      }
+    },
+    {
+      "name": "Choice (argmax) · low effort",
+      "kind": "choice",
+      "easy": {
+        "pass": 1,
+        "cost": 0.8607459000000001,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.6511627906976745,
+        "cost": 5.870294651162791,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.28,
+        "cost": 24.5581012,
+        "n": 25
+      }
+    },
+    {
+      "name": "Choice (argmax) · high effort",
+      "kind": "choice",
+      "easy": {
+        "pass": 1,
+        "cost": 0.8808790000000002,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.6976744186046512,
+        "cost": 6.538548139534882,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.56,
+        "cost": 34.7382746,
+        "n": 25
+      }
+    },
+    {
+      "name": "Router v2 (new Jev judgments)",
+      "kind": "router-v2",
+      "easy": {
+        "pass": 1,
+        "cost": 0.9020359000000002,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.8604651162790697,
+        "cost": 2.807078837209302,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.64,
+        "cost": 13.072051199999999,
+        "n": 25
+      }
+    },
+    {
+      "name": "Router v3 (Jev + learned odds, λ=20)",
+      "kind": "router-v3",
+      "easy": {
+        "pass": 1,
+        "cost": 0.9394468000000002,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.9534883720930233,
+        "cost": 2.9293751162790707,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.64,
+        "cost": 13.072051199999999,
+        "n": 25
+      }
+    },
+    {
+      "name": "Oracle (cheapest best arm)",
+      "kind": "oracle",
+      "easy": {
+        "pass": 1,
+        "cost": 0.20075590000000001,
+        "n": 100
+      },
+      "medium": {
+        "pass": 1,
+        "cost": 1.7090218604651162,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.8,
+        "cost": 7.6702476,
+        "n": 25
+      }
+    },
+    {
+      "name": "Learned router · λ=8",
+      "kind": "learned",
+      "easy": {
+        "pass": 1,
+        "cost": 1.5595988500000002,
+        "n": 100
+      },
+      "medium": {
+        "pass": 0.9534883720930233,
+        "cost": 2.91834046511628,
+        "n": 43
+      },
+      "hard": {
+        "pass": 0.6,
+        "cost": 17.960140199999998,
+        "n": 25
+      }
+    }
+  ],
+  "router_v3": {
+    "lambda": 20,
+    "training_curve": [
+      {
+        "lambda": 0,
+        "pass": 0.9666666666666667,
+        "cost": 0.009529445333333332
+      },
+      {
+        "lambda": 2,
+        "pass": 0.9666666666666667,
+        "cost": 0.007944184833333333
+      },
+      {
+        "lambda": 5,
+        "pass": 0.9666666666666667,
+        "cost": 0.0029124699166666666
+      },
+      {
+        "lambda": 10,
+        "pass": 0.9666666666666667,
+        "cost": 0.002547387666666667
+      },
+      {
+        "lambda": 20,
+        "pass": 0.9666666666666667,
+        "cost": 0.0023619928333333336
+      },
+      {
+        "lambda": 50,
+        "pass": 0.95,
+        "cost": 0.0020226796666666666
+      },
+      {
+        "lambda": 100,
+        "pass": 0.8833333333333333,
+        "cost": 0.001083673
+      },
+      {
+        "lambda": 200,
+        "pass": 0.8666666666666667,
+        "cost": 0.000636368
+      },
+      {
+        "lambda": 500,
+        "pass": 0.8666666666666667,
+        "cost": 0.0006634881666666666
+      }
+    ],
+    "train_tasks": 60
+  },
+  "train_tasks": 60,
+  "bucket_counts": {
+    "easy": 100,
+    "medium": 43,
+    "hard": 25
+  }
+}

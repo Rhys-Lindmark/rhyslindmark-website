@@ -12,7 +12,9 @@ const PAGE_COPY = new URL(EVAL_SET === 'v2' ? '../../public/jev/eval-summary-v2.
 import { grade } from './graders.mjs';
 // Re-grade every stored reply, so grader fixes apply to past runs for free.
 const byTask = Object.fromEntries(TASKS.map(t => [t.id, t]));
-const raw = readRaw().map(r => ({ ...r, pass: r.finish_reason === 'length' && !r.text?.trim() ? false : grade(byTask[r.task], r.text ?? '').pass }));
+// Only runs for this set's tasks and arms (Eval 2's file also holds calibration
+// candidates that weren't selected, and dropped Max Prime runs).
+const raw = readRaw().filter(r => byTask[r.task] && ARMS.includes(r.arm)).map(r => ({ ...r, pass: r.finish_reason === 'length' && !r.text?.trim() ? false : grade(byTask[r.task], r.text ?? '').pass }));
 const jev = existsSync(JEV) ? JSON.parse(readFileSync(JEV, 'utf8')) : {};
 
 // ---- per task x arm: success rate and mean cost over repeats -----------------
@@ -45,7 +47,7 @@ const add = (name, kind, pick, extra = {}) => { const s = score(pick); policies.
 
 const armName = a => { const [t, e] = a.split(':'); return `${MODEL_NAMES[t]} · ${e}`; };
 for (const a of ARMS) add(`Always ${armName(a)}`, 'fixed', () => a);
-const shipped = add('Router (shipped table)', 'router', t => { const d = decide(judge(jev[t.id].answers)); return `${tierOK(d.tier)}:${effortFor(d.reasoning)}`; });
+const shipped = add('Router v1 (original table)', 'router', t => { const d = decide(judge(jev[t.id].answers)); return `${tierOK(d.tier)}:${effortFor(d.reasoning)}`; });
 for (const yes of [0.5, 0.6, 0.8, 0.9]) for (const unsure of [true, false]) {
   add(`Router · yes ≥ ${yes}, unsure = ${unsure ? 'yes' : 'no'}`, 'router-variant', t => { const d = decide(judge(jev[t.id].answers, { yes, no: 1 - yes, unsureCountsAs: unsure })); return `${tierOK(d.tier)}:${effortFor(d.reasoning)}`; });
 }
@@ -139,7 +141,8 @@ const byBucket = hasBuckets ? policies.filter(p => ['fixed', 'router', 'router-v
 const summary = {
   generated: new Date().toISOString(), partial: process.argv.includes('--partial'), tasks: tasks.length, reps, arms: ARMS,
   tiers: Object.fromEntries(Object.entries(MODELS).map(([t, id]) => [t, { id, name: MODEL_NAMES[t] }])), arm_names: Object.fromEntries(ARMS.map(a => [a, armName(a)])),
-  spent_usd: raw.reduce((s, r) => s + r.cost_usd, 0), budget_usd: BUDGET_USD,
+  // Everything this set cost, including calibration candidates and dropped arms.
+  spent_usd: readRaw().reduce((s, r) => s + r.cost_usd, 0), budget_usd: BUDGET_USD,
   jev_model: Object.values(jev)[0]?.model ?? null,
   policies: policies.map(({ arms, ...p }) => p), learned_curve: learnedCurve.map(({ arms, ...p }) => p), oracle_curve: oracleCurve.map(({ arms, ...p }) => p),
   router_diagnosis: { counts, tasks: diagnosis }, by_category: byCategory, by_bucket: byBucket, router_v3: v3info, train_tasks: trainTasks.length,
