@@ -1,12 +1,16 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="What a data maximalist would add to an open-source Jev: crowd vote distributions as calibrated targets, tested by fine-tuning Kev-4B on Modal and scoring it against hosted Jev."><title>Jev: Model</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/model/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/model/model.css?v=model-2"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="What a data maximalist would add to an open-source Jev: crowd vote distributions as calibrated targets, tested by fine-tuning Kev-4B on Modal and scoring it against hosted Jev."><title>Jev: Model</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/model/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/model/model.css?v=model-4"></head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>Model</h1></header>
 <main>
 
 <section class="demo" aria-labelledby="top-title">
 <p class="kicker">Jev take-home · the model level</p>
 <h2 id="top-title" class="lede">If Jev is trained to return calibrated decisions, the best data for it is data that already comes as a calibrated decision. The internet is full of it: every time a crowd votes, it leaves behind a probability.</h2>
-<!-- TLDR -->
+<div class="tldr">
+<div><span>Synthetic crowd votes, $2 of API calls</span><strong>+0.9 pts</strong><span>accuracy on 14 held-out datasets for Kev-4B, with better Brier and ranking. The best of three arms. Small, but the interval excludes zero.</span></div>
+<div><span>Vote shares vs. majority labels</span><strong>No win yet</strong><span>Training on how people split did not beat training on what most of them said, even at matching the split. One seed, a third of an epoch.</span></div>
+<div><span>Hosted Jev vs. the best 4B arm</span><strong>Still +5 pts</strong><span>On the held-out panel Jev leads 0.757 to 0.704 in accuracy and automates 54% of questions to the arm's 35%. Data at this dose doesn't close that gap.</span></div>
+</div>
 <nav class="toc" aria-label="Sections"><a href="#landscape">Where open Jev stands</a><a href="#thesis">The data bet</a><a href="#experiment">The experiment</a><a href="#results">Results</a><a href="#humans">Jev vs. people</a><a href="#next">What I'd do next</a></nav>
 </section>
 
@@ -63,7 +67,7 @@
 </tbody></table></div>
 <div class="prose">
 <p>Training data: 3,000 AITA posts (who's in the wrong, voted by Reddit), 2,000 comments rated for hate speech, insult and violence by 3+ annotators each, and 2,500 model responses rated for helpfulness, correctness and coherence by three people each. Only 15–55% of these questions are unanimous, so a majority label throws away a lot of information.</p>
-<!-- TRAINING NOTE -->
+<p>To get results within an hour, each arm trains for 400 optimizer steps: 3,200 of the 9,500 mixed records, about a third of an epoch, on one H100. Read the effects below as a lower bound on what this data can do.</p>
 <p>Every arm, including the released model, gets one temperature fitted on Kev's registered pool of held-out datasets, then is scored on four panels:</p>
 <ul>
 <li><strong>breadth-v1</strong>: 14 held-out public datasets (does it generalize?). Rebuilt from public sources; matches the frozen suite byte for byte.</li>
@@ -76,7 +80,44 @@
 
 <section class="demo" id="results" aria-labelledby="results-title">
 <div class="demo-heading"><h2 id="results-title">4. Results</h2></div>
-<!-- RESULTS -->
+<div class="prose">
+<p><strong>Does it generalize?</strong> On breadth-v1 (14 held-out datasets, 3,075 questions), with the change from the released model and its 95% interval in brackets:</p>
+</div>
+<div class="table-wrap"><table class="data">
+<thead><tr><th>Model</th><th>Accuracy</th><th>Brier</th><th>Ranking error (AURC)</th><th>Automatable at 5% error</th></tr></thead>
+<tbody>
+<tr class="ref"><td>Jev 1.14 (hosted)</td><td>0.757</td><td>0.315</td><td>0.075</td><td>54%</td></tr>
+<tr><td>Kev-4B, released</td><td>0.695</td><td>0.391</td><td>0.125</td><td>33%</td></tr>
+<tr><td>+ crowd, majority labels</td><td>0.699 <small>[−0.3, +1.0]</small></td><td>0.388 <small>[−.006, +.000]</small></td><td class="good">0.121 <small>[−.006, −.001]</small></td><td>34% <small>[−2, +6]</small></td></tr>
+<tr><td>+ crowd, human vote shares</td><td class="good">0.703 <small>[+0.2, +1.5]</small></td><td>0.388 <small>[−.006, +.001]</small></td><td class="good">0.121 <small>[−.007, −.002]</small></td><td>34% <small>[−2, +6]</small></td></tr>
+<tr class="ours"><td>+ crowd, synthetic votes</td><td class="good">0.704 <small>[+0.1, +1.6]</small></td><td class="good">0.382 <small>[−.012, −.006]</small></td><td class="good">0.117 <small>[−.011, −.005]</small></td><td class="good">35% <small>[+0.2, +7]</small></td></tr>
+</tbody></table></div>
+<p class="caption">Accuracy intervals are in points. Green: the interval excludes zero. Lower is better for Brier and AURC. AURC (area under the risk–coverage curve) measures how well a model's confidence ranks its own answers.</p>
+
+<div class="prose">
+<p><strong>On transfer-v4</strong> (six never-trained datasets plus held-out policy rules, 656 questions) nothing moves: accuracy is 0.816–0.817 for all four models. Calibration error improves for the vote-share arms (0.044 → 0.036 human, 0.024 synthetic), but the synthetic arm's Brier is slightly worse (+0.012 [+0.003, +0.021]).</p>
+<p><strong>On the crowd tasks themselves</strong> the arms move a lot. Held-out items from the training sources, scored against the human votes:</p>
+</div>
+<div class="table-wrap"><table class="data">
+<thead><tr><th>Model</th><th>Crowd: majority</th><th>Crowd: JSD</th><th>Crowd: tracks split</th><th>ChaosNLI: majority</th><th>ChaosNLI: JSD</th></tr></thead>
+<tbody>
+<tr class="ref"><td>Jev 1.14 (hosted)</td><td>0.559</td><td>0.249</td><td>+0.23</td><td>0.762</td><td class="good">0.084</td></tr>
+<tr><td>Kev-4B, released</td><td>0.474</td><td>0.277</td><td>+0.20</td><td>0.737</td><td>0.122</td></tr>
+<tr><td>+ crowd, majority labels</td><td class="good">0.652</td><td class="good">0.216</td><td>+0.25</td><td>0.744</td><td>0.112</td></tr>
+<tr><td>+ crowd, human vote shares</td><td class="good">0.652</td><td>0.236</td><td>+0.26</td><td>0.749</td><td>0.108</td></tr>
+<tr class="ours"><td>+ crowd, synthetic votes</td><td>0.599</td><td>0.229</td><td>+0.21</td><td>0.741</td><td>0.106</td></tr>
+</tbody></table></div>
+<p class="caption">"Majority": the top answer matches the crowd's majority. Macro-averaged over tasks, on the questions every model answered (3,200 crowd, 1,500 ChaosNLI). JSD: Jensen–Shannon divergence, base 2, between the model's probabilities and the vote shares; lower is better. "Tracks split": Spearman correlation between the entropy of the model's probabilities and the entropy of the votes. Green: best in the column. Every fine-tuned arm beats the released model on JSD on both panels (intervals exclude zero).</p>
+
+<div class="prose">
+<p>What this says:</p>
+<ul>
+<li><strong>Crowd data helps a little, and cheaply.</strong> All three arms improve ranking on the held-out panel, and two improve accuracy, after a third of an epoch. None hurts transfer accuracy.</li>
+<li><strong>The cheapest data generalized best.</strong> Synthetic votes from five open models, with no humans and $2.06 of API calls, beat both human-vote arms on held-out Brier and ranking (vs. human vote shares: Brier −0.006 [−0.008, −0.004], AURC −0.003 [−0.006, −0.001]). For a data maximalist that is the interesting result: this source has no supply limit.</li>
+<li><strong>The thesis is not confirmed yet.</strong> Training on vote shares did not beat training on majority labels. On the held-out crowd items, the majority-label arm even matched the vote split better (JSD 0.216 vs. 0.236). Vote shares come out ahead only on ChaosNLI, which neither arm saw, and only slightly (JSD −0.003 [−0.004, −0.003]). This contradicts Kev's note that soft targets beat hard labels, which came from full training rounds. It is one seed at a third of an epoch, so it is the first thing to settle in the loop below.</li>
+<li><strong>A fine-tuned 4B beats Jev on these crowd tasks, but not in general.</strong> Every arm matches the majority and the split better than Jev on the held-out crowd items. That is in-domain, though, and Jev's lead on the held-out panel barely moves: 5 points of accuracy and 19 points of automatable coverage.</li>
+</ul>
+</div>
 </section>
 
 <section class="demo" id="humans" aria-labelledby="humans-title">
@@ -137,7 +178,7 @@
 <li><strong>Synthetic crowd.</strong> Qwen 3.7 Flash, Llama 4 Scout, DeepSeek V4.1 Flash, Gemma 3 12B and Mistral Small 24B, one answer each at temperature 1 through OpenRouter: 97,500 calls, $2.06. Open-weight models only, and no Jev output is used for training (Kev's rule, and the right one for a TypeSafe take-home).</li>
 <li><strong>Scoring.</strong> Kev's <code>kev.benchmark</code> path in fp32. One temperature per model, fitted on transfer-r3's 580-question calibration partition. Paired, record-clustered bootstrap intervals (2,000 resamples) for every difference. Jev's breadth-v1 rows are the ones committed in Kev's repo; Jev's crowd and ChaosNLI answers come from <code>jev-1.14.0</code>.</li>
 <li><strong>Data.</strong> Scruples (Apache-2.0), Measuring Hate Speech (CC-BY-4.0), HelpSteer2 disagreements (CC-BY-4.0), ChaosNLI (CC-BY-NC-4.0, evaluation only). Evaluation items share no state text with training; HelpSteer2 is split by prompt.</li>
-<!-- COST -->
+<li><strong>Cost.</strong> About $22 in all: the synthetic crowd ($2.06 on OpenRouter), the Jev reads (about $0.07), and Modal (about $20: H100 $16.40, L40S $1, CPU and memory $2.30). About half the Modal bill went on runs that didn't finish: two full-epoch attempts stopped for time, and one set of 400-step runs lost when the laptop's connection dropped (orchestration now runs on Modal). The clean recipe, three 400-step arms plus scoring, costs about $10.</li>
 </ul>
 <p>Code: <code>evals/open-jev/</code> in the website repo (<code>build_data.py</code>, <code>synth_crowd.py</code>, <code>read_jev.py</code>, <code>modal_app.py</code>, <code>analyze.py</code>), mirrored to <code>open-jev/</code> in the jev repo. Linear: "Jev: Model".</p>
 </div>
