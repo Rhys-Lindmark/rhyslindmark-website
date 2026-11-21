@@ -76,7 +76,8 @@ const pct = n => n.toFixed(2);
 const cache = new Map();
 let current = null, widgetId, token = '', busy = false, rendered = false;
 const human = () => window.jevHuman?.ok() || !!token;
-const showError = m => { for (const id of ['route-error', 'anti-error']) { $(id).textContent = m; $(id).hidden = !m; } };
+let lastError = '';
+const showError = m => { lastError = m; for (const id of ['route-error', 'anti-error']) { $(id).textContent = m; $(id).hidden = !m; } };
 const setBusy = b => { busy = b; for (const el of document.querySelectorAll('[data-prompt], #route-run, #route-prompt')) el.disabled = b; };
 
 function renderOutput() {
@@ -90,6 +91,12 @@ function renderOutput() {
     h('p', 'route-meta', `${data.model} · ${Math.round(data.elapsed_ms)}ms`));
 }
 
+function traceRow(type, question, options, readout, tone) {
+  return h('div', 'trace-row' + (tone ? ` ${tone}` : ''),
+    h('span', 'trace-type', type),
+    h('div', 'trace-body', h('p', 'trace-q', question), h('p', 'trace-opts', ...options)),
+    h('span', 'trace-read', readout));
+}
 function renderTrace() {
   const box = $('route-trace');
   if (!current) { box.replaceChildren(h('p', 'route-empty', 'Each question Jev answered, with its probabilities and how code reads them.')); return; }
@@ -153,7 +160,22 @@ function renderAnti(pending) {
     h('p', 'note', 'That’s the whole table. There are no inputs to inspect, no rows to edit, and no way to explain why one model won.'));
 }
 // ---- Agree / disagree across every prompt that has been run -----------------
-let runningAll = false;
+// Runs the prompts not yet asked, one call at a time. It always finishes: a
+// failure stops the run and shows why here, and the button never sticks.
+async function runAll() {
+  const todo = PROMPTS.filter(p => !cache.has(p));
+  runningAll = { done: 0, total: todo.length }; showError(''); renderCompare();
+  try {
+    for (const p of todo) {
+      if (!(await route(p))) { if (!lastError) showError('A prompt could not be run. Please try again.'); break; }
+      runningAll.done++; renderCompare();
+      await new Promise(r => setTimeout(r, 250));
+    }
+  } catch (error) {
+    console.error(error); showError(error?.message || 'Something went wrong. Please try again.');
+  } finally { runningAll = null; renderCompare(); }
+}
+let runningAll = null; // { done, total } while "Run all" is going
 function renderCompare() {
   const rows = PROMPTS.map(prompt => {
     const data = cache.get(prompt);
@@ -167,11 +189,12 @@ function renderCompare() {
       h('td', null, h('span', 'agree-tag', same ? 'agree' : 'disagree')));
   });
   const run = PROMPTS.filter(p => cache.has(p)), agree = run.filter(p => { const a = cache.get(p).answers; return MODELS[decide(judge(a)).tier] === `Claude ${a.model_choice.choice}`; }).length;
-  const all = h('button', 'text-button', runningAll ? 'Running…' : run.length === PROMPTS.length ? 'All run' : `Run the other ${PROMPTS.length - run.length}`);
+  const all = h('button', 'text-button', runningAll ? `Running ${runningAll.done + 1} of ${runningAll.total}…` : run.length === PROMPTS.length ? 'All run' : `Run the other ${PROMPTS.length - run.length}`);
   all.type = 'button'; all.disabled = busy || runningAll || run.length === PROMPTS.length;
-  all.addEventListener('click', async () => { runningAll = true; renderCompare(); for (const p of PROMPTS) if (!cache.has(p) && !(await route(p))) break; runningAll = false; renderCompare(); });
+  all.addEventListener('click', runAll);
   $('anti-compare').replaceChildren(
     h('div', 'section-heading', h('h3', null, 'Router vs. Choice'), all),
+    lastError && !busy ? h('p', 'error', `Stopped: ${lastError}`) : null,
     h('p', 'cmp-summary', run.length ? `They agree on ${agree} of ${run.length} prompts run.` : 'Run prompts to compare the two approaches.'),
     h('div', 'cmp-scroll', table(['Prompt', 'Router (truth table)', 'Choice (argmax)', ''], rows)),
     h('p', 'note', 'Each prompt is one Jev call; answers are saved for this visit.'));
