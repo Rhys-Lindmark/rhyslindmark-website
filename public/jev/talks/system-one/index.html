@@ -232,4 +232,5 @@ addEventListener('keydown', e => {
 });
 new ResizeObserver(fit).observe(frame); fit();
 show((parseInt(location.hash.slice(1), 10) || 1) - 1, false);
+addEventListener('hashchange', () => show((parseInt(location.hash.slice(1), 10) || 1) - 1, false)); // typing #7 in the address bar jumps there
 </script></body></html>
