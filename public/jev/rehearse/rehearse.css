@@ -1,0 +1,13 @@
+/* Q&A rehearsal. Built on minimal.css tokens. */
+.rh-lede { max-width: 68ch; font-size: 17px; line-height: 1.5; margin: 0 0 24px; }
+.rh-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.rh-top .chips { margin: 0; flex-wrap: wrap; }
+.rh-top .note { margin: 0; }
+.rh-section { font: 500 12px/1 var(--jev-font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--steel); margin: 28px 0 10px; }
+.rh-q { font: 500 clamp(24px, 4vw, 40px)/1.15 var(--jev-font-display); letter-spacing: var(--jev-tracking-display); margin: 0; max-width: 32ch; min-height: 2.3em; }
+.rh-timer { height: 4px; background: var(--jev-mist); margin: 20px 0; }
+.rh-timer-fill { height: 100%; width: 0; background: var(--fog); transition: width .2s linear; }
+.rh-timer-fill.over { background: var(--jev-alert); }
+.rh-a { border-left: 3px solid var(--jev-ink); padding: 4px 0 4px 16px; font-size: 16px; line-height: 1.55; max-width: 72ch; }
+.rh-a p { margin: 0 0 10px; }
+.actions .spacer { flex: 1; }
