@@ -10,11 +10,11 @@
 // been spent per arm) fits what is left. Results are appended to
 // results/raw.jsonl as they arrive, so a run can be stopped and resumed.
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
-import { TASKS } from './tasks.mjs';
+import { TASKS, RESULTS } from './eval-set.mjs';
 import { grade } from './graders.mjs';
 
 export const BUDGET_USD = Number(process.env.EVAL_BUDGET_USD || 25);
-export const MAX_REPS = 3;
+export const MAX_REPS = Number(process.env.EVAL_MAX_REPS || 3);
 // The router's tiers keep their names (its truth table says haiku..fable);
 // each is played by an open model, cheapest to strongest.
 export const MODELS = {
@@ -38,7 +38,7 @@ const MAX_TOKENS = { low: 8000, high: 16000 };
 const CONCURRENCY = Number(process.env.EVAL_CONCURRENCY || 24);
 const PROBE_TASKS = ['math-01', 'math-09', 'code-02', 'code-09', 'write-01', 'write-09', 'logic-03', 'logic-09', 'facts-01', 'facts-12'];
 
-const DIR = new URL('./results/', import.meta.url);
+const DIR = RESULTS;
 const RAW = new URL('raw.jsonl', DIR);
 mkdirSync(DIR, { recursive: true });
 

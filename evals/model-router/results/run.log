@@ -1,0 +1,56 @@
+60 tasks x 8 arms = 480 requests per round; budget $25; spent $0.000
+probe: 80 requests
+  40/80 · spent $0.009
+  80/80 · spent $0.112
+  probe done: 80 ok, 0 failed. Spent so far: $0.112 of $25
+round 1: 400 requests, projected $0.56
+round 1, chunk 1: 120 requests
+  40/120 · spent $0.127
+  80/120 · spent $0.172
+  120/120 · spent $0.197
+  round 1, chunk 1 done: 120 ok, 0 failed. Spent so far: $0.197 of $25
+round 1, chunk 2: 120 requests
+  40/120 · spent $0.246
+  80/120 · spent $0.276
+  120/120 · spent $0.464
+  round 1, chunk 2 done: 120 ok, 0 failed. Spent so far: $0.464 of $25
+round 1, chunk 3: 120 requests
+  40/120 · spent $0.485
+  80/120 · spent $0.577
+  120/120 · spent $0.586
+  round 1, chunk 3 done: 120 ok, 0 failed. Spent so far: $0.586 of $25
+round 1, chunk 4: 40 requests
+  40/40 · spent $0.596
+  round 1, chunk 4 done: 40 ok, 0 failed. Spent so far: $0.596 of $25
+round 2: 480 requests, projected $0.60
+round 2, chunk 1: 120 requests
+  40/120 · spent $0.602
+  80/120 · spent $0.652
+  120/120 · spent $0.684
+  round 2, chunk 1 done: 120 ok, 0 failed. Spent so far: $0.684 of $25
+round 2, chunk 2: 120 requests
+  40/120 · spent $0.721
+  80/120 · spent $0.827
+60 tasks x 8 arms = 480 requests per round; budget $25; spent $0.865
+round 2: 241 requests, projected $0.29
+round 2, chunk 1: 120 requests
+  40/120 · spent $0.885
+  80/120 · spent $0.899
+  logic-07__fable_high__r1: HTTP 402 {"error":{"message":"This request would exceed your available credits given your current in-flight requests. Retry after in-flight requests settle, or add credits.","code":402,"metadata":{"reason":"in_flight_budget_exhausted","limit_source":"openrouter_in_flight_budget","remedy_hint":"Retry after yo
+logic-07__fable_high__r1: HTTP 402 {"error":{"message":"This request would exceed your available credits given your current in-flight requests. Retry after in-flight requests settle, or add credits.","code":402,"metadata":{"reason":"in_flight_budget_exhausted","limit_source":"openrouter_in_flight_budget","remedy_hint":"Retry after yo
+60 tasks x 8 arms = 480 requests per round; budget $25; spent $0.900
+round 2: 159 requests, projected $0.21
+round 2, chunk 1: 120 requests
+  40/120 · spent $0.937
+  80/120 · spent $0.952
+  120/120 · spent $1.173
+  round 2, chunk 1 done: 120 ok, 0 failed. Spent so far: $1.173 of $25
+round 2, chunk 2: 39 requests
+  round 2, chunk 2 done: 39 ok, 0 failed. Spent so far: $1.218 of $25
+round 3: 480 requests, projected $0.61
+round 3, chunk 1: 120 requests
+  40/120 · spent $1.227
+  80/120 · spent $1.254
+  120/120 · spent $1.278
+  round 3, chunk 1 done: 120 ok, 0 failed. Spent so far: $1.278 of $25
+round 3, chunk 2: 120 requests

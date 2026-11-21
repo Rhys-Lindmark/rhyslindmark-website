@@ -101,6 +101,14 @@ function gradeWriting(c, raw) {
       const w = plainWords(text).map(x => x.toLowerCase());
       return { pass: w.length === c.n && new Set(w).size === w.length, detail: `${w.length} words, ${w.length - new Set(w).size} repeats` };
     }
+    case 'alphaChain': {
+      const w = plainWords(text).map(x => x.toLowerCase()), s = c.start.charCodeAt(0);
+      return { pass: w.length === c.n && w.every((x, i) => x.charCodeAt(0) === s + i), detail: w.map(x => x[0]).join('') };
+    }
+    case 'maxWordLen': {
+      const w = plainWords(text), long = w.filter(x => x.replace(/['’]/g, '').length > c.max);
+      return { pass: w.length === c.n && !long.length, detail: `${w.length} words, too long: ${long.slice(0, 3).join(' ')}` };
+    }
     default: throw new Error(`unknown writing check ${c.kind}`);
   }
 }

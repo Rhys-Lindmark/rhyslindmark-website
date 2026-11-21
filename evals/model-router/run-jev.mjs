@@ -2,12 +2,12 @@
 // handler), once per task, on the bare prompt a user would type.
 //   node --env-file-if-exists=.env run-jev.mjs
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { TASKS } from './tasks.mjs';
+import { TASKS, RESULTS } from './eval-set.mjs';
 import { routerQuestions, antiQuestions, routerAnswers } from '../../functions/api/jev.js';
 import { MODEL } from '../../functions/_lib/jev-access.js';
 
-const OUT = new URL('./results/jev.json', import.meta.url);
-mkdirSync(new URL('./results/', import.meta.url), { recursive: true });
+const OUT = new URL('jev.json', RESULTS);
+mkdirSync(RESULTS, { recursive: true });
 const key = process.env.TYPESAFE_KEY_JEV_EVAL;
 if (!key) { console.error('TYPESAFE_KEY_JEV_EVAL is not set (use bws run, or .env). See README.'); process.exit(1); }
 

@@ -2,13 +2,13 @@
 // the /jev page) and a printed report. Spends nothing.
 //   node analyze.mjs
 import { existsSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs';
-import { TASKS } from './tasks.mjs';
+import { TASKS, RESULTS, EVAL_SET } from './eval-set.mjs';
 import { ARMS, MODELS, MODEL_NAMES, EFFORTS, readRaw, BUDGET_USD } from './run-models.mjs';
 import { judge, decide } from '../../public/jev/router-policy.js';
 
-const JEV = new URL('./results/jev.json', import.meta.url);
-const SUMMARY = new URL('./results/summary.json', import.meta.url);
-const PAGE_COPY = new URL('../../public/jev/eval-summary.json', import.meta.url);
+const JEV = new URL('jev.json', RESULTS);
+const SUMMARY = new URL('summary.json', RESULTS);
+const PAGE_COPY = new URL(EVAL_SET === 'v2' ? '../../public/jev/eval-summary-v2.json' : '../../public/jev/eval-summary.json', import.meta.url);
 import { grade } from './graders.mjs';
 // Re-grade every stored reply, so grader fixes apply to past runs for free.
 const byTask = Object.fromEntries(TASKS.map(t => [t.id, t]));
