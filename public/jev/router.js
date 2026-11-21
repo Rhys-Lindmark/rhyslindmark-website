@@ -1,6 +1,6 @@
 // Model Router. Jev makes five judgments about a prompt (see routerQuestions in
 // functions/api/jev.js). Everything below is plain code: reading the answers,
-// two truth tables, and a provider mapping. Edit the tables, not the questions,
+// and two truth tables that pick a Claude model and a reasoning level. Edit the tables, not the questions,
 // to change routing policy.
 const $ = id => document.getElementById(id);
 
@@ -10,12 +10,7 @@ const UNSURE_COUNTS_AS = true;        // err toward more capability when Jev is 
 const DEPTH = ['none', 'few steps', 'plan', 'long'];
 const DEPTH_TEXT = ['None', 'A few steps', 'A multi-step plan', 'Long, careful reasoning'];
 const LEVELS = ['Off', 'Low', 'Medium', 'High'];
-const TIERS = { fast: 'Fast', standard: 'Standard', frontier: 'Frontier' };
-const PROVIDERS = {
-  chatgpt: { name: 'ChatGPT', models: { fast: 'GPT mini', standard: 'GPT', frontier: 'GPT Pro' }, param: 'reasoning_effort' },
-  claude:  { name: 'Claude',  models: { fast: 'Claude Haiku', standard: 'Claude Sonnet', frontier: 'Claude Opus' }, param: 'effort' },
-  other:   { name: 'Other',   models: { fast: 'Small model', standard: 'Mid-size model', frontier: 'Frontier model' }, param: 'reasoning' }
-};
+const MODELS = { haiku: 'Claude Haiku', sonnet: 'Claude Sonnet', opus: 'Claude Opus', fable: 'Claude Fable' };
 // Reasoning level: one row per (depth, high stakes). Every combination has an outcome.
 const REASONING_TABLE = [
   { depth: 0, stakes: false, level: 0 }, { depth: 0, stakes: true, level: 1 },
@@ -25,14 +20,15 @@ const REASONING_TABLE = [
 ];
 // Model level: ordered rules, first match wins. The last row always matches.
 const MODEL_RULES = [
-  { when: 'Large piece of work', test: j => j.large_output, tier: 'frontier' },
-  { when: 'Depth is long', test: j => j.depth === 3, tier: 'frontier' },
-  { when: 'Expertise and depth ≥ plan', test: j => j.expertise && j.depth >= 2, tier: 'frontier' },
-  { when: 'Expertise', test: j => j.expertise, tier: 'standard' },
-  { when: 'Depth is plan', test: j => j.depth === 2, tier: 'standard' },
-  { when: 'Nuanced writing', test: j => j.nuanced_writing, tier: 'standard' },
-  { when: 'High stakes', test: j => j.high_stakes, tier: 'standard' },
-  { when: 'Otherwise', test: () => true, tier: 'fast' }
+  { when: 'Large piece of work', test: j => j.large_output, tier: 'fable' },
+  { when: 'Depth is long', test: j => j.depth === 3, tier: 'fable' },
+  { when: 'Expertise and depth is plan', test: j => j.expertise && j.depth >= 2, tier: 'opus' },
+  { when: 'Expertise and high stakes', test: j => j.expertise && j.high_stakes, tier: 'opus' },
+  { when: 'Expertise', test: j => j.expertise, tier: 'sonnet' },
+  { when: 'Depth is plan', test: j => j.depth === 2, tier: 'sonnet' },
+  { when: 'Nuanced writing', test: j => j.nuanced_writing, tier: 'sonnet' },
+  { when: 'High stakes', test: j => j.high_stakes, tier: 'sonnet' },
+  { when: 'Otherwise', test: () => true, tier: 'haiku' }
 ];
 const NOULS = {
   expertise: { label: 'Expertise', q: 'Does answering `prompt` well take specialist expertise?' },
@@ -78,7 +74,7 @@ export function decide(j) {
 const h = (tag, cls, ...kids) => { const el = document.createElement(tag); if (cls) el.className = cls; for (const k of kids) if (k != null) el.append(k); return el; };
 const pct = n => n.toFixed(2);
 const cache = new Map();
-let provider = 'claude', current = null, widgetId, token = '', busy = false, rendered = false;
+let current = null, widgetId, token = '', busy = false, rendered = false;
 const human = () => window.jevHuman?.ok() || !!token;
 const showError = m => { $('route-error').textContent = m; $('route-error').hidden = !m; };
 const setBusy = b => { busy = b; for (const el of document.querySelectorAll('#router [data-prompt], #route-run, #route-prompt')) el.disabled = b; };
@@ -86,13 +82,13 @@ const setBusy = b => { busy = b; for (const el of document.querySelectorAll('#ro
 function renderOutput() {
   const out = $('route-output');
   if (!current) { out.replaceChildren(h('p', 'route-empty', 'Pick a prompt to see where it goes.')); return; }
-  const { prompt, data } = current, d = decide(judge(data.answers)), p = PROVIDERS[provider];
+  const { prompt, data } = current, d = decide(judge(data.answers));
   const level = LEVELS[d.reasoning];
   out.replaceChildren(
     h('p', 'route-quote', `“${prompt}”`),
     h('div', 'route-pick',
-      h('div', null, h('span', 'route-k', 'Model'), h('strong', null, p.models[d.tier]), h('span', 'route-sub', `${TIERS[d.tier]} tier`)),
-      h('div', null, h('span', 'route-k', 'Reasoning'), h('strong', null, level), h('span', 'route-sub', h('code', null, `${p.param}: "${level.toLowerCase()}"`)))),
+      h('div', null, h('span', 'route-k', 'Model'), h('strong', null, MODELS[d.tier]), h('span', 'route-sub', `rule ${d.ruleRow + 1}: ${MODEL_RULES[d.ruleRow].when.toLowerCase()}`)),
+      h('div', null, h('span', 'route-k', 'Reasoning'), h('strong', null, level), h('span', 'route-sub', h('code', null, d.reasoning === 0 ? 'thinking: off' : `effort: "${level.toLowerCase()}"`)))),
     h('p', 'route-meta', `${data.model} ·${Math.round(data.elapsed_ms)}ms · 1 call, 5 questions${data.cached ? ' · cached, no new call' : ''}`));
 }
 
@@ -123,21 +119,18 @@ function table(head, rows) {
   return h('table', 'tt', h('thead', null, h('tr', null, ...head.map(c => h('th', null, c)))), h('tbody', null, ...rows));
 }
 function renderTables() {
-  const j = current ? judge(current.data.answers) : null, d = j ? decide(j) : null, p = PROVIDERS[provider];
+  const j = current ? judge(current.data.answers) : null, d = j ? decide(j) : null;
   const yn = v => v === null ? 'any' : v ? 'yes' : 'no';
   const reasoning = table(['Depth', 'High stakes', 'Reasoning'], REASONING_TABLE.map((r, i) =>
     h('tr', d && i === d.reasoningRow ? 'hit' : '', h('td', null, DEPTH[r.depth]), h('td', null, yn(r.stakes)), h('td', null, LEVELS[r.level]))));
-  const model = table(['#', 'If', 'Model level'], MODEL_RULES.map((r, i) => {
+  const model = table(['#', 'If', 'Model'], MODEL_RULES.map((r, i) => {
     const state = !d ? '' : i === d.ruleRow ? 'hit' : i < d.ruleRow ? 'miss' : 'skip';
-    return h('tr', state, h('td', null, String(i + 1)), h('td', null, r.when), h('td', null, TIERS[r.tier]));
+    return h('tr', state, h('td', null, String(i + 1)), h('td', null, r.when), h('td', null, MODELS[r.tier]));
   }));
-  const mapping = table(['Level', ...Object.values(PROVIDERS).map(x => x.name)], Object.keys(TIERS).map(t =>
-    h('tr', d && t === d.tier ? 'hit' : '', h('td', null, TIERS[t]), ...Object.entries(PROVIDERS).map(([k, x]) => h('td', k === provider ? 'col' : '', x.models[t])))));
   $('route-table').replaceChildren(
     h('h4', null, '1 · Reasoning level'), reasoning,
-    h('h4', null, '2 · Model level', h('span', null, ' first match wins')), model,
-    h('h4', null, `3 · Provider mapping`, h('span', null, ` showing ${p.name}`)), mapping,
-    h('p', 'note', `Nouls read yes at ≥ ${YES}, no at ≤ ${NO}. In between counts as ${UNSURE_COUNTS_AS ? 'yes' : 'no'}, so the router errs toward more capability. Switching provider re-runs this code, not Jev.`));
+    h('h4', null, '2 · Model', h('span', null, ' first match wins')), model,
+    h('p', 'note', `Nouls read yes at ≥ ${YES}, no at ≤ ${NO}. In between counts as ${UNSURE_COUNTS_AS ? 'yes' : 'no'}, so the router errs toward more capability.`));
 }
 function renderApi() {
   if (!current) return;
@@ -157,7 +150,7 @@ function renderAnti(pending) {
       h('div', 'route-pick',
         h('div', null, h('span', 'route-k', 'Model'), h('strong', null, `Claude ${c.choice}`), h('span', 'route-sub', `${pct(c.probabilities[c.choice])} probability`)),
         h('div', null, h('span', 'route-k', 'Reasoning'), h('strong', 'muted', '—'), h('span', 'route-sub', 'not asked, so no answer'))),
-      h('p', 'route-meta', 'Same call as the router · provider toggle does nothing here'));
+      h('p', 'route-meta', 'Same call as the router'));
     $('anti-trace').replaceChildren(traceRow('choice', 'Which model should I use for this prompt?',
       ANTI.map(k => h('span', k === c.choice ? 'opt on' : 'opt', `${k} ${pct(c.probabilities[k])}`)), c.choice, 'is-anti'));
   }
@@ -209,11 +202,6 @@ async function route(prompt) {
 
 $('route-chips').replaceChildren(...PROMPTS.map(p => { const b = h('button', 'chip', p); b.type = 'button'; b.dataset.prompt = p; b.addEventListener('click', () => route(p)); return b; }));
 $('route-form').addEventListener('submit', e => { e.preventDefault(); route($('route-prompt').value); });
-for (const b of document.querySelectorAll('#route-provider button')) b.addEventListener('click', () => {
-  provider = b.dataset.provider;
-  for (const x of document.querySelectorAll('#route-provider button')) x.setAttribute('aria-pressed', String(x === b));
-  renderOutput(); renderTables();
-});
 $('route-human-check').hidden = !!window.jevHuman?.ok();
 renderWidget();
 renderAll();
