@@ -59,6 +59,7 @@ export const readRaw = () => existsSync(RAW) ? readFileSync(RAW, 'utf8').trim().
 const key = (task, arm, rep) => `${task}__${arm.replace(':', '_')}__r${rep}`;
 const spent = () => readRaw().reduce((s, r) => s + r.cost_usd, 0);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+const retries = {}; // HTTP status -> count, logged so slow runs explain themselves
 
 function todo(rep, onlyTasks) {
   const done = new Set(readRaw().map(r => r.id));
@@ -99,6 +100,8 @@ async function call(job) {
       return { id: job.id, task: job.task.id, arm: job.arm, rep: job.rep, model, served_by: data.provider ?? null, finish_reason: choice?.finish_reason ?? null, usage: data.usage ?? null, cost_usd: cost(model, data.usage), latency_ms: Date.now() - started, pass: g.pass, detail: g.detail, text };
     }
     const msg = (await r.text()).slice(0, 300);
+    retries[r.status] = (retries[r.status] || 0) + 1;
+    if (retries[r.status] === 1 || retries[r.status] % 25 === 0) console.log(`  retrying after HTTP ${r.status} (seen ${retries[r.status]}×): ${msg.replace(/\s+/g, ' ').slice(0, 140)}`);
     // A 402 about in-flight requests clears once they settle; any other 400/401/402 is final.
     if ([400, 401, 402].includes(r.status) && !/in_flight/.test(msg)) throw new Error(`${job.id}: HTTP ${r.status} ${msg}`);
     await sleep(2000 * 2 ** attempt);

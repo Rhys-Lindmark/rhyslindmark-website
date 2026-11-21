@@ -18,7 +18,11 @@ const jev = existsSync(JEV) ? JSON.parse(readFileSync(JEV, 'utf8')) : {};
 // ---- per task x arm: success rate and mean cost over repeats -----------------
 const cell = {};
 for (const r of raw) { const c = ((cell[r.task] ||= {})[r.arm] ||= { n: 0, pass: 0, cost: 0 }); c.n++; c.pass += r.pass ? 1 : 0; c.cost += r.cost_usd; }
-const tasks = TASKS.filter(t => cell[t.id] && ARMS.every(a => cell[t.id][a]) && jev[t.id]);
+const complete = TASKS.filter(t => cell[t.id] && ARMS.every(a => cell[t.id][a]) && jev[t.id]);
+// Eval 2: the 60 v1 prompts are the training set (Router v2's table and Router
+// v3's model are fit on them); every score below is on the other, held-out prompts.
+const trainTasks = EVAL_SET === 'v2' ? complete.filter(t => t.family === 'v1') : [];
+const tasks = EVAL_SET === 'v2' ? complete.filter(t => t.family !== 'v1') : complete;
 if (!tasks.length) { console.error('No task has results for every arm plus Jev answers yet.'); process.exit(1); }
 const S = (t, a) => cell[t.id][a].pass / cell[t.id][a].n;
 const C = (t, a) => cell[t.id][a].cost / cell[t.id][a].n;
@@ -43,6 +47,21 @@ for (const yes of [0.5, 0.6, 0.8, 0.9]) for (const unsure of [true, false]) {
   add(`Router · yes ≥ ${yes}, unsure = ${unsure ? 'yes' : 'no'}`, 'router-variant', t => { const d = decide(judge(jev[t.id].answers, { yes, no: 1 - yes, unsureCountsAs: unsure })); return `${d.tier}:${effortFor(d.reasoning)}`; });
 }
 for (const e of EFFORTS) add(`Choice (argmax) · ${e} effort`, 'choice', t => `${jev[t.id].answers.model_choice.choice.toLowerCase()}:${e}`);
+
+// ---- Eval 2: Router v2 (new judgments + table) and Router v3 (Jev + learned odds) ----
+let v3info = null;
+if (EVAL_SET === 'v2' && trainTasks.length) {
+  const { routerV2, features, trainRouterV3, chooseLambda } = await import('./routers-v2.mjs');
+  const extra = JSON.parse(readFileSync(new URL('./results/jev-v2q.json', import.meta.url), 'utf8'));
+  add('Router v2 (new Jev judgments)', 'router-v2', t => routerV2(jev[t.id].answers, extra[t.id]));
+  const runsOf = t => Object.fromEntries(ARMS.map(a => [a, raw.filter(r => r.task === t.id && r.arm === a).map(r => r.pass ? 1 : 0)]));
+  const train = trainTasks.map(t => ({ x: features(jev[t.id].answers, extra[t.id]), runs: runsOf(t), cost: Object.fromEntries(ARMS.map(a => [a, C(t, a)])) }));
+  const LAMBDAS = [0, 2, 5, 10, 20, 50, 100, 200, 500];
+  const { lambda, scored } = chooseLambda(train, ARMS, LAMBDAS);
+  const v3 = trainRouterV3(train, ARMS);
+  add(`Router v3 (Jev + learned odds, λ=${lambda})`, 'router-v3', t => v3.pick(features(jev[t.id].answers, extra[t.id]), lambda), { lambda });
+  v3info = { lambda, training_curve: scored, train_tasks: trainTasks.length };
+}
 
 // Oracle: per task, the cheapest arm among those with the best success rate.
 const oraclePick = t => { const best = Math.max(...ARMS.map(a => S(t, a))); return ARMS.filter(a => S(t, a) === best).sort((x, y) => C(t, x) - C(t, y))[0]; };
@@ -109,7 +128,7 @@ const byCategory = Object.fromEntries(cats.map(c => [c, Object.fromEntries(ARMS.
 // ---- pass rate by measured difficulty (v2: tasks carry a calibration bucket) ----
 const BUCKETS = ['easy', 'medium', 'hard'];
 const hasBuckets = tasks.every(t => t.bucket);
-const byBucket = hasBuckets ? policies.filter(p => ['fixed', 'router', 'choice', 'oracle'].includes(p.kind) || (p.kind === 'learned' && p.lambda === 8)).map(p => ({
+const byBucket = hasBuckets ? policies.filter(p => ['fixed', 'router', 'router-v2', 'router-v3', 'choice', 'oracle'].includes(p.kind) || (p.kind === 'learned' && p.lambda === 8)).map(p => ({
   name: p.name, kind: p.kind,
   ...Object.fromEntries(BUCKETS.map(b => { const idx = tasks.map((t, i) => t.bucket === b ? i : -1).filter(i => i >= 0); return [b, idx.length ? { pass: mean(idx.map(i => S(tasks[i], p.arms[i]))), cost: 1000 * mean(idx.map(i => C(tasks[i], p.arms[i]))), n: idx.length } : null]; }))
 })) : null;
@@ -120,7 +139,7 @@ const summary = {
   spent_usd: raw.reduce((s, r) => s + r.cost_usd, 0), budget_usd: BUDGET_USD,
   jev_model: Object.values(jev)[0]?.model ?? null,
   policies: policies.map(({ arms, ...p }) => p), learned_curve: learnedCurve.map(({ arms, ...p }) => p), oracle_curve: oracleCurve.map(({ arms, ...p }) => p),
-  router_diagnosis: { counts, tasks: diagnosis }, by_category: byCategory, by_bucket: byBucket,
+  router_diagnosis: { counts, tasks: diagnosis }, by_category: byCategory, by_bucket: byBucket, router_v3: v3info, train_tasks: trainTasks.length,
   bucket_counts: hasBuckets ? Object.fromEntries(BUCKETS.map(b => [b, tasks.filter(t => t.bucket === b).length])) : null
 };
 writeFileSync(SUMMARY, JSON.stringify(summary, null, 2));
