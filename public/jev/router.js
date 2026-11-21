@@ -130,7 +130,7 @@ function renderApi() {
   $('route-response').textContent = JSON.stringify(current.data.response, null, 2);
 }
 // ---- Anti-pattern: Jev picks the model; "code" just takes the top option ----
-const ANTI = ['Sonnet', 'Opus', 'Fable'];
+const ANTI = ['Haiku', 'Sonnet', 'Opus', 'Fable'];
 function renderAnti(pending) {
   const c = current?.data.answers.model_choice;
   if (pending || !c) {
@@ -174,7 +174,7 @@ function renderCompare() {
     h('div', 'section-heading', h('h3', null, 'Router vs. Choice'), all),
     h('p', 'cmp-summary', run.length ? `They agree on ${agree} of ${run.length} prompts run.` : 'Run prompts to compare the two approaches.'),
     h('div', 'cmp-scroll', table(['Prompt', 'Router (truth table)', 'Choice (argmax)', ''], rows)),
-    h('p', 'note', 'The Choice can never pick Haiku: it isn’t one of the original options. Each prompt is one Jev call; answers are saved for this visit.'));
+    h('p', 'note', 'Each prompt is one Jev call; answers are saved for this visit.'));
 }
 const renderAll = () => { renderOutput(); renderTrace(); renderTables(); renderApi(); renderAnti(); renderCompare(); };
 

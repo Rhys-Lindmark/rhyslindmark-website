@@ -71,11 +71,11 @@ export function routerQuestions() {
   };
 }
 // The anti-pattern shown below the router: one Choice that asks Jev to make the
-// routing decision itself. Kept verbatim from the first draft on purpose. It
+// routing decision itself. Worded as in the first draft on purpose, with Haiku added so both cards pick from the same four models. It
 // rides in the same call; questions in a request never see each other.
-export const ANTI_OPTIONS = ['Sonnet', 'Opus', 'Fable'];
+export const ANTI_OPTIONS = ['Haiku', 'Sonnet', 'Opus', 'Fable'];
 export function antiQuestions() {
-  return { model_choice: { type: 'choice', instructions: 'Which model should I use for this prompt?', criteria: { Sonnet: 'Claude Sonnet', Opus: 'Claude Opus', Fable: 'Claude Fable' } } };
+  return { model_choice: { type: 'choice', instructions: 'Which model should I use for this prompt?', criteria: { Haiku: 'Claude Haiku', Sonnet: 'Claude Sonnet', Opus: 'Claude Opus', Fable: 'Claude Fable' } } };
 }
 // Returns the validated answers in the API's own shape, or null.
 export function routerAnswers(answers) {
