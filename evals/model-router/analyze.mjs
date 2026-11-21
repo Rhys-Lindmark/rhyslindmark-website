@@ -106,13 +106,22 @@ const counts = diagnosis.reduce((m, d) => (m[d.verdict] = (m[d.verdict] || 0) + 
 // ---- per-category pass rates for each arm ---------------------------------------
 const byCategory = Object.fromEntries(cats.map(c => [c, Object.fromEntries(ARMS.map(a => [a, mean(tasks.filter(t => t.category === c).map(t => S(t, a)))]))]));
 
+// ---- pass rate by measured difficulty (v2: tasks carry a calibration bucket) ----
+const BUCKETS = ['easy', 'medium', 'hard'];
+const hasBuckets = tasks.every(t => t.bucket);
+const byBucket = hasBuckets ? policies.filter(p => ['fixed', 'router', 'choice', 'oracle'].includes(p.kind) || (p.kind === 'learned' && p.lambda === 8)).map(p => ({
+  name: p.name, kind: p.kind,
+  ...Object.fromEntries(BUCKETS.map(b => { const idx = tasks.map((t, i) => t.bucket === b ? i : -1).filter(i => i >= 0); return [b, idx.length ? { pass: mean(idx.map(i => S(tasks[i], p.arms[i]))), cost: 1000 * mean(idx.map(i => C(tasks[i], p.arms[i]))), n: idx.length } : null]; }))
+})) : null;
+
 const summary = {
   generated: new Date().toISOString(), partial: process.argv.includes('--partial'), tasks: tasks.length, reps, arms: ARMS,
   tiers: Object.fromEntries(Object.entries(MODELS).map(([t, id]) => [t, { id, name: MODEL_NAMES[t] }])), arm_names: Object.fromEntries(ARMS.map(a => [a, armName(a)])),
   spent_usd: raw.reduce((s, r) => s + r.cost_usd, 0), budget_usd: BUDGET_USD,
   jev_model: Object.values(jev)[0]?.model ?? null,
   policies: policies.map(({ arms, ...p }) => p), learned_curve: learnedCurve.map(({ arms, ...p }) => p), oracle_curve: oracleCurve.map(({ arms, ...p }) => p),
-  router_diagnosis: { counts, tasks: diagnosis }, by_category: byCategory
+  router_diagnosis: { counts, tasks: diagnosis }, by_category: byCategory, by_bucket: byBucket,
+  bucket_counts: hasBuckets ? Object.fromEntries(BUCKETS.map(b => [b, tasks.filter(t => t.bucket === b).length])) : null
 };
 writeFileSync(SUMMARY, JSON.stringify(summary, null, 2));
 copyFileSync(SUMMARY, PAGE_COPY);
@@ -122,4 +131,5 @@ console.log(`${tasks.length} tasks, ${reps} repeat(s) each, spent $${summary.spe
 for (const p of policies.filter(p => p.kind !== 'learned' && p.kind !== 'router-variant')) console.log(`${p.name.padEnd(34)} ${fmt(p)}`);
 console.log('\nlearned router (leave-one-category-out):'); for (const p of learnedCurve) console.log(`  λ=${String(p.lambda).padEnd(4)} ${fmt(p)}`);
 console.log('\nshipped router verdicts:', counts);
+if (byBucket) { console.log('\npass rate by measured difficulty:'); for (const p of byBucket) console.log(`  ${p.name.padEnd(34)} ${BUCKETS.map(b => p[b] ? `${b} ${(p[b].pass * 100).toFixed(0)}%` : '').join('  ')}`); }
 console.log(`\nwrote ${SUMMARY.pathname} and the page copy public/jev/eval-summary.json`);
