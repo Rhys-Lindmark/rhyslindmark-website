@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="What a data maximalist would add to an open-source Jev: crowd vote distributions as calibrated targets, tested by fine-tuning Kev-4B on Modal and scoring it against hosted Jev."><title>Jev: Model</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/model/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/model/model.css?v=model-2"></head>
+<body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>Model</h1></header>
+<main>
+
+<section class="demo" aria-labelledby="top-title">
+<p class="kicker">Jev take-home · the model level</p>
+<h2 id="top-title" class="lede">If Jev is trained to return calibrated decisions, the best data for it is data that already comes as a calibrated decision. The internet is full of it: every time a crowd votes, it leaves behind a probability.</h2>
+<!-- TLDR -->
+<nav class="toc" aria-label="Sections"><a href="#landscape">Where open Jev stands</a><a href="#thesis">The data bet</a><a href="#experiment">The experiment</a><a href="#results">Results</a><a href="#humans">Jev vs. people</a><a href="#next">What I'd do next</a></nav>
+</section>
+
+<section class="demo" id="landscape" aria-labelledby="landscape-title">
+<div class="demo-heading"><h2 id="landscape-title">1. Open-source Jev has nearly caught up, except at knowing what it doesn't know</h2></div>
+<div class="prose">
+<p>Jev's weights aren't public, but several open models copy its interface (state in, typed questions, calibrated probabilities out). The two serious ones:</p>
+<ul>
+<li><a href="https://huggingface.co/openjev/openjev">OpenJev</a>: one forward pass per question; 84.0% against hosted Jev's 85.4% on 10,000 questions from 34 public sources (CC BY-NC).</li>
+<li><a href="https://github.com/jaredpalmer/kev">Kev</a>: 0.8B to 27B, Apache-2.0, a LoRA adapter plus a pointer head on Qwen3.5. Its author ran about 30 registered training rounds and published every per-question read, Jev's included. That makes it the right base to experiment on.</li>
+</ul>
+<p>On Kev's held-out panel (breadth-v1: 14 public datasets none of these models trained on, 3,075 questions), recomputed from the committed rows:</p>
+</div>
+<div class="table-wrap"><table class="data">
+<thead><tr><th>Model</th><th>Accuracy</th><th>Calibration error (ECE)</th><th>Brier</th><th>Automatable at 5% error</th></tr></thead>
+<tbody>
+<tr><td>Jev 1.14 (hosted)</td><td>0.757</td><td>0.056</td><td>0.315</td><td>54%</td></tr>
+<tr><td>AutoJev-27B (open)</td><td>0.755</td><td>0.045</td><td>0.314</td><td>53%</td></tr>
+<tr><td>Kev-27B (open)</td><td>0.745</td><td class="good">0.012</td><td>0.321</td><td>50%</td></tr>
+<tr><td>Kev-4B (open)</td><td>0.696</td><td>0.028</td><td>0.391</td><td>33%</td></tr>
+</tbody></table></div>
+<p class="caption">"Automatable at 5% error": the share of questions you can let the model answer alone, taking its most confident answers first, before its error rate on them passes 5%. Sources: <code>evals/open-jev/reference/</code>, copied from Kev's repo at commit 65b1e763.</p>
+<div class="prose">
+<p>The open 27B models are within a point or two of Jev on accuracy and are better calibrated on aggregate. What Jev still does better is <strong>rank</strong>: it knows which of its answers to trust, so more of its decisions can be automated at a fixed error budget. A temperature can't fix that, because it rescales every probability without reordering them. At 4B the ranking gap is large: 33% against 54%.</p>
+<p>Kev's own notes say where the gains came from: real-document and skill data were the largest lever, more data from the same generators gave diminishing returns, and <em>soft targets beat hard labels</em>. That last finding is the opening.</p>
+</div>
+</section>
+
+<section class="demo" id="thesis" aria-labelledby="thesis-title">
+<div class="demo-heading"><h2 id="thesis-title">2. The data bet: train on the vote, not the verdict</h2></div>
+<div class="prose">
+<p>RLCD (reinforcement learning for calibrated decisions) asks the model for a probability. Most training data hands it a single right answer, so the probability has to be learned indirectly. But a lot of human judgment on the internet is recorded as a <em>distribution</em>: how many people voted for each option. That distribution is a calibrated target with no extra labelling cost. Where the answer is clear, the votes agree; where it is genuinely contested, they split, and the split is exactly the uncertainty we want the model to learn to report.</p>
+<p>A data maximalist's map of where calibrated decisions live, roughly in order of how directly they supervise RLCD:</p>
+</div>
+<div class="tiers">
+<div class="tier tested"><h4>Crowd vote distributions <span class="tag">tested here</span></h4><p>Many people answer the same question about the same item. Reddit AITA verdicts (Scruples), multi-rater toxicity (Measuring Hate Speech, Jigsaw), ratings of model answers (HelpSteer2), NLI with 100 annotators (ChaosNLI).</p></div>
+<div class="tier tested"><h4>Synthetic crowds <span class="tag">tested here</span></h4><p>Several different open-weight models each vote once. Unlimited supply, any domain. The question is whether machine disagreement teaches the same thing as human disagreement.</p></div>
+<div class="tier"><h4>Resolved forecasts</h4><p>Metaculus, Manifold, Polymarket, Good Judgment Open: a crowd probability <em>and</em> the outcome. Needs state frozen at the forecast date, or the base model already knows the answer.</p></div>
+<div class="tier"><h4>Revealed decisions</h4><p>Choices people made with the evidence in front of them: Stack Exchange accepted answers, Wikipedia deletion outcomes, merged or closed pull requests, court votes. Huge volume, outcome-labelled, noisier.</p></div>
+</div>
+</section>
+
+<section class="demo" id="experiment" aria-labelledby="exp-title">
+<div class="demo-heading"><h2 id="exp-title">3. The experiment</h2></div>
+<div class="prose">
+<p>Start from Kev-4B as released. Fine-tune it three times on Modal with Kev's own <code>--init_from</code> path. Each time it gets the same 7,500 crowd-voted records (19,500 questions) plus 2,000 of Kev's original records replayed so it doesn't forget. The only thing that changes between arms is each question's training target:</p>
+</div>
+<div class="table-wrap"><table class="data">
+<thead><tr><th>Arm</th><th>Target for each question</th></tr></thead>
+<tbody>
+<tr><td>Hard labels</td><td>the crowd's majority answer</td></tr>
+<tr><td>Human vote shares</td><td>the share of people who chose each option</td></tr>
+<tr><td>Synthetic vote shares</td><td>the share of five open-weight models (Qwen, Llama, DeepSeek, Gemma, Mistral) that chose each option, one vote each</td></tr>
+</tbody></table></div>
+<div class="prose">
+<p>Training data: 3,000 AITA posts (who's in the wrong, voted by Reddit), 2,000 comments rated for hate speech, insult and violence by 3+ annotators each, and 2,500 model responses rated for helpfulness, correctness and coherence by three people each. Only 15–55% of these questions are unanimous, so a majority label throws away a lot of information.</p>
+<!-- TRAINING NOTE -->
+<p>Every arm, including the released model, gets one temperature fitted on Kev's registered pool of held-out datasets, then is scored on four panels:</p>
+<ul>
+<li><strong>breadth-v1</strong>: 14 held-out public datasets (does it generalize?). Rebuilt from public sources; matches the frozen suite byte for byte.</li>
+<li><strong>transfer-v4</strong>: six never-trained datasets plus held-out policy rules.</li>
+<li><strong>Held-out crowd items</strong>: 1,200 records from the training sources, scored against the human votes.</li>
+<li><strong>ChaosNLI</strong>: 1,500 items with 100 annotators each, never trained on (does learning to disagree transfer?).</li>
+</ul>
+</div>
+</section>
+
+<section class="demo" id="results" aria-labelledby="results-title">
+<div class="demo-heading"><h2 id="results-title">4. Results</h2></div>
+<!-- RESULTS -->
+</section>
+
+<section class="demo" id="humans" aria-labelledby="humans-title">
+<div class="demo-heading"><h2 id="humans-title">5. Side finding: Jev's confidence is the right size but in the wrong places</h2></div>
+<div class="prose">
+<p>I asked hosted Jev 1.14 the same held-out crowd and ChaosNLI questions (2,700 requests, about $0.07). On average, Jev's confidence is about the right size. Its top answer gets about as much probability as the crowd's majority gets votes: 0.67 vs 0.73 on AITA verdicts, 0.67 vs 0.67 on insult ratings. But it doesn't put that uncertainty <em>where people actually split</em>. Across items, the correlation between Jev's uncertainty and the crowd's is weak:</p>
+</div>
+<div class="table-wrap"><table class="data">
+<thead><tr><th>Task (held-out items)</th><th>Agrees with majority</th><th>Jev's top probability</th><th>Crowd's majority share</th><th>Uncertainty tracks the crowd (Spearman)</th></tr></thead>
+<tbody>
+<tr><td>AITA: who's in the wrong (5 options)</td><td>0.62</td><td>0.67</td><td>0.73</td><td>+0.28</td></tr>
+<tr><td>AITA: is the author in the wrong</td><td>0.78</td><td>0.69</td><td>0.85</td><td>+0.30</td></tr>
+<tr><td>Hate speech (3 levels)</td><td>0.61</td><td>0.81</td><td>0.83</td><td>+0.10</td></tr>
+<tr><td>Insult (5 levels)</td><td>0.49</td><td>0.67</td><td>0.67</td><td>+0.22</td></tr>
+<tr><td>Calls for violence (5 levels)</td><td>0.67</td><td>0.87</td><td>0.72</td><td>+0.34</td></tr>
+<tr><td>Response helpfulness (5 levels)</td><td class="bad">0.31</td><td>0.57</td><td>0.68</td><td>+0.16</td></tr>
+<tr><td>Response correctness (5 levels)</td><td class="bad">0.29</td><td>0.55</td><td>0.71</td><td>+0.07</td></tr>
+<tr><td>Response coherence (5 levels)</td><td>0.69</td><td>0.72</td><td>0.78</td><td>+0.35</td></tr>
+<tr><td>ChaosNLI: which story middle fits (never trained)</td><td>0.90</td><td>0.92</td><td>0.89</td><td class="good">+0.65</td></tr>
+<tr><td>ChaosNLI: SNLI (never trained)</td><td>0.79</td><td>0.86</td><td>0.75</td><td>+0.51</td></tr>
+<tr><td>ChaosNLI: MNLI (never trained)</td><td>0.60</td><td>0.80</td><td>0.66</td><td>+0.13</td></tr>
+</tbody></table></div>
+<p class="caption">Each AITA item has 5 or more Reddit votes, each hate-speech item 3 or more annotators, each response 3 raters, and each ChaosNLI item 100 annotators. Spearman correlation between the entropy of Jev's probabilities and the entropy of the vote shares, per task.</p>
+<div class="example">
+<div class="kicker">One held-out AITA post</div>
+<div class="q">“AITA for joking that a TV actor my fiancée likes is ‘way out of her league’?”</div>
+<div>Reddit's votes</div>
+<div class="split" role="img" aria-label="Reddit votes: author 35%, everybody 39%, other 26%"><span class="s1" style="width:35%">author 35%</span><span class="s2" style="width:39%">everybody 39%</span><span class="s3" style="width:26%">other 26%</span></div>
+<div>Jev 1.14</div>
+<div class="split" role="img" aria-label="Jev: author 96%, everybody 3%, other 1%"><span class="s1" style="width:96%">author 96%</span><span class="s2" style="width:3%"></span><span class="s3" style="width:1%"></span></div>
+<p class="note">Jev's top pick is defensible. What's missing is the signal that this one is contested, and a product built on Jev would act on that 96% as if it were settled.</p>
+</div>
+<div class="prose">
+<p>Two things stand out for TypeSafe. First, judging other models' answers on a 5-point scale is Jev's weakest crowd task here: it matches the human raters' majority level only about 30% of the time on helpfulness and correctness. Judging models is one of Jev's headline use cases. Second, these crowd datasets are free <em>evals</em> as well as training data: "does Jev know when people would disagree?" is measurable today, for every release.</p>
+</div>
+</section>
+
+<section class="demo" id="next" aria-labelledby="next-title">
+<div class="demo-heading"><h2 id="next-title">6. What I'd do next</h2></div>
+<div class="prose">
+<p>This run took about an hour of wall time for three arms, and every comparison rests on a single seed. Answering a data maximalist's question properly takes dozens of comparisons. The way to get them is to make each experiment smaller, because what matters is information gained per unit of time.</p>
+<ol>
+<li><strong>Shrink the loop.</strong> Kev-0.8B, about 200 steps, on a cheap GPU, scored only on the fast panels (held-out crowd items and ChaosNLI, a few minutes each). Each run costs well under a dollar and about ten minutes, so dozens fit where three fit today.</li>
+<li><strong>Measure the noise first.</strong> Run one arm with three seeds before comparing arms. Kev's notes put seed noise at about a point, and a gap smaller than that is not a result.</li>
+<li><strong>Sweep the data, not the model.</strong> One source at a time (AITA, hate speech, HelpSteer2); soft against hard; synthetic against human; mixture ratios; dose (how many records before returns flatten).</li>
+<li><strong>Promote only winners.</strong> Rerun the best two or three recipes on Kev-4B, then 27B, and read breadth-v1, the slow and expensive panel, only at that stage.</li>
+<li><strong>Add the next tiers.</strong> Resolved forecasts with state frozen at the forecast date, and revealed decisions (accepted answers, deletion votes, merged pull requests), run through the same small loop.</li>
+<li><strong>Ship the eval regardless.</strong> "Does Jev know when people would disagree?" (section 5) costs cents per release to measure, whichever data wins.</li>
+</ol>
+</div>
+</section>
+
+<section class="demo" aria-labelledby="method-title">
+<div class="demo-heading"><h2 id="method-title">Method, cost and code</h2></div>
+<div class="prose">
+<ul>
+<li><strong>Training.</strong> Kev's own trainer (<code>kev.train --init_from jaredpalmer/kev-4b</code>, commit 65b1e763): LoRA rank 16 plus the pointer head, bf16, lr 2e-5 on a one-cycle schedule, batch 2 × 4 accumulation, seed 0, 400 optimizer steps (3,200 of the 9,500 mixed records) per arm on one H100. All three arms see the same records in the same order. Soft targets use Kev's built-in <code>target</code> field (cross-entropy against a distribution).</li>
+<li><strong>Synthetic crowd.</strong> Qwen 3.7 Flash, Llama 4 Scout, DeepSeek V4.1 Flash, Gemma 3 12B and Mistral Small 24B, one answer each at temperature 1 through OpenRouter: 97,500 calls, $2.06. Open-weight models only, and no Jev output is used for training (Kev's rule, and the right one for a TypeSafe take-home).</li>
+<li><strong>Scoring.</strong> Kev's <code>kev.benchmark</code> path in fp32. One temperature per model, fitted on transfer-r3's 580-question calibration partition. Paired, record-clustered bootstrap intervals (2,000 resamples) for every difference. Jev's breadth-v1 rows are the ones committed in Kev's repo; Jev's crowd and ChaosNLI answers come from <code>jev-1.14.0</code>.</li>
+<li><strong>Data.</strong> Scruples (Apache-2.0), Measuring Hate Speech (CC-BY-4.0), HelpSteer2 disagreements (CC-BY-4.0), ChaosNLI (CC-BY-NC-4.0, evaluation only). Evaluation items share no state text with training; HelpSteer2 is split by prompt.</li>
+<!-- COST -->
+</ul>
+<p>Code: <code>evals/open-jev/</code> in the website repo (<code>build_data.py</code>, <code>synth_crowd.py</code>, <code>read_jev.py</code>, <code>modal_app.py</code>, <code>analyze.py</code>), mirrored to <code>open-jev/</code> in the jev repo. Linear: "Jev: Model".</p>
+</div>
+</section>
+
+</main>
+<footer><a href="/jev">Jev demos</a> · <a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div></body></html>

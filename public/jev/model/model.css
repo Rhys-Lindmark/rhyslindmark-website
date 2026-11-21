@@ -1,0 +1,46 @@
+/* /jev/model: the write-up page. Builds on /jev/minimal.css. */
+.prose { max-width: 72ch; }
+.prose p, .prose li { font-size: 15px; line-height: 1.55; }
+.prose p { margin: 0 0 12px; }
+.prose ul, .prose ol { margin: 0 0 12px; padding-left: 20px; }
+.prose li { margin: 4px 0; }
+.lede { font-size: 19px; line-height: 1.45; max-width: 64ch; margin: 0 0 8px; }
+.kicker { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); color: var(--steel); text-transform: uppercase; letter-spacing: .02em; margin: 0 0 8px; }
+.tldr { display: grid; gap: 12px; margin: 20px 0 0; }
+.tldr > div { padding: 14px 16px; border: 1px solid var(--jev-ink); background: var(--jev-paper); }
+.tldr strong { display: block; font: 500 var(--jev-text-h2)/1.1 var(--jev-font-display); letter-spacing: -.02em; margin: 4px 0 4px; }
+.tldr span { font-size: 13px; color: var(--steel); }
+@media (min-width: 760px) { .tldr { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.table-wrap { overflow-x: auto; margin: 12px 0 8px; -webkit-overflow-scrolling: touch; }
+table.data { border-collapse: collapse; font-size: 13px; min-width: 100%; font-variant-numeric: tabular-nums; }
+table.data th, table.data td { padding: 7px 10px; text-align: right; border-bottom: 1px solid var(--bone); white-space: nowrap; }
+table.data th:first-child, table.data td:first-child { text-align: left; }
+table.data thead th { font: 500 11px/1.2 var(--jev-font-mono); color: var(--steel); text-transform: uppercase; letter-spacing: .02em; border-bottom: 1px solid var(--jev-ink); }
+table.data tr.ours td { background: var(--magenta-soft); }
+table.data tr.ref td { color: var(--steel); }
+table.data td.good { color: var(--jev-signal); font-weight: 600; }
+table.data td.bad { color: var(--coral); font-weight: 600; }
+.caption { font-size: 12px; color: var(--steel); margin: 4px 0 0; max-width: 80ch; }
+.bars { display: grid; gap: 8px; margin: 14px 0; }
+.bar { display: grid; grid-template-columns: minmax(110px, 190px) minmax(0, 1fr) 52px; gap: 10px; align-items: center; font-size: 13px; }
+.bar .track { height: 10px; }
+.bar .fill.jev { background: var(--jev-steel); }
+.bar .fill.ours { background: var(--jev-ink); }
+.bar b { font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.tiers { display: grid; gap: 10px; margin: 12px 0; }
+.tier { padding: 12px 14px; border: 1px solid var(--jev-silver); }
+.tier h4 { margin: 0 0 4px; color: var(--ink); font-size: 14px; }
+.tier p { margin: 0; font-size: 13px; color: var(--steel); }
+.tier .tag { display: inline-block; font: 500 10px/1.4 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .02em; padding: 1px 6px; border: 1px solid var(--jev-silver); color: var(--steel); margin-left: 6px; vertical-align: 1px; }
+.tier.tested { border-color: var(--jev-ink); }
+.tier.tested .tag { border-color: var(--jev-ink); background: var(--jev-ink); color: var(--jev-paper); }
+@media (min-width: 760px) { .tiers { grid-template-columns: 1fr 1fr; } }
+.example { padding: 14px 16px; border: 1px solid var(--jev-ink); box-shadow: var(--jev-shadow-window); background: var(--jev-paper); font-size: 13px; margin: 12px 0 16px; }
+.example .q { font-weight: 600; margin: 6px 0 4px; }
+.split { display: flex; height: 18px; border: 1px solid var(--jev-ink); overflow: hidden; margin: 4px 0 8px; font: 500 11px/1 var(--jev-font-mono); color: var(--jev-paper); }
+.split > .s1 { background: var(--jev-ink); } .split > .s2 { background: var(--jev-rose); color: var(--jev-ink); } .split > .s3 { background: var(--jev-silver); color: var(--jev-ink); }
+.split > span { display: flex; align-items: center; justify-content: center; min-width: 0; overflow: hidden; white-space: nowrap; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--steel); }
+.legend i { display: inline-block; width: 9px; height: 9px; margin-right: 4px; vertical-align: 0; }
+.toc { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; margin: 14px 0 0; }
+@media (max-width: 480px) { .lede { font-size: 17px; } .bar { grid-template-columns: 96px minmax(0, 1fr) 46px; } }
