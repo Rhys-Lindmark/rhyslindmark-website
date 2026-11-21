@@ -38,6 +38,48 @@ export function rpsQuestions() {
   };
 }
 const validRound = r => r && typeof r === 'object' && THROWS.includes(r.player) && THROWS.includes(r.jev);
+// Model Router. Jev makes the judgments about a prompt; the page's truth table
+// (public/jev/router.js) turns them into a model level and a reasoning level.
+// Nothing here names a provider or a model: that mapping lives in code.
+export const MAX_PROMPT = 1000;
+export const DEPTH_LEVELS = 4;
+export const ROUTER_NOULS = ['expertise', 'high_stakes', 'large_output', 'nuanced_writing'];
+export function routerQuestions() {
+  return {
+    reasoning_depth: { type: 'score', instructions: 'How much working out does a good answer to `prompt` take?', criteria: [
+      'None: a greeting, a quick lookup, or a fact most people know.',
+      'A few straightforward steps, such as a unit conversion, a short rewrite, or a small standard piece of code.',
+      'A plan with several connected steps, such as comparing options, explaining a tricky concept, or debugging a specific problem.',
+      'Long, careful reasoning across many parts, such as a proof, designing a system, or a multi-stage project.'
+    ] },
+    expertise: { type: 'noul', instructions: 'Does answering `prompt` well take specialist expertise?', criteria: {
+      true: 'A practising expert, such as a doctor, lawyer, engineer or scientist, would answer noticeably better than a well-read generalist.',
+      false: 'A well-read generalist could answer as well as an expert.'
+    } },
+    high_stakes: { type: 'noul', instructions: 'Could a wrong answer to `prompt` cause real harm or cost?', criteria: {
+      true: 'A mistake could affect someone’s health, money, legal position, security, or a production system.',
+      false: 'A mistake would be easy to notice and cheap to fix, such as a wrong trivia answer or a weak joke.'
+    } },
+    large_output: { type: 'noul', instructions: 'Does `prompt` ask for a large piece of work?', criteria: {
+      true: 'The user wants a whole application, a long document, or many separate deliverables.',
+      false: 'The user wants a short answer, a single function, or a few paragraphs.'
+    } },
+    nuanced_writing: { type: 'noul', instructions: 'Does `prompt` ask for writing where tone and style matter?', criteria: {
+      true: 'The user wants persuasive, sensitive, creative or carefully edited prose.',
+      false: 'Style barely matters: the user wants facts, code, numbers or a quick reply.'
+    } }
+  };
+}
+// Returns the validated answers in the API's own shape, or null.
+export function routerAnswers(answers) {
+  const d = answers?.reasoning_depth, keys = Array.from({ length: DEPTH_LEVELS }, (_, i) => String(i));
+  if (!d || !keys.every(k => probability(d.probabilities?.[k])) || Math.abs(keys.reduce((s, k) => s + d.probabilities[k], 0) - 1) > .02) return null;
+  if (typeof d.score !== 'number' || !Number.isFinite(d.score) || d.score < 0 || d.score > DEPTH_LEVELS - 1) return null;
+  if (!ROUTER_NOULS.every(id => probability(answers[id]?.noul))) return null;
+  const out = { reasoning_depth: { type: 'score', score: d.score, probabilities: Object.fromEntries(keys.map(k => [k, d.probabilities[k]])), confidence: probability(d.confidence) ? d.confidence : null } };
+  for (const id of ROUTER_NOULS) out[id] = { type: 'noul', noul: answers[id].noul };
+  return out;
+}
 export async function readJSON(request) {
   if (!request.body) throw new Error('empty');
   const reader = request.body.getReader();
@@ -63,8 +105,10 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     if (!/^application\/json(?:;|$)/i.test(request.headers.get('Content-Type') || '') || request.headers.has('Content-Encoding')) return json({ error: 'Send uncompressed JSON.' }, 415);
     let body;
     try { body = await readJSON(request); } catch (error) { return json({ error: error instanceof RangeError ? 'Input is too large.' : 'Invalid JSON.' }, error instanceof RangeError ? 413 : 400); }
-    const rps = body?.demo === 'rps';
-    if (rps) {
+    const rps = body?.demo === 'rps', route = body?.demo === 'route';
+    if (route) {
+      if (typeof body.prompt !== 'string' || !body.prompt.trim() || body.prompt.length > MAX_PROMPT) return json({ error: `Add a prompt (up to ${MAX_PROMPT.toLocaleString('en-US')} characters).` }, 400);
+    } else if (rps) {
       if (!Array.isArray(body.history) || body.history.length > MAX_ROUNDS || !body.history.every(validRound)) return json({ error: `Send up to ${MAX_ROUNDS} previous rounds.` }, 400);
     } else if (!body || typeof body.claim !== 'string' || typeof body.evidence !== 'string' || !body.claim.trim() || !body.evidence.trim() || body.claim.length > 1500 || body.evidence.length > 10000) return json({ error: 'Add a claim (up to 1,500 characters) and evidence (up to 10,000 characters).' }, 400);
     const ip = request.headers.get('CF-Connecting-IP');
@@ -102,7 +146,7 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     const out = (b, status = 200) => json(status === 200 ? { ...b, human_until: humanUntil } : b, status, setCookie ? { 'Set-Cookie': setCookie.header } : {});
     const started = Date.now();
     try {
-      const upstream = rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
+      const upstream = route ? { model: MODEL, state: { prompt: body.prompt.trim() }, questions: routerQuestions() } : rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
       const response = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(upstream), signal: AbortSignal.timeout(25000), redirect: 'manual' });
       if (!response.ok) {
         const messages = { 401: 'Claim Check is temporarily unavailable.', 402: 'Claim Check is paused: its usage allowance has been reached.', 403: 'Claim Check is temporarily unavailable.', 429: 'Jev is busy. Wait a moment and try again.' };
@@ -110,6 +154,13 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
         return out({ error: messages[response.status] || 'TypeSafe could not complete this check. Please try again.' }, response.status === 429 ? 429 : 502);
       }
       const data = await readJSON(response);
+      if (route) {
+        const answers = routerAnswers(data?.answers);
+        if (!answers) return out({ error: 'Jev returned an unexpected response. Please try again.' }, 502);
+        const model = typeof data.model === 'string' ? data.model : MODEL;
+        // Echo the exact call (minus the key) so the page can show its judgment trace.
+        return out({ model, answers, elapsed_ms: Date.now() - started, request: upstream, response: { model, answers } });
+      }
       if (rps) {
         const n = data?.answers?.next_throw;
         if (!THROWS.includes(n?.choice) || !THROWS.every(k => probability(n.probabilities?.[k])) || Math.abs(THROWS.reduce((s,k)=>s+n.probabilities[k],0)-1) > .02 || !(n.confidence === null || n.confidence === undefined || probability(n.confidence))) return out({ error: 'Jev returned an unexpected response. Please try again.' }, 502);

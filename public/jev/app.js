@@ -29,7 +29,7 @@ function renderClaimWidget() {
     'error-callback': () => { verificationToken = ''; $('run').disabled = true; $('error').textContent = 'Human verification unavailable. Reload to try again.'; $('error').hidden = false; }
   });
 }
-window.jevTurnstileReady = () => { if (!jevHuman.ok()) renderClaimWidget(); window.jevRenderRps?.(); };
+window.jevTurnstileReady = () => { if (!jevHuman.ok()) renderClaimWidget(); window.jevRenderRps?.(); window.jevRenderRouter?.(); };
 window.addEventListener('jev-human-needed', () => { $('run').disabled = !verificationToken; renderClaimWidget(); });
 if (jevHuman.ok()) { $('human-check').hidden = true; $('run').disabled = false; }
 const verificationScript = document.createElement('script');

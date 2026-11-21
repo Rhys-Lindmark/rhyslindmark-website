@@ -89,3 +89,51 @@ code, .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 
 .verb { font-weight: 600; color: var(--ink); margin-right: 4px; }
 .api-grid h4 code { color: var(--steel); }
 @media (min-width: 680px) { .api-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+/* Model Router */
+.route-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.route-bar input { flex: 1 1 280px; padding: 11px 14px; }
+.seg { display: inline-flex; padding: 3px; background: #fafafa; border: 1px solid var(--bone); border-radius: 14px; }
+.seg button { border: 0; background: none; padding: 7px 12px; border-radius: 11px; font-size: 14px; font-weight: 535; color: var(--steel); }
+.seg button[aria-pressed="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.route-bar .run { padding: 10px 20px; font-size: 15px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0 6px; }
+.chip { border: 1px solid var(--bone); background: #fff; color: var(--steel); padding: 5px 11px; border-radius: 999px; font-size: 13px; text-align: left; }
+.chip:not(:disabled):hover { border-color: var(--magenta); color: var(--magenta); }
+.chip.active { border-color: var(--magenta); background: var(--magenta-soft); color: var(--ink); }
+#route-human-check { margin-top: 8px; }
+.route-output { margin: 16px 0 20px; padding: 18px 20px; border: 1px solid var(--bone); border-radius: 20px; background: linear-gradient(135deg, #fff, var(--magenta-soft)); min-height: 72px; }
+.route-quote { margin: 0 0 10px; color: var(--steel); font-size: 14px; overflow-wrap: anywhere; }
+.route-pick { display: flex; flex-wrap: wrap; gap: 12px 40px; }
+.route-pick > div { display: flex; flex-direction: column; }
+.route-k { font-size: 12px; color: var(--steel); }
+.route-pick strong { font-size: 30px; font-weight: 485; line-height: 1.15; }
+.route-sub { font-size: 12px; color: var(--steel); }
+.route-meta { margin: 10px 0 0; font-size: 12px; color: var(--steel); }
+.route-empty { margin: 0; color: var(--steel); font-size: 14px; }
+.route-grid { display: grid; gap: 24px; }
+.route-tables { border-top: 1px solid var(--bone); padding-top: 20px; }
+@media (min-width: 900px) { .route-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 28px; } .route-tables { border-top: 0; padding-top: 0; border-left: 1px solid var(--bone); padding-left: 28px; } }
+.trace-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 4px 12px; align-items: start; padding: 12px 0; border-bottom: 1px solid var(--bone); }
+.trace-type { font: 12px ui-monospace, Menlo, monospace; color: #8251fb; border: 1px solid #e3dafe; background: #f6f2ff; padding: 2px 8px; border-radius: 999px; margin-top: 1px; }
+.trace-q { margin: 0; font-size: 14px; font-weight: 535; }
+.trace-opts { margin: 4px 0 0; display: flex; flex-wrap: wrap; gap: 4px 12px; font: 12px ui-monospace, Menlo, monospace; color: var(--fog); }
+.opt.on { color: var(--ink); font-weight: 600; }
+.opt.note { color: #b26b00; }
+.trace-read { font: 600 12px ui-monospace, Menlo, monospace; padding: 3px 9px; border-radius: 8px; background: var(--bone); white-space: nowrap; }
+.is-yes .trace-read, .is-level .trace-read { background: #ddf6ee; color: #08765a; }
+.is-no .trace-read { background: var(--bone); color: var(--steel); }
+.is-unsure .trace-read { background: #fff1d6; color: #8a5300; }
+#route-table h4 { color: var(--ink); margin: 18px 0 6px; }
+#route-table h4:first-child { margin-top: 0; }
+#route-table h4 span { color: var(--fog); font-weight: 480; font-size: 12px; }
+.tt { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tt th { text-align: left; font-weight: 485; color: var(--steel); font-size: 12px; padding: 4px 8px; border-bottom: 1px solid var(--bone); }
+.tt td { padding: 5px 8px; border-bottom: 1px solid #f7f7f7; }
+.tt td.col { font-weight: 600; }
+.tt tr.hit td { background: var(--magenta-soft); color: var(--ink); font-weight: 600; }
+.tt tr.hit td:first-child { box-shadow: inset 3px 0 var(--magenta); }
+.tt tr.miss td { color: var(--fog); text-decoration: line-through; text-decoration-color: #ddd; }
+.tt tr.skip td { color: var(--fog); }
+#router .api { margin-top: 20px; }
+@media (max-width: 480px) { .route-pick strong { font-size: 24px; } .seg { width: 100%; } .seg button { flex: 1; } .route-bar .run { width: 100%; } }
+@media (max-width: 679px) { .chips { flex-wrap: nowrap; overflow-x: auto; margin-left: -4px; padding: 2px 4px 6px; scrollbar-width: thin; } .chip { white-space: nowrap; flex: none; } }
