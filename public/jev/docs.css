@@ -1,9 +1,36 @@
 /* /jev/docs pages and the /jev hub; loaded after minimal.css */
 .crumbs { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; color: var(--steel); text-transform: uppercase; }
 .crumbs span { color: var(--ink); }
-.doc { max-width: 760px; }
-.listing { list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 6px; font-size: 15px; }
-.markdown { font-size: 15px; line-height: 1.6; }
+/* Docs pages are centered like typesafe.ai's blog: tag, display title, then a 720px column on a left rule */
+.doc { max-width: 760px; margin: 0 auto; }
+.doc-head { display: grid; justify-items: center; gap: 28px; text-align: center; margin: 48px 0 56px; }
+.doc-tag { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; padding: 5px 8px; background: var(--jev-ink); color: var(--jev-paper); }
+.doc-title { font: 500 clamp(40px, 7vw, 72px)/.88 var(--jev-font-display); letter-spacing: var(--jev-tracking-display); color: var(--jev-graphite); text-transform: capitalize; margin: 0; max-width: 16ch; overflow-wrap: anywhere; }
+.doc-title code { font-size: .6em; background: none; }
+.doc > .markdown, .doc > .listing, .doc > .file, .doc > p { border-left: var(--jev-rule); padding-left: 24px; }
+.doc > .file { border: var(--jev-rule); }
+.listing { list-style: none; padding: 0; margin: 0 0 40px; display: grid; gap: 6px; font-size: 16px; }
+.markdown { font-size: 16px; line-height: 1.55; }
+.markdown + .listing { margin-top: 48px; }
+
+/* Corpus at a glance (folders with data/stats.json) */
+.corpus { margin: 0 0 56px; border: var(--jev-rule); background: var(--jev-paper); }
+.corpus-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-bottom: var(--jev-rule); }
+.corpus-stat { display: grid; gap: 10px; padding: 24px 20px; border-right: var(--jev-rule); margin-right: -1px; }
+.corpus-num { font: 500 clamp(30px, 5vw, 46px)/.9 var(--jev-font-display); white-space: nowrap; letter-spacing: var(--jev-tracking-display); color: var(--jev-ink); }
+.corpus-key { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--jev-steel); }
+.corpus-chart { margin: 0; padding: 24px 20px 16px; }
+.corpus-chart + .corpus-chart { border-top: var(--jev-rule); }
+.corpus-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.corpus-chart .mark { fill: var(--jev-ink); }
+.corpus-chart .bar:hover .mark { fill: var(--jev-graphite); }
+.corpus-chart .hit { fill: transparent; }
+.corpus-chart .grid { stroke: var(--jev-silver); stroke-width: 1; }
+.corpus-chart .tick { font: 11px var(--jev-font-mono); fill: var(--jev-steel); }
+.corpus-chart .peak, .corpus-chart .val { font: 500 12px var(--jev-font-mono); fill: var(--jev-ink); }
+.corpus-chart .src { font: 14px var(--jev-font-body); fill: var(--jev-ink); }
+.corpus-note { margin: 10px 0 0; font-size: 13px; color: var(--jev-steel); }
+.markdown > :first-child { margin-top: 0; }
 .markdown h1 { margin: 0 0 16px; }
 .markdown h2 { font: 500 var(--jev-text-h2)/1 var(--jev-font-display); letter-spacing: -.02em; margin: 40px 0 12px; padding-top: 12px; border-top: var(--jev-rule); }
 .markdown h3 { font: 500 var(--jev-text-h3)/1.1 var(--jev-font-body); margin: 24px 0 8px; }

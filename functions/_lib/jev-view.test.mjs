@@ -18,6 +18,12 @@ test('gate asks for a login without credentials or with wrong ones', () => {
 	}
 });
 
+test('local dev skips the gate only on localhost', () => {
+	const dev = { ...env, JEV_LOCAL_DEV: '1' };
+	assert.equal(jevGate(new Request('http://localhost:8788/jev'), dev), null);
+	assert.equal(jevGate(req('/jev'), dev).status, 401);
+});
+
 test('gate lets the shared login through', () => {
 	assert.equal(jevGate(req('/jev', basic('jev', 'test-password')), env), null);
 });

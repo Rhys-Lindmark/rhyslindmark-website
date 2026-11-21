@@ -21,6 +21,9 @@ function timingSafeEqual(a, b) {
 
 // Returns a 401 Response when the request must log in, or null when it may pass.
 export function jevGate(request, env) {
+	// Local testing only: `wrangler pages dev` with JEV_LOCAL_DEV=1 skips the login on
+	// localhost, so test browsers never need credentials in the URL. Never set in production.
+	if (env.JEV_LOCAL_DEV === '1' && new URL(request.url).hostname === 'localhost') return null;
 	// Forgiving on purpose: a shared, spoken password. Phones capitalize the first
 	// letter and pasted values carry stray spaces, so compare trimmed and lowercased.
 	const norm = s => String(s).trim().toLowerCase();
@@ -59,7 +62,7 @@ export function docsRepoPath(pathname) {
 
 function page(title, crumbs, body, status = 200) {
 	const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-1"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-corpus-2"></head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a>${crumbs}</header>
 <main class="doc">${body}</main></div></body></html>`;
 	return new Response(html, {
@@ -123,17 +126,35 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 				const href = encodeURIComponent(item.name) + (item.type === 'dir' ? '/' : '');
 				return `<li><a href="${href}">${escapeHTML(item.name)}${item.type === 'dir' ? '/' : ''}</a></li>`;
 			}).join('');
+		const join = name => (repoPath ? `${repoPath}/${name}` : name);
 		let readme = '';
+		let readmeTitle = '';
 		const readmeItem = data.find(item => item.type === 'file' && /^readme\.md$/i.test(item.name));
 		if (readmeItem) {
-			const r = await contents(repoPath ? `${repoPath}/${readmeItem.name}` : readmeItem.name);
+			const r = await contents(join(readmeItem.name));
 			if (r.ok) {
 				const f = await r.json();
-				if (f.content) readme = `<article class="markdown">${marked.parse(decodeBase64UTF8(f.content))}</article>`;
+				if (f.content) {
+					const { title: t, rest } = splitTitle(decodeBase64UTF8(f.content));
+					readmeTitle = t;
+					readme = `<article class="markdown">${marked.parse(rest)}</article>`;
+				}
 			}
 		}
-		const title = repoPath || 'Files';
-		return page(title, crumbsFor(repoPath), `<ul class="listing">${items}</ul>${readme}`);
+		// A folder holding a corpus (data/stats.json, as feedback/ does) leads with its numbers.
+		let corpus = '';
+		if (data.some(item => item.type === 'dir' && item.name === 'data')) {
+			const r = await contents(join('data/stats.json'));
+			if (r.ok) {
+				try {
+					const f = await r.json();
+					corpus = corpusBlock(JSON.parse(decodeBase64UTF8(f.content)));
+				} catch {}
+			}
+		}
+		const title = repoPath ? repoPath.split('/').pop() : 'jev';
+		const head = docHead('folder', readmeTitle ? marked.parseInline(readmeTitle) : escapeHTML(title));
+		return page(readmeTitle || title, crumbsFor(repoPath), `${head}${corpus}${readme}<ul class="listing">${items}</ul>`);
 	}
 
 	if (url.pathname.endsWith('/')) {
@@ -142,7 +163,7 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 	}
 	const name = data.name || repoPath.split('/').pop();
 	if (!data.content) {
-		return page(name, crumbsFor(repoPath), `<h1>${escapeHTML(name)}</h1><p>This file is too large to show here (${Math.round((data.size || 0) / 1e6)} MB).</p>`);
+		return page(name, crumbsFor(repoPath), `${docHead('file', escapeHTML(name))}<p>This file is too large to show here (${Math.round((data.size || 0) / 1e6)} MB).</p>`);
 	}
 	const text = decodeBase64UTF8(data.content);
 	// Standalone HTML pages in the repo (e.g. research write-ups) render as they are.
@@ -158,8 +179,120 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 			},
 		});
 	}
-	const body = /\.md$/i.test(name)
-		? `<article class="markdown">${marked.parse(text)}</article>`
-		: `<h1>${escapeHTML(name)}</h1><pre class="file">${escapeHTML(text)}</pre>`;
-	return page(name, crumbsFor(repoPath), body);
+	const tag = repoPath.includes('/') ? repoPath.split('/').slice(-2, -1)[0] : 'jev';
+	if (/\.md$/i.test(name)) {
+		const { title, rest } = splitTitle(text);
+		const head = docHead(tag, title ? marked.parseInline(title) : escapeHTML(name));
+		return page(title || name, crumbsFor(repoPath), `${head}<article class="markdown">${marked.parse(rest)}</article>`);
+	}
+	return page(name, crumbsFor(repoPath), `${docHead(tag, escapeHTML(name))}<pre class="file">${escapeHTML(text)}</pre>`);
+}
+
+// A centered header like typesafe.ai's blog: a mono tag, then the title in display type.
+function docHead(tag, titleHTML) {
+	return `<header class="doc-head"><span class="doc-tag">${escapeHTML(tag)}</span><h1 class="doc-title">${titleHTML}</h1></header>`;
+}
+
+// The corpus at a glance, from data/stats.json: headline counts, items per week, items per source.
+// The page's CSP allows no inline styles or scripts, so charts are plain SVG with <title> tooltips.
+const SOURCE_LABELS = {
+	'github/pr': 'GitHub pull requests', 'github/issue': 'GitHub issues', 'github/repo': 'Repos built on Jev',
+	'github/comment': 'GitHub comments', 'hn/comment': 'Hacker News comments', 'hn/story': 'Hacker News stories',
+	'x/post': 'X posts', 'web/x-post': 'X posts', 'web/x-article': 'X posts', 'discord/message': 'Discord messages',
+};
+
+export function corpusBlock(stats) {
+	if (!stats || !Number.isFinite(stats.total)) return '';
+	const fmt = n => Math.round(n).toLocaleString('en-US');
+	const short = n => (n >= 1000 ? `${+(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : String(n));
+
+	const kinds = Object.entries(stats.by_source_kind || {});
+	const sources = {};
+	for (const [kind, n] of kinds) {
+		const label = SOURCE_LABELS[kind] || (kind.startsWith('web/') ? 'Web: reviews, papers, posts' : kind);
+		sources[label] = (sources[label] || 0) + n;
+	}
+	const sourceRows = Object.entries(sources).sort((a, b) => b[1] - a[1]);
+	const platforms = new Set(kinds.map(([k]) => (k.startsWith('web/x-') ? 'x' : k.split('/')[0])));
+
+	const weeks = Object.entries(stats.by_week || {}).sort((a, b) => a[0].localeCompare(b[0]));
+	const shown = weeks.slice(-16);
+	const earlier = weeks.slice(0, -16).reduce((s, [, n]) => s + n, 0);
+	const built = stats.built_at ? new Date(stats.built_at) : null;
+	const day = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+	const tiles = [
+		[fmt(stats.total), 'items'],
+		Number.isFinite(stats.unique_authors) ? [fmt(stats.unique_authors), 'authors'] : null,
+		[String(platforms.size), 'platforms'],
+		built ? [day(built), 'last refresh'] : null,
+	].filter(Boolean).map(([v, k]) => `<div class="corpus-stat"><span class="corpus-num">${escapeHTML(v)}</span><span class="corpus-key">${escapeHTML(k)}</span></div>`).join('');
+
+	// Weekly volume: one series, ink bars with 4px rounded tops on the baseline.
+	let weekly = '';
+	if (shown.length) {
+		const W = 720, H = 220, L = 44, R = 8, T = 16, B = 28;
+		const max = Math.max(...shown.map(([, n]) => n));
+		const step = niceStep(max / 3);
+		const top = Math.ceil(max / step) * step;
+		const y = n => T + (H - T - B) * (1 - n / top);
+		const slot = (W - L - R) / shown.length, bw = Math.max(4, slot - 6);
+		let grid = '';
+		for (let v = 0; v <= top; v += step) grid += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="tick" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${short(v)}</text>`;
+		const peak = shown.reduce((a, b) => (b[1] > a[1] ? b : a));
+		const bars = shown.map(([wk, n], i) => {
+			const x = L + i * slot + (slot - bw) / 2, start = isoWeekStart(wk);
+			const label = start ? `Week of ${day(start)}` : wk;
+			const partial = i === shown.length - 1 && built && start && built - start < 6 * 864e5 ? ' (week in progress)' : '';
+			const xl = i % 2 === 0 ? `<text class="tick" x="${x + bw / 2}" y="${H - 8}" text-anchor="middle">${escapeHTML(start ? day(start) : wk)}</text>` : '';
+			const pk = wk === peak[0] ? `<text class="peak" x="${x + bw / 2}" y="${y(n) - 6}" text-anchor="middle">${fmt(n)}</text>` : '';
+			return `<g class="bar"><title>${escapeHTML(label)}: ${fmt(n)} items${partial}</title><rect class="hit" x="${L + i * slot}" y="${T}" width="${slot}" height="${H - T - B}"/>${roundedBar(x, y(n), bw, H - B - y(n))}${pk}${xl}</g>`;
+		}).join('');
+		const note = earlier ? `<p class="corpus-note">Items per week. ${fmt(earlier)} earlier items, mostly from before the September 15 launch, are left off.</p>` : '<p class="corpus-note">Items per week.</p>';
+		weekly = `<figure class="corpus-chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Items collected per week">${grid}${bars}</svg>${note}</figure>`;
+	}
+
+	// By source: one horizontal bar per source, value at the end.
+	let bySource = '';
+	if (sourceRows.length) {
+		const W = 720, row = 30, LBL = 210, R = 64, H = sourceRows.length * row;
+		const max = sourceRows[0][1];
+		const rows = sourceRows.map(([label, n], i) => {
+			const yy = i * row, w = Math.max(2, (W - LBL - R) * n / max);
+			return `<g class="bar"><title>${escapeHTML(label)}: ${fmt(n)}</title><rect class="hit" x="0" y="${yy}" width="${W}" height="${row}"/><text class="src" x="0" y="${yy + 19}">${escapeHTML(label)}</text>${roundedBar(LBL, yy + 8, w, 14, 'h')}<text class="val" x="${LBL + w + 8}" y="${yy + 19}">${fmt(n)}</text></g>`;
+		}).join('');
+		bySource = `<figure class="corpus-chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Items by source">${rows}</svg><p class="corpus-note">Items by source.</p></figure>`;
+	}
+
+	return `<section class="corpus" aria-label="Corpus at a glance"><div class="corpus-stats">${tiles}</div>${weekly}${bySource}</section>`;
+}
+
+// A bar whose far end is rounded (4px) and whose base is square on the axis.
+function roundedBar(x, y, w, h, dir = 'v') {
+	if (dir === 'v') {
+		const r = Math.min(4, w / 2, h);
+		return `<path class="mark" d="M${x},${y + h}V${y + r}Q${x},${y} ${x + r},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h}Z"/>`;
+	}
+	const r = Math.min(4, h / 2, w);
+	return `<path class="mark" d="M${x},${y}H${x + w - r}Q${x + w},${y} ${x + w},${y + r}V${y + h - r}Q${x + w},${y + h} ${x + w - r},${y + h}H${x}Z"/>`;
+}
+
+function niceStep(raw) {
+	const p = 10 ** Math.floor(Math.log10(Math.max(raw, 1)));
+	return [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw);
+}
+
+// "2026-W38" -> the Monday that starts that ISO week (UTC).
+function isoWeekStart(wk) {
+	const m = /^(\d{4})-W(\d{2})$/.exec(wk);
+	if (!m) return null;
+	const jan4 = new Date(Date.UTC(+m[1], 0, 4));
+	const mon1 = new Date(jan4 - ((jan4.getUTCDay() + 6) % 7) * 864e5);
+	return new Date(+mon1 + (+m[2] - 1) * 7 * 864e5);
+}
+
+// Pull a leading "# Title" out of markdown so the page can set it as its header.
+export function splitTitle(text) {
+	const m = text.match(/^\s*# (.+)\n?/);
+	return m ? { title: m[1].trim(), rest: text.slice(m[0].length) } : { title: '', rest: text };
 }
