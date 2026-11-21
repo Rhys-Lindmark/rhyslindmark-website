@@ -50,10 +50,10 @@ test('one visitor has no hourly cap, and the lifetime budget stays bounded under
     assert.equal(db.raw.prepare('SELECT reserved_micros FROM jev_budget').get().reserved_micros,20000000);
   }finally{db.raw.close();}
 });
-test('daily ceiling and kill switch stop valid humans; no budget refund after upstream timeout',async()=>{
+test('no daily ceiling; kill switch stops valid humans; no budget refund after upstream timeout',async()=>{
   const db=database();try{
     const time=1793140000000;const results=await Promise.all(Array.from({length:110},(_,i)=>reserve(db,'visitor-'+i,time)));
-    assert.equal(results.filter(x=>x===null).length,100);
+    assert.equal(results.filter(x=>x===null).length,110);
     db.raw.exec('UPDATE jev_budget SET enabled=0');assert.match(await reserve(db,'tomorrow',time+86400000),/paused/);
     db.raw.exec('UPDATE jev_budget SET enabled=1');
     db.raw.exec('DELETE FROM jev_limits');

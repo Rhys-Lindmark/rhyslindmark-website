@@ -4,17 +4,14 @@ export const BUDGET_MICROS = 20000000;
 // $0.042 / million input tokens, output free; default context <= 65,536.
 // A one-cent reservation exceeds the maximum $0.002753 request charge.
 // Never refund attempted calls: timeouts may already have been billed.
-export const RATE_SQL = 'INSERT INTO jev_limits(bucket,uses,expires) VALUES(?,1,?) ON CONFLICT(bucket) DO UPDATE SET uses=uses+1 WHERE uses<? RETURNING uses';
 export const BUDGET_SQL = 'UPDATE jev_budget SET reserved_micros=reserved_micros+? WHERE id=1 AND enabled=1 AND reserved_micros<=? RETURNING reserved_micros';
 
 export async function reserve(db, client, now = Date.now()) {
-  // No per-visitor hourly cap (removed 2026-11-20 at the owner's request).
-  // The site-wide daily ceiling and lifetime budget below still apply.
-  const day = Math.floor(now / 86400000);
-  const perDay = await db.prepare(RATE_SQL).bind(`day:${day}`, now + 172800000, 100).first();
-  if (!perDay) return 'Today’s limit has been reached. Try again tomorrow.';
+  // No hourly or daily caps (both removed 2026-11-20 at the owner's request).
+  // The lifetime budget is now the only usage limit.
   const budget = await db.prepare(BUDGET_SQL).bind(RESERVATION_MICROS, BUDGET_MICROS - RESERVATION_MICROS).first();
-  if (!budget) return 'Claim Check is paused: its usage allowance has been reached.';
+  if (!budget) return 'Jev is paused: its usage allowance has been reached.';
+  // Prune counters left over from the removed rate limits.
   await db.prepare('DELETE FROM jev_limits WHERE expires<?').bind(now).run();
   return null;
 }
