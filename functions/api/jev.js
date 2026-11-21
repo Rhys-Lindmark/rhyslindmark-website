@@ -70,6 +70,13 @@ export function routerQuestions() {
     } }
   };
 }
+// The anti-pattern shown below the router: one Choice that asks Jev to make the
+// routing decision itself. Kept verbatim from the first draft on purpose. It
+// rides in the same call; questions in a request never see each other.
+export const ANTI_OPTIONS = ['Sonnet', 'Opus', 'Fable'];
+export function antiQuestions() {
+  return { model_choice: { type: 'choice', instructions: 'Which model should I use for this prompt?', criteria: { Sonnet: 'Claude Sonnet', Opus: 'Claude Opus', Fable: 'Claude Fable' } } };
+}
 // Returns the validated answers in the API's own shape, or null.
 export function routerAnswers(answers) {
   const d = answers?.reasoning_depth, keys = Array.from({ length: DEPTH_LEVELS }, (_, i) => String(i));
@@ -78,6 +85,9 @@ export function routerAnswers(answers) {
   if (!ROUTER_NOULS.every(id => probability(answers[id]?.noul))) return null;
   const out = { reasoning_depth: { type: 'score', score: d.score, probabilities: Object.fromEntries(keys.map(k => [k, d.probabilities[k]])), confidence: probability(d.confidence) ? d.confidence : null } };
   for (const id of ROUTER_NOULS) out[id] = { type: 'noul', noul: answers[id].noul };
+  const c = answers.model_choice;
+  if (!ANTI_OPTIONS.includes(c?.choice) || !ANTI_OPTIONS.every(k => probability(c.probabilities?.[k])) || Math.abs(ANTI_OPTIONS.reduce((s, k) => s + c.probabilities[k], 0) - 1) > .02) return null;
+  out.model_choice = { type: 'choice', choice: c.choice, probabilities: Object.fromEntries(ANTI_OPTIONS.map(k => [k, c.probabilities[k]])), confidence: probability(c.confidence) ? c.confidence : null };
   return out;
 }
 export async function readJSON(request) {
@@ -146,7 +156,7 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     const out = (b, status = 200) => json(status === 200 ? { ...b, human_until: humanUntil } : b, status, setCookie ? { 'Set-Cookie': setCookie.header } : {});
     const started = Date.now();
     try {
-      const upstream = route ? { model: MODEL, state: { prompt: body.prompt.trim() }, questions: routerQuestions() } : rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
+      const upstream = route ? { model: MODEL, state: { prompt: body.prompt.trim() }, questions: { ...routerQuestions(), ...antiQuestions() } } : rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
       const response = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(upstream), signal: AbortSignal.timeout(25000), redirect: 'manual' });
       if (!response.ok) {
         const messages = { 401: 'Claim Check is temporarily unavailable.', 402: 'Claim Check is paused: its usage allowance has been reached.', 403: 'Claim Check is temporarily unavailable.', 429: 'Jev is busy. Wait a moment and try again.' };

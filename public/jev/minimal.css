@@ -137,3 +137,16 @@ code, .code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 
 #router .api { margin-top: 20px; }
 @media (max-width: 480px) { .route-pick strong { font-size: 24px; } .seg { width: 100%; } .seg button { flex: 1; } .route-bar .run { width: 100%; } }
 @media (max-width: 679px) { .chips { flex-wrap: nowrap; overflow-x: auto; margin-left: -4px; padding: 2px 4px 6px; scrollbar-width: thin; } .chip { white-space: nowrap; flex: none; } }
+/* Model Router anti-pattern */
+.anti { border-color: #f6d3d6; }
+.anti-tag { display: inline-block; font: 600 11px ui-monospace, Menlo, monospace; text-transform: uppercase; letter-spacing: .04em; color: var(--coral); background: #fdecee; padding: 3px 8px; border-radius: 999px; margin-bottom: 8px; }
+.anti-output { background: linear-gradient(135deg, #fff, #fdf1f2); }
+.route-pick strong.muted { color: var(--fog); }
+.is-anti .trace-type { color: var(--coral); border-color: #f6d3d6; background: #fdecee; }
+.is-anti .trace-read { background: #fdecee; color: var(--coral); }
+.anti .tt tr.hit td { background: #fdecee; }
+.anti .tt tr.hit td:first-child { box-shadow: inset 3px 0 var(--coral); }
+.anti-why { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--bone); }
+.anti-why h4 { color: var(--ink); margin-top: 0; }
+.anti-why ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--steel); display: grid; gap: 6px; }
+.anti-why strong { color: var(--ink); font-weight: 600; }

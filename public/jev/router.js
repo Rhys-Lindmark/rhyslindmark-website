@@ -144,7 +144,30 @@ function renderApi() {
   $('route-request').textContent = JSON.stringify(current.data.request, null, 2);
   $('route-response').textContent = JSON.stringify(current.data.response, null, 2);
 }
-const renderAll = () => { renderOutput(); renderTrace(); renderTables(); renderApi(); };
+// ---- Anti-pattern: Jev picks the model; "code" just takes the top option ----
+const ANTI = ['Sonnet', 'Opus', 'Fable'];
+function renderAnti(pending) {
+  const c = current?.data.answers.model_choice;
+  if (pending || !c) {
+    $('anti-output').replaceChildren(h('p', 'route-empty', pending ? 'Asking Jev to pick a model…' : 'Pick a prompt above to see what one Choice would pick.'));
+    $('anti-trace').replaceChildren(h('p', 'route-empty', 'One question. Jev answers it with a decision.'));
+  } else {
+    $('anti-output').replaceChildren(
+      h('p', 'route-quote', `“${current.prompt}”`),
+      h('div', 'route-pick',
+        h('div', null, h('span', 'route-k', 'Model'), h('strong', null, `Claude ${c.choice}`), h('span', 'route-sub', `${pct(c.probabilities[c.choice])} probability`)),
+        h('div', null, h('span', 'route-k', 'Reasoning'), h('strong', 'muted', '—'), h('span', 'route-sub', 'not asked, so no answer'))),
+      h('p', 'route-meta', 'Same call as the router · provider toggle does nothing here'));
+    $('anti-trace').replaceChildren(traceRow('choice', 'Which model should I use for this prompt?',
+      ANTI.map(k => h('span', k === c.choice ? 'opt on' : 'opt', `${k} ${pct(c.probabilities[k])}`)), c.choice, 'is-anti'));
+  }
+  const rows = ANTI.map(k => h('tr', c && k === c.choice ? 'hit' : '', h('td', null, k), h('td', null, c ? pct(c.probabilities[k]) : '–'), h('td', null, `Claude ${k}`)));
+  $('anti-table').replaceChildren(
+    h('h4', null, 'argmax', h('span', null, ' highest probability wins')),
+    table(['Option', 'Probability', 'Use'], rows),
+    h('p', 'note', 'That’s the whole table. There are no inputs to inspect, no rows to edit, and no way to explain why one model won.'));
+}
+const renderAll = () => { renderOutput(); renderTrace(); renderTables(); renderApi(); renderAnti(); };
 
 function renderWidget() {
   if (rendered || !window.turnstile || window.jevHuman?.ok()) return;
@@ -168,6 +191,7 @@ async function route(prompt) {
   if (!human()) { showError('Complete the human check above first.'); renderWidget(); return; }
   setBusy(true); showError('');
   $('route-output').replaceChildren(h('p', 'route-empty', `Asking Jev about “${prompt}”…`));
+  renderAnti(true);
   try {
     const response = await fetch('/api/jev', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ demo: 'route', prompt, verification_token: token || undefined }), signal: AbortSignal.timeout(45000) });
     let data; try { data = await response.json(); } catch { throw new Error('The server returned an unreadable response. Please try again.'); }
@@ -176,7 +200,7 @@ async function route(prompt) {
     cache.set(prompt, data); current = { prompt, data }; renderAll();
     $('route-human-check').hidden = window.jevHuman.ok();
   } catch (error) {
-    renderOutput(); showError(error.name === 'TimeoutError' ? 'The request timed out. Please try again.' : error.message);
+    renderOutput(); renderAnti(); showError(error.name === 'TimeoutError' ? 'The request timed out. Please try again.' : error.message);
   } finally {
     setBusy(false); token = '';
     if (widgetId !== undefined && !window.jevHuman.ok()) window.turnstile.reset(widgetId);
