@@ -1,0 +1,44 @@
+/* Threshold Explorer. Built on minimal.css tokens. */
+.th-lede { max-width: 68ch; font-size: 17px; line-height: 1.5; margin: 0 0 24px; }
+.th-controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; margin-bottom: 8px; }
+.th-controls .chips { margin: 0; min-width: 0; max-width: 100%; flex-wrap: wrap; }
+.th-controls .chip { white-space: normal; max-width: 100%; }
+.th-budgets { display: flex; align-items: center; gap: 8px; }
+.th-budgets .note { margin: 0; }
+#th-budget-buttons { display: inline-flex; gap: 6px; }
+#th-slider { width: 100%; padding: 0; accent-color: var(--jev-ink); background: none; border: 0; height: 28px; }
+.th-strip-wrap { margin: 8px 0 20px; }
+#th-strip { width: 100%; height: auto; display: block; background: #fff; border: 1px solid var(--bone); }
+#th-strip circle.ok { fill: var(--fog); }
+#th-strip circle.bad { fill: var(--jev-alert); cursor: pointer; }
+#th-strip circle.dim { opacity: .35; }
+#th-strip circle:focus { outline: none; stroke: var(--jev-ink); stroke-width: 2; }
+.th-human-zone { fill: var(--jev-mist); }
+.th-line { stroke: var(--jev-ink); stroke-width: 2; }
+.th-axis { font: 400 12px var(--jev-font-mono); fill: var(--steel); }
+.th-axis.strong { fill: var(--jev-ink); font-weight: 500; }
+.th-strip-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 13px; margin-top: 8px; }
+.th-strip-legend .note { margin: 0; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.dot.ok { background: var(--fog); }
+.dot.bad { background: var(--jev-alert); }
+.th-tip { min-height: 2.9em; font-size: 14px; margin: 10px 0 0; }
+.th-tip .note { display: block; margin-top: 2px; }
+.th-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.th-stat { border: 1px solid var(--bone); padding: 14px; background: #fff; display: flex; flex-direction: column; gap: 4px; }
+.th-stat strong { font: 500 32px/1 var(--jev-font-display); letter-spacing: var(--jev-tracking-display); }
+.th-stat .note { margin: 0; }
+.th-k { font: 500 11px/1.2 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--steel); }
+.th-cost { margin-top: 24px; }
+.th-cost-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.th-cost-inputs label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--steel); margin: 0; }
+.th-cost-inputs input { padding: 8px 10px; }
+.th-cost-table { overflow-x: auto; margin-top: 12px; }
+.th-cost-table table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+.th-cost-table th, .th-cost-table td { text-align: right; padding: 8px 10px; border-bottom: 1px solid var(--bone); }
+.th-cost-table th:first-child, .th-cost-table td:first-child { text-align: left; }
+.th-cost-table th { font: 500 11px/1.2 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--steel); }
+.th-cost-table tr:last-child td { background: var(--jev-rose-soft); }
+.th-misses { margin: 0; padding-left: 20px; display: grid; gap: 10px; }
+.th-miss-text { display: block; font-size: 14px; }
+.th-misses .note { margin: 2px 0 0; display: block; }
