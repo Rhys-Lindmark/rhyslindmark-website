@@ -29,6 +29,7 @@ ROOT = Path(__file__).parent
 ARMS = ["parent", "hard", "soft", "synth"]
 LABELS = {"jev": "Jev 1.14 (hosted)", "parent": "Kev-4B (released)", "hard": "+ crowd, majority labels",
           "soft": "+ crowd, human vote shares", "synth": "+ crowd, synthetic votes", "kev-27b": "Kev-27B (released)", "autojev": "AutoJev-27B"}
+HEAD_TO_HEAD = [("soft", "hard"), ("synth", "soft"), ("synth", "hard")]  # arm-vs-arm comparisons, same questions
 SELECTIVE = ("acc", "brier", "nll", "ece", "aurc", "coverage_at_5pct_error", "confident_error_rate")
 
 
@@ -173,6 +174,8 @@ def main():
         if "parent" in rows_by:
             for name in rows_by:
                 if name != "parent": panel[name]["vs_parent"] = crowd_paired(rows_by[name], rows_by["parent"], targets)
+        for x, y in HEAD_TO_HEAD:
+            if x in rows_by and y in rows_by: panel[x][f"vs_{y}"] = crowd_paired(rows_by[x], rows_by[y], targets)
         out["panels"][read] = panel
         out.setdefault("common_questions", {})[read] = len(common)
     # selective-prediction panels
@@ -189,6 +192,8 @@ def main():
             for arm in ("hard", "soft", "synth", "jev"):
                 if arm in rows_by:
                     panel[arm]["vs_parent"] = {m: paired(rows_by[arm], rows_by["parent"], m) for m in ("acc", "brier", "aurc", "coverage_at_5pct_error")}
+        for x, y in HEAD_TO_HEAD:
+            if x in rows_by and y in rows_by: panel[x][f"vs_{y}"] = {m: paired(rows_by[x], rows_by[y], m) for m in ("acc", "brier", "aurc", "coverage_at_5pct_error")}
         out["panels"][read] = panel
     for arm in ARMS:
         p = ROOT / "runs" / arm / "eval/summary.json"

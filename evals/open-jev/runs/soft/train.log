@@ -1,0 +1,52 @@
+/usr/local/lib/python3.13/site-packages/transformers/modeling_utils.py:3204: FutureWarning: `gradient_checkpointing_enable` is deprecated and will be removed in v6. Use `activation_checkpointing_enable` instead.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+delta: warm start from /__modal/volumes/vo-op1lLfxKGqphNVDgfFjVZm/hub/models--jaredpalmer--kev-4b/snapshots/6cfce5c2fa4b4bd64026336ab649c5ca78857d52: 496 lora tensors and the pointer head loaded
+device=cuda world=1 trainable params=33.8M
+fetched v7/decision-v7/train.jsonl from jaredpalmer/kev-suites@cc4bac803e
+replay: 2000 of 12576 suite training records mixed with 7500 from /runs/soft/train.jsonl
+dropped 1 of 9500 records that exceed the training context (2048 state / 2688 branch / 3712 packed tokens)
+9499 training requests (holdout=[]), questions by type {'score': 14058, 'choice': 4072, 'noul': 3816}
+[transformers] `causal_conv1d_fn` is falling back to its reference PyTorch implementation because `causal_conv1d` is not installed. This is correct but much slower; install `causal_conv1d` for the optimized kernel.
+[transformers] `chunk_gated_delta_rule` is falling back to its reference PyTorch implementation because `flash-linear-attention` is not installed. This is correct but much slower; install `flash-linear-attention` for the optimized kernel.
+ep0 step 10/400 loss 1.185 kl 0.000 anchor 0.000 0.445s/rec
+ep0 step 20/400 loss 0.987 kl 0.000 anchor 0.000 0.444s/rec
+ep0 step 30/400 loss 0.826 kl 0.000 anchor 0.000 0.462s/rec
+ep0 step 40/400 loss 1.006 kl 0.000 anchor 0.000 0.464s/rec
+ep0 step 50/400 loss 0.805 kl 0.000 anchor 0.000 0.470s/rec
+ep0 step 60/400 loss 0.803 kl 0.000 anchor 0.000 0.461s/rec
+ep0 step 70/400 loss 0.858 kl 0.000 anchor 0.000 0.461s/rec
+ep0 step 80/400 loss 0.931 kl 0.000 anchor 0.000 0.459s/rec
+ep0 step 90/400 loss 0.869 kl 0.000 anchor 0.000 0.461s/rec
+ep0 step 100/400 loss 0.837 kl 0.000 anchor 0.000 0.469s/rec
+ep0 step 110/400 loss 0.838 kl 0.000 anchor 0.000 0.462s/rec
+ep0 step 120/400 loss 0.766 kl 0.000 anchor 0.000 0.461s/rec
+ep0 step 130/400 loss 0.965 kl 0.000 anchor 0.000 0.466s/rec
+ep0 step 140/400 loss 0.834 kl 0.000 anchor 0.000 0.468s/rec
+ep0 step 150/400 loss 0.860 kl 0.000 anchor 0.000 0.465s/rec
+ep0 step 160/400 loss 0.891 kl 0.000 anchor 0.000 0.465s/rec
+ep0 step 170/400 loss 0.756 kl 0.000 anchor 0.000 0.463s/rec
+ep0 step 180/400 loss 0.829 kl 0.000 anchor 0.000 0.462s/rec
+ep0 step 190/400 loss 0.778 kl 0.000 anchor 0.000 0.460s/rec
+ep0 step 200/400 loss 0.835 kl 0.000 anchor 0.000 0.455s/rec
+ep0 step 210/400 loss 0.735 kl 0.000 anchor 0.000 0.454s/rec
+ep0 step 220/400 loss 0.831 kl 0.000 anchor 0.000 0.454s/rec
+ep0 step 230/400 loss 0.880 kl 0.000 anchor 0.000 0.452s/rec
+ep0 step 240/400 loss 0.877 kl 0.000 anchor 0.000 0.455s/rec
+ep0 step 250/400 loss 0.955 kl 0.000 anchor 0.000 0.456s/rec
+ep0 step 260/400 loss 0.772 kl 0.000 anchor 0.000 0.458s/rec
+ep0 step 270/400 loss 0.910 kl 0.000 anchor 0.000 0.458s/rec
+ep0 step 280/400 loss 0.776 kl 0.000 anchor 0.000 0.458s/rec
+ep0 step 290/400 loss 0.900 kl 0.000 anchor 0.000 0.458s/rec
+ep0 step 300/400 loss 0.866 kl 0.000 anchor 0.000 0.458s/rec
+ep0 step 310/400 loss 0.826 kl 0.000 anchor 0.000 0.458s/rec
+ep0 step 320/400 loss 0.851 kl 0.000 anchor 0.000 0.458s/rec
+ep0 step 330/400 loss 0.779 kl 0.000 anchor 0.000 0.457s/rec
+ep0 step 340/400 loss 0.825 kl 0.000 anchor 0.000 0.456s/rec
+ep0 step 350/400 loss 0.860 kl 0.000 anchor 0.000 0.455s/rec
+ep0 step 360/400 loss 0.814 kl 0.000 anchor 0.000 0.456s/rec
+ep0 step 370/400 loss 0.770 kl 0.000 anchor 0.000 0.455s/rec
+ep0 step 380/400 loss 0.845 kl 0.000 anchor 0.000 0.456s/rec
+ep0 step 390/400 loss 0.784 kl 0.000 anchor 0.000 0.456s/rec
+ep0 step 400/400 loss 0.884 kl 0.000 anchor 0.000 0.456s/rec
+saved /runs/soft/checkpoint
