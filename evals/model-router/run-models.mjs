@@ -75,10 +75,10 @@ async function call(job) {
     provider: { require_parameters: true } // only providers that honor the reasoning setting
   };
   const started = Date.now();
-  for (let attempt = 0; attempt < 5; attempt++) {
+  for (let attempt = 0; attempt < 3; attempt++) {
     const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST', headers: { Authorization: `Bearer ${process.env.OPENROUTER_KEY_JEV_EVAL}`, 'Content-Type': 'application/json', 'X-Title': 'model-router-eval' },
-      body: JSON.stringify(body), signal: AbortSignal.timeout(600000)
+      body: JSON.stringify(body), signal: AbortSignal.timeout(300000)
     }).catch(e => ({ ok: false, status: 0, text: async () => String(e) }));
     if (r.ok) {
       const data = await r.json();
@@ -95,19 +95,25 @@ async function call(job) {
   throw new Error(`${job.id}: gave up after retries`);
 }
 
+// One continuous stream of requests, CONCURRENCY at a time: a slow request
+// never holds up the others. Before each request the budget is checked against
+// what has been spent plus what is in flight, so the run stops just short of it.
 async function runJobs(jobs, label) {
-  console.log(`${label}: ${jobs.length} requests`);
-  let next = 0, done = 0, failed = 0;
+  console.log(`${label}: ${jobs.length} requests, projected $${projected(jobs).toFixed(2)}`);
+  let next = 0, done = 0, failed = 0, inFlight = 0, stopped = false;
   const worker = async () => {
-    while (next < jobs.length) {
-      const job = jobs[next++];
+    while (next < jobs.length && !stopped) {
+      const job = jobs[next], need = projected([job]) * 1.15;
+      if (spent() + inFlight + need > BUDGET_USD) { stopped = true; console.log(`  stopping: next request would pass the $${BUDGET_USD} budget`); break; }
+      next++; inFlight += need;
       try { appendFileSync(RAW, JSON.stringify(await call(job)) + '\n'); done++; }
-      catch (e) { failed++; console.log(`  ${e.message}`); if (/HTTP 40[12]/.test(e.message)) throw e; }
+      catch (e) { failed++; console.log(`  ${e.message}`); if (/HTTP 40[12]/.test(e.message)) stopped = true; }
+      finally { inFlight -= need; }
       if ((done + failed) % 40 === 0) console.log(`  ${done + failed}/${jobs.length} · spent $${spent().toFixed(3)}`);
     }
   };
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
-  console.log(`  ${label} done: ${done} ok, ${failed} failed. Spent so far: $${spent().toFixed(3)} of $${BUDGET_USD}`);
+  console.log(`  ${label}: ${done} ok, ${failed} failed (failed ones rerun next time). Spent $${spent().toFixed(3)} of $${BUDGET_USD}`);
 }
 
 async function main() {
@@ -115,23 +121,14 @@ async function main() {
   console.log(`${TASKS.length} tasks x ${ARMS.length} arms = ${TASKS.length * ARMS.length} requests per round; budget $${BUDGET_USD}; spent $${spent().toFixed(3)}`);
   if (cmd === 'plan') {
     for (const [t, m] of Object.entries(MODELS)) console.log(`  ${t.padEnd(7)} -> ${m}`);
-    console.log(`stage 1: probe ${PROBE_TASKS.length} tasks x ${ARMS.length} arms; then up to ${MAX_REPS} full rounds in chunks of 15 tasks, each only if it fits the budget`);
+    console.log(`stage 1: probe ${PROBE_TASKS.length} tasks x ${ARMS.length} arms; then up to ${MAX_REPS} full rounds as one stream, checking the budget before every request`);
     return;
   }
   if (cmd !== 'run') throw new Error(`unknown command ${cmd}`);
   if (!process.env.OPENROUTER_KEY_JEV_EVAL) { console.error('OPENROUTER_KEY_JEV_EVAL is not set (use bws run, or .env). See README.'); process.exit(1); }
   if (!readRaw().length) await runJobs(todo(0, PROBE_TASKS), 'probe');
-  const CHUNK = 15 * ARMS.length;
-  outer: for (let rep = 0; rep < MAX_REPS; rep++) {
-    const round = todo(rep);
-    if (!round.length) continue;
-    console.log(`round ${rep + 1}: ${round.length} requests, projected $${projected(round).toFixed(2)}`);
-    for (let i = 0; i < round.length; i += CHUNK) {
-      const jobs = round.slice(i, i + CHUNK), need = projected(jobs), left = BUDGET_USD - spent();
-      if (need * 1.15 > left) { console.log(`  stopping: next chunk projected $${need.toFixed(2)}, only $${left.toFixed(2)} left`); break outer; }
-      await runJobs(jobs, `round ${rep + 1}, chunk ${i / CHUNK + 1}`);
-    }
-  }
+  // Every remaining (task, arm, repeat), first repeats first, as one stream.
+  await runJobs(Array.from({ length: MAX_REPS }, (_, rep) => todo(rep)).flat(), `rounds 1-${MAX_REPS}`);
   console.log(`done. Spent $${spent().toFixed(3)} of $${BUDGET_USD}.`);
 }
 

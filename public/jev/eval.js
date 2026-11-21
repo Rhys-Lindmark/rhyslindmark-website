@@ -12,8 +12,7 @@ const SERIES = {
   fixed: { label: 'One model for everything', color: '#9a9a9a', shape: 'square' },
   router: { label: 'Router (truth table)', color: '#e0179f', shape: 'circle' },
   choice: { label: 'Choice (argmax)', color: '#e01a2b', shape: 'diamond' },
-  learned: { label: 'Learned router (λ sweep)', color: '#7a4be8', shape: 'line' },
-  oracle: { label: 'Oracle (best possible)', color: '#0a8a68', shape: 'triangle' }
+  learned: { label: 'Learned router (cost dial λ)', color: '#7a4be8', shape: 'line' }
 };
 
 function marker(shape, x, y, color, r = 5) {
@@ -26,7 +25,7 @@ function marker(shape, x, y, color, r = 5) {
 
 function chart(data, tip) {
   const W = 640, H = 340, m = { l: 48, r: 16, t: 12, b: 40 };
-  const pts = data.policies.filter(p => p.kind !== 'router-variant');
+  const pts = data.policies.filter(p => p.kind !== 'router-variant' && p.kind !== 'oracle');
   const costs = pts.map(p => Math.max(p.cost, 0.01));
   const x0 = Math.log10(Math.min(...costs) / 1.6), x1 = Math.log10(Math.max(...costs) * 1.6);
   const X = c => m.l + (Math.log10(Math.max(c, 0.01)) - x0) / (x1 - x0) * (W - m.l - m.r);
@@ -52,9 +51,9 @@ function chart(data, tip) {
     g.addEventListener('mouseleave', () => tip(null)); g.addEventListener('blur', () => tip(null));
     svg.append(g);
   }
-  // selective direct labels: the router, the oracle, the two Choice points
-  for (const p of pts.filter(p => ['router', 'oracle', 'choice'].includes(p.kind))) {
-    svg.append(s('text', { x: X(p.cost) + 9, y: Y(p.pass) - 8, class: 'pt-label' }, p.kind === 'choice' ? `Choice · ${p.name.includes('high') ? 'high' : 'low'}` : p.kind === 'router' ? 'Router' : 'Oracle'));
+  // selective direct labels: the router and the two Choice points
+  for (const p of pts.filter(p => ['router', 'choice'].includes(p.kind))) {
+    svg.append(s('text', { x: X(p.cost) + 9, y: Y(p.pass) - 8, class: 'pt-label' }, p.kind === 'choice' ? `Choice · ${p.name.includes('high') ? 'high' : 'low'}` : 'Router'));
   }
   return svg;
 }
@@ -70,7 +69,7 @@ function legend() {
 function render(data) {
   const armLabel = a => data.arm_names?.[a] ?? a.replace(':', ' · ');
   const best = (kind) => data.policies.filter(p => p.kind === kind);
-  const router = best('router')[0], oracle = best('oracle')[0];
+  const router = best('router')[0];
   // the learned point closest in cost to the router, for a like-for-like row
   const learned = [...data.learned_curve].sort((a, b) => Math.abs(Math.log(a.cost / router.cost)) - Math.abs(Math.log(b.cost / router.cost)))[0];
   const box = h('div', 'eval-chart-box'), tipEl = h('div', 'eval-tip'); tipEl.hidden = true;
@@ -86,7 +85,6 @@ function render(data) {
     ['Choice · low effort', data.policies.find(p => p.kind === 'choice' && p.name.includes('low'))],
     ['Choice · high effort', data.policies.find(p => p.kind === 'choice' && p.name.includes('high'))],
     [`Learned router · λ=${learned.lambda}`, data.policies.find(p => p.kind === 'learned' && p.lambda === learned.lambda)],
-    ['Oracle', oracle],
     ...best('fixed').map(p => [p.name.replace('Always ', 'Always '), p])
   ];
   const table = h('table', 'tt eval-table', h('thead', null, h('tr', null, ...['Policy', 'Pass rate', 'Per 1k prompts', 'vs. random routing'].map(c => h('th', null, c)))),
@@ -103,12 +101,12 @@ function render(data) {
     h('p', 'eval-meta', `${data.tasks} prompts with code-checked answers · ${data.reps} run${data.reps === 1 ? '' : 's'} of each on ${data.arms.length} model/effort combinations · ${usd(data.spent_usd)} spent · ${data.jev_model ?? ''}`),
     data.tiers ? h('p', 'eval-tiers', 'To keep costs low, open models played the router’s four tiers: ', ...Object.entries(data.tiers).flatMap(([t, m], i, all) => [h('strong', null, `${t[0].toUpperCase()}${t.slice(1)}`), ` → ${m.name}${i < all.length - 1 ? ', ' : '.'}`]), ' Same truth table, same Jev answers; only the models behind each tier differ.') : null,
     legend(), box,
-    h('p', 'note', 'Each point routes all prompts one way. Up and to the left is better. The oracle knows every result in advance, so nothing can beat it. "vs. random routing" deals the same mix of models to prompts at random 10,000 times; a policy beats it if it scores above the 95th percentile. The learned router is fit on Jev’s five judgments with one category held out at a time.'),
+    h('p', 'note', 'Each point routes all prompts one way. Up and to the left is better. "vs. random routing" deals the same mix of models to prompts at random 10,000 times; a policy beats it if it scores above the 95th percentile. The learned router replaces the hand-written truth table with a small model fit on Jev’s same five judgments (one category held out at a time); the line sweeps its cost dial λ from "most likely to pass" to "cheapest".'),
     h('h3', 'eval-h3', 'Policies'), h('div', 'cmp-scroll', table),
     data.by_bucket ? h('h3', 'eval-h3', 'By difficulty') : null,
     data.by_bucket ? h('p', 'note', `Difficulty is measured, not guessed: a prompt is easy if all ${data.arms.length} model/effort combinations passed it in a calibration run, medium if 1–2 failed, hard if 3 or more failed. ${Object.entries(data.bucket_counts).map(([b, n]) => `${n} ${b}`).join(', ')}.`) : null,
     data.by_bucket ? h('div', 'cmp-scroll', h('table', 'tt eval-table', h('thead', null, h('tr', null, ...['Policy', 'Easy', 'Medium', 'Hard'].map(c => h('th', null, c)))),
-      h('tbody', null, ...data.by_bucket.filter(p => p.kind !== 'fixed' || /Always .* · low/.test(p.name)).map(p => h('tr', p.kind === 'router' ? 'hit' : '', h('td', null, p.name.replace('Always ', 'Always ')),
+      h('tbody', null, ...data.by_bucket.filter(p => p.kind !== 'oracle' && (p.kind !== 'fixed' || /Always .* · low/.test(p.name))).map(p => h('tr', p.kind === 'router' ? 'hit' : '', h('td', null, p.name.replace('Always ', 'Always ')),
         ...['easy', 'medium', 'hard'].map(b => h('td', null, p[b] ? `${pct(p[b].pass)} · ${usd(p[b].cost)}` : '–'))))))) : null,
     h('h3', 'eval-h3', `Where the router sent each prompt`),
     h('div', 'eval-verdicts', ...verdicts.map(([k, label]) => h('div', `v-${k.replace(/ /g, '-')}`, h('strong', null, String(c[k])), h('span', null, label)))),
