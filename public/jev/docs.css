@@ -112,10 +112,11 @@
 .docs .markdown td { color: var(--jev-steel); }
 .docs .markdown td:first-child { color: var(--jev-ink); }
 .docs .markdown th:last-child, .docs .markdown td:last-child { padding-right: 0; }
-/* Index tables (Cookbook | What it does | Level) line up from one section to the next. */
-.docs .markdown table:has(th:nth-child(3):last-child) { table-layout: fixed; }
-.docs .markdown table:has(th:nth-child(3):last-child) th:first-child { width: 27%; }
-.docs .markdown table:has(th:nth-child(3):last-child) th:last-child { width: 17%; }
+/* Index tables (Cookbook | What it does | Level: three columns, a link first) line up
+   from one section to the next. Other tables size to their content. */
+.docs .markdown table:has(th:nth-child(3):last-child):has(td:first-child > a:only-child) { table-layout: fixed; }
+.docs .markdown table:has(th:nth-child(3):last-child):has(td:first-child > a:only-child) th:first-child { width: 27%; }
+.docs .markdown table:has(th:nth-child(3):last-child):has(td:first-child > a:only-child) th:last-child { width: 17%; }
 .docs .markdown pre { margin: 0 0 20px; font-size: 13px; line-height: 20px; border-color: var(--jev-silver); }
 /* Program output (```text) sits under the code that printed it, on paper, not mist. */
 .docs .markdown pre:has(> code.language-text) { background: var(--jev-paper); }
