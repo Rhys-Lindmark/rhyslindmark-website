@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Drag a confidence threshold over 700 recorded Jev answers and watch how much Jev handles, how often it's wrong, and what goes to a person."><title>Threshold Explorer</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/threshold/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/threshold/threshold.css?v=threshold-1"><meta name="robots" content="noindex"></head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>Threshold Explorer</h1></header>
 <main>
-<p class="th-lede">Every production Jev story has the same shape: when Jev is sure enough, it handles the case; otherwise a person (or a bigger model) does. “Sure enough” is one number you choose. Drag it and watch what you’re buying, on real recorded Jev answers.</p>
+<p class="th-lede">When Jev is sure enough, it handles the case; otherwise a person does. “Sure enough” is one number. Drag it and see what you get, on real Jev answers.</p>
 
 <section class="demo" aria-labelledby="th-title">
 <div class="demo-heading"><h2 id="th-title">Where would you draw the line?</h2><p id="th-question"></p></div>
@@ -36,7 +36,7 @@
 </section>
 
 <section class="demo" aria-labelledby="miss-title">
-<div class="demo-heading"><h2 id="miss-title">Read the misses before you trust the number</h2><p>The wrong answers Jev would still handle at this threshold, most confident first. Some are Jev; some are label noise or two intents that mean the same thing.</p></div>
+<div class="demo-heading"><h2 id="miss-title">Read the misses before you trust the number</h2><p>Wrong answers Jev would still handle at this line, most confident first. Some are label noise.</p></div>
 <ol id="th-misses" class="th-misses"></ol>
 </section>
 
