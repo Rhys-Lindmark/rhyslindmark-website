@@ -1,8 +1,6 @@
 // Threshold Explorer: the coverage-vs-error trade-off from Trust Meter, made draggable.
 // Same statistics as takehome/demos/a2-trust-meter/calibration.mjs.
 import { DATA } from './data.js?v=threshold-1';
-// Flash and Frontier LLM answers on the same rows. Absent until evals/threshold-ladder/run.mjs has been run.
-const LADDER = await import('./ladder.js?v=threshold-ladder-1').then(m => m.LADDER, () => null);
 
 const $ = id => document.getElementById(id);
 const pct = (x, d = 1) => `${(100 * x).toFixed(d)}%`;
@@ -18,9 +16,9 @@ function wilsonHigh(k, n, z = 1.96) {
 // One point per message: the probability of the answer you'd act on, and whether it was right.
 // For a Noul that's whichever side is above 0.5, so its probability is max(p, 1 - p).
 function points(ds) {
-  return ds.rows.map((r, i) => ds.kind === 'choice'
-    ? { i, conf: r[0], hit: r[1] === r[2], said: r[1].replaceAll('_', ' '), truth: r[2].replaceAll('_', ' '), label: r[2], text: r[3] }
-    : { i, conf: Math.max(r[0], 1 - r[0]), hit: (r[0] >= 0.5) === r[1], said: r[0] >= 0.5 ? `ironic (p ${r[0].toFixed(2)})` : `not ironic (p ${r[0].toFixed(2)})`, truth: r[1] ? 'ironic' : 'not ironic', label: r[1], text: r[2] });
+  return ds.rows.map(r => ds.kind === 'choice'
+    ? { conf: r[0], hit: r[1] === r[2], said: r[1].replaceAll('_', ' '), truth: r[2].replaceAll('_', ' '), text: r[3] }
+    : { conf: Math.max(r[0], 1 - r[0]), hit: (r[0] >= 0.5) === r[1], said: r[0] >= 0.5 ? `ironic (p ${r[0].toFixed(2)})` : `not ironic (p ${r[0].toFixed(2)})`, truth: r[1] ? 'ironic' : 'not ironic', text: r[2] });
 }
 const at = (pts, t) => { const kept = pts.filter(p => p.conf >= t), errs = kept.filter(p => !p.hit).length; return { t, kept, n: kept.length, errs, coverage: kept.length / pts.length, error: kept.length ? errs / kept.length : 0, error_hi: wilsonHigh(errs, kept.length) }; };
 // Trust Meter's rule: the threshold with the most coverage whose observed error fits the budget, with at least 20 cases.
@@ -30,59 +28,13 @@ function forBudget(pts, budget) {
   return best;
 }
 
-// The ladder: Jev first; what it passes up goes to Flash, then Frontier, then a person.
-// A level takes a case when its confidence clears its line; a model with no usable reply passes it up.
-const TIERS = ['flash', 'frontier'], ladder = { flash: { on: true, t: 0.9 }, frontier: { on: true, t: 0.9 } };
-const perCall = (ds, tier) => LADDER[ds][tier].cost_usd / Math.max(1, LADDER[ds][tier].n);
-function climb(s) {
-  let rest = pts.filter(p => p.conf < s.t);
-  const levels = [{ key: 'jev', name: 'Jev', calls: pts.length, n: s.n, errs: s.errs, perCall: DATA[name].cost_usd / DATA[name].n }];
-  for (const tier of TIERS) {
-    const L = LADDER[name][tier], lv = { key: tier, name: `${tier === 'flash' ? 'Flash' : 'Frontier'} · ${L.model}`, calls: 0, n: 0, errs: 0, perCall: perCall(name, tier) };
-    if (ladder[tier].on) {
-      lv.calls = rest.length;
-      const next = [];
-      for (const p of rest) { const a = L.answers[p.i]; if (a && a[1] >= ladder[tier].t) { lv.n++; if (a[0] !== p.label) lv.errs++; } else next.push(p); }
-      rest = next;
-    }
-    levels.push(lv);
-  }
-  levels.push({ key: 'human', name: 'Human', calls: rest.length, n: rest.length, errs: 0, perCall: 0 });
-  return levels;
-}
-
-function renderLadderControls() {
-  $('th-ladder').hidden = !LADDER;
-  if (!LADDER) return;
-  $('l-flash-name').textContent = LADDER[name].flash.model; $('l-frontier-name').textContent = LADDER[name].frontier.model;
-  $('th-ladder-ctl').replaceChildren(...TIERS.map(tier => {
-    const box = h('input'); box.type = 'checkbox'; box.checked = ladder[tier].on;
-    const sl = h('input'); sl.type = 'range'; sl.min = '0.50'; sl.max = '1.00'; sl.step = '0.01'; sl.value = ladder[tier].t; sl.disabled = !ladder[tier].on;
-    const val = h('strong', null, ladder[tier].t.toFixed(2));
-    box.addEventListener('change', () => { ladder[tier].on = box.checked; sl.disabled = !box.checked; render(); });
-    sl.addEventListener('input', () => { ladder[tier].t = +(+sl.value).toFixed(2); val.textContent = ladder[tier].t.toFixed(2); render(); });
-    sl.setAttribute('aria-label', `${tier} confidence line`);
-    return h('div', 'th-ladder-row', h('label', 'th-ladder-on', box, tier === 'flash' ? 'Flash' : 'Frontier'), h('span', 'note', 'takes it when its confidence is at least '), val, sl);
-  }));
-}
-function renderLadder(levels) {
-  if (!LADDER) return;
-  const N = pts.length, v = Math.max(0, +$('c-volume').value || 0), hc = Math.max(0, +$('c-human').value || 0);
-  $('th-bar').replaceChildren(...levels.filter(l => l.n).map(l => { const seg = h('span', `th-seg ${l.key}`, l.n / N >= 0.07 ? `${l.name.split(' · ')[0]} ${pct(l.n / N, 0)}` : ''); seg.style.flexGrow = l.n; seg.title = `${l.name}: ${l.n} of ${N}`; return seg; }));
-  const errs = levels.reduce((a, l) => a + l.errs, 0), cost = l => l.key === 'human' ? v * (l.n / N) * hc : v * (l.calls / N) * l.perCall;
-  $('th-levels').replaceChildren(
-    h('thead', null, h('tr', null, ...['Level', 'Sees', 'Handles', 'Error on what it handles', 'Cost per day'].map(x => h('th', null, x)))),
-    h('tbody', null, ...levels.map(l => h('tr', null, h('td', null, h('i', `sw ${l.key}`), l.name), h('td', null, l.calls ? `${l.calls}` : 'off'), h('td', null, l.calls ? `${pct(l.n / N)} (${l.n})` : '–'), h('td', null, l.key === 'human' ? 'counted as 0%' : l.n ? `${pct(l.errs / l.n)} (${l.errs})` : '–'), h('td', null, money(cost(l))))),
-      h('tr', null, h('td', null, h('strong', null, 'All levels')), h('td', null, `${N}`), h('td', null, '100%'), h('td', null, h('strong', null, `${pct(errs / N)} (${errs})`)), h('td', null, h('strong', null, money(levels.reduce((a, l) => a + cost(l), 0)))))));
-}
-
 const NAMES = { banking77: 'Banking77 · 400 support messages, 77 intents', irony: 'Irony · 300 tweets, yes/no' };
 let name = 'banking77', pts = points(DATA[name]), t = 0.85;
 
 function renderDatasets() {
   $('th-datasets').replaceChildren(...Object.keys(DATA).map(k => {
     const b = h('button', `chip${k === name ? ' active' : ''}`, NAMES[k]); b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(k === name));
-    b.addEventListener('click', () => { name = k; pts = points(DATA[k]); const b5 = forBudget(pts, 0.05); setT(b5 ? b5.t : 0.8); renderDatasets(); renderBudgets(); renderLadderControls(); render(); });
+    b.addEventListener('click', () => { name = k; pts = points(DATA[k]); const b5 = forBudget(pts, 0.05); setT(b5 ? b5.t : 0.8); renderDatasets(); renderBudgets(); });
     return b;
   }));
   const ds = DATA[name];
@@ -122,26 +74,17 @@ function renderStrip(s) {
 
 function renderCost(s) {
   const v = Math.max(0, +$('c-volume').value || 0), hc = Math.max(0, +$('c-human').value || 0), ec = Math.max(0, +$('c-error').value || 0);
-  const ds = DATA[name], jevPer = ds.cost_usd / ds.n, all = at(pts, 0), N = pts.length;
-  // models: model spend per message; human: share to people; wrong: share answered wrongly.
-  const line = (label, models, human, wrong) => {
-    const m = v * models, people = v * human * hc, w = v * wrong, total = m + people + w * ec;
-    return h('tr', null, h('td', null, label), h('td', null, money(m)), h('td', null, money(people)), h('td', null, Math.round(w).toLocaleString('en-US')), h('td', null, h('strong', null, money(total))));
+  const ds = DATA[name], jevPer = ds.cost_usd / ds.n, all = at(pts, 0);
+  const row = (label, cover, err) => {
+    const jev = v * jevPer, people = v * (1 - cover) * hc, wrong = v * cover * err, total = jev + people + wrong * ec;
+    return h('tr', null, h('td', null, label), h('td', null, money(jev)), h('td', null, money(people)), h('td', null, Math.round(wrong).toLocaleString('en-US')), h('td', null, h('strong', null, money(total))));
   };
-  const row = (label, cover, err) => line(label, jevPer, 1 - cover, cover * err);
-  const llmAll = tier => { const L = LADDER[name][tier], wrong = pts.filter(p => { const a = L.answers[p.i]; return !a || a[0] !== p.label; }).length; return line(`${L.model} answers everything`, perCall(name, tier), 0, wrong / N); };
-  const levels = LADDER && climb(s);
-  const ladderRow = levels && line(`Ladder: Jev ≥ ${s.t.toFixed(2)}${TIERS.filter(t => ladder[t].on).map(t => `, ${t === 'flash' ? 'Flash' : 'Frontier'} ≥ ${ladder[t].t.toFixed(2)}`).join('')}, people the rest`,
-    levels.reduce((a, l) => a + l.calls * l.perCall, 0) / N, levels.at(-1).n / N, levels.reduce((a, l) => a + l.errs, 0) / N);
   $('th-cost').replaceChildren(h('table', null,
-    h('thead', null, h('tr', null, ...['', 'Models', 'People', 'Wrong answers', 'Total'].map(x => h('th', null, x)))),
+    h('thead', null, h('tr', null, ...['', 'Jev', 'People', 'Wrong answers', 'Total'].map(x => h('th', null, x)))),
     h('tbody', null,
-      line('Everyone reviews by hand', 0, 1, 0),
+      row('Everyone reviews by hand', 0, 0),
       row(`Jev answers everything`, 1, 1 - all.kept.filter(p => p.hit).length / pts.length),
-      LADDER && llmAll('flash'), LADDER && llmAll('frontier'),
-      row(`Jev when p ≥ ${s.t.toFixed(2)}, people the rest`, s.coverage, s.error),
-      ladderRow)));
-  renderLadder(levels);
+      row(`Jev when p ≥ ${s.t.toFixed(2)}, people the rest`, s.coverage, s.error))));
 }
 
 function renderMisses(s) {
@@ -164,4 +107,4 @@ function render() {
 
 $('th-slider').addEventListener('input', e => setT(e.target.value));
 for (const id of ['c-volume', 'c-human', 'c-error']) $(id).addEventListener('input', () => renderCost(at(pts, t)));
-renderDatasets(); renderBudgets(); renderLadderControls(); setT(0.85);
+renderDatasets(); renderBudgets(); setT(0.85);

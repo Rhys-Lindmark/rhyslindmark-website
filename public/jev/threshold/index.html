@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Drag a confidence threshold over 700 recorded Jev answers and watch how much Jev handles, how often it's wrong, and what goes to a person."><title>Threshold Explorer</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/threshold/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/threshold/threshold.css?v=threshold-ladder-1"><meta name="robots" content="noindex"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Drag a confidence threshold over 700 recorded Jev answers and watch how much Jev handles, how often it's wrong, and what goes to a person."><title>Threshold Explorer</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/threshold/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/threshold/threshold.css?v=threshold-1"><meta name="robots" content="noindex"></head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>Threshold Explorer</h1></header>
 <main>
-<p class="th-lede">When Jev is sure enough, it handles the case; otherwise it passes the case up a ladder: a Flash LLM, then a Frontier LLM, then a person. “Sure enough” is one number per level. Drag Jev’s first and see what you get, on real answers.</p>
+<p class="th-lede">When Jev is sure enough, it handles the case; otherwise a person does. “Sure enough” is one number. Drag it and see what you get, on real Jev answers.</p>
 
 <section class="demo" aria-labelledby="th-title">
 <div class="demo-heading"><h2 id="th-title">Where would you draw the line?</h2><p id="th-question"></p></div>
@@ -14,22 +14,14 @@
 <input type="range" id="th-slider" min="0.50" max="0.99" step="0.01" value="0.85">
 
 <div class="th-strip-wrap"><svg id="th-strip" role="img" aria-label="Each recorded answer as a dot, placed by Jev's probability"></svg>
-<div class="th-strip-legend"><span><i class="dot ok"></i>Jev was right</span><span><i class="dot bad"></i>Jev was wrong</span><span class="note">Left of the line, Jev passes the case up. Hover or tap a dot to read the message.</span></div>
+<div class="th-strip-legend"><span><i class="dot ok"></i>Jev was right</span><span><i class="dot bad"></i>Jev was wrong</span><span class="note">Left of the line goes to a person. Hover or tap a dot to read the message.</span></div>
 <p id="th-tip" class="th-tip" aria-live="polite"></p></div>
 
 <div class="th-stats">
 <div class="th-stat"><span class="th-k">Jev handles</span><strong id="s-cover"></strong><span id="s-cover-n" class="note"></span></div>
 <div class="th-stat"><span class="th-k">Error on what Jev handles</span><strong id="s-err"></strong><span id="s-err-hi" class="note"></span></div>
-<div class="th-stat"><span class="th-k">Jev passes up</span><strong id="s-human"></strong><span id="s-human-n" class="note"></span></div>
+<div class="th-stat"><span class="th-k">Sent to a person</span><strong id="s-human"></strong><span id="s-human-n" class="note"></span></div>
 <div class="th-stat"><span class="th-k">Accuracy with no threshold</span><strong id="s-acc"></strong><span class="note">Jev answers everything</span></div>
-</div>
-
-<div class="th-ladder" id="th-ladder" hidden>
-<h4>Four levels: Jev, Flash, Frontier, Human</h4>
-<p class="note">What Jev passes up goes to <span id="l-flash-name"></span>. What it isn’t sure of goes to <span id="l-frontier-name"></span>, and what that isn’t sure of goes to a person. The LLMs get the same question and label list as Jev and report their own confidence, since they have no calibrated probability. A person is counted as always right.</p>
-<div class="th-ladder-ctl" id="th-ladder-ctl"></div>
-<div class="th-bar" id="th-bar" role="img" aria-label="Share of messages each level handles"></div>
-<div class="th-cost-table"><table id="th-levels"></table></div>
 </div>
 
 <div class="th-cost">
@@ -48,6 +40,6 @@
 <ol id="th-misses" class="th-misses"></ol>
 </section>
 
-<p class="note">Data: Trust Meter runs from the talk <a href="/jev/talks/trust-meter/">Trust Meter</a> (jev-1.14.0, zero-shot, one question per message). Upper bounds are 95% Wilson intervals, the same math as <code>calibration.mjs</code>. Run it on your own CSV: <code>node trust-meter.mjs my.csv "Is `text` a refund request?"</code> in <a href="/jev/docs/takehome/demos/a2-trust-meter/">demos/a2-trust-meter</a>. Flash and Frontier answers: Qwen 3.7 Flash and Qwen 3.7 Max through OpenRouter, low reasoning effort, one call per message (<code>evals/threshold-ladder/run.mjs</code>).</p>
+<p class="note">Data: Trust Meter runs from the talk <a href="/jev/talks/trust-meter/">Trust Meter</a> (jev-1.14.0, zero-shot, one question per message). Upper bounds are 95% Wilson intervals, the same math as <code>calibration.mjs</code>. Run it on your own CSV: <code>node trust-meter.mjs my.csv "Is `text` a refund request?"</code> in <a href="/jev/docs/takehome/demos/a2-trust-meter/">demos/a2-trust-meter</a>.</p>
 </main><footer><a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div>
-<script type="module" src="/jev/threshold/threshold.js?v=threshold-ladder-1"></script></body></html>
+<script type="module" src="/jev/threshold/threshold.js?v=threshold-1"></script></body></html>
