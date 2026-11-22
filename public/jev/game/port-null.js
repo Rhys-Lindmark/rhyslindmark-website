@@ -1,5 +1,5 @@
 // Port Null: a top-down driving game about Hotel Null's night shift.
-// Guest texts come from Night Shift at Hotel Null (data.json): every Jev answer
+// Guest texts come from data.json: every Jev answer
 // shown on the phone is a real recorded answer from jev-1.14.0. The policy, and
 // so the right call, comes from the same data. Everything else is the city.
 'use strict';
@@ -1363,7 +1363,7 @@ function endShift() {
   const traps = G.calls.filter(c => c.verdict === 'bad').length;
   $('#r-lesson').innerHTML = `<p>Every number on the phone came from one Jev request per text, with all of that night’s questions asked at once. Jev answered what a person could tell from the words: is there a room problem, which amenity, does this sound like a threat.</p>
     <p>It never saw the rules. The right call came from your rules plus what code already knew, like Gold status or the time a text was sent. The questions tagged in red are traps: a <b>decision</b> asks Jev to apply a rule it can’t see, a <b>compound</b> question hides two questions in one, a <b>vague</b> one leaves Jev guessing, and <b>math</b> belongs in code.</p>
-    <p class="small">${traps ? `You made ${traps} wrong call${traps > 1 ? 's' : ''}. ` : ''}Want to write the rules yourself instead of driving them? <a href="/jev/game/night-shift/" style="color:var(--ink)">Play Night Shift at Hotel Null →</a></p>`;
+    ${traps ? `<p class="small">You made ${traps} wrong call${traps > 1 ? 's' : ''}.</p>` : ''}`;
   setScreen('results');
 }
 $('#start').addEventListener('click', start);
