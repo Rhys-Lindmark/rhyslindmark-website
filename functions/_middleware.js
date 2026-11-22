@@ -2,7 +2,7 @@
 // main site may redirect to Substack; unknown URLs keep their local 404.
 import { LEGACY_POST_SLUGS } from './_legacy/posts.js';
 import { poppyDiscovery } from './_lib/poppy-discovery.js';
-import { jevGate, serveJevDocs, isPrivatePath, privateGate, handleJevLogin } from './_lib/jev-view.js';
+import { jevGate, serveJevPage, shortToDocs, isPrivatePath, privateGate, handleJevLogin } from './_lib/jev-view.js';
 import { withJevTheme } from './_lib/jev-theme.js';
 
 const AI_SITES = {
@@ -250,11 +250,12 @@ export async function onRequest(context) {
 	if (url.pathname === '/jev' || url.pathname.startsWith('/jev/')) {
 		const denied = await jevGate(context.request, context.env);
 		if (denied) return denied;
-		if (url.pathname === '/jev/docs' || url.pathname.startsWith('/jev/docs/')) {
+		// The private repo's files, at /jev/docs/* or a hub card's short URL (/jev/feedback/ ...).
+		if (url.pathname === '/jev/docs' || url.pathname.startsWith('/jev/docs/') || shortToDocs(url.pathname)) {
 			if (!['GET', 'HEAD'].includes(context.request.method)) {
 				return new Response(null, { status: 405, headers: { Allow: 'GET, HEAD' } });
 			}
-			return serveJevDocs(context.request, context.env);
+			return serveJevPage(context.request, context.env);
 		}
 	}
 

@@ -28,8 +28,30 @@ export const isPrivateDoc = repoPath => PRIVATE_DOCS.includes(String(repoPath).r
 export function isPrivatePath(pathname) {
 	if (pathname === '/jev-private' || pathname.startsWith('/jev-private/')) return true;
 	if (pathname === '/jev/rehearse' || pathname.startsWith('/jev/rehearse/')) return true;
-	const repoPath = docsRepoPath(pathname);
+	const repoPath = docsRepoPath(shortToDocs(pathname) || pathname);
 	return repoPath !== null && isPrivateDoc(repoPath);
+}
+
+// The hub's cards get short URLs: /jev/<name>/ serves the repo folder that
+// /jev/docs/<path>/ would, and the long URL redirects to the short one.
+export const SHORT_DOCS = { feedback: 'feedback', 'customer-analysis': 'research', prompt2jev: 'takehome/ideas/prompt2jev', 'skill-issue': 'takehome/skill-issue' };
+// Static files and functions that already sit under a short name stay as they are.
+const SHORT_STATIC = /^\/jev\/feedback\/search(\.css|\.js)?$/;
+const under = (path, base) => path === base || path.startsWith(`${base}/`);
+export function shortToDocs(pathname) {
+	if (SHORT_STATIC.test(pathname)) return null;
+	for (const [name, repo] of Object.entries(SHORT_DOCS)) {
+		const base = `/jev/${name}`;
+		if (under(pathname, base)) return `${DOCS_PREFIX}/${repo}${pathname.slice(base.length)}`;
+	}
+	return null;
+}
+export function docsToShort(pathname) {
+	for (const [name, repo] of Object.entries(SHORT_DOCS)) {
+		const base = `${DOCS_PREFIX}/${repo}`;
+		if (under(pathname, base)) return `/jev/${name}${pathname.slice(base.length)}`;
+	}
+	return null;
 }
 
 // Forgiving on purpose: a shared, spoken password. Phones capitalize the first
@@ -509,4 +531,43 @@ export function docsPage(meta, titleMarkdown, rest) {
 export function splitTitle(text) {
 	const m = text.match(/^\s*# (.+)\n?/);
 	return m ? { title: m[1].trim(), rest: text.slice(m[0].length) } : { title: '', rest: text };
+}
+
+// Entry point for /jev/docs/* and the short URLs. Links on every page resolve against
+// where the file sits in the repo, so a relative link (../takehome/...) still works from
+// a short URL, and a link into a short-named folder uses its short URL.
+export async function serveJevPage(request, env, fetchImpl = fetch) {
+	const url = new URL(request.url);
+	const short = docsToShort(url.pathname);
+	if (short) {
+		url.pathname = short;
+		return Response.redirect(url.toString(), 308);
+	}
+	const docsPath = shortToDocs(url.pathname);
+	if (docsPath) url.pathname = docsPath;
+	const res = await serveJevDocs(docsPath ? new Request(url, request) : request, env, fetchImpl);
+	return shortenLinks(res, url);
+}
+
+function shortenHref(value, base) {
+	if (!value || /^(#|[a-z][a-z\d+.-]*:|\/\/)/i.test(value)) return value;
+	let u;
+	try { u = new URL(value.replace(/&amp;/g, '&'), base); } catch { return value; }
+	const short = docsToShort(u.pathname);
+	if (!short && value.startsWith('/')) return value;
+	return `${short || u.pathname}${u.search}${u.hash}`.replace(/&/g, '&amp;');
+}
+
+async function shortenLinks(res, base) {
+	const location = res.headers.get('location');
+	if (location) {
+		const u = new URL(location, base);
+		const short = docsToShort(u.pathname);
+		if (!short) return res;
+		u.pathname = short;
+		return Response.redirect(u.toString(), res.status);
+	}
+	if (!(res.headers.get('content-type') || '').startsWith('text/html')) return res;
+	const html = (await res.text()).replace(/(\s(?:href|src)=")([^"]*)"/g, (_, attr, value) => `${attr}${shortenHref(value, base)}"`);
+	return new Response(html, res);
 }

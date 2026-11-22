@@ -1,6 +1,6 @@
 // GET /jev/feedback/search: full-text search over the Jev feedback corpus (D1 + FTS5).
 // The /jev login in _middleware.js runs before this, so only logged-in viewers get here.
-// The page that calls it is /jev/docs/feedback/ (functions/_lib/jev-view.js). The corpus is filled by
+// The page that calls it is /jev/feedback/ (functions/_lib/jev-view.js). The corpus is filled by
 // feedback/upload_d1.py in the private jev repo; schema in migrations/jev-feedback/.
 //
 // Query: q, kind ("github/pr" or "github" for every GitHub kind), from, to (YYYY-MM-DD),

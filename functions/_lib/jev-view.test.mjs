@@ -219,3 +219,38 @@ test('layout: docs Markdown files use the same header; other files keep theirs',
 	assert.match(html2, /doc-tag.*<blockquote>/s);
 	assert.doesNotMatch(html2, /docs-head/);
 });
+
+test('short URLs: hub cards map to their repo folders and back', async () => {
+	const { shortToDocs, docsToShort } = await import('./jev-view.js');
+	assert.equal(shortToDocs('/jev/feedback/'), '/jev/docs/feedback/');
+	assert.equal(shortToDocs('/jev/customer-analysis/memos/a.md'), '/jev/docs/research/memos/a.md');
+	assert.equal(shortToDocs('/jev/skill-issue'), '/jev/docs/takehome/skill-issue');
+	assert.equal(shortToDocs('/jev/feedback/search.css'), null);
+	assert.equal(shortToDocs('/jev/feedback/search'), null);
+	assert.equal(shortToDocs('/jev/feedbackx/'), null);
+	assert.equal(docsToShort('/jev/docs/takehome/ideas/prompt2jev/run.mjs'), '/jev/prompt2jev/run.mjs');
+	assert.equal(docsToShort('/jev/docs/takehome/'), null);
+});
+
+test('short URLs: long URLs redirect, short ones serve with repo-relative links fixed', async () => {
+	const { serveJevPage } = await import('./jev-view.js');
+	const long = await serveJevPage(req('/jev/docs/research/?x=1', basic('jev', 'test-password')), env);
+	assert.equal(long.status, 308);
+	assert.equal(long.headers.get('location'), 'https://ai.rhyslindmark.com/jev/customer-analysis/?x=1');
+	const md = '# Customer Analysis\n\n[up](../takehome/ideas/x/) [corpus](../feedback/) [orgs](organizations.md) [top](#a) [out](https://example.com/)';
+	const fake = async u => {
+		if (u.includes('/contents/research?')) return Response.json([{ name: 'README.md', type: 'file' }, { name: 'organizations.md', type: 'file' }]);
+		if (u.includes('/contents/research/README.md?')) return Response.json({ content: btoa(md) });
+		return new Response('', { status: 404 });
+	};
+	const res = await serveJevPage(req('/jev/customer-analysis/', basic('jev', 'test-password')), env, fake);
+	assert.equal(res.status, 200);
+	const html = await res.text();
+	assert.match(html, /href="\/jev\/docs\/takehome\/ideas\/x\/"/);
+	assert.match(html, /href="\/jev\/feedback\/"/);
+	assert.match(html, /href="\/jev\/customer-analysis\/organizations\.md"/);
+	assert.match(html, /href="#a"/);
+	assert.match(html, /href="https:\/\/example\.com\/"/);
+	const noSlash = await serveJevPage(req('/jev/customer-analysis', basic('jev', 'test-password')), env, fake);
+	assert.equal(noSlash.headers.get('location'), 'https://ai.rhyslindmark.com/jev/customer-analysis/');
+});

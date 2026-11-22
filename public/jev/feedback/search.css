@@ -57,7 +57,7 @@
 	.fs-item { padding-left: 14px; }
 }
 
-/* On /jev/docs/feedback/, the search is the page: no frame around it, the size in one
+/* On /jev/feedback/, the search is the page: no frame around it, the size in one
    line above, the corpus charts folded away below. */
 .fs-lede { margin: -32px auto 28px; text-align: center; color: var(--steel); font-size: 15px; max-width: 52ch; }
 .fs-embed .fs-form { border: 0; background: none; padding: 0; }
