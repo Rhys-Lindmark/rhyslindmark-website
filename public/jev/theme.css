@@ -1,0 +1,57 @@
+/* /jev theme switch: System / Light / Dark.
+   theme.js sets data-theme="light" or "dark" on <html> for an explicit choice
+   and removes it for System, which follows prefers-color-scheme. */
+
+/* Dark tokens: the same names as /jev/style/tokens.css, inverted.
+   Rose stays rose; text on the rose band stays ink (see below). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --jev-paper: #121212;
+  --jev-ink: #ececec;
+  --jev-graphite: #c9c9c9;
+  --jev-steel: #a2a2a2;
+  --jev-fog: #6f6f6f;
+  --jev-ash: #4a4a4a;
+  --jev-silver: #343434;
+  --jev-mist: #1e1e1e;
+  --jev-rose-soft: #3b2129;
+  --jev-signal: #2fcf80;
+  --jev-signal-soft: #10301f;
+  --jev-alert: #ff5c70;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --jev-paper: #121212;
+    --jev-ink: #ececec;
+    --jev-graphite: #c9c9c9;
+    --jev-steel: #a2a2a2;
+    --jev-fog: #6f6f6f;
+    --jev-ash: #4a4a4a;
+    --jev-silver: #343434;
+    --jev-mist: #1e1e1e;
+    --jev-rose-soft: #3b2129;
+    --jev-signal: #2fcf80;
+    --jev-signal-soft: #10301f;
+    --jev-alert: #ff5c70;
+  }
+}
+
+/* The rose band keeps dark ink in both themes. */
+.rose-band { --band-ink: #1e1e1e; }
+.rose-band p, .rose-band a { color: var(--band-ink); }
+.rose-band.crop::before, .rose-band.crop::after { border-color: var(--band-ink); }
+
+/* The switch: an icon button at the right of the header, with a menu. */
+.theme-switch { position: relative; margin-left: auto; align-self: center; margin-block: -6px; }
+.theme-btn { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; background: transparent; color: var(--jev-ink); border: var(--jev-rule-quiet); border-radius: 0; cursor: pointer; }
+.theme-btn:hover, .theme-btn[aria-expanded="true"] { background: var(--jev-mist); border-color: var(--jev-ink); }
+.theme-btn:focus-visible, .theme-menu button:focus-visible { outline: 2px solid var(--jev-rose); outline-offset: 1px; }
+.theme-switch svg { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.theme-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 10; min-width: 150px; margin: 0; padding: 4px; list-style: none; background: var(--jev-paper); border: var(--jev-rule); box-shadow: var(--jev-shadow-window); }
+.theme-menu[hidden] { display: none; }
+.theme-menu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; background: transparent; color: var(--jev-ink); border: 0; border-radius: 0; font: 400 14px/1 var(--jev-font-body); text-align: left; cursor: pointer; }
+.theme-menu button:hover { background: var(--jev-mist); }
+.theme-menu button[aria-checked="true"] { background: var(--jev-rose-soft); font-weight: 500; }
+.theme-menu .check { margin-left: auto; visibility: hidden; }
+.theme-menu button[aria-checked="true"] .check { visibility: visible; }
