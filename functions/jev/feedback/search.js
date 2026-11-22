@@ -1,6 +1,6 @@
 // GET /jev/feedback/search: full-text search over the Jev feedback corpus (D1 + FTS5).
 // The /jev login in _middleware.js runs before this, so only logged-in viewers get here.
-// The page that calls it is public/jev/feedback/. The corpus is filled by
+// The page that calls it is /jev/docs/feedback/ (functions/_lib/jev-view.js). The corpus is filled by
 // feedback/upload_d1.py in the private jev repo; schema in migrations/jev-feedback/.
 //
 // Query: q, kind ("github/pr" or "github" for every GitHub kind), from, to (YYYY-MM-DD),
@@ -20,7 +20,7 @@ const YES = 0.7; // TypeSafe's suggested reading of a Noul, as in labeling/quest
 const PAGE = 20;
 const HL_OPEN = '\u0002', HL_CLOSE = '\u0003';
 
-function json(body, status = 200) {
+function json(body, status = 200, extra = {}) {
 	return new Response(JSON.stringify(body), {
 		status,
 		headers: {
@@ -28,8 +28,31 @@ function json(body, status = 200) {
 			'Cache-Control': 'private, no-store',
 			'X-Robots-Tag': 'noindex',
 			'X-Content-Type-Options': 'nosniff',
+			...extra,
 		},
 	});
+}
+
+// The corpus changes once a day, and the database is often cold (it sees a few dozen
+// reads a day), so answers are kept in this data center's cache for 10 minutes. Only
+// this function reads that cache, after the /jev login has run, so nothing is public.
+const CACHE_SECONDS = 600;
+const cacheKey = url => new Request(`https://jev-feedback-cache.internal${url.pathname}${url.search}`);
+async function cached(url, ctx, compute) {
+	const cache = typeof caches !== 'undefined' ? caches.default : null;
+	const t0 = Date.now();
+	if (cache) {
+		const hit = await cache.match(cacheKey(url));
+		if (hit) return json(await hit.json(), 200, { 'Server-Timing': `cache;desc=hit;dur=${Date.now() - t0}` });
+	}
+	const body = await compute();
+	const dur = Date.now() - t0;
+	if (cache) {
+		const copy = new Response(JSON.stringify(body), { headers: { 'Content-Type': 'application/json', 'Cache-Control': `public, max-age=${CACHE_SECONDS}` } });
+		const put = cache.put(cacheKey(url), copy);
+		if (ctx?.waitUntil) ctx.waitUntil(put); else await put;
+	}
+	return json(body, 200, { 'Server-Timing': `db;dur=${dur}` });
 }
 
 // Turn what a person types into a safe FTS5 query. Words are ANDed, "quoted text" is a
@@ -127,23 +150,28 @@ function nextDay(d) {
 	return t.toISOString().slice(0, 10);
 }
 
-export async function onRequestGet({ request, env }) {
+export async function onRequestGet(context) {
+	const { request, env } = context;
 	const db = env.JEV_FEEDBACK_DB;
 	if (!db) return json({ error: 'The corpus database is not connected.' }, 503);
-	const params = new URL(request.url).searchParams;
+	const url = new URL(request.url);
+	const params = url.searchParams;
+	const ctx = { waitUntil: p => context.waitUntil(p) };
 	try {
 		if (params.get('meta') === '1') {
-			const rows = (await db.prepare('SELECT k, v FROM meta').all()).results;
-			const meta = Object.fromEntries(rows.map(r => [r.k, r.v]));
-			return json({
-				uploaded_at: meta.uploaded_at || null,
-				total: Number(meta.total) || 0,
-				labeled: Number(meta.labeled) || 0,
-				kinds: meta.kinds ? JSON.parse(meta.kinds) : {},
-				labels: LABELS, segments: SEGMENTS,
+			return await cached(url, ctx, async () => {
+				const rows = (await db.prepare('SELECT k, v FROM meta').all()).results;
+				const meta = Object.fromEntries(rows.map(r => [r.k, r.v]));
+				return {
+					uploaded_at: meta.uploaded_at || null,
+					total: Number(meta.total) || 0,
+					labeled: Number(meta.labeled) || 0,
+					kinds: meta.kinds ? JSON.parse(meta.kinds) : {},
+					labels: LABELS, segments: SEGMENTS,
+				};
 			});
 		}
-		return json(await search(db, params));
+		return await cached(url, ctx, () => search(db, params));
 	} catch (err) {
 		const msg = String(err?.message || err);
 		if (/fts5|syntax/i.test(msg)) return json({ error: 'Couldn’t read that search. Try plain words.' }, 400);
