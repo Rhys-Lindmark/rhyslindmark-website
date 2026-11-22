@@ -24,6 +24,19 @@
 .corpus-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
 .corpus-chart .mark { fill: var(--jev-ink); }
 .corpus-chart .bar:hover .mark { fill: var(--jev-graphite); }
+/* Bar charts written into Markdown docs (jev repo: research/chart.mjs). Each bar is
+   an SVG whose <rect> width is the value, since the docs CSP allows no inline styles. */
+.hbars { margin: 24px 0 28px; padding: 0; }
+.hbar { display: grid; grid-template-columns: minmax(0, 36%) 1fr 72px; align-items: center; gap: 4px 14px; padding: 5px 0; }
+.hbar-l { font-size: 14px; line-height: 1.3; color: var(--jev-ink); }
+.hbar svg { display: block; width: 100%; height: 16px; }
+.hbar svg.cmp { height: 22px; }
+.hbar .m { fill: var(--jev-ink); }
+.hbar .p { fill: var(--jev-silver); }
+.hbar:hover .m { fill: var(--jev-graphite); }
+.hbar-v { font: 500 12px/1 var(--jev-font-mono); color: var(--jev-ink); white-space: nowrap; }
+.hbars .corpus-note { margin-top: 8px; }
+@media (max-width: 600px) { .hbar { grid-template-columns: 1fr 64px; padding: 6px 0; } .hbar-l { grid-column: 1 / -1; } }
 .corpus-chart .hit { fill: transparent; }
 .corpus-chart .grid { stroke: var(--jev-silver); stroke-width: 1; }
 .corpus-chart .tick { font: 11px var(--jev-font-mono); fill: var(--jev-steel); }
