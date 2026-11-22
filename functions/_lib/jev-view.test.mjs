@@ -70,7 +70,10 @@ test('directories redirect to a trailing slash, then list entries', async () => 
 	const html = await res.text();
 	assert.match(html, /href="sub\/">sub\/<\/a>.*href="b\.py">b\.py<\/a>/s);
 	assert.doesNotMatch(html, /gitignore/);
-	assert.doesNotMatch(res.headers.get('content-security-policy'), /script-src/);
+	// Only the same-origin theme switch script may run; no fetches, nothing inline.
+	assert.match(res.headers.get('content-security-policy'), /script-src 'self';/);
+	assert.doesNotMatch(res.headers.get('content-security-policy'), /connect-src|unsafe-inline/);
+	assert.match(html, /\/jev\/theme\.js/);
 });
 
 test('the feedback folder is its numbers, then the search, and no README or file list', async () => {

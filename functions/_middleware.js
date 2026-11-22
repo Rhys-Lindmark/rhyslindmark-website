@@ -3,6 +3,7 @@
 import { LEGACY_POST_SLUGS } from './_legacy/posts.js';
 import { poppyDiscovery } from './_lib/poppy-discovery.js';
 import { jevGate, serveJevDocs, isPrivatePath, privateGate, handleJevLogin } from './_lib/jev-view.js';
+import { withJevTheme } from './_lib/jev-theme.js';
 
 const AI_SITES = {
 	'/tools/lean-coffee': 'https://lean-coffee-together.rhyslindmark.chatgpt.site',
@@ -281,7 +282,7 @@ export async function onRequest(context) {
 			}
 			url.pathname = `${path}/`;
 			const asset = await context.env.ASSETS.fetch(new Request(url, context.request));
-			if (path === '/jev' || path === '/jev/model-router') return asset;
+			if (path === '/jev' || path === '/jev/model-router') return withJevTheme(asset, context.request, path);
 			const response = new Response(asset.body, asset);
 			response.headers.set('Content-Security-Policy', "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
 			response.headers.set('Referrer-Policy', 'no-referrer');
@@ -305,6 +306,10 @@ export async function onRequest(context) {
 			url.pathname = '/ai/';
 			return context.env.ASSETS.fetch(url);
 		}
+	}
+
+	if (url.pathname === '/jev' || url.pathname.startsWith('/jev/') || url.pathname === '/jev-private' || url.pathname.startsWith('/jev-private/')) {
+		return withJevTheme(await context.next(), context.request, url.pathname);
 	}
 
 	const response = await context.next();

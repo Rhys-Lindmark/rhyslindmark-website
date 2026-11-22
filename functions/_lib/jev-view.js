@@ -15,6 +15,7 @@
 // never show the Basic prompt (Claude's browser pane is one). The cookie's HMAC key comes
 // from that user's password, so changing a password signs every cookie out.
 import { marked } from 'marked';
+import { JEV_THEME_TAGS } from './jev-theme.js';
 
 export const VIEW_USER = 'jev';
 export const PRIVATE_USER = 'rhys';
@@ -84,7 +85,7 @@ function safeNext(raw, base) {
 
 function loginPage({ message, next, user = '', error = '', status = 200, headers = {} }) {
 	const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Log in · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/login.css?v=jev-login-1"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Log in · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/login.css?v=jev-login-1">${JEV_THEME_TAGS}</head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a></header>
 <main class="login"><h1>Log in</h1><p>${escapeHTML(message)}</p>
 <form method="post" action="/jev/login"><input type="hidden" name="next" value="${escapeHTML(next)}">
@@ -98,7 +99,7 @@ ${error ? `<p class="login-error" role="alert">${escapeHTML(error)}</p>` : ''}<b
 			'Cache-Control': 'no-store',
 			'X-Robots-Tag': 'noindex',
 			'Referrer-Policy': 'no-referrer',
-			'Content-Security-Policy': "default-src 'none'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+			'Content-Security-Policy': "default-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
 			...headers,
 		},
 	});
@@ -219,10 +220,10 @@ const FEEDBACK_SEARCH = {
 
 function page(title, crumbs, body, status = 200, { styles = [], scripts = [] } = {}) {
 	const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-docs-layout-2">${styles.map(h => `<link rel="stylesheet" href="${h}">`).join('')}</head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-docs-layout-2">${styles.map(h => `<link rel="stylesheet" href="${h}">`).join('')}${JEV_THEME_TAGS}</head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a>${crumbs}</header>
 <main class="doc">${body}</main></div>${scripts.map(s => `<script src="${s}" defer></script>`).join('')}</body></html>`;
-	const scriptCSP = scripts.length ? " script-src 'self'; connect-src 'self';" : '';
+	const scriptCSP = scripts.length ? " script-src 'self'; connect-src 'self';" : " script-src 'self';";
 	return new Response(html, {
 		status,
 		headers: {
