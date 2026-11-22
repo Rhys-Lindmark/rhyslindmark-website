@@ -1,0 +1,42 @@
+/* prompt2jev. Built on minimal.css tokens and jev-lint's rows and pills (lint.css). */
+#p2j-prompt, #try-input { font-family: var(--jev-font-mono); font-size: 13px; line-height: 1.5; }
+.p2j-step { margin-top: 28px; }
+.p2j-verdict { font-size: 18px; font-weight: 535; margin: 0 0 12px; }
+.p2j-verdict.warn { color: var(--jev-alert); }
+.p2j-why { margin: -4px 0 14px; max-width: 70ch; color: var(--steel); }
+.p2j-anyway { margin-top: 14px; }
+.p2j-summary { margin: 0 0 14px; font-size: 15px; }
+.p2j-summary.warn { color: var(--jev-alert); }
+.p2j-qs { list-style: none; margin: 0 0 18px; padding: 0; display: grid; gap: 10px; }
+.p2j-q { border: 1px solid var(--bone); border-left: 3px solid var(--jev-ink); padding: 10px 12px; background: var(--jev-paper); }
+.p2j-q.is-bad { border-left-color: var(--jev-alert); }
+.p2j-q.is-unchecked { border-left-color: var(--bone); }
+.p2j-q-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.p2j-q-id { font: 500 12px/1.2 var(--jev-font-mono); }
+.p2j-q-type { font: 400 11px/1 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--steel); }
+.p2j-q-text { margin: 6px 0; }
+.p2j-q-crit { margin: 0 0 8px; padding: 0; list-style: none; font-size: 13px; color: var(--steel); }
+.p2j-q-crit code { font-size: 12px; }
+.p2j-block { margin: 18px 0 0; }
+.p2j-block-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.p2j-block-head h4 { margin: 0; }
+.p2j-block-head .chip { margin: 0; padding: 3px 9px; font-size: 12px; }
+.p2j-block pre { margin: 6px 0 0; padding: 10px 12px; background: var(--jev-mist); overflow-x: auto; font-size: 12px; line-height: 1.5; max-height: 460px; }
+.p2j-table { overflow-x: auto; margin-top: 6px; }
+.p2j-table table { border-collapse: collapse; font-size: 13px; min-width: 100%; }
+.p2j-table th, .p2j-table td { border: 1px solid var(--bone); padding: 5px 8px; text-align: left; vertical-align: top; }
+.p2j-table th { background: var(--jev-mist); font-weight: 535; }
+.p2j-table p, .p2j-table ul { margin: 8px 0; font-size: 14px; max-width: 80ch; }
+.p2j-table ul { padding-left: 18px; }
+.p2j-table h5 { margin: 12px 0 4px; font-size: 14px; font-weight: 535; }
+.p2j-first { margin: 0 0 14px; font-size: 14px; color: var(--steel); max-width: 80ch; }
+.p2j-answers { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-top: 14px; }
+.p2j-answer { border: 1px solid var(--bone); padding: 10px 12px; background: var(--jev-paper); }
+.p2j-answer .lint-row-head { font-size: 13px; }
+.p2j-answer.is-yes .lint-fill { background: var(--jev-ink); }
+.p2j-decision { margin: 16px 0 0; padding: 12px 14px; border: 1px solid var(--jev-ink); font-size: 16px; }
+.p2j-decision code { font-size: 15px; font-weight: 535; }
+.p2j-decision.is-error { border-color: var(--jev-alert); color: var(--jev-alert); font-size: 14px; }
+.p2j-busy::after { content: ''; display: inline-block; width: 1.2em; text-align: left; animation: p2j-dots 1.2s steps(4, end) infinite; }
+@keyframes p2j-dots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
+@media (prefers-reduced-motion: reduce) { .p2j-busy::after { animation: none; content: '…'; } }

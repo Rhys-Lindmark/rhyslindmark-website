@@ -34,7 +34,9 @@ export function isPrivatePath(pathname) {
 
 // The hub's cards get short URLs: /jev/<name>/ serves the repo folder that
 // /jev/docs/<path>/ would, and the long URL redirects to the short one.
-export const SHORT_DOCS = { feedback: 'feedback', 'customer-analysis': 'research', prompt2jev: 'takehome/ideas/prompt2jev', 'skill-issue': 'takehome/skill-issue' };
+// prompt2jev is not here: /jev/prompt2jev/ is the working tool (public/jev/prompt2jev/),
+// and its CLI's README stays at /jev/docs/takehome/ideas/prompt2jev/.
+export const SHORT_DOCS = { feedback: 'feedback', 'customer-analysis': 'research', 'skill-issue': 'takehome/skill-issue' };
 // Static files and functions that already sit under a short name stay as they are.
 const SHORT_STATIC = /^\/jev\/feedback\/search(\.css|\.js)?$/;
 const under = (path, base) => path === base || path.startsWith(`${base}/`);

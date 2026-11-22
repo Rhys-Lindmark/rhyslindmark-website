@@ -228,7 +228,10 @@ test('short URLs: hub cards map to their repo folders and back', async () => {
 	assert.equal(shortToDocs('/jev/feedback/search.css'), null);
 	assert.equal(shortToDocs('/jev/feedback/search'), null);
 	assert.equal(shortToDocs('/jev/feedbackx/'), null);
-	assert.equal(docsToShort('/jev/docs/takehome/ideas/prompt2jev/run.mjs'), '/jev/prompt2jev/run.mjs');
+	assert.equal(docsToShort('/jev/docs/takehome/skill-issue/report.mjs'), '/jev/skill-issue/report.mjs');
+	// /jev/prompt2jev/ is a static tool page, not a docs folder.
+	assert.equal(shortToDocs('/jev/prompt2jev/'), null);
+	assert.equal(docsToShort('/jev/docs/takehome/ideas/prompt2jev/'), null);
 	assert.equal(docsToShort('/jev/docs/takehome/'), null);
 });
 

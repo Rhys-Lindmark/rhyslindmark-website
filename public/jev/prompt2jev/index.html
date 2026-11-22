@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Paste an LLM prompt. Jev judges whether it should become Jev at all; if it should, you get the questions, a truth table and decide(), linted by Jev, and you can try them on an input."><title>prompt2jev</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/prompt2jev/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/lint/lint.css?v=lint-rewrite-1"><link rel="stylesheet" href="/jev/prompt2jev/p2j.css?v=p2j-1"><meta name="robots" content="noindex"></head>
+<body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>prompt2jev</h1></header>
+<main>
+
+<section class="demo" id="editor" aria-labelledby="editor-title">
+<div class="demo-heading"><h2 id="editor-title">Your prompt</h2><p>Paste the LLM prompt you already have. <strong>Jev</strong> first judges whether it should become Jev at all. If it should, a Workers AI model drafts the questions, a truth table and <code>decide()</code>, and Jev lints every question. Flagged questions get one revision. Takes 20–60 seconds.</p></div>
+<div class="lint-examples"><span>Examples:</span><span id="p2j-examples"></span></div>
+<form id="p2j-form">
+<label for="p2j-prompt"><span>The prompt your app sends to an LLM today</span><span id="p2j-count">0 / 6000</span></label>
+<textarea id="p2j-prompt" maxlength="6000" rows="9" placeholder="You are a support triage assistant. Read the ticket and decide its priority: P1, P2 or P3…"></textarea>
+<div class="actions"><button class="run" id="p2j-run" type="submit">Convert to Jev</button><span class="note" id="p2j-status"></span></div>
+<div id="route-human-check"></div><p id="route-error" class="error" role="alert" hidden></p>
+</form>
+</section>
+
+<section class="demo p2j-step" id="fit" aria-labelledby="fit-title" hidden>
+<div class="demo-heading"><h2 id="fit-title">1 · Should this be Jev?</h2><p>Jev answers three yes/no questions about your prompt. Code turns them into a verdict.</p></div>
+<div id="fit-body"></div>
+</section>
+
+<section class="demo p2j-step" id="draft" aria-labelledby="draft-title" hidden>
+<div class="demo-heading"><h2 id="draft-title">2 · Your Jev integration</h2><p id="draft-sub"></p></div>
+<div id="draft-body"></div>
+</section>
+
+<section class="demo p2j-step" id="try" aria-labelledby="try-title" hidden>
+<div class="demo-heading"><h2 id="try-title">3 · Try it</h2><p>Edit the input. <strong>Run</strong> sends <code>state</code> and the questions to Jev, then runs <code>decide(answers, facts)</code> in a sandbox on this page.</p></div>
+<label for="try-input"><span>Input: <code>{ "state": …what Jev sees…, "facts": …what your code already knows… }</code></span></label>
+<textarea id="try-input" rows="8" spellcheck="false"></textarea>
+<div class="actions"><button class="run" id="try-run" type="button">Run</button><span class="note" id="try-status"></span></div>
+<p id="try-error" class="error" role="alert" hidden></p>
+<div id="try-body" aria-live="polite"></div>
+</section>
+
+<section class="demo lint-checks" aria-labelledby="how-title">
+<div class="demo-heading"><h2 id="how-title">What it checks</h2></div>
+<ol>
+<li><strong>Is it a judgment?</strong> Jev answers questions with probabilities. It doesn’t write emails or copy values out of an invoice. Those prompts should stay on an LLM.</li>
+<li><strong>Is the decision in code?</strong> The model writes the policy as a truth table and <code>decide()</code>. It asks Jev only for what needs reading.</li>
+<li><strong>Does every question pass jev-lint?</strong> Each question is checked for being a decision, compound, hidden rules or math, the same four Nouls as <a href="/jev/lint/">jev-lint</a>.</li>
+</ol>
+<p class="note">The drafts are a starting point. Check the policy in <code>decide()</code> against what your product actually does before you ship it. There’s also a command-line version that uses Claude Sonnet: <code>node run.mjs my-prompt.txt</code> in <a href="/jev/docs/takehome/ideas/prompt2jev/">takehome/ideas/prompt2jev</a>.</p>
+</section>
+</main><footer><a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div>
+<script type="module" src="/jev/human.js?v=router-13"></script><script type="module" src="/jev/prompt2jev/p2j.js?v=p2j-1"></script></body></html>

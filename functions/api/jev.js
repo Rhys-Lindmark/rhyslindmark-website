@@ -3,6 +3,7 @@ import { loadKey } from '../_lib/jev-key.js';
 import { databaseFor } from '../_lib/jev-database.js';
 import { isJevViewer } from '../_lib/jev-view.js';
 import { lintQuestions, lintInput, lintAnswers, FLAG_AT, REWRITE_MODEL, rewriteMessages, parseRewrite, relintFeedback } from '../_lib/jev-lint.js';
+import { MAX_PROMPT_CHARS, DRAFT_MODEL, DRAFT_MODELS, fitQuestions, fitAnswers, fitVerdict, draftMessages, reviseMessage, parseDraft, tryInput, tryAnswers } from '../_lib/prompt2jev.js';
 const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
 const labels = ['supported', 'contradicted', 'insufficient'];
 const THROWS = ['rock', 'paper', 'scissors'];
@@ -180,6 +181,67 @@ async function proposeRewrite(env, fetcher, apiKey, question, judgments) {
     return null;
   }
 }
+// prompt2jev (/jev/prompt2jev/). Three calls from the page: p2j_fit (should this prompt
+// become Jev?), p2j_draft (Workers AI drafts; Jev lints; flagged drafts get one revision)
+// and p2j_try (Jev answers the drafted questions about an input). Returns [body, status].
+const P2J = ['p2j_fit', 'p2j_draft', 'p2j_try'];
+async function callJev(fetcher, apiKey, state, questions, ms = 20000) {
+  const r = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: MODEL, state, questions }), signal: AbortSignal.timeout(ms), redirect: 'manual' });
+  if (!r.ok) { await r.body?.cancel().catch(() => {}); throw Object.assign(new Error(`jev_${r.status}`), { status: r.status }); }
+  return (await readJSON(r))?.answers;
+}
+async function draftReply(env, messages, model) {
+  let timer;
+  const result = await Promise.race([
+    env.AI.run(model, { messages, max_tokens: 4000, temperature: 0.3 }),
+    new Promise((_, reject) => { timer = setTimeout(() => reject(Error('draft_deadline')), 60000); }),
+  ]).finally(() => clearTimeout(timer));
+  const r = result?.response ?? result?.choices?.[0]?.message?.content;
+  return typeof r === 'string' ? r : JSON.stringify(r ?? '');
+}
+const flaggedOf = lint => Object.entries(lint).filter(([, j]) => j).map(([id, j]) => ({ id, flags: Object.entries(j).filter(([, p]) => p >= FLAG_AT).map(([k, p]) => ({ id: k, p })) })).filter(x => x.flags.length);
+async function prompt2jev(kind, body, tryIn, env, fetcher, apiKey) {
+  const started = Date.now(), elapsed = () => Date.now() - started;
+  if (kind === 'p2j_fit') {
+    const request = { model: MODEL, state: { prompt: body.prompt.trim() }, questions: fitQuestions() };
+    const fit = fitAnswers(await callJev(fetcher, apiKey, request.state, request.questions));
+    if (!fit) return [{ error: 'Jev returned an unexpected response. Please try again.' }, 502];
+    return [{ model: MODEL, fit, verdict: fitVerdict(fit), elapsed_ms: elapsed(), request }];
+  }
+  if (kind === 'p2j_try') {
+    const answers = tryAnswers(await callJev(fetcher, apiKey, tryIn.state, tryIn.questions), tryIn.questions);
+    if (!answers) return [{ error: 'Jev returned an unexpected response. Please try again.' }, 502];
+    return [{ model: MODEL, answers, elapsed_ms: elapsed() }];
+  }
+  if (!env.AI) return [{ error: 'The drafting model is unavailable right now.' }, 503];
+  const model = DRAFT_MODELS.includes(body.draft_model) ? body.draft_model : DRAFT_MODEL;
+  const lintAll = async questions => Object.fromEntries(await Promise.all(Object.entries(questions).map(async ([id, q]) =>
+    [id, await callJev(fetcher, apiKey, { question: q }, lintQuestions(), 15000).then(lintAnswers).catch(() => null)])));
+  const messages = draftMessages(body.prompt.trim());
+  let reply = await draftReply(env, messages, model), draft = parseDraft(reply);
+  if (draft.error) {
+    console.warn(JSON.stringify({ event: 'p2j_draft_unusable', model, reason: draft.error, reply: reply.slice(0, 600) }));
+    messages.push({ role: 'assistant', content: reply }, { role: 'user', content: 'That reply was not usable. Reply with exactly the four fenced blocks asked for (md, json, js, json), with no other text.' });
+    reply = await draftReply(env, messages, model); draft = parseDraft(reply);
+  }
+  if (draft.error) return [{ error: 'The drafting model didn’t return a usable draft. Please try again.' }, 502];
+  const draftMs = elapsed();
+  let lint = await lintAll(draft.questions), first_draft = null;
+  const flagged = flaggedOf(lint);
+  // One revision with Jev's flags, kept only if Jev flags no more questions than before.
+  if (flagged.length && elapsed() < 60000) {
+    messages.push({ role: 'assistant', content: reply }, { role: 'user', content: reviseMessage(flagged) });
+    const second = parseDraft(await draftReply(env, messages, model).catch(() => ''));
+    if (!second.error) {
+      const lint2 = await lintAll(second.questions);
+      first_draft = { questions: draft.questions, lint };
+      if (flaggedOf(lint2).length <= flagged.length) { draft = second; lint = lint2; }
+      else first_draft.kept = true;
+    }
+  }
+  return [{ model: MODEL, draft_model: model, draft, lint, first_draft, draft_ms: draftMs, elapsed_ms: elapsed() }];
+}
+
 export function createHandler(fetcher = (...args) => fetch(...args)) {
   return async ({ request, env = {} }) => {
     env = { ...env, JEV_DB: databaseFor(env) };
@@ -191,7 +253,12 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     try { body = await readJSON(request); } catch (error) { return json({ error: error instanceof RangeError ? 'Input is too large.' : 'Invalid JSON.' }, error instanceof RangeError ? 413 : 400); }
     const rps = body?.demo === 'rps', route = body?.demo === 'route', lint = body?.demo === 'lint';
     const lintQuestion = lint ? lintInput(body.question) : null;
-    if (lint) {
+    const p2j = P2J.includes(body?.demo) ? body.demo : null, p2jTry = p2j === 'p2j_try' ? tryInput(body) : null;
+    if (p2j === 'p2j_try') {
+      if (!p2jTry) return json({ error: 'Send up to 12 questions and an input: a JSON object of up to 8,000 characters.' }, 400);
+    } else if (p2j) {
+      if (typeof body.prompt !== 'string' || !body.prompt.trim() || body.prompt.length > MAX_PROMPT_CHARS) return json({ error: `Paste a prompt (up to ${MAX_PROMPT_CHARS.toLocaleString('en-US')} characters).` }, 400);
+    } else if (lint) {
       if (!lintQuestion) return json({ error: 'Send a Jev question: a type (noul, choice or score), instructions up to 1,000 characters, and up to 16 options.' }, 400);
     } else if (route) {
       if (typeof body.prompt !== 'string' || !body.prompt.trim() || body.prompt.length > MAX_PROMPT) return json({ error: `Add a prompt (up to ${MAX_PROMPT.toLocaleString('en-US')} characters).` }, 400);
@@ -232,6 +299,16 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
     }
     // Every reply after verification carries the cookie (when newly issued) and its expiry.
     const out = (b, status = 200) => json(status === 200 ? { ...b, human_until: humanUntil } : b, status, setCookie ? { 'Set-Cookie': setCookie.header } : {});
+    if (p2j) {
+      try {
+        const [b, status = 200] = await prompt2jev(p2j, body, p2jTry, env, fetcher, apiKey);
+        return out(b, status);
+      } catch (error) {
+        console.error(JSON.stringify({ event: 'p2j_failure', demo: p2j, name: error?.name, message: String(error?.message || 'Unknown error').slice(0, 200) }));
+        const messages = { 402: 'Jev is paused: its usage allowance has been reached.', 429: 'Jev is busy. Wait a moment and try again.' };
+        return out({ error: messages[error?.status] || (error?.message === 'draft_deadline' ? 'The drafting model took too long. Please try again.' : 'Jev could not be reached or timed out. Please try again.') }, error?.status === 429 ? 429 : 502);
+      }
+    }
     const started = Date.now();
     try {
       const upstream = lint ? { model: MODEL, state: { question: lintQuestion }, questions: lintQuestions() } : route ? { model: MODEL, state: { prompt: body.prompt.trim() }, questions: { ...routerQuestions(), ...routerV2Questions(), ...antiQuestions() } } : rps ? { model: MODEL, state: rpsState(body.history), questions: rpsQuestions() } : { model: MODEL, state: { claim: body.claim.trim(), evidence: body.evidence.trim() }, questions: questions() };
