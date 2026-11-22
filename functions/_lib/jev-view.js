@@ -219,7 +219,7 @@ const FEEDBACK_SEARCH = {
 
 function page(title, crumbs, body, status = 200, { styles = [], scripts = [] } = {}) {
 	const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-docs-layout-1">${styles.map(h => `<link rel="stylesheet" href="${h}">`).join('')}</head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-docs-layout-2">${styles.map(h => `<link rel="stylesheet" href="${h}">`).join('')}</head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a>${crumbs}</header>
 <main class="doc">${body}</main></div>${scripts.map(s => `<script src="${s}" defer></script>`).join('')}</body></html>`;
 	const scriptCSP = scripts.length ? " script-src 'self'; connect-src 'self';" : '';
