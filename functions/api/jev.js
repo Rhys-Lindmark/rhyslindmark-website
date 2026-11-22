@@ -147,7 +147,7 @@ async function proposeRewrite(env, fetcher, apiKey, question, judgments) {
   const draft = async messages => {
     let timer;
     const result = await Promise.race([
-      env.AI.run(REWRITE_MODEL, { messages, response_format: { type: 'json_object' }, max_tokens: 900, temperature: 0.3 }),
+      env.AI.run(REWRITE_MODEL, { messages, max_tokens: 700, temperature: 0.3 }),
       new Promise((_, reject) => { timer = setTimeout(() => reject(Error('rewrite_deadline')), 12000); }),
     ]).finally(() => clearTimeout(timer));
     const parsed = parseRewrite(result?.response);
@@ -162,7 +162,7 @@ async function proposeRewrite(env, fetcher, apiKey, question, judgments) {
   try {
     const messages = rewriteMessages(question, judgments);
     let { parsed, reply } = await draft(messages);
-    if (parsed.error) { messages.push({ role: 'assistant', content: reply }, { role: 'user', content: 'That reply was not usable. Reply with JSON only, in exactly the format asked for.' }); ({ parsed, reply } = await draft(messages)); }
+    if (parsed.error) { messages.push({ role: 'assistant', content: reply }, { role: 'user', content: 'That reply was not usable. Reply in exactly the QUESTION / CODE format asked for, with no other text.' }); ({ parsed, reply } = await draft(messages)); }
     if (parsed.error) return null;
     let best = { questions: await relint(parsed.questions), code: parsed.code, rounds: 1 };
     const feedback = relintFeedback(best.questions);
