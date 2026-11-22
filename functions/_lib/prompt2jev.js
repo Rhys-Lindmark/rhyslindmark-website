@@ -9,9 +9,12 @@ import { lintInput, LINT_IDS, FLAG_AT } from './jev-lint.js';
 export const MAX_PROMPT_CHARS = 6000;
 export const MAX_QUESTIONS = 12;
 export const MAX_STATE_CHARS = 8000;
-export const DRAFT_MODEL = '@cf/zai-org/glm-5.3';
-// Workers AI models a request may pick instead (for comparing drafts); anything else gets DRAFT_MODEL.
-export const DRAFT_MODELS = [DRAFT_MODEL, '@cf/openai/gpt-oss-120b', '@cf/deepseek-ai/deepseek-v4.1-flash-1017', '@cf/meta/llama-3.3-70b-instruct-fp8-fast'];
+// gpt-oss-120b: on 2026-11-22 it kept plan and wait-time checks in code and routed unsure answers
+// to a person; Llama 3.3 70B was twice as fast but asked Jev things code already knew ("Is the
+// customer an enterprise customer?"). GLM 5.3 and DeepSeek V4.1 need the Workers Paid plan.
+export const DRAFT_MODEL = '@cf/openai/gpt-oss-120b';
+// Workers AI models a request may pick instead (?model= on the page); anything else gets DRAFT_MODEL.
+export const DRAFT_MODELS = [DRAFT_MODEL, '@cf/meta/llama-3.3-70b-instruct-fp8-fast'];
 
 // --- 1. Should this prompt become Jev? Jev answers three judgments about the prompt; code decides.
 export const FIT_IDS = ['picks_outcome', 'writes_text', 'extracts_values'];

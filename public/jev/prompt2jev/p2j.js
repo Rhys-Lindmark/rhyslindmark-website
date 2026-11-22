@@ -242,7 +242,7 @@ function resetWidget() { if (widgetId !== undefined && !window.jevHuman.ok()) wi
 function setBusy(on) { busy = on; $('p2j-run').disabled = on; }
 async function runDraft(prompt) {
   setBusy(true); showError('');
-  status('Drafting with Workers AI, then Jev lints each question (20–60 s)', true);
+  status('Drafting with gpt-oss-120b on Workers AI, then Jev lints each question (about a minute)', true);
   $('draft').hidden = true; $('try').hidden = true;
   try {
     const data = await api({ demo: 'p2j_draft', prompt, draft_model: new URLSearchParams(location.search).get('model') || undefined }, 150000);

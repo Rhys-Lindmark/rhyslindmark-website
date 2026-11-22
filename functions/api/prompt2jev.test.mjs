@@ -30,7 +30,7 @@ test('draft: Workers AI drafts, Jev lints each question, and a flagged draft is 
   const h = handler(b => { const i = b.state.question.instructions; seen.push(i); return i.includes('urgent') ? { ...clean, hidden_rules: noul(.9) } : clean; });
   const replies = [reply({ urgent: { type: 'noul', instructions: 'Is `ticket` urgent?' }, outage: { type: 'noul', instructions: 'Does `ticket.message` report an outage?' } }), reply({ outage: { type: 'noul', instructions: 'Does `ticket.message` report an outage?' } }, 'function decide(a){return "P1"}')];
   let last;
-  const AI = { async run(model, input) { last = input.messages; assert.equal(model, '@cf/zai-org/glm-5.3'); return { response: replies.shift() }; } };
+  const AI = { async run(model, input) { last = input.messages; assert.equal(model, '@cf/openai/gpt-oss-120b'); return { response: replies.shift() }; } };
   const r = await h({ request: make({ demo: 'p2j_draft', prompt: PROMPT, draft_model: '@cf/not/allowed' }), env: env(AI) });
   const b = await r.json();
   assert.equal(r.status, 200);
