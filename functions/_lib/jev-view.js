@@ -192,7 +192,7 @@ export function docsRepoPath(pathname) {
 // The feedback folder page carries the corpus search: its form, styles and script are
 // the ones /jev/feedback/ uses, so it needs scripts and fetches from this origin.
 const FEEDBACK_SEARCH = {
-	styles: ['/jev/feedback/search.css?v=fs-4'],
+	styles: ['/jev/feedback/search.css?v=fs-5'],
 	scripts: ['/jev/feedback/search.js?v=fs-3'],
 	html: `<section class="fs fs-embed" aria-label="Search the feedback">
 <p class="fs-sub" id="corpus-meta" hidden></p>

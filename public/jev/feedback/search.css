@@ -68,3 +68,5 @@
 .fs-embed .fs-results:empty { border-top: 0; }
 .fs-daily { margin: -16px 0 24px; text-align: center; font: 500 12px/1 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; }
 .fs-daily a { text-decoration: underline; text-underline-offset: 3px; }
+/* docs.css draws a left rule on every .doc > p; the centered lede and newsletter link go without it. */
+.doc > .fs-lede, .doc > .fs-daily { border-left: 0; padding-left: 0; }
