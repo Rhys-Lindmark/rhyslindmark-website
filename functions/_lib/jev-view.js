@@ -156,6 +156,14 @@ function timingSafeEqual(a, b) {
 const LOGIN_ASSETS = new Set(['/jev/minimal.css', '/jev/login.css', '/jev/style/tokens.css']);
 
 // Returns a 401 Response when the request must log in, or null when it may pass.
+// A logged-in /jev viewer (shared or owner login, by Basic header or session cookie).
+// /api/jev treats one as human and skips Turnstile. False whenever /jev has no login.
+export async function isJevViewer(request, env) {
+	if (!env.JEV_VIEW_PASSWORD || !norm(env.JEV_VIEW_PASSWORD)) return false;
+	const l = login(request);
+	return matches(l, VIEW_USER, env.JEV_VIEW_PASSWORD) || matches(l, PRIVATE_USER, env.JEV_PRIVATE_PASSWORD) || !!(await sessionUser(request, env));
+}
+
 export async function jevGate(request, env) {
 	// Local testing only: `wrangler pages dev` with JEV_LOCAL_DEV=1 skips the login on
 	// localhost, so test browsers never need credentials in the URL. Never set in production.

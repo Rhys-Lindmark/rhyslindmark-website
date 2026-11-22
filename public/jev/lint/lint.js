@@ -24,7 +24,7 @@ const PLACEHOLDERS = {
 
 const $ = id => document.getElementById(id);
 const h = (tag, cls, ...kids) => { const e = document.createElement(tag); if (cls) e.className = cls; e.append(...kids.filter(k => k != null)); return e; };
-let type = 'noul', token = '', widgetId, rendered = false, busy = false;
+let type = 'noul', token = '', widgetId, rendered = false, busy = false, needed = false;
 
 // --- Code checks: the same rules as staticChecks() in lint-rules.mjs, for one question.
 function codeChecks(q) {
@@ -99,9 +99,8 @@ function renderResult({ q, j, rewrite, source }) {
 
 // --- Live review through /api/jev.
 function showError(msg) { $('route-error').textContent = msg; $('route-error').hidden = !msg; }
-const human = () => window.jevHuman?.ok() || !!token;
 function renderWidget() {
-  if (rendered || !window.turnstile || window.jevHuman?.ok()) return;
+  if (!needed || rendered || !window.turnstile || window.jevHuman?.ok()) return;
   rendered = true; $('route-human-check').hidden = false;
   widgetId = window.turnstile.render('#route-human-check', {
     sitekey: '0x4AAAAAAFoxX_DwyD2--6xP', action: 'jev_check', theme: 'light',
@@ -110,14 +109,14 @@ function renderWidget() {
     'error-callback': () => { token = ''; showError('Human verification unavailable. Reload to try again.'); },
   });
 }
+// Logged-in /jev viewers never see Turnstile: it renders only after /api/jev answers needs_human.
 window.jevRenderRouter = renderWidget; // human.js calls this once Turnstile loads
-window.addEventListener('jev-human-needed', () => { rendered = false; renderWidget(); });
+window.addEventListener('jev-human-needed', () => { needed = true; rendered = false; renderWidget(); });
 
 async function askJev(e) {
   e?.preventDefault();
   const q = current();
   if (!q.instructions || busy) return;
-  if (!human()) { showError('Complete the human check first.'); renderWidget(); return; }
   busy = true; $('lint-run').disabled = true; showError('');
   $('lint-source').textContent = 'Asking Jev…';
   try {
@@ -194,7 +193,7 @@ function renderExamples() {
 for (const b of document.querySelectorAll('[data-type]')) b.addEventListener('click', () => { setType(b.dataset.type); renderResult({ q: current() }); });
 for (const id of ['lint-instructions', 'lint-criteria']) $(id).addEventListener('input', () => { updateCount(); renderResult({ q: current() }); for (const b of document.querySelectorAll('#lint-examples .chip')) b.classList.remove('active'); });
 $('lint-form').addEventListener('submit', askJev);
-$('route-human-check').hidden = !!window.jevHuman?.ok();
+$('route-human-check').hidden = true;
 renderExamples();
 openExample(GALLERY[0]);
 renderWidget();

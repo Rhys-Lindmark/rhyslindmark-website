@@ -28,8 +28,7 @@ const PROMPTS = [
 const h = (tag, cls, ...kids) => { const el = document.createElement(tag); if (cls) el.className = cls; for (const k of kids) if (k != null) el.append(k); return el; };
 const pct = n => n.toFixed(2);
 const cache = new Map();
-let current = null, widgetId, token = '', busy = false, rendered = false;
-const human = () => window.jevHuman?.ok() || !!token;
+let current = null, widgetId, token = '', busy = false, rendered = false, needed = false;
 let lastError = '';
 const showError = m => { lastError = m; for (const id of ['route-error', 'anti-error', 'v2-error']) { const e = $(id); if (e) { e.textContent = m; e.hidden = !m; } } };
 const setBusy = b => { busy = b; for (const el of document.querySelectorAll('[data-prompt], #route-run, #route-prompt')) el.disabled = b; };
@@ -198,7 +197,7 @@ function renderV2() {
 const renderAll = () => { renderOutput(); renderTrace(); renderTables(); renderApi(); renderAnti(); renderCompare(); renderV2(); };
 
 function renderWidget() {
-  if (rendered || !window.turnstile || window.jevHuman?.ok()) return;
+  if (!needed || rendered || !window.turnstile || window.jevHuman?.ok()) return;
   rendered = true; $('route-human-check').hidden = false;
   widgetId = window.turnstile.render('#route-human-check', {
     sitekey: '0x4AAAAAAFoxX_DwyD2--6xP', action: 'jev_check', theme: 'light',
@@ -207,8 +206,9 @@ function renderWidget() {
     'error-callback': () => { token = ''; showError('Human verification unavailable. Reload to try again.'); }
   });
 }
+// Logged-in /jev viewers never see Turnstile: it renders only after /api/jev answers needs_human.
 window.jevRenderRouter = renderWidget;
-window.addEventListener('jev-human-needed', () => { rendered = false; renderWidget(); });
+window.addEventListener('jev-human-needed', () => { needed = true; rendered = false; renderWidget(); });
 
 async function route(prompt) {
   prompt = prompt.trim();
@@ -216,7 +216,6 @@ async function route(prompt) {
   $('route-prompt').value = prompt;
   for (const c of document.querySelectorAll('[data-prompt]')) c.classList.toggle('active', c.dataset.prompt === prompt);
   if (cache.has(prompt)) { current = { prompt, data: { ...cache.get(prompt), cached: true } }; renderAll(); return true; }
-  if (!human()) { showError('Complete the human check above first.'); renderWidget(); return false; }
   setBusy(true); showError('');
   $('route-output').replaceChildren(h('p', 'route-empty', `Asking Jev about “${prompt}”…`));
   renderAnti(true);
@@ -244,6 +243,6 @@ $('route-chips').replaceChildren(...chips());
 $('anti-chips').replaceChildren(...chips());
 initV2();
 $('route-form').addEventListener('submit', e => { e.preventDefault(); route($('route-prompt').value); });
-$('route-human-check').hidden = !!window.jevHuman?.ok();
+$('route-human-check').hidden = true;
 renderWidget();
 renderAll();

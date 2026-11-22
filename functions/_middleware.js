@@ -246,7 +246,7 @@ export async function onRequest(context) {
 	}
 
 	// /jev/* sits behind one shared login on every host (see _lib/jev-view.js).
-	// /api/jev is outside it and keeps its own Turnstile check.
+	// /api/jev is outside it: it skips Turnstile for a logged-in viewer and asks everyone else.
 	if (url.pathname === '/jev' || url.pathname.startsWith('/jev/')) {
 		const denied = await jevGate(context.request, context.env);
 		if (denied) return denied;

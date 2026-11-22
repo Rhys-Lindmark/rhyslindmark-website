@@ -1,6 +1,7 @@
 import { MODEL, reserve, clientIdentity, issueHumanCookie, humanCookieExpiry } from '../_lib/jev-access.js';
 import { loadKey } from '../_lib/jev-key.js';
 import { databaseFor } from '../_lib/jev-database.js';
+import { isJevViewer } from '../_lib/jev-view.js';
 import { lintQuestions, lintInput, lintAnswers, FLAG_AT, REWRITE_MODEL, rewriteMessages, parseRewrite } from '../_lib/jev-lint.js';
 const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
 const labels = ['supported', 'contradicted', 'insufficient'];
@@ -187,7 +188,8 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
       apiKey = await loadKey(env);
       if (typeof apiKey !== 'string' || !/^[\x21-\x7e]{8,512}$/.test(apiKey)) return json({ error: 'Claim Check is temporarily unavailable.' }, 503);
       accessStage = 'check_cookie';
-      humanUntil = await humanCookieExpiry(request.headers.get('Cookie'), env.JEV_KEY_SECRET);
+      // Logged in to /jev: already a known viewer, so no Turnstile. Otherwise the human cookie, else Turnstile.
+      humanUntil = (await isJevViewer(request, env)) ? Date.now() + 3600000 : await humanCookieExpiry(request.headers.get('Cookie'), env.JEV_KEY_SECRET);
       if (!humanUntil) {
       if (typeof body.verification_token !== 'string' || !body.verification_token || body.verification_token.length > 2048) return json({ error: 'Complete the human verification.', needs_human: true }, 403);
       accessStage = 'verify_human';
