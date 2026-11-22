@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { jevGate, docsRepoPath, serveJevDocs } from './jev-view.js';
+import { jevGate, docsRepoPath, serveJevDocs, privateGate, isPrivatePath } from './jev-view.js';
 
 const env = { JEV_VIEW_PASSWORD: 'test-password', JEV_GITHUB_TOKEN: 'test-token' };
 const basic = (user, pass) => ({ authorization: `Basic ${btoa(`${user}:${pass}`)}` });
@@ -81,4 +81,37 @@ test('code files are escaped, not executed', async () => {
 test('docs are off until both secrets exist', async () => {
 	const res = await serveJevDocs(req('/jev/docs/'), { JEV_VIEW_PASSWORD: 'x' }, async () => { throw new Error('should not fetch'); });
 	assert.equal(res.status, 503);
+});
+
+const owner = { ...env, JEV_PRIVATE_PASSWORD: 'owner-pass' };
+
+test('owner-only paths: /jev-private, /jev/rehearse and the session-prep docs, not the one-pager', () => {
+	for (const p of ['/jev-private', '/jev-private/', '/jev/rehearse/', '/jev/docs/takehome/tuesday', '/jev/docs/takehome/tuesday/', '/jev/docs/takehome/tuesday/README.md', '/jev/docs/takehome/tuesday/hard-questions.md', '/jev/docs/takehome/tuesday/how-it-was-built.md']) assert.equal(isPrivatePath(p), true, p);
+	for (const p of ['/jev', '/jev/', '/jev/talks/tuesday/', '/jev/docs/takehome/tuesday/one-pager.md', '/jev/docs/takehome/tuesday/one-pager.pdf', '/jev/docs/takehome/', '/jev-privateer']) assert.equal(isPrivatePath(p), false, p);
+});
+
+test('private gate fails closed without its secret, and only the owner gets through', () => {
+	assert.equal(privateGate(req('/jev-private/', basic('rhys', 'owner-pass')), env).status, 503);
+	for (const headers of [{}, basic('jev', 'test-password'), basic('rhys', 'test-password'), basic('jev', 'owner-pass')]) assert.equal(privateGate(req('/jev-private/', headers), owner).status, 401);
+	assert.equal(privateGate(req('/jev-private/', basic('Rhys', ' owner-pass ')), owner), null);
+	assert.equal(privateGate(new Request('http://localhost:8788/jev-private/'), { ...owner, JEV_LOCAL_DEV: '1' }), null);
+});
+
+test('the owner login also opens the shared pages; the shared login stays as it was', () => {
+	assert.equal(jevGate(req('/jev', basic('rhys', 'owner-pass')), owner), null);
+	assert.equal(jevGate(req('/jev', basic('jev', 'test-password')), owner), null);
+	assert.equal(jevGate(req('/jev', basic('rhys', 'owner-pass')), env).status, 401);
+});
+
+test('listings hide owner-only files from everyone else', async () => {
+	const listing = [{ type: 'file', name: 'README.md' }, { type: 'file', name: 'hard-questions.md' }, { type: 'file', name: 'one-pager.md' }];
+	const fetchImpl = async url => /README\.md/.test(url) ? Response.json({ type: 'file', name: 'README.md', content: btoa('# x') }) : Response.json(listing);
+	const shared = await (await serveJevDocs(req('/jev/docs/takehome/x/'), owner, fetchImpl)).text();
+	assert.match(shared, /hard-questions\.md/); // only the tuesday folder is private
+	const parent = [{ type: 'dir', name: 'tuesday' }, { type: 'dir', name: 'demos' }];
+	const asShared = await (await serveJevDocs(req('/jev/docs/takehome/', basic('jev', 'test-password')), owner, async () => Response.json(parent))).text();
+	assert.doesNotMatch(asShared, /tuesday/);
+	assert.match(asShared, /demos/);
+	const asOwner = await (await serveJevDocs(req('/jev/docs/takehome/', basic('rhys', 'owner-pass')), owner, async () => Response.json(parent))).text();
+	assert.match(asOwner, /tuesday/);
 });

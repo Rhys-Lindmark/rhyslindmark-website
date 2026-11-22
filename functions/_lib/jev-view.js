@@ -5,11 +5,60 @@
 //   JEV_VIEW_PASSWORD  the shared password; the username is always "jev".
 //                      Unset: /jev stays public as before and /jev/docs is off.
 //   JEV_GITHUB_TOKEN   fine-grained token, Contents: read-only on Rhys-Lindmark/jev.
+//   JEV_PRIVATE_PASSWORD  Rhys's own login (username "rhys") for the owner-only pages:
+//                      /jev-private, /jev/rehearse and the session-prep docs in PRIVATE_DOCS.
+//                      It also opens everything the shared login does. Unset: those pages
+//                      stay closed (they fail closed, unlike the shared gate).
 import { marked } from 'marked';
 
 export const VIEW_USER = 'jev';
+export const PRIVATE_USER = 'rhys';
 const REPO = 'Rhys-Lindmark/jev';
 const DOCS_PREFIX = '/jev/docs';
+// Repo paths only the owner sees: the interview run-of-show and prep notes.
+// The one-pager in the same folder stays on the shared login (it's sent ahead).
+const PRIVATE_DOCS = ['takehome/tuesday', 'takehome/tuesday/README.md', 'takehome/tuesday/hard-questions.md', 'takehome/tuesday/how-it-was-built.md'];
+export const isPrivateDoc = repoPath => PRIVATE_DOCS.includes(String(repoPath).replace(/\/+$/, ''));
+export function isPrivatePath(pathname) {
+	if (pathname === '/jev-private' || pathname.startsWith('/jev-private/')) return true;
+	if (pathname === '/jev/rehearse' || pathname.startsWith('/jev/rehearse/')) return true;
+	const repoPath = docsRepoPath(pathname);
+	return repoPath !== null && isPrivateDoc(repoPath);
+}
+
+// Forgiving on purpose: a shared, spoken password. Phones capitalize the first
+// letter and pasted values carry stray spaces, so compare trimmed and lowercased.
+const norm = s => String(s).trim().toLowerCase();
+function login(request) {
+	const match = (request.headers.get('authorization') || '').match(/^Basic\s+([A-Za-z0-9+/=]+)$/i);
+	if (!match) return null;
+	let decoded = '';
+	try { decoded = new TextDecoder().decode(Uint8Array.from(atob(match[1]), c => c.charCodeAt(0))); } catch {}
+	const sep = decoded.indexOf(':');
+	return sep > 0 ? { user: norm(decoded.slice(0, sep)), pass: norm(decoded.slice(sep + 1)) } : null;
+}
+const matches = (l, user, secret) => !!(l && secret && norm(secret) && timingSafeEqual(l.user, user) && timingSafeEqual(l.pass, norm(secret)));
+export const isOwner = (request, env) => matches(login(request), PRIVATE_USER, env.JEV_PRIVATE_PASSWORD);
+const localDev = (request, env) => env.JEV_LOCAL_DEV === '1' && new URL(request.url).hostname === 'localhost';
+// Same realm as the shared gate, so a browser keeps one login for all of /jev.
+const askToLogIn = message => new Response(message, {
+	status: 401,
+	headers: {
+		'WWW-Authenticate': 'Basic realm="Jev", charset="UTF-8"',
+		'Content-Type': 'text/plain; charset=utf-8',
+		'Cache-Control': 'no-store',
+		'X-Robots-Tag': 'noindex',
+	},
+});
+
+// Owner-only pages: a 401 (or 503 when unconfigured) Response, or null when Rhys may pass.
+export function privateGate(request, env) {
+	if (localDev(request, env)) return null;
+	if (!env.JEV_PRIVATE_PASSWORD || !norm(env.JEV_PRIVATE_PASSWORD)) {
+		return new Response('Not set up: these pages need the JEV_PRIVATE_PASSWORD secret.', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' } });
+	}
+	return isOwner(request, env) ? null : askToLogIn('Log in as rhys to see this page.');
+}
 
 function timingSafeEqual(a, b) {
 	const x = new TextEncoder().encode(a);
@@ -23,29 +72,12 @@ function timingSafeEqual(a, b) {
 export function jevGate(request, env) {
 	// Local testing only: `wrangler pages dev` with JEV_LOCAL_DEV=1 skips the login on
 	// localhost, so test browsers never need credentials in the URL. Never set in production.
-	if (env.JEV_LOCAL_DEV === '1' && new URL(request.url).hostname === 'localhost') return null;
-	// Forgiving on purpose: a shared, spoken password. Phones capitalize the first
-	// letter and pasted values carry stray spaces, so compare trimmed and lowercased.
-	const norm = s => String(s).trim().toLowerCase();
-	const password = env.JEV_VIEW_PASSWORD ? norm(env.JEV_VIEW_PASSWORD) : '';
-	if (!password) return null;
-	const header = request.headers.get('authorization') || '';
-	const match = header.match(/^Basic\s+([A-Za-z0-9+/=]+)$/i);
-	if (match) {
-		let decoded = '';
-		try { decoded = new TextDecoder().decode(Uint8Array.from(atob(match[1]), c => c.charCodeAt(0))); } catch {}
-		const sep = decoded.indexOf(':');
-		if (sep > 0 && timingSafeEqual(norm(decoded.slice(0, sep)), VIEW_USER) && timingSafeEqual(norm(decoded.slice(sep + 1)), password)) return null;
-	}
-	return new Response('Log in to see the Jev pages.', {
-		status: 401,
-		headers: {
-			'WWW-Authenticate': 'Basic realm="Jev", charset="UTF-8"',
-			'Content-Type': 'text/plain; charset=utf-8',
-			'Cache-Control': 'no-store',
-			'X-Robots-Tag': 'noindex',
-		},
-	});
+	if (localDev(request, env)) return null;
+	if (!env.JEV_VIEW_PASSWORD || !norm(env.JEV_VIEW_PASSWORD)) return null;
+	const l = login(request);
+	// The shared login, or the owner's (which opens everything).
+	if (matches(l, VIEW_USER, env.JEV_VIEW_PASSWORD) || matches(l, PRIVATE_USER, env.JEV_PRIVATE_PASSWORD)) return null;
+	return askToLogIn('Log in to see the Jev pages.');
 }
 
 const escapeHTML = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -119,8 +151,11 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 			url.pathname += '/';
 			return Response.redirect(url.toString(), 308);
 		}
+		// Owner-only files don't show up in listings for anyone else.
+		const owner = isOwner(request, env) || localDev(request, env);
 		const items = data
 			.filter(item => !item.name.startsWith('.'))
+			.filter(item => owner || !isPrivateDoc(repoPath ? `${repoPath}/${item.name}` : item.name))
 			.sort((a, b) => (a.type === b.type ? a.name.localeCompare(b.name) : a.type === 'dir' ? -1 : 1))
 			.map(item => {
 				const href = encodeURIComponent(item.name) + (item.type === 'dir' ? '/' : '');

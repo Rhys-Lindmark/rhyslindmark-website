@@ -2,7 +2,7 @@
 // main site may redirect to Substack; unknown URLs keep their local 404.
 import { LEGACY_POST_SLUGS } from './_legacy/posts.js';
 import { poppyDiscovery } from './_lib/poppy-discovery.js';
-import { jevGate, serveJevDocs } from './_lib/jev-view.js';
+import { jevGate, serveJevDocs, isPrivatePath, privateGate } from './_lib/jev-view.js';
 
 const AI_SITES = {
 	'/tools/lean-coffee': 'https://lean-coffee-together.rhyslindmark.chatgpt.site',
@@ -233,6 +233,12 @@ export async function onRequest(context) {
 	if (url.hostname === 'www.ai.rhyslindmark.com') {
 		url.hostname = 'ai.rhyslindmark.com';
 		return Response.redirect(url.toString(), 308);
+	}
+
+	// Rhys's own pages (/jev-private, /jev/rehearse, the session-prep docs) need his login.
+	if (isPrivatePath(url.pathname)) {
+		const denied = privateGate(context.request, context.env);
+		if (denied) return denied;
 	}
 
 	// /jev/* sits behind one shared login on every host (see _lib/jev-view.js).

@@ -65,3 +65,11 @@
 .crop::after { bottom: 10px; right: 10px; border-bottom-width: 1px; border-right-width: 1px; }
 .dots { background: var(--jev-dots); }
 .mono-label { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; color: var(--jev-steel); text-transform: uppercase; }
+/* Hub appendix: secondary work as a compact list, not cards. */
+.appendix { display: grid; grid-template-columns: 180px 1fr; gap: 10px 24px; margin: 0; font-size: 14px; line-height: 1.5; }
+.appendix dt { font: 500 var(--jev-text-label)/1.5 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--jev-steel); }
+.appendix dd { margin: 0; color: var(--jev-steel); }
+.appendix dd a { color: var(--jev-ink); }
+@media (max-width: 600px) { .appendix { grid-template-columns: 1fr; gap: 2px; } .appendix dd { margin-bottom: 10px; } }
+/* /jev-private: the before-Tuesday checklist. */
+.private-todo { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 15px; max-width: 70ch; }
