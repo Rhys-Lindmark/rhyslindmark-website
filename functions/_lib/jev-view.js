@@ -180,11 +180,49 @@ export function docsRepoPath(pathname) {
 	return parts.join('/');
 }
 
-function page(title, crumbs, body, status = 200) {
+// The feedback folder page carries the corpus search: its form, styles and script are
+// the ones /jev/feedback/ uses, so it needs scripts and fetches from this origin.
+const FEEDBACK_SEARCH = {
+	styles: ['/jev/feedback/search.css?v=fs-2'],
+	scripts: ['/jev/feedback/search.js?v=fs-2'],
+	html: `<section class="fs fs-embed" aria-label="Search the feedback">
+<p class="fs-sub" id="corpus-meta" hidden></p>
+<form class="fs-form" id="search" role="search">
+<div class="fs-query">
+<input id="q" name="q" type="search" placeholder="Search every post: latency, calibration, “open weights”…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Search the corpus">
+<button type="submit" class="fs-go">Search</button>
+</div>
+<p class="fs-help">All words must appear. <code>"exact phrase"</code>, <code>calibrat*</code>, <code>-word</code>, <code>latency OR speed</code>.</p>
+<details class="fs-filters" id="filters">
+<summary>Filters <span id="filter-count"></span></summary>
+<div class="fs-grid">
+<label class="fs-field"><span>Source</span><select id="kind" name="kind"><option value="">Everything</option></select></label>
+<label class="fs-field"><span>From</span><input id="from" name="from" type="date"></label>
+<label class="fs-field"><span>To</span><input id="to" name="to" type="date"></label>
+<label class="fs-field"><span>Jev says it shows</span><select id="label" name="label"><option value="">Any</option></select></label>
+<label class="fs-field"><span>Builder type (Jev)</span><select id="segment" name="segment"><option value="">Any</option></select></label>
+<label class="fs-field"><span>Sort</span><select id="sort" name="sort">
+<option value="">Default (best match, or newest)</option><option value="newest">Newest</option><option value="oldest">Oldest</option>
+<option value="label">Most likely to show the label</option><option value="sentiment">Most positive (Jev)</option><option value="-sentiment">Most negative (Jev)</option>
+</select></label>
+<label class="fs-check"><input id="about" name="about" type="checkbox" value="1"><span>Only items Jev says are about Jev</span></label>
+</div>
+<button type="button" class="text-button" id="clear">Clear filters</button>
+</details>
+</form>
+<div class="fs-try" id="try">Try: <button type="button" data-q="&quot;question engineering&quot;">“question engineering”</button><button type="button" data-q="latency OR slow">latency OR slow</button><button type="button" data-label="pain_trust" data-about="1">doubts about calibration</button><button type="button" data-label="in_production" data-about="1">running in production</button><button type="button" data-q="open weights" data-kind="hn">open weights on HN</button></div>
+<p class="fs-status" id="status" aria-live="polite"></p>
+<ol class="fs-results" id="results"></ol>
+<button type="button" class="fs-more" id="more" hidden>More results</button>
+</section>`,
+};
+
+function page(title, crumbs, body, status = 200, { styles = [], scripts = [] } = {}) {
 	const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-charts-1"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-charts-1">${styles.map(h => `<link rel="stylesheet" href="${h}">`).join('')}</head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a>${crumbs}</header>
-<main class="doc">${body}</main></div></body></html>`;
+<main class="doc">${body}</main></div>${scripts.map(s => `<script src="${s}" defer></script>`).join('')}</body></html>`;
+	const scriptCSP = scripts.length ? " script-src 'self'; connect-src 'self';" : '';
 	return new Response(html, {
 		status,
 		headers: {
@@ -192,7 +230,7 @@ function page(title, crumbs, body, status = 200) {
 			'Cache-Control': 'private, no-store',
 			'X-Robots-Tag': 'noindex',
 			'Referrer-Policy': 'no-referrer',
-			'Content-Security-Policy': "default-src 'none'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+			'Content-Security-Policy': `default-src 'none';${scriptCSP} style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'`,
 		},
 	});
 }
@@ -277,6 +315,10 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 		}
 		const title = repoPath ? repoPath.split('/').pop() : 'jev';
 		const head = docHead('folder', readmeTitle ? marked.parseInline(readmeTitle) : escapeHTML(title));
+		// The feedback corpus is the numbers, then the search, and nothing else.
+		if (repoPath === 'feedback') {
+			return page(readmeTitle || title, crumbsFor(repoPath), `${head}${corpus}${FEEDBACK_SEARCH.html}`, 200, FEEDBACK_SEARCH);
+		}
 		return page(readmeTitle || title, crumbsFor(repoPath), `${head}${corpus}${readme}<ul class="listing">${items}</ul>`);
 	}
 

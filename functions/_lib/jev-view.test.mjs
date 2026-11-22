@@ -63,13 +63,24 @@ test('markdown files render through the GitHub contents API with the token', asy
 test('directories redirect to a trailing slash, then list entries', async () => {
 	const listing = [{ type: 'file', name: 'b.py' }, { type: 'dir', name: 'sub' }, { type: 'file', name: '.gitignore' }];
 	const fetchImpl = async () => Response.json(listing);
-	const redirect = await serveJevDocs(req('/jev/docs/feedback'), env, fetchImpl);
+	const redirect = await serveJevDocs(req('/jev/docs/research'), env, fetchImpl);
 	assert.equal(redirect.status, 308);
-	assert.equal(redirect.headers.get('location'), 'https://ai.rhyslindmark.com/jev/docs/feedback/');
-	const res = await serveJevDocs(req('/jev/docs/feedback/'), env, fetchImpl);
+	assert.equal(redirect.headers.get('location'), 'https://ai.rhyslindmark.com/jev/docs/research/');
+	const res = await serveJevDocs(req('/jev/docs/research/'), env, fetchImpl);
 	const html = await res.text();
 	assert.match(html, /href="sub\/">sub\/<\/a>.*href="b\.py">b\.py<\/a>/s);
 	assert.doesNotMatch(html, /gitignore/);
+	assert.doesNotMatch(res.headers.get('content-security-policy'), /script-src/);
+});
+
+test('the feedback folder is its numbers, then the search, and no README or file list', async () => {
+	const listing = [{ type: 'file', name: 'README.md' }, { type: 'file', name: 'run.py' }, { type: 'dir', name: 'data' }];
+	const fetchImpl = async url => (String(url).includes('README.md') ? Response.json({ content: b64('# Feedback corpus\n\nSome prose.') }) : String(url).includes('stats.json') ? Response.json({ content: b64(JSON.stringify({ total: 3, by_source_kind: { 'hn/story': 3 } })) }) : Response.json(listing));
+	const res = await serveJevDocs(req('/jev/docs/feedback/'), env, fetchImpl);
+	const html = await res.text();
+	assert.match(html, /class="corpus".*id="search".*\/jev\/feedback\/search\.js/s);
+	assert.doesNotMatch(html, /Some prose|run\.py|class="listing"/);
+	assert.match(res.headers.get('content-security-policy'), /script-src 'self'; connect-src 'self'/);
 });
 
 test('code files are escaped, not executed', async () => {
