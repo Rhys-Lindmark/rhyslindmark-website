@@ -63,6 +63,8 @@
 .hub-grid .demo { margin: 0; padding: 0; }
 .hub-grid .demo-heading { margin: 0; padding: 16px; }
 .hub-label { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; color: var(--jev-steel); text-transform: uppercase; margin: 40px 0 14px; }
+.hub-sublabel { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; color: var(--jev-steel); margin: 28px 0 10px; }
+.hub-label + .hub-sublabel { margin-top: 0; }
 .hub-rule { border: 0; border-top: var(--jev-rule); margin: 56px 0 8px; }
 
 /* Components from the Jev design system (see /jev/style/) */
