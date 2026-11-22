@@ -2,7 +2,7 @@
 // main site may redirect to Substack; unknown URLs keep their local 404.
 import { LEGACY_POST_SLUGS } from './_legacy/posts.js';
 import { poppyDiscovery } from './_lib/poppy-discovery.js';
-import { jevGate, serveJevDocs, isPrivatePath, privateGate } from './_lib/jev-view.js';
+import { jevGate, serveJevDocs, isPrivatePath, privateGate, handleJevLogin } from './_lib/jev-view.js';
 
 const AI_SITES = {
 	'/tools/lean-coffee': 'https://lean-coffee-together.rhyslindmark.chatgpt.site',
@@ -235,16 +235,19 @@ export async function onRequest(context) {
 		return Response.redirect(url.toString(), 308);
 	}
 
+	// The /jev login form and logout sit outside both gates.
+	if (/^\/jev\/log(in|out)\/?$/.test(url.pathname)) return handleJevLogin(context.request, context.env);
+
 	// Rhys's own pages (/jev-private, /jev/rehearse, the session-prep docs) need his login.
 	if (isPrivatePath(url.pathname)) {
-		const denied = privateGate(context.request, context.env);
+		const denied = await privateGate(context.request, context.env);
 		if (denied) return denied;
 	}
 
 	// /jev/* sits behind one shared login on every host (see _lib/jev-view.js).
 	// /api/jev is outside it and keeps its own Turnstile check.
 	if (url.pathname === '/jev' || url.pathname.startsWith('/jev/')) {
-		const denied = jevGate(context.request, context.env);
+		const denied = await jevGate(context.request, context.env);
 		if (denied) return denied;
 		if (url.pathname === '/jev/docs' || url.pathname.startsWith('/jev/docs/')) {
 			if (!['GET', 'HEAD'].includes(context.request.method)) {

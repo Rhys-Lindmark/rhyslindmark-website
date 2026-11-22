@@ -9,6 +9,11 @@
 //                      /jev-private, /jev/rehearse and the session-prep docs in PRIVATE_DOCS.
 //                      It also opens everything the shared login does. Unset: those pages
 //                      stay closed (they fail closed, unlike the shared gate).
+//
+// Two ways in, same passwords: the browser's Basic prompt, or the form at /jev/login,
+// which sets a signed jev_session cookie for 30 days. The form exists for browsers that
+// never show the Basic prompt (Claude's browser pane is one). The cookie's HMAC key comes
+// from that user's password, so changing a password signs every cookie out.
 import { marked } from 'marked';
 
 export const VIEW_USER = 'jev';
@@ -38,26 +43,104 @@ function login(request) {
 	return sep > 0 ? { user: norm(decoded.slice(0, sep)), pass: norm(decoded.slice(sep + 1)) } : null;
 }
 const matches = (l, user, secret) => !!(l && secret && norm(secret) && timingSafeEqual(l.user, user) && timingSafeEqual(l.pass, norm(secret)));
-export const isOwner = (request, env) => matches(login(request), PRIVATE_USER, env.JEV_PRIVATE_PASSWORD);
+export const isOwner = async (request, env) => matches(login(request), PRIVATE_USER, env.JEV_PRIVATE_PASSWORD) || (await sessionUser(request, env)) === PRIVATE_USER;
 const localDev = (request, env) => env.JEV_LOCAL_DEV === '1' && new URL(request.url).hostname === 'localhost';
-// Same realm as the shared gate, so a browser keeps one login for all of /jev.
-const askToLogIn = message => new Response(message, {
-	status: 401,
-	headers: {
-		'WWW-Authenticate': 'Basic realm="Jev", charset="UTF-8"',
-		'Content-Type': 'text/plain; charset=utf-8',
-		'Cache-Control': 'no-store',
-		'X-Robots-Tag': 'noindex',
-	},
-});
+
+// Cookie login. The value is "<user>.<expires, unix seconds>.<base64url HMAC-SHA256>".
+const SESSION_COOKIE = 'jev_session';
+const SESSION_SECONDS = 30 * 86400;
+const secretFor = (user, env) => (user === PRIVATE_USER ? env.JEV_PRIVATE_PASSWORD : user === VIEW_USER ? env.JEV_VIEW_PASSWORD : null);
+async function sessionMac(user, expires, secret) {
+	const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(`jev-session\n${norm(secret)}`), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']);
+	const mac = new Uint8Array(await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(`${user}.${expires}`)));
+	return btoa(String.fromCharCode(...mac)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function cookieValue(request, name) {
+	for (const part of (request.headers.get('cookie') || '').split(';')) {
+		const i = part.indexOf('=');
+		if (i > 0 && part.slice(0, i).trim() === name) return part.slice(i + 1).trim();
+	}
+	return null;
+}
+// The user a valid, unexpired session cookie names, or null.
+export async function sessionUser(request, env, now = Date.now()) {
+	const m = /^(jev|rhys)\.(\d{9,11})\.([A-Za-z0-9_-]{43})$/.exec(cookieValue(request, SESSION_COOKIE) || '');
+	if (!m || +m[2] * 1000 <= now) return null;
+	const secret = secretFor(m[1], env);
+	if (!secret || !norm(secret)) return null;
+	return timingSafeEqual(m[3], await sessionMac(m[1], m[2], secret)) ? m[1] : null;
+}
+
+// Where to send someone after logging in: a /jev or /jev-private path on this site, else /jev.
+function safeNext(raw, base) {
+	try {
+		const u = new URL(String(raw || '/jev'), base);
+		const p = u.pathname;
+		const inJev = p === '/jev' || p.startsWith('/jev/') || p === '/jev-private' || p.startsWith('/jev-private/');
+		if (u.origin === base.origin && inJev && !/^\/jev\/log(in|out)\/?$/.test(p)) return p + u.search;
+	} catch {}
+	return '/jev';
+}
+
+function loginPage({ message, next, user = '', error = '', status = 200, headers = {} }) {
+	const html = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Log in · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/login.css?v=jev-login-1"></head>
+<body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a></header>
+<main class="login"><h1>Log in</h1><p>${escapeHTML(message)}</p>
+<form method="post" action="/jev/login"><input type="hidden" name="next" value="${escapeHTML(next)}">
+<label for="user"><span>Username</span></label><input id="user" name="user" value="${escapeHTML(user)}" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+<label for="password"><span>Password</span></label><input id="password" name="password" type="password" autocomplete="current-password" required${user ? ' autofocus' : ''}>
+${error ? `<p class="login-error" role="alert">${escapeHTML(error)}</p>` : ''}<button type="submit">Log in</button></form></main></div></body></html>`;
+	return new Response(html, {
+		status,
+		headers: {
+			'Content-Type': 'text/html; charset=utf-8',
+			'Cache-Control': 'no-store',
+			'X-Robots-Tag': 'noindex',
+			'Referrer-Policy': 'no-referrer',
+			'Content-Security-Policy': "default-src 'none'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+			...headers,
+		},
+	});
+}
+
+// Same realm as the shared gate, so a browser keeps one login for all of /jev. Browsers that
+// show the Basic prompt still do; the body is the login form, for those that don't.
+const askToLogIn = (request, message, user) => {
+	const url = new URL(request.url);
+	return loginPage({ message, next: url.pathname + url.search, user, status: 401, headers: { 'WWW-Authenticate': 'Basic realm="Jev", charset="UTF-8"' } });
+};
+
+// GET/POST /jev/login and /jev/logout. Runs outside the gate.
+export async function handleJevLogin(request, env, now = Date.now()) {
+	const url = new URL(request.url);
+	const noStore = { 'Cache-Control': 'no-store' };
+	if (/^\/jev\/logout\/?$/.test(url.pathname)) {
+		return new Response(null, { status: 303, headers: { ...noStore, Location: '/jev/login', 'Set-Cookie': `${SESSION_COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax` } });
+	}
+	const message = 'Log in to see the Jev pages.';
+	if (['GET', 'HEAD'].includes(request.method)) {
+		return loginPage({ message, next: safeNext(url.searchParams.get('next'), url), user: url.searchParams.get('user') || VIEW_USER });
+	}
+	if (request.method !== 'POST') return new Response(null, { status: 405, headers: { Allow: 'GET, HEAD, POST' } });
+	let form;
+	try { form = await request.formData(); } catch { form = new FormData(); }
+	const l = { user: norm(form.get('user') ?? ''), pass: norm(form.get('password') ?? '') };
+	const next = safeNext(form.get('next'), url);
+	const who = matches(l, PRIVATE_USER, env.JEV_PRIVATE_PASSWORD) ? PRIVATE_USER : matches(l, VIEW_USER, env.JEV_VIEW_PASSWORD) ? VIEW_USER : null;
+	if (!who) return loginPage({ message, next, user: l.user, error: 'That username and password don’t match.', status: 401 });
+	const expires = Math.floor(now / 1000) + SESSION_SECONDS;
+	const value = `${who}.${expires}.${await sessionMac(who, expires, secretFor(who, env))}`;
+	return new Response(null, { status: 303, headers: { ...noStore, Location: next, 'Set-Cookie': `${SESSION_COOKIE}=${value}; Path=/; Max-Age=${SESSION_SECONDS}; HttpOnly; Secure; SameSite=Lax` } });
+}
 
 // Owner-only pages: a 401 (or 503 when unconfigured) Response, or null when Rhys may pass.
-export function privateGate(request, env) {
+export async function privateGate(request, env) {
 	if (localDev(request, env)) return null;
 	if (!env.JEV_PRIVATE_PASSWORD || !norm(env.JEV_PRIVATE_PASSWORD)) {
 		return new Response('Not set up: these pages need the JEV_PRIVATE_PASSWORD secret.', { status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' } });
 	}
-	return isOwner(request, env) ? null : askToLogIn('Log in as rhys to see this page.');
+	return (await isOwner(request, env)) ? null : askToLogIn(request, 'Log in as rhys to see this page.', PRIVATE_USER);
 }
 
 function timingSafeEqual(a, b) {
@@ -68,16 +151,21 @@ function timingSafeEqual(a, b) {
 	return diff === 0;
 }
 
+// The stylesheets the login form needs, so it isn't bare before you log in. Nothing private.
+const LOGIN_ASSETS = new Set(['/jev/minimal.css', '/jev/login.css', '/jev/style/tokens.css']);
+
 // Returns a 401 Response when the request must log in, or null when it may pass.
-export function jevGate(request, env) {
+export async function jevGate(request, env) {
 	// Local testing only: `wrangler pages dev` with JEV_LOCAL_DEV=1 skips the login on
 	// localhost, so test browsers never need credentials in the URL. Never set in production.
 	if (localDev(request, env)) return null;
 	if (!env.JEV_VIEW_PASSWORD || !norm(env.JEV_VIEW_PASSWORD)) return null;
+	if (LOGIN_ASSETS.has(new URL(request.url).pathname)) return null;
 	const l = login(request);
-	// The shared login, or the owner's (which opens everything).
+	// The shared login, or the owner's (which opens everything), by prompt or by cookie.
 	if (matches(l, VIEW_USER, env.JEV_VIEW_PASSWORD) || matches(l, PRIVATE_USER, env.JEV_PRIVATE_PASSWORD)) return null;
-	return askToLogIn('Log in to see the Jev pages.');
+	if (await sessionUser(request, env)) return null;
+	return askToLogIn(request, 'Log in to see the Jev pages.', VIEW_USER);
 }
 
 const escapeHTML = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -152,7 +240,7 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 			return Response.redirect(url.toString(), 308);
 		}
 		// Owner-only files don't show up in listings for anyone else.
-		const owner = isOwner(request, env) || localDev(request, env);
+		const owner = (await isOwner(request, env)) || localDev(request, env);
 		const items = data
 			.filter(item => !item.name.startsWith('.'))
 			.filter(item => owner || !isPrivateDoc(repoPath ? `${repoPath}/${item.name}` : item.name))

@@ -1,0 +1,9 @@
+/* /jev/login: the cookie login form (functions/_lib/jev-view.js renders it). */
+.login { max-width: 360px; margin: 12vh auto 0; }
+.login h1 { margin-bottom: 16px; }
+.login > p { margin: 0 0 24px; color: var(--jev-steel); }
+.login form { border-top: var(--jev-rule); padding-top: 8px; }
+.login label { margin-top: 16px; }
+.login-error { margin: 16px 0 0; font-size: 14px; color: var(--jev-alert); }
+.login button { display: block; width: 100%; margin-top: 24px; padding: 13px 16px; border: 0; border-radius: 0; background: var(--jev-ink); color: var(--jev-paper); font-weight: 535; }
+.login button:hover { background: var(--jev-graphite); }

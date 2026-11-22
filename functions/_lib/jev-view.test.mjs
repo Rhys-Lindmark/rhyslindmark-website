@@ -1,39 +1,39 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { jevGate, docsRepoPath, serveJevDocs, privateGate, isPrivatePath } from './jev-view.js';
+import { jevGate, docsRepoPath, serveJevDocs, privateGate, isPrivatePath, handleJevLogin, sessionUser } from './jev-view.js';
 
 const env = { JEV_VIEW_PASSWORD: 'test-password', JEV_GITHUB_TOKEN: 'test-token' };
 const basic = (user, pass) => ({ authorization: `Basic ${btoa(`${user}:${pass}`)}` });
 const req = (path, headers = {}) => new Request(`https://ai.rhyslindmark.com${path}`, { headers });
 
-test('gate is off when no password is configured', () => {
-	assert.equal(jevGate(req('/jev'), {}), null);
+test('gate is off when no password is configured', async () => {
+	assert.equal(await jevGate(req('/jev'), {}), null);
 });
 
-test('gate asks for a login without credentials or with wrong ones', () => {
+test('gate asks for a login without credentials or with wrong ones', async () => {
 	for (const headers of [{}, basic('jev', 'nope'), basic('other', 'test-password'), { authorization: 'Bearer x' }]) {
-		const res = jevGate(req('/jev', headers), env);
+		const res = await jevGate(req('/jev', headers), env);
 		assert.equal(res.status, 401);
 		assert.match(res.headers.get('www-authenticate'), /^Basic realm="Jev"/);
 	}
 });
 
-test('local dev skips the gate only on localhost', () => {
+test('local dev skips the gate only on localhost', async () => {
 	const dev = { ...env, JEV_LOCAL_DEV: '1' };
-	assert.equal(jevGate(new Request('http://localhost:8788/jev'), dev), null);
-	assert.equal(jevGate(req('/jev'), dev).status, 401);
+	assert.equal(await jevGate(new Request('http://localhost:8788/jev'), dev), null);
+	assert.equal((await jevGate(req('/jev'), dev)).status, 401);
 });
 
-test('gate lets the shared login through', () => {
-	assert.equal(jevGate(req('/jev', basic('jev', 'test-password')), env), null);
+test('gate lets the shared login through', async () => {
+	assert.equal(await jevGate(req('/jev', basic('jev', 'test-password')), env), null);
 });
 
-test('gate forgives capitals and stray spaces on either side', () => {
-	assert.equal(jevGate(req('/jev', basic('Jev ', ' Test-Password')), env), null);
-	assert.equal(jevGate(req('/jev', basic('jev', 'test-password')), { JEV_VIEW_PASSWORD: 'Test-Password\n' }), null);
+test('gate forgives capitals and stray spaces on either side', async () => {
+	assert.equal(await jevGate(req('/jev', basic('Jev ', ' Test-Password')), env), null);
+	assert.equal(await jevGate(req('/jev', basic('jev', 'test-password')), { JEV_VIEW_PASSWORD: 'Test-Password\n' }), null);
 });
 
-test('docs paths map to repo paths and reject traversal and dotfiles', () => {
+test('docs paths map to repo paths and reject traversal and dotfiles', async () => {
 	assert.equal(docsRepoPath('/jev/docs'), '');
 	assert.equal(docsRepoPath('/jev/docs/'), '');
 	assert.equal(docsRepoPath('/jev/docs/research/customer-analysis.md'), 'research/customer-analysis.md');
@@ -85,22 +85,22 @@ test('docs are off until both secrets exist', async () => {
 
 const owner = { ...env, JEV_PRIVATE_PASSWORD: 'owner-pass' };
 
-test('owner-only paths: /jev-private, /jev/rehearse and the session-prep docs, not the one-pager', () => {
+test('owner-only paths: /jev-private, /jev/rehearse and the session-prep docs, not the one-pager', async () => {
 	for (const p of ['/jev-private', '/jev-private/', '/jev/rehearse/', '/jev/docs/takehome/tuesday', '/jev/docs/takehome/tuesday/', '/jev/docs/takehome/tuesday/README.md', '/jev/docs/takehome/tuesday/hard-questions.md', '/jev/docs/takehome/tuesday/how-it-was-built.md']) assert.equal(isPrivatePath(p), true, p);
 	for (const p of ['/jev', '/jev/', '/jev/talks/tuesday/', '/jev/docs/takehome/tuesday/one-pager.md', '/jev/docs/takehome/tuesday/one-pager.pdf', '/jev/docs/takehome/', '/jev-privateer']) assert.equal(isPrivatePath(p), false, p);
 });
 
-test('private gate fails closed without its secret, and only the owner gets through', () => {
-	assert.equal(privateGate(req('/jev-private/', basic('rhys', 'owner-pass')), env).status, 503);
-	for (const headers of [{}, basic('jev', 'test-password'), basic('rhys', 'test-password'), basic('jev', 'owner-pass')]) assert.equal(privateGate(req('/jev-private/', headers), owner).status, 401);
-	assert.equal(privateGate(req('/jev-private/', basic('Rhys', ' owner-pass ')), owner), null);
-	assert.equal(privateGate(new Request('http://localhost:8788/jev-private/'), { ...owner, JEV_LOCAL_DEV: '1' }), null);
+test('private gate fails closed without its secret, and only the owner gets through', async () => {
+	assert.equal((await privateGate(req('/jev-private/', basic('rhys', 'owner-pass')), env)).status, 503);
+	for (const headers of [{}, basic('jev', 'test-password'), basic('rhys', 'test-password'), basic('jev', 'owner-pass')]) assert.equal((await privateGate(req('/jev-private/', headers), owner)).status, 401);
+	assert.equal(await privateGate(req('/jev-private/', basic('Rhys', ' owner-pass ')), owner), null);
+	assert.equal(await privateGate(new Request('http://localhost:8788/jev-private/'), { ...owner, JEV_LOCAL_DEV: '1' }), null);
 });
 
-test('the owner login also opens the shared pages; the shared login stays as it was', () => {
-	assert.equal(jevGate(req('/jev', basic('rhys', 'owner-pass')), owner), null);
-	assert.equal(jevGate(req('/jev', basic('jev', 'test-password')), owner), null);
-	assert.equal(jevGate(req('/jev', basic('rhys', 'owner-pass')), env).status, 401);
+test('the owner login also opens the shared pages; the shared login stays as it was', async () => {
+	assert.equal(await jevGate(req('/jev', basic('rhys', 'owner-pass')), owner), null);
+	assert.equal(await jevGate(req('/jev', basic('jev', 'test-password')), owner), null);
+	assert.equal((await jevGate(req('/jev', basic('rhys', 'owner-pass')), env)).status, 401);
 });
 
 test('listings hide owner-only files from everyone else', async () => {
@@ -114,4 +114,74 @@ test('listings hide owner-only files from everyone else', async () => {
 	assert.match(asShared, /demos/);
 	const asOwner = await (await serveJevDocs(req('/jev/docs/takehome/', basic('rhys', 'owner-pass')), owner, async () => Response.json(parent))).text();
 	assert.match(asOwner, /tuesday/);
+});
+
+// Cookie login: /jev/login takes the same passwords and sets a signed jev_session cookie.
+const logIn = (user, password, next = '/jev/docs/feedback/', e = owner, now) => handleJevLogin(new Request('https://ai.rhyslindmark.com/jev/login', {
+	method: 'POST', body: new URLSearchParams({ user, password, next }),
+}), e, now);
+const cookieFrom = res => res.headers.get('set-cookie').split(';')[0];
+
+test('the 401 is the login form, and still offers the Basic prompt', async () => {
+	const res = await jevGate(req('/jev/docs/feedback/?x=1'), env);
+	assert.equal(res.status, 401);
+	assert.match(res.headers.get('www-authenticate'), /^Basic realm="Jev"/);
+	const html = await res.text();
+	assert.match(html, /<form method="post" action="\/jev\/login">/);
+	assert.match(html, /name="next" value="\/jev\/docs\/feedback\/\?x=1"/);
+	assert.match(res.headers.get('content-security-policy'), /form-action 'self'/);
+});
+
+test('logging in sets a cookie the gate accepts; the shared one does not open owner pages', async () => {
+	const res = await logIn('Jev', ' Test-Password ');
+	assert.equal(res.status, 303);
+	assert.equal(res.headers.get('location'), '/jev/docs/feedback/');
+	assert.match(res.headers.get('set-cookie'), /^jev_session=jev\.\d+\.[\w-]{43}; Path=\/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax$/);
+	const cookie = { cookie: `other=1; ${cookieFrom(res)}` };
+	assert.equal(await jevGate(req('/jev', cookie), owner), null);
+	assert.equal((await privateGate(req('/jev-private/', cookie), owner)).status, 401);
+});
+
+test('the owner cookie opens owner pages and the shared ones', async () => {
+	const cookie = { cookie: cookieFrom(await logIn('rhys', 'owner-pass')) };
+	assert.equal(await privateGate(req('/jev-private/', cookie), owner), null);
+	assert.equal(await jevGate(req('/jev', cookie), owner), null);
+});
+
+test('a wrong password gets the form back with no cookie', async () => {
+	const res = await logIn('jev', 'nope');
+	assert.equal(res.status, 401);
+	assert.equal(res.headers.get('set-cookie'), null);
+	assert.equal(res.headers.get('www-authenticate'), null);
+	assert.match(await res.text(), /don’t match/);
+});
+
+test('forged, tampered, expired or re-keyed cookies are refused', async () => {
+	const value = cookieFrom(await logIn('jev', 'test-password')).split('=')[1];
+	const [, expires, mac] = value.split('.');
+	const as = v => req('/jev', { cookie: `jev_session=${v}` });
+	assert.equal(await sessionUser(as(value), env), 'jev');
+	assert.equal(await sessionUser(as(`rhys.${expires}.${mac}`), owner), null);
+	assert.equal(await sessionUser(as(`jev.${+expires + 1}.${mac}`), env), null);
+	assert.equal(await sessionUser(as(`jev.${expires}.${'A'.repeat(43)}`), env), null);
+	assert.equal(await sessionUser(as(value), env, (+expires + 1) * 1000), null);
+	assert.equal(await sessionUser(as(value), { JEV_VIEW_PASSWORD: 'a-new-password' }), null);
+	assert.equal((await jevGate(as(value), { JEV_VIEW_PASSWORD: 'a-new-password' })).status, 401);
+});
+
+test('login only redirects to /jev pages on this site', async () => {
+	for (const [next, to] of [['/jev-private/', '/jev-private/'], ['https://evil.example/jev', '/jev'], ['//evil.example/jev', '/jev'], ['/admin', '/jev'], ['/jev/login', '/jev'], ['', '/jev']]) {
+		assert.equal((await logIn('jev', 'test-password', next)).headers.get('location'), to, next);
+	}
+});
+
+test('the login page and its stylesheets load without a login; logout clears the cookie', async () => {
+	const page = await handleJevLogin(req('/jev/login?next=/jev/talks/'), env);
+	assert.equal(page.status, 200);
+	assert.match(await page.text(), /value="\/jev\/talks\/"/);
+	for (const p of ['/jev/minimal.css', '/jev/login.css', '/jev/style/tokens.css']) assert.equal(await jevGate(req(p), env), null, p);
+	assert.equal((await jevGate(req('/jev/docs.css'), env)).status, 401);
+	const out = await handleJevLogin(req('/jev/logout'), env);
+	assert.equal(out.status, 303);
+	assert.match(out.headers.get('set-cookie'), /^jev_session=; Path=\/; Max-Age=0/);
 });
