@@ -66,3 +66,5 @@
 .fs-graph summary { cursor: pointer; font: 500 12px/1 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .fs-graph .corpus { margin: 16px 0 0; }
 .fs-embed .fs-results:empty { border-top: 0; }
+.fs-daily { margin: -16px 0 24px; text-align: center; font: 500 12px/1 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; }
+.fs-daily a { text-decoration: underline; text-underline-offset: 3px; }

@@ -183,7 +183,7 @@ export function docsRepoPath(pathname) {
 // The feedback folder page carries the corpus search: its form, styles and script are
 // the ones /jev/feedback/ uses, so it needs scripts and fetches from this origin.
 const FEEDBACK_SEARCH = {
-	styles: ['/jev/feedback/search.css?v=fs-3'],
+	styles: ['/jev/feedback/search.css?v=fs-4'],
 	scripts: ['/jev/feedback/search.js?v=fs-3'],
 	html: `<section class="fs fs-embed" aria-label="Search the feedback">
 <p class="fs-sub" id="corpus-meta" hidden></p>
@@ -320,7 +320,7 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 		// charts folded away at the bottom.
 		if (repoPath === 'feedback') {
 			const n = Number.isFinite(stats?.total) ? `${Math.round(stats.total).toLocaleString('en-US')} posts` : 'Every post';
-			const lede = `<p class="fs-lede">${n} about Jev from GitHub, X and Hacker News, refreshed every day.</p>`;
+			const lede = `<p class="fs-lede">${n} about Jev from GitHub, X and Hacker News, refreshed every day.</p><p class="fs-daily"><a href="/jev/docs/newsletter/">The Daily Jev newsletter →</a></p>`;
 			const graph = corpus ? `<details class="fs-graph"><summary>See the corpus as a graph</summary>${corpus}</details>` : '';
 			return page(readmeTitle || title, crumbsFor(repoPath), `${head}${lede}${FEEDBACK_SEARCH.html}${graph}`, 200, FEEDBACK_SEARCH);
 		}

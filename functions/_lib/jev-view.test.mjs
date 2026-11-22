@@ -78,7 +78,7 @@ test('the feedback folder is its numbers, then the search, and no README or file
 	const fetchImpl = async url => (String(url).includes('README.md') ? Response.json({ content: b64('# Feedback corpus\n\nSome prose.') }) : String(url).includes('stats.json') ? Response.json({ content: b64(JSON.stringify({ total: 3, by_source_kind: { 'hn/story': 3 } })) }) : Response.json(listing));
 	const res = await serveJevDocs(req('/jev/docs/feedback/'), env, fetchImpl);
 	const html = await res.text();
-	assert.match(html, /class="fs-lede">3 posts.*id="search".*class="fs-graph".*class="corpus".*\/jev\/feedback\/search\.js/s);
+	assert.match(html, /class="fs-lede">3 posts.*href="\/jev\/docs\/newsletter\/".*id="search".*class="fs-graph".*class="corpus".*\/jev\/feedback\/search\.js/s);
 	assert.doesNotMatch(html, /Some prose|run\.py|class="listing"/);
 	assert.match(res.headers.get('content-security-policy'), /script-src 'self'; connect-src 'self'/);
 });
