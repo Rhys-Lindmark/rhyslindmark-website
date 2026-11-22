@@ -10,7 +10,7 @@ export function lintQuestions() {
     } },
     compound: { type: 'noul', instructions: 'Does `question` ask about two or more separate conditions at once?', criteria: {
       true: 'It joins different conditions, for example "Is the user rude or drunk?" or "Is this spam and from a new account?".',
-      false: 'It asks about one condition, even if the wording is long.',
+      false: 'It asks about one condition, even if the wording is long. A Choice that names its options, for example "Is this a billing issue, a bug, or something else?", is one question: picking one option is what a Choice is for.',
     } },
     hidden_rules: { type: 'noul', instructions: 'Does answering `question` depend on business rules or preferences that are not written in it?', criteria: {
       true: 'Two reasonable people would answer differently until they knew the company\'s policy: is this high priority, is this a good lead, should this be flagged.',
