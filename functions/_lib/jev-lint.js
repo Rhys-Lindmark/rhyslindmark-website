@@ -80,18 +80,35 @@ Reply with JSON only: {"questions":[{"name":"snake_case","type":"noul","instruct
   const user = JSON.stringify({ question, problems: flags.map(id => FLAG_HELP[id]) });
   return [{ role: 'system', content: system }, { role: 'user', content: user }];
 }
-// { questions: [{ name, q }], code } with each q a valid lint input, or null.
+// { questions: [{ name, q }], code } from a model reply, or { error } saying why not.
+// Forgiving on purpose: a small model's JSON drifts (type "Noul", criteria "", code as a
+// list of lines). Keep every question that is usable and drop the rest.
 export function parseRewrite(response) {
   let raw = response;
-  if (typeof raw === 'string') { try { raw = JSON.parse(raw.replace(/^```(?:json)?\s*|\s*```$/g, '')); } catch { return null; } }
-  if (!raw || !Array.isArray(raw.questions) || raw.questions.length > 3 || typeof raw.code !== 'string' || raw.code.length > 800) return null;
+  if (typeof raw === 'string') { const m = raw.match(/\{[\s\S]*\}/); try { raw = JSON.parse(m ? m[0] : raw); } catch { return { error: 'not_json' }; } }
+  if (!raw || typeof raw !== 'object') return { error: 'empty' };
+  const list = Array.isArray(raw.questions) ? raw.questions : Array.isArray(raw.rewrite?.questions) ? raw.rewrite.questions : [];
+  const code = (Array.isArray(raw.code) ? raw.code.join('\n') : typeof raw.code === 'string' ? raw.code : '').trim().slice(0, 800);
   const questions = [];
-  for (const r of raw.questions) {
-    const q = lintInput({ type: r?.type, instructions: r?.instructions, criteria: r?.criteria });
-    if (!q || q.instructions.length > 400) return null;
+  for (const r of list) {
+    if (questions.length === 3) break;
+    const type = TYPES.includes(String(r?.type).toLowerCase()) ? String(r.type).toLowerCase() : 'noul';
+    let criteria = r?.criteria;
+    if (type === 'noul' && criteria && typeof criteria === 'object' && !Array.isArray(criteria)) criteria = Object.fromEntries(['true', 'false'].filter(k => typeof criteria[k] === 'string' && criteria[k].trim()).map(k => [k, criteria[k].trim()]));
+    if (!criteria || typeof criteria !== 'object' || !Object.keys(criteria).length) criteria = undefined;
+    const q = lintInput({ type, instructions: typeof r?.instructions === 'string' ? r.instructions : r?.question, criteria }) || lintInput({ type: 'noul', instructions: typeof r?.instructions === 'string' ? r.instructions : r?.question });
+    if (!q || q.instructions.length > 400) continue;
     const name = typeof r.name === 'string' && /^[a-z][a-z0-9_]{0,39}$/.test(r.name) ? r.name : `q${questions.length + 1}`;
     questions.push({ name, q });
   }
-  if (!questions.length && !raw.code.trim()) return null;
-  return { questions, code: raw.code.trim() };
+  if (!questions.length && !code) return { error: 'no_questions' };
+  return { questions, code };
+}
+// What to tell the model when Jev still flags its draft.
+export function relintFeedback(linted) {
+  const lines = linted.filter(x => x.judgments).map(x => {
+    const flags = LINT_IDS.filter(id => x.judgments[id] >= FLAG_AT);
+    return flags.length ? `"${x.q.instructions}" is still flagged: ${flags.map(id => `${id} ${x.judgments[id].toFixed(2)} (${FLAG_HELP[id]})`).join('; ')}` : null;
+  }).filter(Boolean);
+  return lines.length ? `Jev re-linted your rewrite.\n${lines.join('\n')}\nFix those questions and reply with the full JSON again.` : null;
 }

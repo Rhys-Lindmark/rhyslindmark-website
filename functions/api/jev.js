@@ -2,7 +2,7 @@ import { MODEL, reserve, clientIdentity, issueHumanCookie, humanCookieExpiry } f
 import { loadKey } from '../_lib/jev-key.js';
 import { databaseFor } from '../_lib/jev-database.js';
 import { isJevViewer } from '../_lib/jev-view.js';
-import { lintQuestions, lintInput, lintAnswers, FLAG_AT, REWRITE_MODEL, rewriteMessages, parseRewrite } from '../_lib/jev-lint.js';
+import { lintQuestions, lintInput, lintAnswers, FLAG_AT, REWRITE_MODEL, rewriteMessages, parseRewrite, relintFeedback } from '../_lib/jev-lint.js';
 const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
 const labels = ['supported', 'contradicted', 'insufficient'];
 const THROWS = ['rock', 'paper', 'scissors'];
@@ -138,24 +138,43 @@ export async function readJSON(request) {
     return JSON.parse(text + decoder.decode());
   } finally { reader.releaseLock(); }
 }
-// A flagged question gets a proposed rewrite: Workers AI drafts it, then Jev lints each
-// rewritten question with the same four Nouls. Any failure returns null; the review still ships.
+// A flagged question gets a proposed rewrite: Workers AI drafts it, then Jev re-lints each
+// rewritten question with the same four Nouls. If Jev still flags any, the model gets one
+// more try with Jev's feedback. Any failure returns null; the review still ships.
+const flagCount = qs => qs.reduce((n, x) => n + (x.judgments ? Object.values(x.judgments).filter(p => p >= FLAG_AT).length : 0), 0);
 async function proposeRewrite(env, fetcher, apiKey, question, judgments) {
   if (!env.AI) return null;
-  let timer;
-  try {
+  const draft = async messages => {
+    let timer;
     const result = await Promise.race([
-      env.AI.run(REWRITE_MODEL, { messages: rewriteMessages(question, judgments), response_format: { type: 'json_object' }, max_tokens: 900, temperature: 0.3 }),
-      new Promise((_, reject) => { timer = setTimeout(() => reject(Error('rewrite_deadline')), 15000); }),
+      env.AI.run(REWRITE_MODEL, { messages, response_format: { type: 'json_object' }, max_tokens: 900, temperature: 0.3 }),
+      new Promise((_, reject) => { timer = setTimeout(() => reject(Error('rewrite_deadline')), 12000); }),
     ]).finally(() => clearTimeout(timer));
-    const draft = parseRewrite(result?.response);
-    if (!draft) return null;
-    const questions = await Promise.all(draft.questions.map(async ({ name, q }) => {
-      const r = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: MODEL, state: { question: q }, questions: lintQuestions() }), signal: AbortSignal.timeout(15000), redirect: 'manual' });
-      if (!r.ok) { await r.body?.cancel().catch(() => {}); return { name, q, judgments: null }; }
-      return { name, q, judgments: lintAnswers((await readJSON(r))?.answers) };
-    }));
-    return { questions, code: draft.code, source: REWRITE_MODEL };
+    const parsed = parseRewrite(result?.response);
+    if (parsed.error) console.warn(JSON.stringify({ event: 'jev_lint_rewrite_unusable', reason: parsed.error, reply: JSON.stringify(result?.response ?? null).slice(0, 600) }));
+    return { parsed, reply: typeof result?.response === 'string' ? result.response : JSON.stringify(result?.response ?? {}) };
+  };
+  const relint = qs => Promise.all(qs.map(async ({ name, q }) => {
+    const r = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: MODEL, state: { question: q }, questions: lintQuestions() }), signal: AbortSignal.timeout(12000), redirect: 'manual' });
+    if (!r.ok) { await r.body?.cancel().catch(() => {}); return { name, q, judgments: null }; }
+    return { name, q, judgments: lintAnswers((await readJSON(r))?.answers) };
+  }));
+  try {
+    const messages = rewriteMessages(question, judgments);
+    let { parsed, reply } = await draft(messages);
+    if (parsed.error) { messages.push({ role: 'assistant', content: reply }, { role: 'user', content: 'That reply was not usable. Reply with JSON only, in exactly the format asked for.' }); ({ parsed, reply } = await draft(messages)); }
+    if (parsed.error) return null;
+    let best = { questions: await relint(parsed.questions), code: parsed.code, rounds: 1 };
+    const feedback = relintFeedback(best.questions);
+    if (feedback) {
+      messages.push({ role: 'assistant', content: reply }, { role: 'user', content: feedback });
+      const second = await draft(messages).catch(() => null);
+      if (second && !second.parsed.error && second.parsed.questions.length) {
+        const questions = await relint(second.parsed.questions);
+        if (flagCount(questions) <= flagCount(best.questions)) best = { questions, code: second.parsed.code || best.code, rounds: 2, first_draft: best.questions };
+      }
+    }
+    return { ...best, source: REWRITE_MODEL };
   } catch (error) {
     console.warn(JSON.stringify({ event: 'jev_lint_rewrite_failed', name: error?.name, message: String(error?.message || '').slice(0, 200) }));
     return null;

@@ -91,7 +91,7 @@ function renderResult({ q, j, rewrite, source }) {
   const kids = [verdict(j, code)];
   if (j) kids.push(h('div', 'lint-rows', ...judgmentRows(j)));
   if (code.length) kids.push(h('div', 'lint-code', h('h4', null, 'Code checks'), h('ul', null, ...code.map(c => h('li', null, c)))));
-  if (rewrite) kids.push(rewriteBlock(rewrite));
+  if (rewrite) kids.push(rewriteBlock(rewrite, j));
   else if (j && Object.keys(JUDGMENTS).some(k => j[k] >= FLAG_AT) && source?.startsWith('Live')) kids.push(h('p', 'note lint-norewrite', 'No proposed rewrite this time: the drafting model didn’t return a usable one. The flagged rows above say what to change.'));
   out.replaceChildren(...kids);
   $('lint-source').textContent = source || '';
@@ -149,11 +149,17 @@ function questionText(q) {
   const extra = !c ? '' : Array.isArray(c) ? ` · ${c.length} levels` : q.type === 'choice' ? ` · options: ${Object.keys(c).join(', ')}` : ' · with criteria';
   return h('span', 'lint-q', h('code', null, q.instructions), h('span', 'lint-qmeta', `${q.type}${extra}`));
 }
-function rewriteBlock(rw) {
+// Re-lint, as before → after on what Jev flagged in the original: "Hidden rules 0.96 → 0.12".
+function relintLine(before, after) {
+  const flagged = before ? Object.keys(JUDGMENTS).filter(k => before[k] >= FLAG_AT) : [];
+  return flagged.map(k => `${JUDGMENTS[k].name} ${before[k].toFixed(2)} → ${after[k].toFixed(2)}`).join(' · ');
+}
+function rewriteBlock(rw, before) {
   const items = rw.questions.map(({ name, q, judgments: rj }) => {
     const flags = rj ? Object.keys(JUDGMENTS).filter(k => rj[k] >= FLAG_AT) : [];
     const state = !rj ? 'unchecked' : flags.length ? 'bad' : 'good';
-    const label = state === 'good' ? '✓ Jev: clear' : state === 'bad' ? `✗ Jev still flags: ${flags.map(k => JUDGMENTS[k].name.toLowerCase()).join(', ')}` : 'Not linted';
+    const delta = rj ? relintLine(before, rj) : '';
+    const label = state === 'unchecked' ? 'Not re-linted' : `Re-lint: ${delta ? delta + ' · ' : ''}${state === 'good' ? '✓ clear' : `✗ still flags ${flags.map(k => JUDGMENTS[k].name.toLowerCase()).join(', ')}`}`;
     const use = h('button', 'chip', 'Use this'); use.type = 'button';
     use.addEventListener('click', () => { load(q); renderResult({ q, j: rj, source: rj ? 'Jev’s review of the proposed rewrite' : '' }); $('editor').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
     return h('li', `lint-step is-${state}`,
@@ -162,10 +168,11 @@ function rewriteBlock(rw) {
   });
   return h('div', 'lint-rewrite',
     h('h4', null, 'Proposed rewrite'),
+    rw.rounds === 2 ? h('p', 'note', `Jev flagged the first draft (${rw.first_draft.map(x => `“${x.q.instructions}”`).join(', ')}), so the model tried again with Jev’s feedback.`) : null,
     items.length ? h('ol', 'lint-steps', ...items) : h('p', 'note', 'No Jev question needed. Code can answer this on its own.'),
     rw.code ? h('div', 'lint-then', h('span', 'lint-then-label', 'Then, in code'), h('pre', null, h('code', null, rw.code))) : null,
     rw.aside ? h('p', 'note', rw.aside) : null,
-    h('p', 'note lint-rewrite-source', rw.recorded ? 'Written by hand; Jev’s answers recorded (jev-1.14.0).' : 'Drafted by Llama 3.3 70B on Workers AI, then linted by Jev. A starting point: check the names and the policy in the code before you ship it.'));
+    h('p', 'note lint-rewrite-source', rw.recorded ? 'Written by hand; Jev’s answers recorded (jev-1.14.0).' : 'Drafted by Llama 3.3 70B on Workers AI, then re-linted by Jev. A starting point: check the names and the policy in the code before you ship it.'));
 }
 
 // --- Examples: real first drafts, with Jev's recorded review and a hand-written rewrite.
