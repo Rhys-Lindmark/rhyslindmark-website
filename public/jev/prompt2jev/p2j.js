@@ -1,6 +1,6 @@
 // prompt2jev: paste an LLM prompt, get a Jev integration back.
 // 1. p2j_fit: Jev judges the prompt (should it become Jev?); the verdict is code on the server.
-// 2. p2j_draft: Workers AI drafts questions, a truth table, decide() and an example; Jev lints.
+// 2. p2j_draft: an LLM (OpenRouter, or Workers AI as the fallback) drafts questions, a truth table, decide() and an example; Jev lints.
 // 3. p2j_try: Jev answers the drafted questions about an input; decide() runs in a sandbox here.
 // Server: functions/api/jev.js and functions/_lib/prompt2jev.js.
 
@@ -163,7 +163,7 @@ function renderDraft(data) {
   current = data.draft;
   const ids = Object.keys(data.draft.questions), bad = ids.filter(id => flagsOf(data.lint[id]).length);
   const modelName = data.draft_model.split('/').pop();
-  $('draft-sub').replaceChildren(`Drafted by ${modelName} on Workers AI, then linted by Jev (${data.model}) · ${(data.elapsed_ms / 1000).toFixed(1)} s.`);
+  $('draft-sub').replaceChildren(`Drafted by ${modelName} on ${data.draft_model.startsWith('@cf/') ? 'Workers AI' : 'OpenRouter'}, then linted by Jev (${data.model}) · ${(data.elapsed_ms / 1000).toFixed(1)} s.`);
   const kids = [h('p', `p2j-summary${bad.length ? ' warn' : ''}`, bad.length
     ? `${ids.length} question${ids.length > 1 ? 's' : ''} for Jev. Jev still flags ${bad.length}: ${bad.join(', ')}. Fix those by hand, or try jev-lint’s rewrite.`
     : `✓ ${ids.length} question${ids.length > 1 ? 's' : ''} for Jev, all clear on jev-lint.`)];
@@ -242,10 +242,10 @@ function resetWidget() { if (widgetId !== undefined && !window.jevHuman.ok()) wi
 function setBusy(on) { busy = on; $('p2j-run').disabled = on; }
 async function runDraft(prompt) {
   setBusy(true); showError('');
-  status('Drafting with gpt-oss-120b on Workers AI, then Jev lints each question (about a minute)', true);
+  status('Drafting, then Jev lints each question (about a minute)', true);
   $('draft').hidden = true; $('try').hidden = true;
   try {
-    const data = await api({ demo: 'p2j_draft', prompt, draft_model: new URLSearchParams(location.search).get('model') || undefined }, 150000);
+    const data = await api({ demo: 'p2j_draft', prompt, draft_model: new URLSearchParams(location.search).get('model') || undefined }, 200000);
     renderDraft(data); status('');
     $('draft').scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (err) { status(''); showError(errText(err)); }

@@ -44,6 +44,24 @@ test('draft: Workers AI drafts, Jev lints each question, and a flagged draft is 
   assert.equal(seen.length, 3);
 });
 
+test('draft: with an OpenRouter key, DeepSeek V4.1 Flash drafts through OpenRouter; if OpenRouter fails, Workers AI takes over', async () => {
+  const calls = [];
+  const fetcher = status => async (url, init) => {
+    if (url.includes('/siteverify')) return Response.json({ success: true, hostname: 'ai.rhyslindmark.com', action: 'jev_check' });
+    if (url.includes('openrouter.ai')) { const b = JSON.parse(init.body); calls.push([b.model, init.headers.Authorization]); return status === 200 ? Response.json({ choices: [{ message: { content: reply({ outage: { type: 'noul', instructions: 'Does `ticket.message` report an outage?' } }) } }] }) : new Response('no credit', { status }); }
+    return Response.json({ model: 'jev-test', answers: clean });
+  };
+  let aiCalls = 0;
+  const AI = { async run(model) { aiCalls++; assert.equal(model, '@cf/openai/gpt-oss-120b'); return { response: reply({ outage: { type: 'noul', instructions: 'Does `ticket.message` report an outage?' } }) }; } };
+  const withKey = { ...env(AI), OPENROUTER_API_KEY: 'test-openrouter-key' };
+  const ok = await (await createHandler(fetcher(200))({ request: make({ demo: 'p2j_draft', prompt: PROMPT }), env: withKey })).json();
+  assert.equal(ok.draft_model, 'deepseek/deepseek-v4.1-flash-1017'); assert.deepEqual(calls, [['deepseek/deepseek-v4.1-flash-1017', 'Bearer test-openrouter-key']]); assert.equal(aiCalls, 0);
+  assert.ok(!JSON.stringify(ok).includes('test-openrouter-key'));
+  const down = await (await createHandler(fetcher(402))({ request: make({ demo: 'p2j_draft', prompt: PROMPT }), env: withKey })).json();
+  assert.equal(down.draft_model, '@cf/openai/gpt-oss-120b'); assert.equal(aiCalls, 1);
+  assert.deepEqual(Object.keys(down.draft.questions), ['outage']);
+});
+
 test('draft: an unusable reply gets one retry, then a clear error', async () => {
   let calls = 0;
   const h = handler(() => clean);

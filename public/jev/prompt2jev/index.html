@@ -4,7 +4,7 @@
 <main>
 
 <section class="demo" id="editor" aria-labelledby="editor-title">
-<div class="demo-heading"><h2 id="editor-title">Your prompt</h2><p>Paste the LLM prompt you already have. <strong>Jev</strong> first judges whether it should become Jev at all. If it should, a Workers AI model drafts the questions, a truth table and <code>decide()</code>, and Jev lints every question. Flagged questions get one revision. Takes about a minute.</p></div>
+<div class="demo-heading"><h2 id="editor-title">Your prompt</h2><p>Paste the LLM prompt you already have. <strong>Jev</strong> first judges whether it should become Jev at all. If it should, a cheap open-weight model (DeepSeek V4.1 Flash) drafts the questions, a truth table and <code>decide()</code>, and Jev lints every question. Flagged questions get one revision. Takes about a minute.</p></div>
 <div class="lint-examples"><span>Examples:</span><span id="p2j-examples"></span></div>
 <form id="p2j-form">
 <label for="p2j-prompt"><span>The prompt your app sends to an LLM today</span><span id="p2j-count">0 / 6000</span></label>
@@ -40,7 +40,7 @@
 <li><strong>Is the decision in code?</strong> The model writes the policy as a truth table and <code>decide()</code>. It asks Jev only for what needs reading.</li>
 <li><strong>Does every question pass jev-lint?</strong> Each question is checked for being a decision, compound, hidden rules or math, the same four Nouls as <a href="/jev/lint/">jev-lint</a>.</li>
 </ol>
-<p class="note">The drafts are a starting point. Check the policy in <code>decide()</code> against what your product actually does before you ship it. There’s also a command-line version that uses Claude Sonnet: <code>node run.mjs my-prompt.txt</code> in <a href="/jev/docs/takehome/ideas/prompt2jev/">takehome/ideas/prompt2jev</a>.</p>
+<p class="note">The drafts are a starting point. Check the policy in <code>decide()</code> against what your product actually does before you ship it. There’s also a command-line version: <code>node run.mjs my-prompt.txt</code> in <a href="/jev/docs/takehome/ideas/prompt2jev/">takehome/ideas/prompt2jev</a>.</p>
 </section>
 </main><footer><a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div>
-<script type="module" src="/jev/human.js?v=router-13"></script><script type="module" src="/jev/prompt2jev/p2j.js?v=p2j-2"></script></body></html>
+<script type="module" src="/jev/human.js?v=router-13"></script><script type="module" src="/jev/prompt2jev/p2j.js?v=p2j-3"></script></body></html>

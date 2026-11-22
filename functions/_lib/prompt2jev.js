@@ -9,12 +9,22 @@ import { lintInput, LINT_IDS, FLAG_AT } from './jev-lint.js';
 export const MAX_PROMPT_CHARS = 6000;
 export const MAX_QUESTIONS = 12;
 export const MAX_STATE_CHARS = 8000;
-// gpt-oss-120b: on 2026-11-22 it kept plan and wait-time checks in code and routed unsure answers
-// to a person; Llama 3.3 70B was twice as fast but asked Jev things code already knew ("Is the
-// customer an enterprise customer?"). GLM 5.3 and DeepSeek V4.1 need the Workers Paid plan.
-export const DRAFT_MODEL = '@cf/openai/gpt-oss-120b';
-// Workers AI models a request may pick instead (?model= on the page); anything else gets DRAFT_MODEL.
-export const DRAFT_MODELS = [DRAFT_MODEL, '@cf/meta/llama-3.3-70b-instruct-fp8-fast'];
+// Drafting model. OpenRouter when the OPENROUTER_API_KEY secret is set, else Workers AI.
+// DeepSeek V4.1 Flash: the house cheap open-weight model (~/.claude/CLAUDE.md), also used by
+// the Skill Issue regen. $0.15/$0.60 per M tokens on 2026-11-22 (Sonnet 5.5: $2/$10), about
+// 0.2¢ a draft. On Workers AI it needs the Paid plan, so the fallback is gpt-oss-120b, which on
+// 2026-11-22 kept plan and wait-time checks in code; Llama 3.3 70B was twice as fast but asked
+// Jev things code already knew.
+export const OPENROUTER_MODEL = 'deepseek/deepseek-v4.1-flash-1017';
+export const WORKERS_MODEL = '@cf/openai/gpt-oss-120b';
+// Models a request may pick instead (?model= on the page).
+export const DRAFT_MODELS = [OPENROUTER_MODEL, 'z-ai/glm-5.3', WORKERS_MODEL, '@cf/meta/llama-3.3-70b-instruct-fp8-fast'];
+export const viaWorkers = model => model.startsWith('@cf/');
+export function draftModel(requested, env) {
+  const usable = m => viaWorkers(m) ? !!env.AI : !!env.OPENROUTER_API_KEY;
+  if (DRAFT_MODELS.includes(requested) && usable(requested)) return requested;
+  return env.OPENROUTER_API_KEY ? OPENROUTER_MODEL : WORKERS_MODEL;
+}
 
 // --- 1. Should this prompt become Jev? Jev answers three judgments about the prompt; code decides.
 export const FIT_IDS = ['picks_outcome', 'writes_text', 'extracts_values'];

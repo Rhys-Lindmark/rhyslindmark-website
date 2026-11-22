@@ -3,7 +3,7 @@ import { loadKey } from '../_lib/jev-key.js';
 import { databaseFor } from '../_lib/jev-database.js';
 import { isJevViewer } from '../_lib/jev-view.js';
 import { lintQuestions, lintInput, lintAnswers, FLAG_AT, REWRITE_MODEL, rewriteMessages, parseRewrite, relintFeedback } from '../_lib/jev-lint.js';
-import { MAX_PROMPT_CHARS, DRAFT_MODEL, DRAFT_MODELS, fitQuestions, fitAnswers, fitVerdict, draftMessages, reviseMessage, parseDraft, tryInput, tryAnswers } from '../_lib/prompt2jev.js';
+import { MAX_PROMPT_CHARS, WORKERS_MODEL, draftModel, viaWorkers, fitQuestions, fitAnswers, fitVerdict, draftMessages, reviseMessage, parseDraft, tryInput, tryAnswers } from '../_lib/prompt2jev.js';
 const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
 const labels = ['supported', 'contradicted', 'insufficient'];
 const THROWS = ['rock', 'paper', 'scissors'];
@@ -190,7 +190,19 @@ async function callJev(fetcher, apiKey, state, questions, ms = 20000) {
   if (!r.ok) { await r.body?.cancel().catch(() => {}); throw Object.assign(new Error(`jev_${r.status}`), { status: r.status }); }
   return (await readJSON(r))?.answers;
 }
-async function draftReply(env, messages, model) {
+// One drafting call: OpenRouter for OpenRouter model ids, Workers AI for @cf/ ones.
+async function draftReply(env, fetcher, messages, model) {
+  if (!viaWorkers(model)) {
+    const r = await fetcher('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST', headers: { Authorization: `Bearer ${env.OPENROUTER_API_KEY}`, 'Content-Type': 'application/json', 'X-Title': 'prompt2jev' },
+      body: JSON.stringify({ model, messages, max_tokens: 6000, temperature: 0.3, reasoning: { effort: 'low', exclude: true } }),
+      signal: AbortSignal.timeout(90000), redirect: 'manual',
+    });
+    if (!r.ok) { await r.body?.cancel().catch(() => {}); throw Object.assign(new Error(`openrouter_${r.status}`), { openrouter: true }); }
+    const text = (await r.json())?.choices?.[0]?.message?.content;
+    if (typeof text !== 'string' || !text.trim()) throw Object.assign(new Error('openrouter_empty'), { openrouter: true });
+    return text;
+  }
   let timer;
   const result = await Promise.race([
     env.AI.run(model, { messages, max_tokens: 4000, temperature: 0.3 }),
@@ -213,25 +225,34 @@ async function prompt2jev(kind, body, tryIn, env, fetcher, apiKey) {
     if (!answers) return [{ error: 'Jev returned an unexpected response. Please try again.' }, 502];
     return [{ model: MODEL, answers, elapsed_ms: elapsed() }];
   }
-  if (!env.AI) return [{ error: 'The drafting model is unavailable right now.' }, 503];
-  const model = DRAFT_MODELS.includes(body.draft_model) ? body.draft_model : DRAFT_MODEL;
+  if (!env.AI && !env.OPENROUTER_API_KEY) return [{ error: 'The drafting model is unavailable right now.' }, 503];
+  let model = draftModel(body.draft_model, env);
   const lintAll = async questions => Object.fromEntries(await Promise.all(Object.entries(questions).map(async ([id, q]) =>
     [id, await callJev(fetcher, apiKey, { question: q }, lintQuestions(), 15000).then(lintAnswers).catch(() => null)])));
   const messages = draftMessages(body.prompt.trim());
-  let reply = await draftReply(env, messages, model), draft = parseDraft(reply);
+  let reply;
+  try { reply = await draftReply(env, fetcher, messages, model); }
+  catch (error) {
+    // OpenRouter down, out of credit or slow: fall back to Workers AI for this run.
+    const openrouterFailed = error?.openrouter || error?.name === 'TimeoutError';
+    if (!openrouterFailed || viaWorkers(model) || !env.AI) throw error;
+    console.warn(JSON.stringify({ event: 'p2j_openrouter_fallback', model, message: String(error?.message).slice(0, 200) }));
+    model = WORKERS_MODEL; reply = await draftReply(env, fetcher, messages, model);
+  }
+  let draft = parseDraft(reply);
   if (draft.error) {
     console.warn(JSON.stringify({ event: 'p2j_draft_unusable', model, reason: draft.error, reply: reply.slice(0, 600) }));
     messages.push({ role: 'assistant', content: reply }, { role: 'user', content: 'That reply was not usable. Reply with exactly the four fenced blocks asked for (md, json, js, json), with no other text.' });
-    reply = await draftReply(env, messages, model); draft = parseDraft(reply);
+    reply = await draftReply(env, fetcher, messages, model); draft = parseDraft(reply);
   }
   if (draft.error) return [{ error: 'The drafting model didn’t return a usable draft. Please try again.' }, 502];
   const draftMs = elapsed();
   let lint = await lintAll(draft.questions), first_draft = null;
   const flagged = flaggedOf(lint);
   // One revision with Jev's flags, kept only if Jev flags no more questions than before.
-  if (flagged.length && elapsed() < 60000) {
+  if (flagged.length && elapsed() < 90000) {
     messages.push({ role: 'assistant', content: reply }, { role: 'user', content: reviseMessage(flagged) });
-    const second = parseDraft(await draftReply(env, messages, model).catch(() => ''));
+    const second = parseDraft(await draftReply(env, fetcher, messages, model).catch(() => ''));
     if (!second.error) {
       const lint2 = await lintAll(second.questions);
       first_draft = { questions: draft.questions, lint };
