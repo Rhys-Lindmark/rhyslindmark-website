@@ -251,8 +251,12 @@ export function corpusBlock(stats) {
 	const platforms = new Set(kinds.map(([k]) => (k.startsWith('web/x-') ? 'x' : k.split('/')[0])));
 
 	const weeks = Object.entries(stats.by_week || {}).sort((a, b) => a[0].localeCompare(b[0]));
-	const shown = weeks.slice(-16);
-	const earlier = weeks.slice(0, -16).reduce((s, [, n]) => s + n, 0);
+	// Start at the launch week (Sep 14, 2026); the near-empty weeks before it fold into the note.
+	const LAUNCH_WEEK = Date.UTC(2026, 8, 14);
+	const firstShown = Math.max(weeks.length - 16, weeks.findIndex(([wk]) => (isoWeekStart(wk)?.getTime() ?? -Infinity) >= LAUNCH_WEEK));
+	const cut = firstShown < 0 ? Math.max(0, weeks.length - 16) : firstShown;
+	const shown = weeks.slice(cut);
+	const earlier = weeks.slice(0, cut).reduce((s, [, n]) => s + n, 0);
 	const built = stats.built_at ? new Date(stats.built_at) : null;
 	const day = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 
@@ -283,7 +287,7 @@ export function corpusBlock(stats) {
 			const pk = wk === peak[0] ? `<text class="peak" x="${x + bw / 2}" y="${y(n) - 6}" text-anchor="middle">${fmt(n)}</text>` : '';
 			return `<g class="bar"><title>${escapeHTML(label)}: ${fmt(n)} items${partial}</title><rect class="hit" x="${L + i * slot}" y="${T}" width="${slot}" height="${H - T - B}"/>${roundedBar(x, y(n), bw, H - B - y(n))}${pk}${xl}</g>`;
 		}).join('');
-		const note = earlier ? `<p class="corpus-note">Items per week. ${fmt(earlier)} earlier items, mostly from before the September 15 launch, are left off.</p>` : '<p class="corpus-note">Items per week.</p>';
+		const note = earlier ? `<p class="corpus-note">Items per week. ${fmt(earlier)} items from before the September 15 launch are left off.</p>` : '<p class="corpus-note">Items per week.</p>';
 		weekly = `<figure class="corpus-chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Items collected per week">${grid}${bars}</svg>${note}</figure>`;
 	}
 
