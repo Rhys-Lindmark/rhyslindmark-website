@@ -11,7 +11,7 @@ test('adds the theme tags once, before </head>', () => {
 
 test('themes /jev pages, not docs or pages with their own palette', () => {
 	for (const p of ['/jev', '/jev/', '/jev/lint/', '/jev/talks/trust-meter/', '/jev-private']) assert.ok(isJevThemePath(p), p);
-	for (const p of ['/jevx', '/jev/docs/x.md', '/jev/game/', '/jev/talks/trust-meter/banking77.html', '/ai/']) assert.ok(!isJevThemePath(p), p);
+	for (const p of ['/jevx', '/jev/docs/x.md', '/jev/game/', '/jev/talks/trust-meter/banking77.html', '/jev/talks/trust-meter/irony', '/ai/']) assert.ok(!isJevThemePath(p), p);
 });
 
 test('only rewrites 200 HTML GETs', async () => {
