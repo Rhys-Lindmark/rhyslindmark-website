@@ -56,3 +56,13 @@
 	.fs .fs-field:first-child, .fs .fs-field:nth-child(4), .fs .fs-field:nth-child(5), .fs .fs-field:nth-child(6) { grid-column: 1 / -1; }
 	.fs-item { padding-left: 14px; }
 }
+
+/* On /jev/docs/feedback/, the search is the page: no frame around it, the size in one
+   line above, the corpus charts folded away below. */
+.fs-lede { margin: -32px auto 28px; text-align: center; color: var(--steel); font-size: 15px; max-width: 52ch; }
+.fs-embed .fs-form { border: 0; background: none; padding: 0; }
+.fs-embed .fs-query input { font-size: 18px; padding: 14px 16px; }
+.fs-graph { margin: 56px 0 0; border-top: var(--jev-rule); padding-top: 16px; }
+.fs-graph summary { cursor: pointer; font: 500 12px/1 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.fs-graph .corpus { margin: 16px 0 0; }
+.fs-embed .fs-results:empty { border-top: 0; }

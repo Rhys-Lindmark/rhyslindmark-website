@@ -183,8 +183,8 @@ export function docsRepoPath(pathname) {
 // The feedback folder page carries the corpus search: its form, styles and script are
 // the ones /jev/feedback/ uses, so it needs scripts and fetches from this origin.
 const FEEDBACK_SEARCH = {
-	styles: ['/jev/feedback/search.css?v=fs-2'],
-	scripts: ['/jev/feedback/search.js?v=fs-2'],
+	styles: ['/jev/feedback/search.css?v=fs-3'],
+	scripts: ['/jev/feedback/search.js?v=fs-3'],
 	html: `<section class="fs fs-embed" aria-label="Search the feedback">
 <p class="fs-sub" id="corpus-meta" hidden></p>
 <form class="fs-form" id="search" role="search">
@@ -303,21 +303,26 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 			}
 		}
 		// A folder holding a corpus (data/stats.json, as feedback/ does) leads with its numbers.
-		let corpus = '';
+		let corpus = '', stats = null;
 		if (data.some(item => item.type === 'dir' && item.name === 'data')) {
 			const r = await contents(join('data/stats.json'));
 			if (r.ok) {
 				try {
 					const f = await r.json();
-					corpus = corpusBlock(JSON.parse(decodeBase64UTF8(f.content)));
+					stats = JSON.parse(decodeBase64UTF8(f.content));
+					corpus = corpusBlock(stats);
 				} catch {}
 			}
 		}
 		const title = repoPath ? repoPath.split('/').pop() : 'jev';
 		const head = docHead('folder', readmeTitle ? marked.parseInline(readmeTitle) : escapeHTML(title));
-		// The feedback corpus is the numbers, then the search, and nothing else.
+		// The feedback corpus is a search box first: one line of size, the search, and the
+		// charts folded away at the bottom.
 		if (repoPath === 'feedback') {
-			return page(readmeTitle || title, crumbsFor(repoPath), `${head}${corpus}${FEEDBACK_SEARCH.html}`, 200, FEEDBACK_SEARCH);
+			const n = Number.isFinite(stats?.total) ? `${Math.round(stats.total).toLocaleString('en-US')} posts` : 'Every post';
+			const lede = `<p class="fs-lede">${n} about Jev from GitHub, X and Hacker News, refreshed every day.</p>`;
+			const graph = corpus ? `<details class="fs-graph"><summary>See the corpus as a graph</summary>${corpus}</details>` : '';
+			return page(readmeTitle || title, crumbsFor(repoPath), `${head}${lede}${FEEDBACK_SEARCH.html}${graph}`, 200, FEEDBACK_SEARCH);
 		}
 		return page(readmeTitle || title, crumbsFor(repoPath), `${head}${corpus}${readme}<ul class="listing">${items}</ul>`);
 	}
