@@ -196,3 +196,23 @@ test('the login page and its stylesheets load without a login; logout clears the
 	assert.equal(out.status, 303);
 	assert.match(out.headers.get('set-cookie'), /^jev_session=; Path=\/; Max-Age=0/);
 });
+
+test('layout: docs folders get the left-aligned docs header and no file list', async () => {
+	const listing = [{ type: 'file', name: 'README.md' }, { type: 'dir', name: '01-a' }];
+	const readme = '---\nlayout: docs\neyebrow: Developer education\n---\n# Cookbooks\n\n> Recipes on *real* data.\n> Second line.\n\nBody text.\n\n| Cookbook | Level |\n| - | - |\n| [A](01-a/) | Beginner |\n';
+	const fetchImpl = async url => (String(url).includes('README.md') ? Response.json({ content: b64(readme) }) : Response.json(listing));
+	const html = await (await serveJevDocs(req('/jev/docs/takehome/cookbooks/'), env, fetchImpl)).text();
+	assert.match(html, /class="docs-eyebrow">Developer education<\/p><h1 class="docs-title">Cookbooks<\/h1><p class="docs-description">Recipes on <em>real<\/em> data. Second line.<\/p>/);
+	assert.match(html, /<p>Body text.<\/p>.*<table>/s);
+	assert.doesNotMatch(html, /class="listing"|layout: docs|<blockquote>|doc-tag/);
+});
+
+test('layout: docs Markdown files use the same header; other files keep theirs', async () => {
+	const docs = async () => Response.json({ type: 'file', name: 'README.md', size: 10, content: b64('---\nlayout: docs\neyebrow: Extraction\n---\n# Select\n\n> Pick a date.\n\n## Setup\n') });
+	const html = await (await serveJevDocs(req('/jev/docs/a/README.md'), env, docs)).text();
+	assert.match(html, /docs-eyebrow">Extraction<.*docs-title">Select<.*docs-description">Pick a date.<.*<h2[^>]*>Setup<\/h2>/s);
+	const plain = async () => Response.json({ type: 'file', name: 'b.md', size: 10, content: b64('# Plain\n\n> A quote.') });
+	const html2 = await (await serveJevDocs(req('/jev/docs/a/b.md'), env, plain)).text();
+	assert.match(html2, /doc-tag.*<blockquote>/s);
+	assert.doesNotMatch(html2, /docs-head/);
+});

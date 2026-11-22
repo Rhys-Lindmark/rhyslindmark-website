@@ -219,7 +219,7 @@ const FEEDBACK_SEARCH = {
 
 function page(title, crumbs, body, status = 200, { styles = [], scripts = [] } = {}) {
 	const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-charts-1">${styles.map(h => `<link rel="stylesheet" href="${h}">`).join('')}</head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${escapeHTML(title)} · Jev</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/docs.css?v=jev-docs-layout-1">${styles.map(h => `<link rel="stylesheet" href="${h}">`).join('')}</head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a>${crumbs}</header>
 <main class="doc">${body}</main></div>${scripts.map(s => `<script src="${s}" defer></script>`).join('')}</body></html>`;
 	const scriptCSP = scripts.length ? " script-src 'self'; connect-src 'self';" : '';
@@ -290,18 +290,23 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 		const join = name => (repoPath ? `${repoPath}/${name}` : name);
 		let readme = '';
 		let readmeTitle = '';
+		let docs = '';
 		const readmeItem = data.find(item => item.type === 'file' && /^readme\.md$/i.test(item.name));
 		if (readmeItem) {
 			const r = await contents(join(readmeItem.name));
 			if (r.ok) {
 				const f = await r.json();
 				if (f.content) {
-					const { title: t, rest } = splitTitle(decodeBase64UTF8(f.content));
+					const { meta, body } = splitFrontMatter(decodeBase64UTF8(f.content));
+					const { title: t, rest } = splitTitle(body);
 					readmeTitle = t;
 					readme = `<article class="markdown">${marked.parse(rest)}</article>`;
+					if (meta.layout === 'docs') docs = docsPage(meta, t || escapeHTML(repoPath.split('/').pop() || 'jev'), rest);
 				}
 			}
 		}
+		// A docs-layout README is the whole page: its tables link the files, so no listing.
+		if (docs) return page(readmeTitle || repoPath.split('/').pop(), crumbsFor(repoPath), docs);
 		// A folder holding a corpus (data/stats.json, as feedback/ does) leads with its numbers.
 		let corpus = '', stats = null;
 		if (data.some(item => item.type === 'dir' && item.name === 'data')) {
@@ -351,7 +356,9 @@ export async function serveJevDocs(request, env, fetchImpl = fetch) {
 	}
 	const tag = repoPath.includes('/') ? repoPath.split('/').slice(-2, -1)[0] : 'jev';
 	if (/\.md$/i.test(name)) {
-		const { title, rest } = splitTitle(text);
+		const { meta, body } = splitFrontMatter(text);
+		const { title, rest } = splitTitle(body);
+		if (meta.layout === 'docs') return page(title || name, crumbsFor(repoPath), docsPage(meta, title || escapeHTML(name), rest));
 		const head = docHead(tag, title ? marked.parseInline(title) : escapeHTML(name));
 		return page(title || name, crumbsFor(repoPath), `${head}<article class="markdown">${marked.parse(rest)}</article>`);
 	}
@@ -463,6 +470,30 @@ function isoWeekStart(wk) {
 	const jan4 = new Date(Date.UTC(+m[1], 0, 4));
 	const mon1 = new Date(jan4 - ((jan4.getUTCDay() + 6) % 7) * 864e5);
 	return new Date(+mon1 + (+m[2] - 1) * 7 * 864e5);
+}
+
+// Front matter at the very top of a Markdown doc ("---\nkey: value\n---"), flat keys only.
+export function splitFrontMatter(text) {
+	const m = /^---\r?\n([\s\S]*?)\r?\n---[ \t]*(?:\r?\n|$)/.exec(text);
+	if (!m) return { meta: {}, body: text };
+	const meta = {};
+	for (const line of m[1].split(/\r?\n/)) {
+		const i = line.indexOf(':');
+		if (i > 0) meta[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+	}
+	return { meta, body: text.slice(m[0].length) };
+}
+
+// `layout: docs` lays a page out like docs.typesafe.ai: an eyebrow (`eyebrow:` in the front
+// matter), the title and a one-sentence description on the left, then the body. The
+// description is the blockquote that opens the doc, so the file still reads well on GitHub.
+export function docsPage(meta, titleMarkdown, rest) {
+	const quote = /^\s*((?:>.*(?:\r?\n|$))+)/.exec(rest);
+	const description = quote ? quote[1].replace(/^>[ \t]?/gm, '').replace(/\s+/g, ' ').trim() : '';
+	const body = quote ? rest.slice(quote[0].length) : rest;
+	const eyebrow = meta.eyebrow ? `<p class="docs-eyebrow">${escapeHTML(meta.eyebrow)}</p>` : '';
+	const desc = description ? `<p class="docs-description">${marked.parseInline(description)}</p>` : '';
+	return `<div class="docs"><header class="docs-head">${eyebrow}<h1 class="docs-title">${marked.parseInline(titleMarkdown)}</h1>${desc}</header><article class="markdown">${marked.parse(body)}</article></div>`;
 }
 
 // Pull a leading "# Title" out of markdown so the page can set it as its header.
