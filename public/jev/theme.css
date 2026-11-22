@@ -18,6 +18,9 @@
   --jev-signal: #2fcf80;
   --jev-signal-soft: #10301f;
   --jev-alert: #ff5c70;
+  --jev-wash: #191919;        /* minimal.css: #fafafa wells in light */
+  --jev-alert-soft: #3a171c;  /* minimal.css: #fdecee in light */
+  --jev-alert-line: #5a2229;  /* minimal.css: #f6d3d6 in light */
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -34,6 +37,9 @@
     --jev-signal: #2fcf80;
     --jev-signal-soft: #10301f;
     --jev-alert: #ff5c70;
+    --jev-wash: #191919;        /* minimal.css: #fafafa wells in light */
+    --jev-alert-soft: #3a171c;  /* minimal.css: #fdecee in light */
+    --jev-alert-line: #5a2229;  /* minimal.css: #f6d3d6 in light */
   }
 }
 
@@ -55,3 +61,17 @@
 .theme-menu button[aria-checked="true"] { background: var(--jev-rose-soft); font-weight: 500; }
 .theme-menu .check { margin-left: auto; visibility: hidden; }
 .theme-menu button[aria-checked="true"] .check { visibility: visible; }
+
+/* Talk slides (.stage) keep their light design in both themes, like a projected
+   deck. Rules and shadows are redeclared because they resolve var(--jev-ink) where
+   they're defined (:root). initial = unset, so minimal.css falls back to its light values. */
+.stage {
+  color-scheme: light;
+  --jev-paper: #fefefe; --jev-ink: #1e1e1e; --jev-graphite: #3d3d3d; --jev-steel: #5e5e5e;
+  --jev-fog: #9a9a9a; --jev-ash: #c4c4c4; --jev-silver: #dedede; --jev-mist: #f3f3f3;
+  --jev-rose-soft: #fbe1e8; --jev-signal: #03aa5c; --jev-signal-soft: #d9f2e6; --jev-alert: #c8102e;
+  --jev-wash: initial; --jev-alert-soft: initial; --jev-alert-line: initial;
+  --jev-rule: 1px solid var(--jev-ink); --jev-rule-quiet: 1px solid var(--jev-silver);
+  --jev-shadow-window: 3px 3px 0 var(--jev-ink);
+  --jev-dots: radial-gradient(var(--jev-ink) .6px, transparent .8px) 0 0 / 6px 6px;
+}

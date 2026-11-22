@@ -8,7 +8,7 @@
 #th-budget-buttons { display: inline-flex; gap: 6px; }
 #th-slider { width: 100%; padding: 0; accent-color: var(--jev-ink); background: none; border: 0; height: 28px; }
 .th-strip-wrap { margin: 8px 0 20px; }
-#th-strip { width: 100%; height: auto; display: block; background: #fff; border: 1px solid var(--bone); }
+#th-strip { width: 100%; height: auto; display: block; background: var(--jev-paper); border: 1px solid var(--bone); }
 #th-strip circle.ok { fill: var(--fog); }
 #th-strip circle.bad { fill: var(--jev-alert); cursor: pointer; }
 #th-strip circle.dim { opacity: .35; }
@@ -25,7 +25,7 @@
 .th-tip { min-height: 2.9em; font-size: 14px; margin: 10px 0 0; }
 .th-tip .note { display: block; margin-top: 2px; }
 .th-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
-.th-stat { border: 1px solid var(--bone); padding: 14px; background: #fff; display: flex; flex-direction: column; gap: 4px; }
+.th-stat { border: 1px solid var(--bone); padding: 14px; background: var(--jev-paper); display: flex; flex-direction: column; gap: 4px; }
 .th-stat strong { font: 500 32px/1 var(--jev-font-display); letter-spacing: var(--jev-tracking-display); }
 .th-stat .note { margin: 0; }
 .th-k { font: 500 11px/1.2 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .04em; color: var(--steel); }

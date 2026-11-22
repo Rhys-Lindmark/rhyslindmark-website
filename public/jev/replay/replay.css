@@ -1,8 +1,8 @@
 /* Demo replay. Built on minimal.css tokens. */
 .rp-lede { max-width: 68ch; font-size: 17px; line-height: 1.5; margin: 0 0 24px; }
-.rp-window { border: var(--jev-rule); box-shadow: var(--jev-shadow-window); background: var(--jev-ink); }
+.rp-window { border: var(--jev-rule); box-shadow: var(--jev-shadow-window); background: #1e1e1e; }
 .rp-bar { display: flex; justify-content: space-between; align-items: center; height: var(--jev-titlebar-height, 28px); padding: 0 10px; background: var(--jev-ink); color: var(--jev-paper); font: 500 12px/1 var(--jev-font-mono); letter-spacing: .02em; border-bottom: 1px solid var(--jev-graphite); }
-.rp-term { margin: 0; height: min(60vh, 520px); overflow: auto; padding: 16px 18px; color: #e8e8e8; background: var(--jev-ink); font: 400 14px/1.5 var(--jev-font-mono); white-space: pre-wrap; word-break: break-word; }
+.rp-term { margin: 0; height: min(60vh, 520px); overflow: auto; padding: 16px 18px; color: #e8e8e8; background: #1e1e1e; font: 400 14px/1.5 var(--jev-font-mono); white-space: pre-wrap; word-break: break-word; }
 .rp-term .prompt { color: #9b9b9b; }
 .rp-term .b { font-weight: 600; color: #fff; }
 .rp-term .dim { color: #9b9b9b; }
