@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Paste a Jev question and Jev reviews it: is it a decision, two questions in one, dependent on hidden rules, or arithmetic? With before-and-after examples and the code that replaces each bad question."><title>jev-lint</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/lint/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/lint/lint.css?v=lint-1"><meta name="robots" content="noindex"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Paste a Jev question and Jev reviews it: is it a decision, two questions in one, dependent on hidden rules, or arithmetic? When it flags one, it proposes a rewrite and the code that replaces the bad question."><title>jev-lint</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/lint/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/lint/lint.css?v=lint-rewrite-1"><meta name="robots" content="noindex"></head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>jev-lint</h1></header>
 <main>
 
 <section class="demo" id="editor" aria-labelledby="editor-title">
-<div class="demo-heading"><h2 id="editor-title">Your question</h2><p>Code checks run as you type. <strong>Ask Jev</strong> sends one live call (four Nouls about your question, about $0.00002).</p></div>
+<div class="demo-heading"><h2 id="editor-title">Your question</h2><p>Code checks run as you type. <strong>Ask Jev</strong> asks four Nouls about your question (about $0.00002). If Jev flags it, a Workers AI model drafts a rewrite and Jev lints that too.</p></div>
+<div class="lint-examples"><span>Examples:</span><span id="lint-examples"></span></div>
 <form id="lint-form">
 <div class="lint-types" role="radiogroup" aria-label="Question type">
 <button type="button" class="chip active" data-type="noul" role="radio" aria-checked="true">Noul (yes/no)</button>
@@ -21,12 +22,6 @@
 <div id="lint-result" class="lint-result" aria-live="polite"></div>
 </section>
 
-<section class="lint-gallery" aria-labelledby="gallery-title">
-<div class="section-heading"><h3 id="gallery-title">Before and after</h3><span class="status">Recorded Jev answers · jev-1.14.0</span></div>
-<p class="note">Real first drafts from GitHub, Hacker News and my own code, with Jev’s recorded review. <strong>Open</strong> loads one.</p>
-<div id="gallery"></div>
-</section>
-
 <section class="demo lint-checks" aria-labelledby="checks-title">
 <div class="demo-heading"><h2 id="checks-title">The five checks, before you send a question</h2></div>
 <ol>
@@ -39,4 +34,4 @@
 <p class="note">From the talk <a href="/jev/talks/question-is-the-program/">The Question Is the Program</a> and the guide <a href="/jev/docs/takehome/teachbacks/b1-how-to-ask-jev.md">How to Ask Jev</a>. Run it on a file: <code>node lint.mjs questions.json</code> in <a href="/jev/docs/takehome/demos/a1-wrong-question/">demos/a1-wrong-question</a>.</p>
 </section>
 </main><footer><a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div>
-<script type="module" src="/jev/human.js?v=router-13"></script><script type="module" src="/jev/lint/lint.js?v=lint-placeholders-1"></script></body></html>
+<script type="module" src="/jev/human.js?v=router-13"></script><script type="module" src="/jev/lint/lint.js?v=lint-rewrite-1"></script></body></html>

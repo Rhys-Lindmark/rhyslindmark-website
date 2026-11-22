@@ -1,9 +1,10 @@
-// Question Linter. Two layers, as in jev-lint (takehome/demos/a1-wrong-question):
+// jev-lint. Two layers, as in jev-lint (takehome/demos/a1-wrong-question):
 // code checks what code can check, in the browser; Jev answers four judgments about the
 // question's wording, through /api/jev (functions/_lib/jev-lint.js). Flags at FLAG_AT.
-import { GALLERY } from './gallery.js?v=lint-1';
+import { GALLERY } from './gallery.js?v=lint-1'; // recorded examples
 
 const FLAG_AT = 0.7, UNSURE_AT = 0.3;
+const RECORDED = 'Recorded Jev answer · jev-1.14.0';
 const JUDGMENTS = {
   decision: { name: 'Decision', ask: 'Asks what someone should do, rather than what is true?', fix: 'Asks Jev to decide. Split the decision into the judgments it depends on, and write the decision in code.' },
   compound: { name: 'Compound', ask: 'Two or more separate conditions at once?', fix: 'Two conditions in one question. Ask each as its own Noul, and combine them in code.' },
@@ -84,12 +85,14 @@ function verdict(j, code) {
   if (!flags.length && !code.length) return h('p', 'lint-verdict good', '✓ Ship it. One observable thing, answerable at a glance.');
   return h('p', 'lint-verdict warn', `✗ Rewrite: ${[...flags.map(k => JUDGMENTS[k].name.toLowerCase()), ...(code.length ? ['code checks'] : [])].join(', ')}.`);
 }
-function renderResult({ q, j, source }) {
+function renderResult({ q, j, rewrite, source }) {
   const code = codeChecks(q), out = $('lint-result');
-  if (!q.instructions) { out.replaceChildren(h('p', 'note', 'Type a question, or open one from the examples below.')); $('lint-source').textContent = ''; return; }
+  if (!q.instructions) { out.replaceChildren(h('p', 'note', 'Type a question, or open one of the examples above.')); $('lint-source').textContent = ''; return; }
   const kids = [verdict(j, code)];
   if (j) kids.push(h('div', 'lint-rows', ...judgmentRows(j)));
   if (code.length) kids.push(h('div', 'lint-code', h('h4', null, 'Code checks'), h('ul', null, ...code.map(c => h('li', null, c)))));
+  if (rewrite) kids.push(rewriteBlock(rewrite));
+  else if (j && Object.keys(JUDGMENTS).some(k => j[k] >= FLAG_AT) && source?.startsWith('Live')) kids.push(h('p', 'note lint-norewrite', 'No proposed rewrite this time: the drafting model didn’t return a usable one. The flagged rows above say what to change.'));
   out.replaceChildren(...kids);
   $('lint-source').textContent = source || '';
 }
@@ -118,11 +121,11 @@ async function askJev(e) {
   busy = true; $('lint-run').disabled = true; showError('');
   $('lint-source').textContent = 'Asking Jev…';
   try {
-    const r = await fetch('/api/jev', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ demo: 'lint', question: q, verification_token: token || undefined }), signal: AbortSignal.timeout(30000) });
+    const r = await fetch('/api/jev', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ demo: 'lint', question: q, verification_token: token || undefined }), signal: AbortSignal.timeout(45000) });
     let data; try { data = await r.json(); } catch { throw new Error('The server returned an unreadable response. Please try again.'); }
     if (data.human_until) window.jevHuman.set(data.human_until);
     if (!r.ok) { if (data.needs_human) window.jevHuman.clear(); throw new Error(data.error || 'The review failed. Please try again.'); }
-    renderResult({ q, j: data.judgments, source: `Live · ${data.model} · ${data.elapsed_ms} ms` });
+    renderResult({ q, j: data.judgments, rewrite: data.rewrite, source: `Live · ${data.model} · ${data.elapsed_ms} ms` });
     $('route-human-check').hidden = window.jevHuman.ok();
   } catch (err) {
     $('lint-source').textContent = '';
@@ -133,7 +136,8 @@ async function askJev(e) {
   }
 }
 
-// --- The gallery of recorded reviews.
+// --- The proposed rewrite, under a "Rewrite" verdict. Live: drafted by Workers AI and
+// linted by Jev on the server. Examples: the rewrite recorded with them.
 function pills(j) {
   return h('div', 'lint-pills', ...Object.entries(JUDGMENTS).map(([id, d]) => {
     const b = band(j[id]);
@@ -146,31 +150,51 @@ function questionText(q) {
   const extra = !c ? '' : Array.isArray(c) ? ` · ${c.length} levels` : q.type === 'choice' ? ` · options: ${Object.keys(c).join(', ')}` : ' · with criteria';
   return h('span', 'lint-q', h('code', null, q.instructions), h('span', 'lint-qmeta', `${q.type}${extra}`));
 }
-function renderGallery() {
-  $('gallery').replaceChildren(...GALLERY.map(g => {
-    const steps = g.steps.map(s => {
-      const flags = Object.keys(JUDGMENTS).filter(k => s.j[k] >= FLAG_AT), ok = !flags.length && !s.code.length;
-      const open = h('button', 'chip', 'Open'); open.type = 'button';
-      open.addEventListener('click', () => { load(s.q); renderResult({ q: s.q, j: s.j, source: 'Recorded Jev answer · jev-1.14.0' }); $('editor').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
-      return h('li', `lint-step ${ok ? 'is-good' : 'is-bad'}`,
-        h('div', 'lint-step-head', h('span', 'lint-step-label', `${ok ? '✓' : '✗'} ${s.label}`), open),
-        questionText(s.q), pills(s.j),
-        s.code.length ? h('p', 'lint-step-code', `Code check: ${s.code[0]}`) : null);
-    });
-    return h('article', 'lint-card',
-      h('h4', 'lint-card-title', g.title), h('p', 'lint-lesson', g.lesson),
-      h('ol', 'lint-steps', ...steps),
-      g.code ? h('div', 'lint-then', h('span', 'lint-then-label', 'Then, in code'), h('pre', null, h('code', null, g.code))) : null,
-      g.aside ? h('p', 'note', g.aside) : null);
+function rewriteBlock(rw) {
+  const items = rw.questions.map(({ name, q, judgments: rj }) => {
+    const flags = rj ? Object.keys(JUDGMENTS).filter(k => rj[k] >= FLAG_AT) : [];
+    const state = !rj ? 'unchecked' : flags.length ? 'bad' : 'good';
+    const label = state === 'good' ? '✓ Jev: clear' : state === 'bad' ? `✗ Jev still flags: ${flags.map(k => JUDGMENTS[k].name.toLowerCase()).join(', ')}` : 'Not linted';
+    const use = h('button', 'chip', 'Use this'); use.type = 'button';
+    use.addEventListener('click', () => { load(q); renderResult({ q, j: rj, source: rj ? 'Jev’s review of the proposed rewrite' : '' }); $('editor').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+    return h('li', `lint-step is-${state}`,
+      h('div', 'lint-step-head', h('span', 'lint-step-label', name ? `j.${name}` : 'Question'), use),
+      questionText(q), rj ? pills(rj) : null, h('p', 'lint-step-state', label));
+  });
+  return h('div', 'lint-rewrite',
+    h('h4', null, 'Proposed rewrite'),
+    items.length ? h('ol', 'lint-steps', ...items) : h('p', 'note', 'No Jev question needed. Code can answer this on its own.'),
+    rw.code ? h('div', 'lint-then', h('span', 'lint-then-label', 'Then, in code'), h('pre', null, h('code', null, rw.code))) : null,
+    rw.aside ? h('p', 'note', rw.aside) : null,
+    h('p', 'note lint-rewrite-source', rw.recorded ? 'Written by hand; Jev’s answers recorded (jev-1.14.0).' : 'Drafted by Llama 3.3 70B on Workers AI, then linted by Jev. A starting point: check the names and the policy in the code before you ship it.'));
+}
+
+// --- Examples: real first drafts, with Jev's recorded review and a hand-written rewrite.
+const EXAMPLE_LABELS = { escalate: 'Escalate a ticket', model: 'Pick a model', rude: 'Rude or drunk', pr: 'Approve a PR', lead: 'Lead priority', refund: 'Refund over $500', invoice: 'Invoice over 30 days', agent: 'Agent prompt', spam: 'option_1 / option_2', review: 'Shipping or price', clean: 'A clean one' };
+const flagged = s => Object.keys(JUDGMENTS).some(k => s.j[k] >= FLAG_AT) || s.code.length;
+function recordedRewrite(g) {
+  const [first, ...rest] = g.steps;
+  if (!flagged(first)) return null;
+  const good = rest.filter(s => !flagged(s));
+  return { recorded: true, questions: good.map(s => ({ q: s.q, judgments: s.j })), code: g.code, aside: g.aside };
+}
+function openExample(g) {
+  const s = g.steps[0];
+  load(s.q); renderResult({ q: s.q, j: s.j, rewrite: recordedRewrite(g), source: RECORDED });
+  for (const b of document.querySelectorAll('#lint-examples .chip')) b.classList.toggle('active', b.dataset.id === g.id);
+}
+function renderExamples() {
+  $('lint-examples').replaceChildren(...GALLERY.map(g => {
+    const b = h('button', 'chip', EXAMPLE_LABELS[g.id] || g.id); b.type = 'button'; b.dataset.id = g.id; b.title = g.lesson;
+    b.addEventListener('click', () => openExample(g)); return b;
   }));
 }
 
 // --- Wiring.
 for (const b of document.querySelectorAll('[data-type]')) b.addEventListener('click', () => { setType(b.dataset.type); renderResult({ q: current() }); });
-for (const id of ['lint-instructions', 'lint-criteria']) $(id).addEventListener('input', () => { updateCount(); renderResult({ q: current() }); });
+for (const id of ['lint-instructions', 'lint-criteria']) $(id).addEventListener('input', () => { updateCount(); renderResult({ q: current() }); for (const b of document.querySelectorAll('#lint-examples .chip')) b.classList.remove('active'); });
 $('lint-form').addEventListener('submit', askJev);
 $('route-human-check').hidden = !!window.jevHuman?.ok();
-renderGallery();
-const first = GALLERY[0].steps[0];
-load(first.q); renderResult({ q: first.q, j: first.j, source: 'Recorded Jev answer · jev-1.14.0' });
+renderExamples();
+openExample(GALLERY[0]);
 renderWidget();

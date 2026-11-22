@@ -1,7 +1,7 @@
 import { MODEL, reserve, clientIdentity, issueHumanCookie, humanCookieExpiry } from '../_lib/jev-access.js';
 import { loadKey } from '../_lib/jev-key.js';
 import { databaseFor } from '../_lib/jev-database.js';
-import { lintQuestions, lintInput, lintAnswers } from '../_lib/jev-lint.js';
+import { lintQuestions, lintInput, lintAnswers, FLAG_AT, REWRITE_MODEL, rewriteMessages, parseRewrite } from '../_lib/jev-lint.js';
 const ENDPOINT = 'https://api.typesafe.ai/v1/systemone';
 const labels = ['supported', 'contradicted', 'insufficient'];
 const THROWS = ['rock', 'paper', 'scissors'];
@@ -137,6 +137,29 @@ export async function readJSON(request) {
     return JSON.parse(text + decoder.decode());
   } finally { reader.releaseLock(); }
 }
+// A flagged question gets a proposed rewrite: Workers AI drafts it, then Jev lints each
+// rewritten question with the same four Nouls. Any failure returns null; the review still ships.
+async function proposeRewrite(env, fetcher, apiKey, question, judgments) {
+  if (!env.AI) return null;
+  let timer;
+  try {
+    const result = await Promise.race([
+      env.AI.run(REWRITE_MODEL, { messages: rewriteMessages(question, judgments), response_format: { type: 'json_object' }, max_tokens: 900, temperature: 0.3 }),
+      new Promise((_, reject) => { timer = setTimeout(() => reject(Error('rewrite_deadline')), 15000); }),
+    ]).finally(() => clearTimeout(timer));
+    const draft = parseRewrite(result?.response);
+    if (!draft) return null;
+    const questions = await Promise.all(draft.questions.map(async ({ name, q }) => {
+      const r = await fetcher(ENDPOINT, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ model: MODEL, state: { question: q }, questions: lintQuestions() }), signal: AbortSignal.timeout(15000), redirect: 'manual' });
+      if (!r.ok) { await r.body?.cancel().catch(() => {}); return { name, q, judgments: null }; }
+      return { name, q, judgments: lintAnswers((await readJSON(r))?.answers) };
+    }));
+    return { questions, code: draft.code, source: REWRITE_MODEL };
+  } catch (error) {
+    console.warn(JSON.stringify({ event: 'jev_lint_rewrite_failed', name: error?.name, message: String(error?.message || '').slice(0, 200) }));
+    return null;
+  }
+}
 export function createHandler(fetcher = (...args) => fetch(...args)) {
   return async ({ request, env = {} }) => {
     env = { ...env, JEV_DB: databaseFor(env) };
@@ -202,7 +225,8 @@ export function createHandler(fetcher = (...args) => fetch(...args)) {
         const judgments = lintAnswers(data?.answers);
         if (!judgments) return out({ error: 'Jev returned an unexpected response. Please try again.' }, 502);
         const model = typeof data.model === 'string' ? data.model : MODEL;
-        return out({ model, judgments, elapsed_ms: Date.now() - started, request: upstream });
+        const rewrite = Object.values(judgments).some(p => p >= FLAG_AT) ? await proposeRewrite(env, fetcher, apiKey, lintQuestion, judgments) : null;
+        return out({ model, judgments, rewrite, elapsed_ms: Date.now() - started, request: upstream });
       }
       if (route) {
         const answers = routerAnswers(data?.answers);
