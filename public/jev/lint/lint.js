@@ -15,6 +15,11 @@ const CRITERIA_HELP = {
   choice: 'Options: one per line, <code>name: description</code>',
   score: 'Levels: one per line, lowest first',
 };
+const PLACEHOLDERS = {
+  noul: ['Should `ticket` be escalated?', 'true: Records are missing because of something our product did.\nfalse: A forgotten password, or a project the customer deleted.'],
+  choice: ['What is `ticket` mainly about?', 'billing: A charge, refund or invoice.\nbug: Something in the product is broken.\nhow-to: The customer is asking how to do something.'],
+  score: ['How frustrated does the customer sound in `ticket`?', 'calm\nannoyed\nangry\nfurious'],
+};
 
 const $ = id => document.getElementById(id);
 const h = (tag, cls, ...kids) => { const e = document.createElement(tag); if (cls) e.className = cls; e.append(...kids.filter(k => k != null)); return e; };
@@ -50,6 +55,7 @@ function setType(t) {
   type = t;
   for (const b of document.querySelectorAll('[data-type]')) { const on = b.dataset.type === t; b.classList.toggle('active', on); b.setAttribute('aria-checked', String(on)); }
   $('lint-criteria-label').innerHTML = CRITERIA_HELP[t];
+  [$('lint-instructions').placeholder, $('lint-criteria').placeholder] = PLACEHOLDERS[t];
 }
 function load(q) {
   setType(q.type);
