@@ -17,6 +17,10 @@
 import { marked } from 'marked';
 import { JEV_THEME_TAGS } from './jev-theme.js';
 
+// GitHub-style heading ids, so a doc's #section links work here as they do on GitHub.
+export const headingSlug = html => html.toLowerCase().replace(/<[^>]+>/g, '').replace(/&[a-z0-9#]+;/g, '').replace(/[^\p{L}\p{N}\s_-]/gu, '').trim().replace(/\s/g, '-');
+marked.use({ renderer: { heading({ tokens, depth }) { const html = this.parser.parseInline(tokens); return `<h${depth} id="${headingSlug(html)}">${html}</h${depth}>\n`; } } });
+
 export const VIEW_USER = 'jev';
 export const PRIVATE_USER = 'rhys';
 const REPO = 'Rhys-Lindmark/jev';

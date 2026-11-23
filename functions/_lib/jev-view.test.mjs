@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { jevGate, docsRepoPath, serveJevDocs, privateGate, isPrivatePath, handleJevLogin, sessionUser } from './jev-view.js';
+import { jevGate, docsRepoPath, serveJevDocs, privateGate, isPrivatePath, handleJevLogin, sessionUser, headingSlug } from './jev-view.js';
 
 const env = { JEV_VIEW_PASSWORD: 'test-password', JEV_GITHUB_TOKEN: 'test-token' };
 const basic = (user, pass) => ({ authorization: `Basic ${btoa(`${user}:${pass}`)}` });
@@ -256,4 +256,10 @@ test('short URLs: long URLs redirect, short ones serve with repo-relative links 
 	assert.match(html, /href="https:\/\/example\.com\/"/);
 	const noSlash = await serveJevPage(req('/jev/customer-analysis', basic('jev', 'test-password')), env, fake);
 	assert.equal(noSlash.headers.get('location'), 'https://ai.rhyslindmark.com/jev/customer-analysis/');
+});
+
+test('markdown headings get GitHub-style ids, so #section links work', async () => {
+	const { marked } = await import('marked');
+	assert.equal(headingSlug('What I&#39;d tell TypeSafe'), 'what-id-tell-typesafe');
+	assert.match(marked.parse('## Check it on your examples'), /<h2 id="check-it-on-your-examples">Check it on your examples<\/h2>/);
 });
