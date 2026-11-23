@@ -97,7 +97,53 @@ export function check({ code, examples, answers, compile = compileDecide }) {
   if (stray.length) notes.push(`decide() returned ${stray.map(a => `"${a}"`).join(', ')}, which no example wants. Every such decision counts as wrong.`);
   const errors = ds.filter(d => d.error).length;
   if (errors) notes.push(`${errors} example${errors === 1 ? '' : 's'} failed: ${ds.find(d => d.error).error}`);
-  return { n: examples.length, actions, score: now, chance: 1 / Math.max(actions.length, 1), per, numbers: nums, suggest, misses, errors, notes };
+  const diagnoses = diagnose({ actions, per, wants, acts, answers, nums, now });
+  return { n: examples.length, actions, score: now, chance: 1 / Math.max(actions.length, 1), per, numbers: nums, suggest, diagnoses, misses, errors, notes };
+}
+
+// Advice beyond the threshold, from what the check already has (no extra Jev calls). The
+// rules and their cutoffs were fixed before they were tested (diagnose-validate.mjs).
+export const NO_CUT_BELOW = 0.75; // even the best threshold scores below this: rewrite the question
+export const PAIR_MIN = 3, PAIR_SHARE = 0.5; // one want→got pair is this many misses, and this share of them
+export const SURE_AT = 0.9; // Jev's least sure answer for an example is at least this sure
+
+// How sure Jev is about one example: its least sure answer. A Noul's sureness is max(p, 1 - p);
+// a Choice's or Score's is the probability of its top option or level.
+export function sureness(ans) {
+  const xs = Object.values(ans || {}).map(a => typeof a?.noul === 'number' ? Math.max(a.noul, 1 - a.noul)
+    : a?.probabilities && typeof a.probabilities === 'object' ? Math.max(...Object.values(a.probabilities).filter(p => typeof p === 'number'))
+    : typeof a?.confidence === 'number' ? a.confidence : null).filter(x => x != null && Number.isFinite(x));
+  return xs.length ? Math.min(...xs) : null;
+}
+
+function diagnose({ actions, per, wants, acts, answers, nums, now }) {
+  const out = [], pc = x => `${Math.round(100 * x)}%`;
+  if (actions.length < 2) return out;
+  // 1. No threshold fixes it: the questions don't separate the actions.
+  const best = Math.max(now, ...nums.map(n => n.best.score));
+  if (best < NO_CUT_BELOW) {
+    const weak = per.reduce((b, p) => p.right / p.n < b.right / b.n ? p : b);
+    out.push({ kind: 'rewrite', best, action: weak.action,
+      text: `No threshold gets this past ${pc(best)}, so Jev's answers don't separate the actions well enough. It does worst on examples that want ${weak.action} (${weak.right}/${weak.n} right). Rewrite the question that decides ${weak.action}: ask about what those examples have in common, with criteria that describe them.` });
+  }
+  // 2. Two actions get confused: most misses are one want→got pair (three or more actions only;
+  // with two, every miss is the same pair).
+  const pairs = new Map(); let missed = 0;
+  wants.forEach((w, i) => { if (acts[i] != null && acts[i] !== w) { missed++; const k = `${w}→${acts[i]}`; pairs.set(k, (pairs.get(k) || 0) + 1); } });
+  const [pair, n] = [...pairs].sort((a, b) => b[1] - a[1])[0] || [];
+  if (actions.length >= 3 && n >= PAIR_MIN && n >= PAIR_SHARE * missed) {
+    const [want, got] = pair.split('→');
+    out.push({ kind: 'split', want, got, n, of: missed,
+      text: `${n} of ${missed} misses are examples that want ${want} sent to ${got}. Ask Jev a question that tells ${want} from ${got} directly, or split the question that decides between them, and make that call in code.` });
+  }
+  // 3. Jev is sure and the label disagrees: look at these before changing anything.
+  const sure = wants.flatMap((w, i) => acts[i] != null && acts[i] !== w && (sureness(answers[i]) ?? 0) >= SURE_AT ? [i] : []);
+  if (sure.length) {
+    const one = sure.length === 1;
+    out.push({ kind: 'labels', examples: sure,
+      text: `Jev is sure of its answers on ${sure.length} example${one ? '' : 's'} your code gets wrong. Either the label is wrong, the question misses something about ${one ? 'it' : 'them'}, or decide() mishandles ${one ? 'it' : 'them'}. Read ${one ? 'it' : 'them'} before you change anything.` });
+  }
+  return out;
 }
 
 // Examples as pasted: JSON lines or a JSON array of { state, want } (record and label work too).

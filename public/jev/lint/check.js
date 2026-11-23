@@ -3,11 +3,17 @@
 // worker, scores decide(), tries other values for each number between 0 and 1 in it, and
 // estimates by leave-one-out whether a change holds up. The method and its test on the
 // outcome suite: /jev/skill-issue/iterating/ (code: takehome/skill-issue/check/).
-import { parseExamples } from './check-core.js?v=check-1';
+import { parseExamples } from './check-core.js?v=check-2';
 import { PRESETS } from './check-presets.js?v=check-1';
 
 const MAX_EXAMPLES = 50, MAX_QUESTIONS = 12, MAX_STATE = 7000, FLAG_AT = 0.7;
 const RECORDED = 'Recorded Jev answers · jev-1.14.0';
+// The checker's diagnoses beyond the threshold (check-core.js), with what testing them showed.
+const DIAGNOSES = {
+  rewrite: { name: 'Rewrite the question', evidence: 'Tested on 115 agent-written integrations: an agent given this advice fixed them no better than one given the report alone (+0.4 points, interval −0.9 to +1.8). It fires most where the labels are noisy, so check those first.' },
+  split: { name: 'Two actions get confused', evidence: 'Tested on 45 integrations: an agent given this advice did no better than one given the report alone (−1.1 points, interval −1.7 to +1.9). Treat it as a description of your misses, not a fix.' },
+  labels: { name: 'Check these labels', evidence: 'Tested on hate speech and political claims: 96% and 91% of the labels it flags were ones annotators split on, against 37% and 62% for examples the code got right. On Amazon reviews it did no better than pointing at any miss.' },
+};
 // The unseen-dependency check (takehome/skill-issue/outcome/lint-v2.mjs).
 const UNSEEN = {
   unseen_dependency: {
@@ -85,7 +91,7 @@ async function liveUnseen(questions, state) {
 // --- The computation, in a worker with a time limit.
 function runCheck(payload) {
   return new Promise((resolve, reject) => {
-    const w = new Worker(new URL('./check-worker.js?v=check-1', import.meta.url), { type: 'module' });
+    const w = new Worker(new URL('./check-worker.js?v=check-2', import.meta.url), { type: 'module' });
     const timer = setTimeout(() => { w.terminate(); reject(new Error('decide() didn’t finish in 20 seconds. Is there a loop in it?')); }, 20000);
     w.onmessage = e => { clearTimeout(timer); w.terminate(); e.data.error ? reject(new Error(e.data.error)) : resolve(e.data.report); };
     w.onerror = e => { clearTimeout(timer); w.terminate(); reject(new Error(e.message || 'The check failed.')); };
@@ -127,6 +133,10 @@ function render({ report: r, examples, answers, unseen, code, source }) {
       kids.push(h('p', 'note check-calibration', 'That estimate runs high. Tested on 239 suggestions for agent-written integrations, the change helped on unseen examples 60% of the time and hurt 22%, and the average gain was 4 points, about a third of what the estimate said. ', Object.assign(h('a', null, 'The test.'), { href: '/jev/skill-issue/iterating/#check-it-on-your-examples' })));
     } else kids.push(h('div', 'check-suggest is-keep', h('p', null, h('strong', null, 'Keep your numbers.'), ' No change beats the current score by 5 points or more once it has to hold up on examples it wasn’t fitted to.')));
   } else if (r.actions.length > 1) kids.push(h('p', 'note', 'No numbers between 0 and 1 in decide() to fit. (Score cuts such as 1.5 aren’t swept yet.)'));
+  if (r.diagnoses?.length) kids.push(h('div', 'check-diagnoses', h('h4', null, 'Beyond the threshold'), ...r.diagnoses.map(d => h('div', `check-diag is-${d.kind}`,
+    h('span', 'lint-step-label', DIAGNOSES[d.kind].name), h('p', null, d.text),
+    d.kind === 'labels' ? h('ul', 'check-diag-ex', ...d.examples.slice(0, 5).map(i => h('li', null, h('code', null, short(examples[i].state, 140)), h('span', null, ` labeled ${examples[i].want} · Jev: ${short(round(answers[i]), 140)}`)))) : null,
+    h('p', 'note', DIAGNOSES[d.kind].evidence)))));
   const warn = Object.entries(unseen || {}).filter(([, p]) => p >= FLAG_AT);
   if (warn.length) kids.push(h('div', 'lint-code', h('h4', null, 'Jev answers this from its own knowledge'), h('p', 'check-warn', `${warn.map(([id, p]) => `${id} (${p.toFixed(2)})`).join(', ')}: the right answer depends on something in neither the question nor the state. That can work, and these examples are how you find out.`)));
   if (r.notes.length) kids.push(h('div', 'lint-code', h('h4', null, 'Notes'), h('ul', null, ...r.notes.map(n => h('li', null, n)))));

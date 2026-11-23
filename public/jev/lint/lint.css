@@ -79,3 +79,11 @@
 .check-state { font-size: 12px; word-break: break-word; }
 .check-miss-line { margin-top: 3px; font-weight: 535; }
 .check-miss-jev { color: var(--steel); font: 400 12px/1.4 var(--jev-font-mono); word-break: break-word; }
+.check-diagnoses { margin-top: 8px; display: grid; gap: 10px; }
+.check-diagnoses h4 { margin-bottom: 0; }
+.check-diag { border: 1px solid var(--bone); border-left: 3px solid var(--steel); padding: 10px 14px; background: var(--jev-paper); }
+.check-diag p { margin: 6px 0 0; font-size: 14px; max-width: 70ch; }
+.check-diag p.note { font-size: 12px; }
+.check-diag-ex { margin: 6px 0 0; padding-left: 18px; font-size: 12px; display: grid; gap: 4px; }
+.check-diag-ex code { word-break: break-word; }
+.check-diag-ex span { color: var(--steel); }
