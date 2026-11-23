@@ -4,6 +4,8 @@
 .hr-q { font-size: 14px; overflow-wrap: anywhere; }
 .hr-anti-p { display: flex; align-items: baseline; gap: 10px; }
 .hr-anti-p strong { font: 500 40px/1 var(--jev-font-display); color: var(--jev-alert); }
+.hr-anti-p strong.unsure { color: var(--hr-amber); }
+.hr-anti-p strong.yes { color: var(--hr-yes); }
 .hr-anti-p .note { margin: 0; }
 .hr-aside { max-width: 68ch; margin: 16px 0 0; font-size: 14px; }
 .hr-aside a { text-decoration: underline; text-underline-offset: 2px; }

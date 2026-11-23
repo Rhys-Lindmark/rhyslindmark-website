@@ -1,5 +1,5 @@
 // Hire This Candidate? Jev judges; this file decides.
-import { DATA } from './data.js?v=hire-1';
+import { DATA } from './data.js?v=hire-3';
 
 const J = DATA.judgments;
 const $ = id => document.getElementById(id);
@@ -65,8 +65,10 @@ function policy({ p, role, weights, interview }) {
 
 function renderAnti() {
   $('anti-q').textContent = DATA.anti.question;
+  const r = read(DATA.anti.p);
   $('anti-p').textContent = DATA.anti.p.toFixed(2);
-  $('anti-read').textContent = `Jev: probably not (${DATA.anti.ms} ms)`;
+  $('anti-p').className = r;
+  $('anti-read').textContent = `Jev: ${{ yes: 'probably yes', no: 'probably not', unsure: 'unsure' }[r]} (${DATA.anti.ms} ms)`;
 }
 
 function renderBuckets() {
