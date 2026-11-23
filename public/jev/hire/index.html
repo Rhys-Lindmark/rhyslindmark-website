@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Should TypeSafe hire Rhys? Asked as one question, Jev says 0.34. Asked as 27 small judgments plus a hiring policy in code, it says: ask a person."><title>Hire This Candidate?</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/hire/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/hire/hire.css?v=hire-1"><meta name="robots" content="noindex"></head>
+<body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>Hire This Candidate?</h1></header>
+<main>
+<p class="hr-lede">The take-home says the question is the program. So here is the only question TypeSafe actually has to answer this week, asked the wrong way and then the right way, on the candidate’s resume and the take-home itself. Every number is a recorded Jev answer.</p>
+
+<section class="demo" aria-labelledby="anti-title">
+<div class="demo-heading"><h2 id="anti-title">The wrong way: one big question</h2><p>The question everyone writes first.</p></div>
+<div class="hr-anti">
+<code class="hr-q" id="anti-q"></code>
+<div class="hr-anti-p"><strong id="anti-p"></strong><span class="note" id="anti-read"></span></div>
+</div>
+<p class="hr-aside">That isn’t Jev’s opinion of Rhys. It’s a guess about TypeSafe’s hiring bar, which isn’t in the resume. Same mistake as “Should this ticket be escalated?” in <a href="/jev/talks/question-is-the-program/">Talk 1</a>: the policy is hidden in the model. So split it into judgments a person could make at a glance, and put the hiring policy in code.</p>
+</section>
+
+<section class="demo" aria-labelledby="j-title">
+<div class="demo-heading"><h2 id="j-title">The right way: small judgments</h2><p>Each row is one Jev question against the resume or the take-home, checked against a line of the job description. Tap a row to overrule Jev and watch the verdict change.</p></div>
+<div class="hr-legend"><span><i class="pip yes"></i>yes (≥ 0.70)</span><span><i class="pip unsure"></i>unsure</span><span><i class="pip no"></i>no (≤ 0.30)</span><span><i class="pip over"></i>overruled by you</span></div>
+<div id="buckets"></div>
+<div class="hr-skipped">
+<h4>Not asked</h4>
+<ul>
+<li><strong>Handwriting analysis</strong> (validity .02). Skipped.</li>
+<li><strong>Age</strong> (validity −.01). Not asked. Also illegal.</li>
+<li><strong>“Has read 20k flashcards?”</strong> Code can read a number off a resume. Don’t pay a model for a lookup.</li>
+</ul>
+</div>
+</section>
+
+<section class="demo hr-verdict-box" aria-labelledby="v-title">
+<div class="demo-heading"><h2 id="v-title">The policy, in code</h2><p>How much each bucket counts is a choice about TypeSafe, not about Rhys, so it lives here and not in a prompt. Pick whose weights to use.</p></div>
+<div class="hr-controls">
+<div><span class="hr-k">Weights</span><div class="chips" id="presets" role="radiogroup" aria-label="Weights"></div></div>
+<div><span class="hr-k">Structured interview</span><div class="seg" id="interview" role="radiogroup" aria-label="Structured interview"></div></div>
+</div>
+<p class="note" id="preset-note"></p>
+<div class="hr-roles" id="roles"></div>
+<details class="hr-code"><summary>Read <code>policy()</code><span>the whole hiring policy is about 25 lines</span></summary><pre><code id="policy-src"></code></pre></details>
+</section>
+
+<section class="demo" aria-labelledby="why-title">
+<div class="demo-heading"><h2 id="why-title">Why these four buckets</h2><p>Rhys guessed 25% each. The research disagrees, a little.</p></div>
+<table class="tt hr-research">
+<thead><tr><th>Bucket</th><th>Closest predictor</th><th>Schmidt &amp; Hunter 1998</th><th>Sackett et al. 2022</th></tr></thead>
+<tbody>
+<tr><td>Have they done it?</td><td>Years of experience · job knowledge</td><td>.18 · .48</td><td>— · .40</td></tr>
+<tr><td>Did they do it?</td><td>Work sample test (the take-home)</td><td>.54</td><td>.33</td></tr>
+<tr><td>Are they smart?</td><td>General mental ability</td><td>.51</td><td>.31</td></tr>
+<tr><td>Everything else</td><td>Structured interview</td><td>.51</td><td>.42</td></tr>
+</tbody>
+</table>
+<p class="note">Numbers are corrected validities: how well each predictor tracks later job performance (0 is a coin flip, 1 is perfect). Sackett, Zhang, Berry &amp; Lievens (2022) found older corrections inflated most of them, and moved the structured interview to first place. Years of experience was weak in 1998 and isn’t in 2022’s top five, so the 2022 preset uses job knowledge (.40) for “have they done it?”. The resume check is the weakest evidence on this page, and the only hard requirement in the job description is one of its rows.</p>
+<p class="note" id="cost"></p>
+</section>
+
+<p class="note">Sources: F. L. Schmidt &amp; J. E. Hunter (1998), <a href="https://doi.org/10.1037/0033-2909.124.2.262">“The validity and utility of selection methods in personnel psychology”</a>, <i>Psychological Bulletin</i> 124(2). P. R. Sackett, C. Zhang, C. M. Berry &amp; F. Lievens (2022), <a href="https://doi.org/10.1037/apl0000994">“Revisiting meta-analytic estimates of validity in personnel selection”</a>, <i>Journal of Applied Psychology</i> 107(11). Job descriptions: TypeSafe’s public <a href="https://jobs.ashbyhq.com/typesafe-ai">Developer Advocate and Developer Educator</a> postings. Questions and recorder: <a href="/jev/docs/takehome/hire/">takehome/hire</a>. This page is a joke. The structured interview is on Tuesday.</p>
+</main><footer><a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div>
+<script type="module" src="/jev/hire/hire.js?v=hire-1"></script></body></html>
