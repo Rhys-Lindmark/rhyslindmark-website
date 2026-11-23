@@ -126,3 +126,35 @@
 	.docs-head { margin: 24px 0 28px; }
 	.docs .markdown table { display: block; overflow-x: auto; }
 }
+
+/* Software 4.0 stack: units drawn as logic-gate schematics (jev/stack/gates.py). Pink is Jev (analog), ink is code (digital). */
+.gx { margin: 24px 0 28px; padding: 0; }
+.gx-level { border-top: var(--jev-rule); padding: 14px 0 6px; }
+.gx-head { margin: 0 0 10px; font: 500 var(--jev-text-label)/1.4 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--jev-ink); }
+.gx-n { background: var(--jev-ink); color: var(--jev-paper); padding: 3px 6px; margin-right: 6px; }
+.gx-like { color: var(--jev-steel); text-transform: none; letter-spacing: 0; margin-left: 6px; }
+.gx-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.gx-card { min-width: 0; border: var(--jev-rule-quiet); padding: 12px 14px; background: var(--jev-paper); }
+.gx-name { margin: 0 0 8px; font-size: 15px; } .gx-name span { color: var(--jev-steel); font-size: 13px; margin-left: 6px; }
+.gx-draw { overflow-x: auto; }
+.gx-draw svg { display: block; width: 100%; max-width: 640px; min-width: 520px; height: auto; overflow: visible; }
+.gx-cap { margin: 8px 0 0; font-size: 13px; line-height: 1.45; color: var(--jev-steel); max-width: 62ch; }
+.gx-cap b { color: var(--jev-ink); font-weight: 500; }
+.gx text { font-family: var(--jev-font-body); font-size: 13px; fill: var(--jev-ink); }
+.gx .g-tag { font: 500 9.5px var(--jev-font-mono); letter-spacing: .06em; fill: var(--jev-steel); }
+.gx .g-tagj { fill: var(--jev-ink); }
+.gx .g-q { font-size: 12.5px; }
+.gx .g-mono { font: 11px var(--jev-font-mono); }
+.gx .g-out { font: 500 11.5px var(--jev-font-mono); }
+.gx .g-note { font-size: 11.5px; fill: var(--jev-steel); }
+.gx .g-jev { fill: var(--jev-rose-soft); stroke: var(--jev-rose); stroke-width: 1.5; }
+.gx .g-code, .gx .g-table { fill: var(--jev-paper); stroke: var(--jev-ink); stroke-width: 1.25; }
+.gx .g-table { fill: var(--jev-mist); }
+.gx .g-chip { fill: var(--jev-mist); stroke: var(--jev-ink); stroke-width: 1; }
+.gx .g-chip3 { fill: var(--jev-mist); stroke: var(--jev-ink); stroke-width: 2.25; }
+.gx .g-sym { fill: var(--jev-paper); stroke: var(--jev-ink); stroke-width: 1.5; stroke-linejoin: round; }
+.gx .g-hys { fill: none; stroke: var(--jev-ink); stroke-width: 1.1; }
+.gx .g-w { fill: none; stroke: var(--jev-ink); stroke-width: 1.5; stroke-linejoin: round; }
+.gx .g-wa { fill: none; stroke: var(--jev-rose); stroke-width: 2; stroke-dasharray: 4 3; }
+.gx .g-dot { fill: var(--jev-ink); }
+@media (max-width: 600px) { .gx-card { padding: 10px; } }
