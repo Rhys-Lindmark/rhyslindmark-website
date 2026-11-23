@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Paste a Jev question and Jev reviews it: is it a decision, two questions in one, dependent on hidden rules, or arithmetic? When it flags one, it proposes a rewrite and the code that replaces the bad question."><title>jev-lint</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/lint/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/lint/lint.css?v=lint-rewrite-1"><meta name="robots" content="noindex"></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><meta name="description" content="Paste a Jev question and Jev reviews it: is it a decision, two questions in one, dependent on hidden rules, or arithmetic? When it flags one, it proposes a rewrite and the code that replaces the bad question."><title>jev-lint</title><link rel="canonical" href="https://ai.rhyslindmark.com/jev/lint/"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="/jev/minimal.css?v=jev-1"><link rel="stylesheet" href="/jev/lint/lint.css?v=check-1"><meta name="robots" content="noindex"></head>
 <body><div class="shell"><header><a href="/">Rhys / AI</a><a href="/jev">Jev</a><h1>jev-lint</h1></header>
 <main>
 
@@ -33,5 +33,23 @@
 </ol>
 <p class="note">From the talk <a href="/jev/talks/question-is-the-program/">The Question Is the Program</a> and the guide <a href="/jev/docs/takehome/teachbacks/b1-how-to-ask-jev.md">How to Ask Jev</a>. Run it on a file: <code>node lint.mjs questions.json</code> in <a href="/jev/docs/takehome/demos/a1-wrong-question/">demos/a1-wrong-question</a>.</p>
 </section>
+
+<section class="demo" id="check" aria-labelledby="check-title">
+<div class="demo-heading"><h2 id="check-title">Check it on your examples</h2><p>The checks above review wording, and on 32 tasks the questions they flagged routed no worse than the rest (<a href="/jev/skill-issue/iterating/#a-better-linter">the test</a>). Your labeled examples are what tell you. Paste your questions, your <code>decide()</code> and 20 or more examples. You get the score at your cut, what each threshold in your code would score at other values, and Jev’s answers on the misses.</p></div>
+<div class="lint-examples"><span>Recorded:</span><span id="check-presets"></span></div>
+<p class="note check-lesson" id="check-lesson"></p>
+<form id="check-form">
+<label for="check-questions"><span>Questions: the <code>questions</code> object you send Jev</span></label>
+<textarea id="check-questions" class="check-mono" rows="7" spellcheck="false"></textarea>
+<label for="check-code"><span><code>decide(answers, state)</code>: returns the action’s name</span></label>
+<textarea id="check-code" class="check-mono" rows="7" spellcheck="false"></textarea>
+<label for="check-examples"><span>Examples: one <code>{"state": {…}, "want": "action"}</code> per line</span><span id="check-count"></span></label>
+<textarea id="check-examples" class="check-mono" rows="6" spellcheck="false"></textarea>
+<div class="actions"><button class="run" id="check-run" type="submit">Run on examples</button><span class="note" id="check-source"></span></div>
+<p id="check-error" class="error" role="alert" hidden></p>
+</form>
+<div id="check-result" class="lint-result" aria-live="polite"></div>
+<p class="note">Live runs ask Jev once per example, plus once per question for the unseen-dependency check. Your <code>decide()</code> runs in your browser. On the command line: <code>node check.mjs questions.json decide.js examples.jsonl</code> in <a href="/jev/docs/takehome/skill-issue/check/">skill-issue/check</a>.</p>
+</section>
 </main><footer><a href="https://docs.typesafe.ai/">Jev documentation</a></footer></div>
-<script type="module" src="/jev/human.js?v=router-13"></script><script type="module" src="/jev/lint/lint.js?v=lint-rewrite-3"></script></body></html>
+<script type="module" src="/jev/human.js?v=router-13"></script><script type="module" src="/jev/lint/lint.js?v=lint-rewrite-3"></script><script type="module" src="/jev/lint/check.js?v=check-1"></script></body></html>
