@@ -158,3 +158,40 @@
 .gx .g-wa { fill: none; stroke: var(--jev-rose); stroke-width: 2; stroke-dasharray: 4 3; }
 .gx .g-dot { fill: var(--jev-ink); }
 @media (max-width: 600px) { .gx-card { padding: 10px; } }
+
+/* Software 4.0 stack: clickable examples under each circuit, and the naive-vs-unit chart (jev/stack/gates.py, report.py). */
+.gx-exs { margin-top: 12px; border-top: var(--jev-rule-quiet); padding-top: 8px; }
+.gx-exh { margin: 0 0 2px; font: 500 var(--jev-text-label)/1.4 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--jev-steel); }
+.gx-ex { border-bottom: var(--jev-rule-quiet); }
+.gx-ex:last-child { border-bottom: 0; }
+.gx-ex summary { cursor: pointer; padding: 8px 0; font-size: 14px; list-style: none; display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.gx-ex summary::-webkit-details-marker { display: none; }
+.gx-ex summary::before { content: "+"; font: 500 13px var(--jev-font-mono); color: var(--jev-steel); width: 1ch; flex: none; }
+.gx-ex[open] summary::before { content: "−"; }
+.gx-ex summary:hover span { color: var(--jev-ink); }
+.gx-ex summary b { font: 500 12px var(--jev-font-mono); white-space: nowrap; flex: none; }
+.gx-ex summary span { color: var(--jev-steel); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.markdown .gx-msg { margin: 2px 0 10px; font-size: 13.5px; line-height: 1.45; }
+.markdown .gx-t { display: table; width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.4; margin: 0 0 8px; }
+.markdown .gx-t td { border: 0; border-bottom: 1px solid var(--jev-silver); padding: 5px 10px 5px 0; vertical-align: top; }
+.markdown .gx-t td:last-child { text-align: right; padding-right: 0; }
+.gx-p { font: 12px var(--jev-font-mono); white-space: nowrap; }
+.gx-v { font: 500 12px var(--jev-font-mono); background: var(--jev-ink); color: var(--jev-paper); padding: 1px 6px; white-space: nowrap; }
+.gx-vx { background: var(--jev-silver); color: var(--jev-ink); }
+.gx-fs { font-size: 12px; color: var(--jev-steel); white-space: nowrap; }
+.gx-lab { font-size: 12.5px; color: var(--jev-steel); margin: 0 0 10px; }
+.dl { margin: 18px 0 30px; padding: 0; }
+.dl-key { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; font-size: 13px; color: var(--jev-steel); margin: 0 0 8px; }
+.dl-sw { display: inline-block; width: 16px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+.dl-sw.dl-n { background: var(--jev-ash); }
+.dl-sw.dl-u { background: var(--jev-ink); }
+.dl-row { display: grid; grid-template-columns: minmax(0, 30%) 1fr 116px; gap: 4px 14px; align-items: center; padding: 7px 0; border-top: var(--jev-rule-quiet); }
+.dl-l b { display: block; font-weight: 500; font-size: 14px; color: var(--jev-ink); }
+.dl-l small { font: 11px var(--jev-font-mono); color: var(--jev-steel); }
+.dl-row svg { display: block; width: 100%; height: 26px; }
+.dl .dl-n { fill: var(--jev-ash); }
+.dl .dl-u { fill: var(--jev-ink); }
+.dl-v { font: 500 12.5px var(--jev-font-mono); color: var(--jev-ink); white-space: nowrap; }
+.dl-v small { display: block; font-weight: 400; font-size: 11px; color: var(--jev-steel); }
+.dl .corpus-note { margin-top: 10px; }
+@media (max-width: 600px) { .dl-row { grid-template-columns: 1fr 104px; } .dl-l { grid-column: 1 / -1; } }
