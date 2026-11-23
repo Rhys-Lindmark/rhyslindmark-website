@@ -49,13 +49,32 @@
 .hr-k { display: block; font: 500 11px/1.3 var(--jev-font-mono); text-transform: uppercase; letter-spacing: .05em; color: var(--steel); }
 #preset-note { margin: 10px 0 0; }
 
-.hr-roles { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 18px; }
-.hr-role { padding: 16px; border: 1px solid var(--bone); border-top: 4px solid var(--jev-ink); }
-.hr-role.no { border-top-color: var(--jev-alert); }
-.hr-role.unsure { border-top-style: double; border-top-width: 6px; }
-.hr-role strong { display: block; font: 500 32px/1.05 var(--jev-font-display); margin: 6px 0 4px; }
-.hr-role.no strong { color: var(--jev-alert); }
-.hr-range { font: 400 12px var(--jev-font-mono); color: var(--steel); }
+/* Verdict colors: green hire, amber ask a person, red pass. Amber is local to this page. */
+:root { --hr-yes: var(--jev-signal, #03aa5c); --hr-yes-soft: var(--jev-signal-soft, #d9f2e6); --hr-amber: #c98a00; --hr-amber-soft: #fbefd2; --hr-no: var(--jev-alert, #c8102e); --hr-no-soft: #fdecee; }
+:root[data-theme="dark"] { --hr-amber: #f0b429; --hr-amber-soft: #3a2c0c; --hr-no-soft: #3a171c; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --hr-amber: #f0b429; --hr-amber-soft: #3a2c0c; --hr-no-soft: #3a171c; } }
+
+.hr-roles { margin-top: 18px; }
+.hr-role { padding: 18px; border: 1px solid var(--bone); border-top: 6px solid var(--jev-ink); }
+.hr-role.yes { border-top-color: var(--hr-yes); background: linear-gradient(var(--hr-yes-soft), transparent 90px); }
+.hr-role.unsure { border-top-color: var(--hr-amber); background: linear-gradient(var(--hr-amber-soft), transparent 90px); }
+.hr-role.no { border-top-color: var(--hr-no); background: linear-gradient(var(--hr-no-soft), transparent 90px); }
+.hr-role strong { display: block; font: 500 40px/1.05 var(--jev-font-display); margin: 6px 0 4px; }
+.hr-role.yes strong { color: var(--hr-yes); }
+.hr-role.unsure strong { color: var(--hr-amber); }
+.hr-role.no strong { color: var(--hr-no); }
+.hr-range { font: 500 13px var(--jev-font-mono); color: var(--ink); }
+
+.hr-scale { position: relative; height: 26px; margin: 14px 0 0; }
+.hr-zone { position: absolute; top: 0; bottom: 0; }
+.hr-zone.no { background: color-mix(in srgb, var(--hr-no) 32%, transparent); }
+.hr-zone.unsure { background: color-mix(in srgb, var(--hr-amber) 38%, transparent); }
+.hr-zone.yes { background: color-mix(in srgb, var(--hr-yes) 34%, transparent); }
+.hr-zone i { position: absolute; left: 6px; top: 50%; transform: translateY(-50%); font: 500 10px var(--jev-font-mono); font-style: normal; text-transform: uppercase; letter-spacing: .04em; color: var(--ink); white-space: nowrap; }
+.hr-track { position: relative; height: 10px; margin-top: 4px; }
+.hr-band { position: absolute; top: 0; bottom: 0; min-width: 4px; background: var(--jev-ink); transition: left .25s, width .25s; }
+.hr-ticks { position: relative; height: 16px; font: 400 11px var(--jev-font-mono); color: var(--steel); }
+.hr-ticks span { position: absolute; top: 3px; transform: translateX(-50%); }
 .hr-role p { font-size: 13px; margin: 8px 0 0; }
 .hr-role ol { margin: 10px 0 0; padding-left: 18px; font-size: 13px; }
 .hr-role li { margin: 4px 0; }
@@ -67,6 +86,7 @@
 .hr-research td:first-child { white-space: nowrap; font-weight: 535; }
 .hr-research td:nth-child(n+3) { font-family: var(--jev-font-mono); font-size: 12px; }
 .hr-research { margin: 8px 0 12px; }
+.hr-research td, .hr-research th { overflow-wrap: normal; }
 .demo { overflow-wrap: anywhere; }
 .demo .tt { display: block; overflow-x: auto; }
 

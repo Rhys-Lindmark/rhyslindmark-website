@@ -12,16 +12,18 @@ const NOTES = {
   devrel_title: 'For the record only, not scored. Nobody has the title before their first DevRel job.',
   discord: 'Left out on purpose: reading Discord needs a bot TypeSafe would have to add.',
   four_hours: 'Flags never reject on their own. A person decides whether this is a red flag or the job.',
-  measured: 'Skill Issue: a 200-word preamble took agents’ bad Jev integrations from 25% to 0%.',
 };
 const NOT_SCORED = new Set(['devrel_title', ...DATA.flags]);
+// The page judges the Developer Advocate role only. The recorder also asked a few
+// Developer Educator questions (role 'E'); they stay in data.js but aren't shown or scored.
+const ROLE = 'A';
+const shown = k => J[k].role !== 'E';
 
 const PRESETS = {
   rhys: { label: 'Rhys’s guess', w: { done: .25, did: .25, smart: .25, other: .25 }, note: 'A guess, not a study.' },
   sh98: { label: 'Schmidt & Hunter 1998', w: { done: .18, did: .54, smart: .51, other: .51 }, note: 'Years of experience .18, work sample .54, cognitive ability .51, structured interview .51, scaled to add up to 100%.' },
   s22: { label: 'Sackett et al. 2022', w: { done: .40, did: .33, smart: .31, other: .42 }, note: 'Job knowledge .40, work sample .33, cognitive ability .31, structured interview .42, scaled to add up to 100%.' },
 };
-const ROLES = { A: 'Developer Advocate', E: 'Developer Educator' };
 
 const state = { preset: 'rhys', interview: 'pending', over: {} };
 const prob = k => state.over[k] ?? J[k].p;
@@ -70,14 +72,13 @@ function renderAnti() {
 function renderBuckets() {
   $('buckets').innerHTML = Object.entries(DATA.buckets).map(([b, v]) => `
     <div class="hr-bucket"><h3>${esc(v.label)} <span>${esc(v.sub)}</span></h3>
-    ${v.keys.map(row).join('')}${b === 'other' ? interviewRow() : ''}</div>`).join('')
+    ${v.keys.filter(shown).map(row).join('')}${b === 'other' ? interviewRow() : ''}</div>`).join('')
     + `<div class="hr-bucket"><h3>Flags <span>Read by the policy, never scored</span></h3>${DATA.flags.map(row).join('')}</div>`;
   for (const el of document.querySelectorAll('.hr-row[data-k]')) el.onclick = () => cycle(el.dataset.k);
 }
 
 function row(k) {
-  const j = J[k], p = prob(k), r = read(p), over = k in state.over;
-  const tag = j.role === 'A' ? 'Advocate' : j.role === 'E' ? 'Educator' : '';
+  const j = J[k], p = prob(k), r = read(p), over = k in state.over, tag = '';
   return `<button class="hr-row ${r}${over ? ' over' : ''}${NOT_SCORED.has(k) ? ' unscored' : ''}" data-k="${k}" aria-label="${esc(j.question)}: ${p.toFixed(2)}. Tap to overrule.">
     <span class="hr-p">${p.toFixed(2)}</span>
     <span class="hr-body"><span class="hr-jq">${esc(j.question)}</span>
@@ -113,20 +114,26 @@ function renderControls() {
     Object.entries(w).map(([b, x]) => `${DATA.buckets[b].label.replace('?', '')} ${Math.round(100 * x / t)}%`).join(' · ') + '.';
 }
 
+// The score as a colored scale: red below 0.60 (pass), amber 0.60–0.80 (ask a person),
+// green from 0.80 (hire). The dark band is where the score can land.
+const MIN = 0.4, pos = x => `${(100 * (Math.max(MIN, Math.min(1, x)) - MIN) / (1 - MIN)).toFixed(2)}%`;
+function scale(lo, hi) {
+  const zones = [['no', MIN, .6, 'Pass'], ['unsure', .6, .8, 'Ask a person'], ['yes', .8, 1, 'Hire']];
+  return `<div class="hr-scale" role="img" aria-label="Score ${lo.toFixed(2)} to ${hi.toFixed(2)}, on a scale where 0.60 to 0.80 means ask a person">
+    ${zones.map(([c, a, b, l]) => `<span class="hr-zone ${c}" style="left:${pos(a)};width:calc(${pos(b)} - ${pos(a)})"><i>${l}</i></span>`).join('')}
+    </div><div class="hr-track"><span class="hr-band" style="left:${pos(lo)};width:calc(${pos(hi)} - ${pos(lo)})"></span></div><div class="hr-ticks"><span style="left:${pos(.6)}">0.60</span><span style="left:${pos(.8)}">0.80</span></div>`;
+}
+
 function renderRoles() {
-  const out = Object.entries(ROLES).map(([role, name]) => ({ role, name,
-    ...policy({ p: prob, role, weights: PRESETS[state.preset].w, interview: state.interview }) }));
-  const best = out.every(o => o.lo != null) ? out.reduce((a, b) => (a.lo + a.hi >= b.lo + b.hi ? a : b)) : null;
-  $('roles').innerHTML = out.map(o => {
-    // Round down, so a 0.7996 never shows as a passing 0.80.
-    const f = x => (Math.floor(x * 100) / 100).toFixed(2);
-    const range = o.lo == null ? '' : f(o.lo) === f(o.hi) ? f(o.lo) : `${f(o.lo)}–${f(o.hi)}`;
-    const cls = { 'Hire': 'yes', 'No hire': 'no', 'Ask a person': 'unsure' }[o.verdict];
-    return `<div class="hr-role ${cls}"><span class="hr-k">${esc(o.name)}${best === o ? ' · better fit' : ''}</span>
-      <strong>${esc(o.verdict)}</strong>${range ? `<span class="hr-range">score ${range}</span>` : ''}
-      ${o.why ? `<p>${esc(o.why)}</p>` : ''}
-      ${o.steps.length ? `<ol>${o.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>` : ''}</div>`;
-  }).join('');
+  const o = policy({ p: prob, role: ROLE, weights: PRESETS[state.preset].w, interview: state.interview });
+  // Round down, so a 0.7996 never shows as a passing 0.80.
+  const f = x => (Math.floor(x * 100) / 100).toFixed(2);
+  const range = o.lo == null ? '' : f(o.lo) === f(o.hi) ? f(o.lo) : `${f(o.lo)}–${f(o.hi)}`;
+  const cls = { 'Hire': 'yes', 'No hire': 'no', 'Ask a person': 'unsure' }[o.verdict];
+  $('roles').innerHTML = `<div class="hr-role ${cls}"><span class="hr-k">Developer Advocate</span>
+    <strong>${esc(o.verdict)}</strong>${range ? `<span class="hr-range">score ${range}</span>${scale(o.lo, o.hi)}` : ''}
+    ${o.why ? `<p>${esc(o.why)}</p>` : ''}
+    ${o.steps.length ? `<ol>${o.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol>` : ''}</div>`;
 }
 
 function render() { renderBuckets(); renderControls(); renderRoles(); }
@@ -134,5 +141,4 @@ function render() { renderBuckets(); renderControls(); renderRoles(); }
 renderAnti();
 render();
 $('policy-src').textContent = policy.toString();
-const n = Object.keys(J).length;
-$('cost').textContent = `Jev answered ${n} judgments in one call (${DATA.ms} ms, ${DATA.input_tokens.toLocaleString()} input tokens, about $${(DATA.input_tokens * 0.042 / 1e6).toFixed(5)}) on ${DATA.model}, recorded ${DATA.recorded}. Cheaper than the recruiter’s coffee.`;
+$('cost').textContent = `Jev answered every judgment above in one call (${DATA.ms} ms, ${DATA.input_tokens.toLocaleString()} input tokens, about $${(DATA.input_tokens * 0.042 / 1e6).toFixed(5)}) on ${DATA.model}, recorded ${DATA.recorded}. Cheaper than the recruiter’s coffee.`;
