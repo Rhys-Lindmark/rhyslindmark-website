@@ -7,6 +7,7 @@
 // pure game module the page runs, so the page can't send its own prompt, and returns the raw
 // response the page reads with lanes.mjs (the same shape as a recording).
 import { loadKey } from '../../_lib/jev-key.js';
+import { databaseFor } from '../../_lib/jev-database.js';
 import { LANES, moveRequest, withImage, keep } from '../../../public/jev/races/lanes.mjs';
 import geo from '../../../public/jev/races/games/geo.mjs';
 import twenty from '../../../public/jev/races/games/twenty.mjs';
@@ -36,7 +37,7 @@ export async function onRequestPost({ request, env }) {
   } catch { return json({ error: 'bad state' }, 400); }
 
   let key, why = '';
-  try { key = LANES[lane].kind === 'jev' ? await loadKey(env) : env.OPENROUTER_API_KEY; } catch (e) { why = ` (${e.name}: ${String(e.message).slice(0, 80)})`; }
+  try { key = LANES[lane].kind === 'jev' ? await loadKey({ ...env, JEV_DB: databaseFor(env) }) : env.OPENROUTER_API_KEY; } catch (e) { why = ` (${e.name}: ${String(e.message).slice(0, 80)})`; }
   if (!key) return json({ error: `${LANES[lane].label} isn't set up on this site${why}` }, 503);
   const req = moveRequest(lane, turn);
   const b64 = turn.image ? base64(await asset(env, request, turn.image.path).then(r => r.arrayBuffer())) : undefined;
