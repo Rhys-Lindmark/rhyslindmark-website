@@ -24,6 +24,7 @@ const SERIES = {
   choice: { label: 'Choice (argmax)', color: '#e01a2b', shape: 'diamond' },
   learned: { label: 'Learned router (cost dial λ)', color: '#7a4be8', shape: 'line' }
 };
+const LEARNED_SHOWN = [0, 32, 256];
 const SHORT = { router: 'Judgment', 'router-v2': 'Judgment v2', 'router-v3': 'Judgment v3' };
 
 function marker(shape, x, y, color, r = 5) {
@@ -36,7 +37,8 @@ function marker(shape, x, y, color, r = 5) {
 
 function chart(data, tip) {
   const W = 640, H = 340, m = { l: 48, r: 40, t: 12, b: 40 };
-  const pts = data.policies.filter(p => SERIES[p.kind]);
+  // The learned router shows three settings of its cost dial: most likely to pass, the sweet spot, cheapest.
+  const pts = data.policies.filter(p => SERIES[p.kind] && (p.kind !== 'learned' || LEARNED_SHOWN.includes(p.lambda)));
   const costs = pts.map(p => Math.max(p.cost, 0.01));
   const x0 = Math.log10(Math.min(...costs) / 1.6), x1 = Math.log10(Math.max(...costs) * 1.6);
   const X = c => m.l + (Math.log10(Math.max(c, 0.01)) - x0) / (x1 - x0) * (W - m.l - m.r);
@@ -46,8 +48,11 @@ function chart(data, tip) {
   for (let v = Math.ceil(yMin * 10) / 10; v <= 1.0001; v += 0.1) svg.append(s('line', { x1: m.l, x2: W - m.r, y1: Y(v), y2: Y(v), class: 'grid' }), s('text', { x: m.l - 8, y: Y(v) + 4, class: 'tick', 'text-anchor': 'end' }, `${Math.round(v * 100)}%`));
   for (let e = Math.ceil(x0); e <= Math.floor(x1); e++) { const c = 10 ** e; svg.append(s('line', { x1: X(c), x2: X(c), y1: m.t, y2: H - m.b, class: 'grid' }), s('text', { x: X(c), y: H - m.b + 16, class: 'tick', 'text-anchor': 'middle' }, `$${+c.toPrecision(1)}`)); }
   svg.append(s('text', { x: (m.l + W - m.r) / 2, y: H - 6, class: 'axis-label', 'text-anchor': 'middle' }, 'Cost per 1,000 prompts (log scale)'));
-  const curve = [...data.learned_curve].sort((a, b) => a.cost - b.cost);
-  svg.append(s('path', { d: curve.map((p, i) => `${i ? 'L' : 'M'}${X(p.cost)} ${Y(p.pass)}`).join(''), class: 'curve', stroke: SERIES.learned.color }));
+  // One line per color, joining that color's points from cheapest to priciest.
+  for (const color of new Set(pts.map(p => SERIES[p.kind].color))) {
+    const line = pts.filter(p => SERIES[p.kind].color === color).sort((a, b) => a.cost - b.cost);
+    if (line.length > 1) svg.append(s('path', { d: line.map((p, i) => `${i ? 'L' : 'M'}${X(p.cost)} ${Y(p.pass)}`).join(''), class: 'curve', stroke: color }));
+  }
   for (const p of pts) {
     const k = SERIES[p.kind], g = s('g', { class: 'pt', tabindex: 0 });
     if (p.kind === 'learned') g.append(s('circle', { cx: X(p.cost), cy: Y(p.pass), r: 3.5, fill: k.color, stroke: '#fff', 'stroke-width': 1.5 }));
@@ -58,6 +63,7 @@ function chart(data, tip) {
     g.addEventListener('mouseleave', () => tip(null)); g.addEventListener('blur', () => tip(null));
     svg.append(g);
   }
+  for (const p of pts.filter(p => p.kind === 'learned')) svg.append(s('text', { x: X(p.cost), y: Y(p.pass) + 16, 'text-anchor': 'middle', class: 'pt-label lambda' }, `λ=${p.lambda}`));
   // Router labels sit above their point, Choice labels below, so near-neighbors don't collide.
   // Labels go right of their point; the chart's right margin leaves room for the longest one.
   for (const p of pts.filter(p => SHORT[p.kind] || p.kind === 'choice')) svg.append(s('text', { x: X(p.cost) + 9, y: Y(p.pass) + (p.kind === 'choice' ? 16 : -8), class: 'pt-label' }, p.kind === 'choice' ? `Choice · ${p.name.includes('high') ? 'high' : 'low'} effort` : SHORT[p.kind]));
@@ -166,7 +172,7 @@ function render(cfg, data, rep) {
     rep ? replayView(rep, cfg) : null,
     h('h3', 'eval-h3', 'Cost vs. pass rate'),
     legend(kinds), box,
-    h('p', 'note', 'Each point routes all prompts one way. Up and to the left is better. "vs. random routing" deals the same mix of models to prompts at random 10,000 times; a policy beats it if it scores above the 95th percentile. The learned router fits a small model on Jev’s judgments (one category held out at a time); the line sweeps its cost dial λ from "most likely to pass" to "cheapest".'),
+    h('p', 'note', 'Each point routes all prompts one way. Up and to the left is better. "vs. random routing" deals the same mix of models to prompts at random 10,000 times; a policy beats it if it scores above the 95th percentile. Lines join points of the same color. The learned router fits a small model on Jev’s judgments (one category held out at a time) and trades pass chance against cost with a dial λ; the chart shows λ=0 (most likely to pass), λ=32 and λ=256 (cheapest).'),
     h('h3', 'eval-h3', 'Policies'), h('div', 'cmp-scroll', table),
     data.by_bucket ? h('h3', 'eval-h3', 'By difficulty') : null,
     data.by_bucket ? h('p', 'note', `Difficulty is measured, not guessed: a prompt is easy if all ${data.arms.length} model/effort combinations passed it in a calibration run, medium if 1–2 failed, hard if 3 or more failed. ${Object.entries(data.bucket_counts).map(([b, n]) => `${n} ${b}`).join(', ')}.`) : null,

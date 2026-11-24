@@ -178,6 +178,7 @@ code, .code { font-family: var(--jev-font-mono); font-size: 12px; letter-spacing
 .eval-chart .pt { cursor: default; outline: none; }
 .eval-chart .pt:focus-visible circle:last-child { stroke: var(--ink); stroke-width: 1.5; }
 .eval-chart .pt-label { font: 500 11px var(--jev-font-mono); fill: var(--ink); letter-spacing: 0; paint-order: stroke; stroke: var(--jev-paper); stroke-width: 3px; }
+.eval-chart .pt-label.lambda { font-weight: 400; fill: var(--steel); }
 .eval-tip { position: absolute; transform: translate(-50%, calc(-100% - 14px)); background: var(--jev-paper); border: 1px solid var(--bone); border-radius: 0; padding: 7px 10px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,.08); pointer-events: none; display: flex; flex-direction: column; gap: 2px; white-space: nowrap; z-index: 2; }
 .eval-tip span { color: var(--steel); }
 .eval-h3 { font-size: 18px; font-weight: 535; margin: 22px 0 8px; }
