@@ -121,12 +121,43 @@ export function oracleTurn(cat, thing) {
   };
 }
 
-// The oracle request for a typed thing in a category, or null if it needs none (it's already
-// on the list) or isn't valid. The server calls this with what the page sent.
+// Jev as the oracle when nobody said which category a typed thing is in: one request with a
+// Choice (which category?) plus every category's questions about it (speculative fan-out).
+// Code keeps the answers for the category Jev picked.
+export function anyOracleTurn(cats, thing) {
+  const list = Object.values(cats);
+  const questions = { category: { type: 'choice', instructions: `Which kind of thing is ${thing}?`,
+    criteria: Object.fromEntries(list.map(c => [c.id, `${thing} is ${c.noun === 'animal' ? 'an animal' : `a ${c.noun}`}`])) } };
+  list.forEach((c, ci) => Object.keys(c.questions).forEach((q, i) => {
+    questions[`c${ci}q${i + 1}`] = { type: 'noul', instructions: `About ${thing}: ${q}`,
+      criteria: { true: `Yes, this is usually true of ${thing}.`, false: `No, this is usually not true of ${thing}.` } };
+  }));
+  return {
+    jev: {
+      state: { thing },
+      questions,
+      decide: a => {
+        const ci = list.findIndex(c => c.id === a.category.choice);
+        const c = list[ci];
+        return { move: { thing, cat: c.id, row: Object.fromEntries(Object.keys(c.questions).map((q, i) => [q, a[`c${ci}q${i + 1}`].noul >= 0.5 ? 'yes' : 'no'])) },
+          probs: a.category.probabilities };
+      },
+    },
+  };
+}
+
+// The category already listing a typed thing, if any.
+const listedIn = (data, t) => Object.values(data.cats).find(c => c.items.includes(t));
+
+// The oracle request for a typed thing (category 'any': Jev picks the category too), or null
+// if it needs none (it's already on a list) or isn't valid. The server calls this with what
+// the page sent.
 export function oracleFor(data, category, thing) {
-  const c = typeof category === 'string' && Object.hasOwn(data.cats, category) ? data.cats[category] : null;
   const t = cleanThing(thing);
-  if (!c || !t || c.items.includes(t)) return null;
+  if (!t) return null;
+  if (category === 'any') return listedIn(data, t) ? null : { ask: { category, thing: t }, turn: anyOracleTurn(data.cats, t) };
+  const c = typeof category === 'string' && Object.hasOwn(data.cats, category) ? data.cats[category] : null;
+  if (!c || c.items.includes(t)) return null;
   return { ask: { category, thing: t }, turn: oracleTurn(c, t) };
 }
 
@@ -172,7 +203,12 @@ export default {
 
   // extra: { oracle: { thing, row } } for a typed thing (oracleTurn's answers).
   init(data, caseId, extra) {
-    const { cat, kind, arg } = parseCase(caseId);
+    let { cat, kind, arg } = parseCase(caseId);
+    if (cat === 'any') { // a typed thing; Jev said which category (or it's already listed)
+      const t = cleanThing(arg);
+      cat = (t && listedIn(data, t)?.id) || extra?.oracle?.cat;
+      if (!cat) throw new Error(t ? `No answers yet for "${t}"` : 'Type a thing (letters and spaces, up to 40 characters)');
+    }
     const c = data.cats[cat];
     if (!c) throw new Error(`No category "${cat}"`);
     const base = { cat, r: 0, answers: [], guessed: [], turns: 0, results: [] };

@@ -88,5 +88,215 @@
       "license": "CC BY-SA 4.0",
       "source": "https://commons.wikimedia.org/wiki/File:%C5%BDelivsk%C3%A9ho_street,_middle_part,_Olomouc.jpg"
     }
+  },
+  {
+    "id": "krakow-street",
+    "file": "photos/krakow-street.jpg",
+    "lat": 50.073905,
+    "lon": 19.935728,
+    "place": "Kraków, Poland",
+    "country": "PL",
+    "continent": "EU",
+    "what": "A wide city street of grey interwar and 1960s office blocks with EU-band plates, a no-stopping sign, red-and-white bollards and bare early-spring trees.",
+    "credit": {
+      "author": "Igor123121",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Pr%C4%85dnicka_street,_view_to_N,_Krowodrza,_Krak%C3%B3w,_Poland.jpg"
+    }
+  },
+  {
+    "id": "athens-street",
+    "file": "photos/athens-street.jpg",
+    "lat": 37.973058,
+    "lon": 23.70925,
+    "place": "Athens, Greece",
+    "country": "GR",
+    "continent": "EU",
+    "what": "A narrow street of 1970s apartment blocks with deep balconies, awnings and potted plants, a blue Greek-script street sign, Greek plates and a parked Honda CR-V.",
+    "credit": {
+      "author": "philip.mallis",
+      "license": "CC BY-SA 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Urban_street_in_Athens,_Greece_-_53298657656.jpg"
+    }
+  },
+  {
+    "id": "lisbon-crossroads",
+    "file": "photos/lisbon-crossroads.jpg",
+    "lat": 38.71287,
+    "lon": -9.165123,
+    "place": "Lisbon, Portugal",
+    "country": "PT",
+    "continent": "EU",
+    "what": "A sunny crossroads of tile-roofed townhouses with azulejo-tiled facades, cobbled calçada pavements, paper bunting for a summer street festival and Portuguese road signs.",
+    "credit": {
+      "author": "JnpoJuwan",
+      "license": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Cruzamento_entre_Rua_de_Santo_Ant%C3%B3nio_%C3%A0_Estrela_e_Rua_do_Possolo,_2024.jpg"
+    }
+  },
+  {
+    "id": "hatyai-shophouses",
+    "file": "photos/hatyai-shophouses.jpg",
+    "lat": 7.00375,
+    "lon": 100.46965,
+    "place": "Hat Yai, Thailand",
+    "country": "TH",
+    "continent": "AS",
+    "what": "A broad street of pastel Sino-Portuguese shophouses with tangled cables on concrete poles, left-hand traffic, Thai plates and a bank sign above the rooftops.",
+    "credit": {
+      "author": "Slleong",
+      "license": "CC0",
+      "source": "https://commons.wikimedia.org/wiki/File:Niphatuthit_1.jpg"
+    }
+  },
+  {
+    "id": "pune-road",
+    "file": "photos/pune-road.jpg",
+    "lat": 18.518269,
+    "lon": 73.844364,
+    "place": "Pune, India",
+    "country": "IN",
+    "continent": "AS",
+    "what": "A rain-wet avenue under huge rain trees with scooters, black-and-yellow auto-rickshaws, a pedestrian skywalk and shopfronts with English signage.",
+    "credit": {
+      "author": "DesiBoy101",
+      "license": "CC BY 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Jangali_Maharaj_Road_as_seen_from_the_footpath_near_McDonald%27s_outlet.jpg"
+    }
+  },
+  {
+    "id": "busan-street",
+    "file": "photos/busan-street.jpg",
+    "lat": 35.10635,
+    "lon": 129.034928,
+    "place": "Busan, South Korea",
+    "country": "KR",
+    "continent": "AS",
+    "what": "A sloping side street of tiled low-rise buildings with Hangul shop and real-estate signs, yellow centre lines, dense power poles and potted flowers on the pavement.",
+    "credit": {
+      "author": "Christophe95",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Street_in_Jung-gu,_Busan.jpg"
+    }
+  },
+  {
+    "id": "capetown-corner",
+    "file": "photos/capetown-corner.jpg",
+    "lat": -33.932082,
+    "lon": 18.416844,
+    "place": "Cape Town, South Africa",
+    "country": "ZA",
+    "continent": "AF",
+    "what": "A street corner of Victorian terraced houses with cast-iron balcony lacework and a small turret, a red no-entry sign, overhead wires and an old white hatchback.",
+    "credit": {
+      "author": "Lennon Fletcher",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:7_Glynville_Terrace_Gardens_Cape_Town_03.JPG"
+    }
+  },
+  {
+    "id": "kumasi-road",
+    "file": "photos/kumasi-road.jpg",
+    "lat": 6.68866667,
+    "lon": -1.62489444,
+    "place": "Kumasi, Ghana",
+    "country": "GH",
+    "continent": "AF",
+    "what": "A dusty unpaved street of red laterite soil beside a four-storey cream building, with palms, banana plants, roadside kiosks and a white pickup.",
+    "credit": {
+      "author": "James Cridland",
+      "license": "CC BY 2.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Kumasi_Old_Station_Road_2014-09-26_B003.jpg"
+    }
+  },
+  {
+    "id": "rosario-avenue",
+    "file": "photos/rosario-avenue.jpg",
+    "lat": -32.96330556,
+    "lon": -60.66672222,
+    "place": "Rosario, Argentina",
+    "country": "AR",
+    "continent": "SA",
+    "what": "A wide avenue crossing under a grey sky, with low commercial buildings, concrete apartment towers, a YPF fuel-station sign and Spanish-language shopfronts.",
+    "credit": {
+      "author": "Banfield",
+      "license": "CC BY-SA 2.5 ar",
+      "source": "https://commons.wikimedia.org/wiki/File:Avenida_Ovidio_Lagos_y_Avenida_27_de_Febrero_-_Rosario.jpg"
+    }
+  },
+  {
+    "id": "pereira-street",
+    "file": "photos/pereira-street.jpg",
+    "lat": 4.809342,
+    "lon": -75.683752,
+    "place": "Pereira, Colombia",
+    "country": "CO",
+    "continent": "SA",
+    "what": "A hilly working-class street of painted concrete houses with barred windows, tangled power lines, a parked motorbike and a Falabella and Cinemark mall at the end.",
+    "credit": {
+      "author": "Julio Cesar Velasque…",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Calle_6_Barrio_Corocito_-_panoramio.jpg"
+    }
+  },
+  {
+    "id": "columbus-street",
+    "file": "photos/columbus-street.jpg",
+    "lat": 39.975703,
+    "lon": -83.003264,
+    "place": "Columbus, United States",
+    "country": "US",
+    "continent": "NA",
+    "what": "A brick-paved side street between red-brick row buildings with parking meters, wooden utility poles, a No Stopping Any Time sign and spring blossom.",
+    "credit": {
+      "author": "Ɱ",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Columbus,_OH_-_Short_North_side_street.jpg"
+    }
+  },
+  {
+    "id": "quetzaltenango-lane",
+    "file": "photos/quetzaltenango-lane.jpg",
+    "lat": 14.835055,
+    "lon": -91.517758,
+    "place": "Quetzaltenango, Guatemala",
+    "country": "GT",
+    "continent": "NA",
+    "what": "A steep cobbled lane between pastel neoclassical facades with red-painted kerbs, looking down to a busy plaza and dry, pine-dotted hills covered in houses.",
+    "credit": {
+      "author": "Simon Burchell",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:11_avenida,_Zona_1,_Quetzaltenango_03.jpg"
+    }
+  },
+  {
+    "id": "melbourne-street",
+    "file": "photos/melbourne-street.jpg",
+    "lat": -37.796403,
+    "lon": 144.983567,
+    "place": "Melbourne, Australia",
+    "country": "AU",
+    "continent": "OC",
+    "what": "A leafy inner-suburb street under autumn plane trees, with cars parked on the left, Australian plates, red-brick terraces and fallen leaves on the road.",
+    "credit": {
+      "author": "Nick-D",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Gore_Street_Fitzroy_May_2023.jpg"
+    }
+  },
+  {
+    "id": "suva-street",
+    "file": "photos/suva-street.jpg",
+    "lat": -18.13796944,
+    "lon": 178.42746111,
+    "place": "Suva, Fiji",
+    "country": "FJ",
+    "continent": "OC",
+    "what": "A busy tropical shopping street of brightly painted two-storey shops with Coca-Cola signs, left-hand traffic, Fijian plates and shoppers under the awnings.",
+    "credit": {
+      "author": "Maksym Kozlenko",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Suva,_Fiji_24.jpg"
+    }
   }
 ]

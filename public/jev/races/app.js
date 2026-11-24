@@ -36,7 +36,7 @@ let run = 0, lanes = {};
 $('#lanepick').innerHTML = LANE_ORDER.map(id => `<label><input type="checkbox" value="${id}" ${id === 'you' ? '' : 'checked'}> ${esc(laneInfo(id).label)}</label>`).join('');
 $('#tabs').innerHTML = meta.games.map(g => `<button data-id="${g.id}">${esc(g.title)}</button>`).join('');
 $('#tabs').onclick = e => e.target.dataset.id && selectGame(e.target.dataset.id);
-$('#go').onclick = start;
+$('#go').onclick = () => start();
 
 // One AI move: the recording if there is one, else the server (body: what `move` needs to
 // rebuild this request itself).
@@ -56,9 +56,9 @@ const pickedCase = render => render.fullCase?.({ caseId: $('#case').value, el: $
 
 // Before a race, once for every lane: a concrete case (20 Questions' 3 random secrets) and,
 // for a typed thing, Jev's answers about it (the game's oracle request).
-async function prepare(m, mode) {
+async function prepare(m, mode, picked = pickedCase(m.render)) {
   const { game, data } = m;
-  const caseId = game.resolve?.(data, pickedCase(m.render)) ?? pickedCase(m.render);
+  const caseId = game.resolve?.(data, picked) ?? picked;
   const o = game.oracle?.(data, caseId);
   let extra, call;
   if (o) {
@@ -108,6 +108,15 @@ async function selectGame(id) {
   $('#case').innerHTML = html + (group ? '</optgroup>' : '');
   $('#case').onchange = caseChanged;
   $('#lanes').innerHTML = $('#scores').innerHTML = '';
+  // A game with a picker (20 Questions) shows its secrets as buttons that each start a race,
+  // and a box to type anything, in place of the dropdown and the Start button.
+  const { render, data } = await load(id);
+  const usePicker = !!render.picker;
+  currentCase = null;
+  $('#caselabel').hidden = $('#casex').hidden = $('#go').hidden = usePicker;
+  $('#picker').innerHTML = usePicker ? render.picker({ data }) : '';
+  $('#picker').onclick = e => { const b = e.target.closest('[data-case]'); if (b) start(b.dataset.case); };
+  $('#picker').onsubmit = e => { e.preventDefault(); const v = e.target.querySelector('input')?.value.trim(); if (v) start(render.typedCase(v)); };
   caseChanged();
 }
 
@@ -124,12 +133,15 @@ async function caseChanged() {
 // prep: what prepare() settled for the race that's starting (its case, and a typed thing's answers).
 async function drawBoard(prep) {
   const { game, render, data } = await load(gameId);
-  $('#board').innerHTML = render.board?.({ data, caseId: prep?.caseId ?? pickedCase(render), game, extra: prep?.extra, call: prep?.call }) ?? '';
+  const caseId = prep?.caseId ?? (render.picker ? currentCase?.caseId : pickedCase(render));
+  $('#board').innerHTML = caseId == null ? '' : render.board?.({ data, caseId, game, extra: prep?.extra ?? currentCase?.extra, call: prep?.call ?? currentCase?.call }) ?? '';
 }
 
 function stop() { run++; Object.values(lanes).forEach(l => l.timer && clearInterval(l.timer)); lanes = {}; $('#go').disabled = false; drawTimeline(); }
 
-async function start() {
+let currentCase = null; // the race on screen: { caseId, extra, call }
+
+async function start(caseArg) {
   stop();
   const m = await load(gameId);
   const picked = [...document.querySelectorAll('#lanepick input:checked')].map(i => i.value);
@@ -137,13 +149,14 @@ async function start() {
   $('#go').disabled = true;
   const myRun = run, mode = $('#mode').value;
   let prep;
-  try { prep = await prepare(m, mode); } catch (e) {
+  try { prep = await prepare(m, mode, caseArg); } catch (e) {
     if (myRun === run) { $('#prepnote').innerHTML = `<span class="no">${esc(e.message)}</span>`; $('#go').disabled = false; }
     return;
   }
   if (myRun !== run) return;
   $('#prepnote').textContent = '';
   const { caseId, extra } = prep;
+  currentCase = prep;
   $('#scores').innerHTML = '';
   $('#lanes').innerHTML = picked.map(id => `
     <div class="lane ${id === 'jev' ? 'jev' : id === 'you' ? 'you' : ''}" id="lane-${id}">

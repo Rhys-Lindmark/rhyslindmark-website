@@ -61,3 +61,13 @@ footer { margin-top: 30px; font-size: 13px; max-width: 900px; }
 .tl-track i.bad { background: var(--bad); }
 .tl-state { font-size: 13px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
 .tl-state.done { color: var(--you); } .tl-state.err { color: var(--bad); }
+#picker:empty { display: none; }
+#picker { margin-bottom: 16px; }
+.typeany { display: flex; gap: 8px; margin-bottom: 12px; max-width: 620px; }
+.typeany input { flex: 1; font-size: 18px; padding: 8px 12px; }
+.typeany button { background: var(--jev); color: #0b1a10; border: 0; font-weight: 700; padding: 8px 18px; cursor: pointer; }
+.pickcat { margin: 6px 0; line-height: 2; }
+.pickcat b { display: inline-block; min-width: 150px; font-size: 14px; color: var(--muted); }
+button.chip.pick { border: 1px solid transparent; color: var(--fg); cursor: pointer; font: inherit; font-size: 13px; padding: 1px 9px; }
+button.chip.pick:hover { border-color: var(--jev); }
+button.chip.rand { background: #20382a; color: var(--jev); }

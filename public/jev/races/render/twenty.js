@@ -6,6 +6,18 @@ import { parseCase, cleanThing } from '../games/twenty.mjs';
 const esc = x => String(x ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const GUESS = 'Guess: ';
 
+// In place of the dropdown: one box to type anything (Jev works out what kind of thing it is),
+// then every secret as a button that starts a race, by category.
+export function picker({ data }) {
+  const cats = Object.values(data.cats);
+  return `<form class="typeany"><input type="text" maxlength="40" autocomplete="off" aria-label="Type anything"
+      placeholder="Type anything: a hedgehog, a stapler, lasagna…"><button>Race</button></form>
+    ${cats.map(c => `<div class="pickcat"><b>${esc(c.title)}</b>
+      <button class="chip pick rand" data-case="${esc(c.id)}:random">3 random</button>
+      ${c.items.map(i => `<button class="chip pick" data-case="${esc(c.id)}:one:${esc(i)}">${esc(i)}</button>`).join('')}</div>`).join('')}`;
+}
+export const typedCase = text => `any:type:${text}`;
+
 // Next to the case dropdown: "Pick one secret…" gets a list, "Type anything…" a text box.
 export function caseControls({ data, caseId }) {
   const { cat, kind } = parseCase(caseId);
@@ -25,16 +37,18 @@ export function fullCase({ caseId, el }) {
 // Every thing the secret could be (a typed thing sorted in with the rest). Secrets are never
 // shown, except a typed one, which the room typed. After Jev answers about it, its answers.
 export function board({ data, caseId, extra, call }) {
-  const { cat, kind, arg } = parseCase(caseId);
+  let { cat, kind, arg } = parseCase(caseId);
+  const thing = kind === 'type' ? cleanThing(arg) : null;
+  if (cat === 'any') cat = extra?.oracle?.cat ?? Object.values(data.cats).find(c => c.items.includes(thing))?.id;
   const c = data.cats[cat];
   if (!c) return '';
-  const thing = kind === 'type' ? cleanThing(arg) : null;
   const items = thing && !c.items.includes(thing) ? [...c.items, thing].sort((a, b) => a.localeCompare(b)) : c.items;
   let html = `<div class="muted" style="margin-bottom:4px">The secret is one of these ${items.length} ${esc(c.title.toLowerCase())}:</div>
     <div>${items.map(a => `<span class="chip">${esc(a)}</span>`).join('')}</div>`;
   const o = extra?.oracle;
   if (o) {
-    const how = call ? ` (one request, ${Object.keys(o.row).length} yes/no questions, ${call.ms} ms, $${call.cost.toFixed(5)}${call.replayed ? ', recorded' : ''})` : '';
+    const what = o.cat ? `which kind of thing it is (${c.noun}) and every category's questions about it` : `${Object.keys(o.row).length} yes/no questions`;
+    const how = call ? ` (one request: ${what}; ${call.ms} ms, $${call.cost.toFixed(5)}${call.replayed ? ', recorded' : ''})` : '';
     html += `<details style="margin-top:8px"><summary class="muted">Jev's answers about <b>${esc(o.thing)}</b>${esc(how)}. Every racer hears these.</summary>
       <div style="margin-top:4px">${Object.entries(o.row).map(([q, a]) => `<span class="chip">${esc(q)} <span class="${a}">${a}</span></span>`).join('')}</div></details>`;
   }
