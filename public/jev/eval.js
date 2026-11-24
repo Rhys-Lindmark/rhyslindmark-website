@@ -59,7 +59,7 @@ function chart(data, tip) {
     svg.append(g);
   }
   // Router labels sit above their point, Choice labels below, so near-neighbors don't collide.
-  for (const p of pts.filter(p => SHORT[p.kind] || p.kind === 'choice')) svg.append(s('text', { x: X(p.cost) + 9, y: Y(p.pass) + (p.kind === 'choice' ? 16 : -8), class: 'pt-label' }, p.kind === 'choice' ? `Choice · ${p.name.includes('high') ? 'high' : 'low'}` : SHORT[p.kind]));
+  for (const p of pts.filter(p => SHORT[p.kind] || p.kind === 'choice')) svg.append(s('text', { x: X(p.cost) + 9, y: Y(p.pass) + (p.kind === 'choice' ? 16 : -8), class: 'pt-label' }, p.kind === 'choice' ? `Choice · ${p.name.includes('high') ? 'high' : 'low'} effort` : SHORT[p.kind]));
   return svg;
 }
 
