@@ -1,0 +1,60 @@
+/* Made with Jev: builder posts from the X corpus. Built on minimal.css and the Jev tokens. */
+.mw-lede { max-width: 68ch; font-size: 17px; line-height: 1.5; margin: 0 0 24px; }
+.mw-lede a, .mw-how a { text-decoration: underline; text-underline-offset: 2px; }
+.mw-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.mw-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0; margin: 0 0 28px; border: var(--jev-rule); }
+.mw-stats > div { padding: 14px 16px; border-right: var(--jev-rule-quiet); }
+.mw-stats > div:last-child { border-right: 0; }
+.mw-stats dt { font: 500 var(--jev-text-label)/1 var(--jev-font-mono); letter-spacing: .02em; text-transform: uppercase; color: var(--steel); }
+.mw-stats dd { margin: 8px 0 0; font: 500 32px/1 var(--jev-font-display); letter-spacing: var(--jev-tracking-display); }
+
+.mw-chart-box { margin: 0 0 32px; }
+.mw-chart-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-bottom: 10px; }
+.mw-chart-head .note { margin: 0; }
+.mw-chart { position: relative; display: flex; align-items: flex-end; gap: 4px; height: 150px; padding-top: 34px; border-bottom: var(--jev-rule); }
+.mw-week { position: relative; flex: 1; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+.mw-week i { display: block; background: var(--jev-ink); min-height: 1px; }
+.mw-week.partial i { background: repeating-linear-gradient(135deg, var(--jev-ink) 0 3px, var(--jev-paper) 3px 6px); border: 1px solid var(--jev-ink); }
+.mw-week b { position: relative; z-index: 1; display: block; margin: 0 auto 4px; padding: 0 3px; background: var(--jev-paper); text-align: center; font: 500 11px/1 var(--jev-font-mono); color: var(--steel); }
+.mw-week:hover i { background: var(--jev-graphite); }
+.mw-axis { display: flex; gap: 4px; margin-top: 6px; }
+.mw-axis span { flex: 1; min-width: 0; font: 11px/1 var(--jev-font-mono); color: var(--steel); white-space: nowrap; overflow: visible; }
+.mw-mark { position: absolute; top: 0; bottom: 0; border-left: 2px dashed var(--jev-alert); pointer-events: none; }
+.mw-mark span { position: absolute; top: 0; left: 6px; font: 500 11px/1.2 var(--jev-font-mono); color: var(--jev-alert); white-space: pre; }
+.mw-mark.flip span { left: auto; right: 6px; text-align: right; }
+
+.mw-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+.mw-bar .chips { margin: 0; }
+.mw-showing { font-size: 13px; color: var(--steel); margin: 12px 0; }
+.mw-showing button { margin-left: 8px; font-size: 13px; }
+
+.mw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; align-items: start; }
+.mw-card { display: flex; flex-direction: column; gap: 10px; padding: 16px; border: var(--jev-rule); background: var(--jev-paper); min-width: 0; }
+.mw-card:hover { box-shadow: var(--jev-shadow-window); }
+.mw-who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.mw-av { flex: none; display: grid; place-items: center; width: 34px; height: 34px; background: var(--jev-rose-soft); font: 500 15px/1 var(--jev-font-display); text-transform: uppercase; }
+.mw-who a { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mw-who time { margin-left: auto; flex: none; font: 12px/1 var(--jev-font-mono); color: var(--steel); }
+.mw-text { margin: 0; font-size: 14px; line-height: 1.5; white-space: pre-line; overflow-wrap: anywhere; }
+.mw-text a { font-weight: 400; text-decoration: underline; text-underline-offset: 2px; color: var(--steel); }
+.mw-text.clamped { display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical; overflow: hidden; }
+.mw-expand { align-self: flex-start; font-size: 13px; }
+.mw-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: auto; padding-top: 10px; border-top: var(--jev-rule-quiet); }
+.mw-foot .jchip.prod { background: var(--jev-signal-soft); color: var(--jev-signal); }
+.mw-foot .mw-links { margin-left: auto; display: flex; gap: 12px; font-size: 13px; }
+.mw-foot .mw-links button { font-size: 13px; }
+
+.mw-status { font-size: 13px; color: var(--steel); }
+.mw-more { display: flex; justify-content: center; margin: 8px 0 24px; }
+.mw-more button { border: var(--jev-rule); padding: 10px 22px; }
+.mw-more button:hover { background: var(--jev-ink); color: var(--jev-paper); }
+.mw-how { max-width: 68ch; }
+.mw-how p { font-size: 13px; }
+
+@media (max-width: 600px) {
+	.mw-stats dd { font-size: 26px; }
+	.mw-axis span:nth-child(even) { visibility: hidden; }
+	.mw-bar .seg { width: 100%; }
+	.mw-bar .seg button { flex: 1; }
+}
