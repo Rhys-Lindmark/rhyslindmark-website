@@ -38,7 +38,7 @@ export async function onRequestPost({ request, env }) {
 
   let key, why = '';
   try { key = LANES[lane].kind === 'jev' ? await loadKey({ ...env, JEV_DB: databaseFor(env) }) : env.OPENROUTER_API_KEY; } catch (e) { why = ` (${e.name}: ${String(e.message).slice(0, 80)})`; }
-  if (!key) return json({ error: `${LANES[lane].label} isn't set up on this site${why}` }, 503);
+  if (!key) return json({ error: `${LANES[lane].label} isn't set up on this site${why}`, has: { JEV_STATE: !!env.JEV_STATE, JEV_DB: !!env.JEV_DB, JEV_KEY_SECRET: !!env.JEV_KEY_SECRET, JEV_API_KEY: !!env.JEV_API_KEY } }, 503);
   const req = moveRequest(lane, turn);
   const b64 = turn.image ? base64(await asset(env, request, turn.image.path).then(r => r.arrayBuffer())) : undefined;
   const extra = withImage(lane, turn, req.body, b64);
