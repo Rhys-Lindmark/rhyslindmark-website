@@ -60,9 +60,11 @@ async function aiMove(laneId, turn, body, mode, pace = true) {
 // Jev++ (GeoGuesser): several requests per pick, each a recording if there is one, else
 // the server (which builds the request from `part` itself).
 let plusData = null;
-async function plusPlayer(mode) {
+const plusCalls = {}; // lane -> the Jev requests its last pick made (for the API panel)
+async function plusPlayer(mode, laneId) {
   plusData ??= await loadPlus(p => fetch('data/' + p).then(r => r.json()));
   return createPlusPlayer(plusData, async part => {
+    (plusCalls[laneId] ??= []).push(part);
     if (mode !== 'live') {
       const r = await fetch('recordings/' + await recordingName(plusRequest(plusData, part, JEV_MODEL).key));
       if (r.ok) return { ...(await r.json()), replayed: true };
@@ -103,13 +105,13 @@ async function runLane(m, caseId, laneId, mode, myRun, extra) {
   };
   let last = null; // the step just made: its probabilities and, at the end of a round, its result
   try {
-    const plus = LANES[laneId].kind === 'plus' ? await plusPlayer(mode) : null;
+    const plus = LANES[laneId].kind === 'plus' ? await plusPlayer(mode, laneId) : null;
     while (!game.done(s) && totals.steps < 80) {
       const turn = game.turn(data, s);
       show({ s, turn, last });
       showApi(laneId, turn);
       let p;
-      if (plus) { p = readPlus(await plus.move({ s, turn })); if (p.replayed) await sleep(p.ms); }
+      if (plus) { plusCalls[laneId] = []; p = readPlus(await plus.move({ s, turn })); showPlusApi(laneId, turn); if (p.replayed) await sleep(p.ms); }
       else p = await aiMove(laneId, turn, { game: game.id, lane: laneId, s }, mode);
       if (myRun !== run) return;
       const out = game.apply(data, s, p.move);
@@ -275,10 +277,25 @@ function apiCode(laneId, turn) {
 const data = await res.json();
 ${read}`;
 }
+// Jev++: every Jev request its last pick made. Rounds run in parallel; code combines the answers
+// (games/geo-plus.mjs). Same endpoint and headers as Jev; only the body changes.
+function showPlusApi(laneId, turn) {
+  const pre = document.querySelector(`#api-${laneId} pre`);
+  if (!pre) return;
+  const parts = plusCalls[laneId] ?? [];
+  const what = { prior: 'first impression: continent, and the country within each continent', clues: 'clues: driving side, script, language', box: 'where is the most readable sign?', cands: 'which country? (top candidates only)', city: 'region first, then the city' };
+  pre.textContent = !parts.length ? `// ${turn.level} pick: no new request (decided from the same looks)` :
+    `// ${turn.level} pick: ${parts.length} request${parts.length > 1 ? 's' : ''} to ${'https://api.typesafe.ai/v1/systemone'}, same headers as Jev\n// (plus 'TypeSafe-Danger-Zone-Images': 'true'); the image goes in assets.photo as base64.\n\n` +
+    parts.map((part, i) => {
+      const { body, image } = plusRequest(plusData, part, JEV_MODEL);
+      return `// ${i + 1}. ${what[part.kind]} · image: ${image}\n${JSON.stringify({ ...body, assets: { photo: { type: 'image', format: 'jpg', data_base64: '<the image, base64>' } } }, null, 2)}`;
+    }).join('\n\n');
+}
+
 function showApi(laneId, turn) {
   const pre = document.querySelector(`#api-${laneId} pre`);
   if (!pre) return;
-  if (LANES[laneId].kind === 'plus') { pre.textContent = '// Jev++ sends several Jev requests per pick (zoomed views, clues, region first).\n// They are built in games/geo-plus.mjs (plusQuestions).'; return; }
+  if (LANES[laneId].kind === 'plus') { pre.textContent = '// Jev++ is looking… (its requests show here once this pick is made)'; return; }
   pre.textContent = apiCode(laneId, turn);
 }
 
