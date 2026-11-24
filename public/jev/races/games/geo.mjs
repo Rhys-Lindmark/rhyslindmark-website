@@ -30,13 +30,9 @@ export default {
     return { places, tree };
   },
 
-  // Tours of 6 photos (18 picks per racer), plus one tour of every photo and each photo alone.
-  cases: data => {
-    const n = data.places.length, tours = [];
-    for (let i = 0; i < n; i += TOUR) tours.push({ id: `tour-${i / TOUR + 1}`, label: `World tour ${i / TOUR + 1} (photos ${i + 1}–${Math.min(i + TOUR, n)})` });
-    return [...tours, ...(n > TOUR ? [{ id: 'all', label: `All ${n} photos` }] : []),
-      ...data.places.map((p, i) => ({ id: p.id, label: `One photo: #${i + 1}` }))]; // no place names: the room can see this list
-  },
+  // One photo per race (3 picks per racer). No place names: the room can see this list.
+  // Tours ('tour-1' = photos 1–6 … and 'all') still work from the command line.
+  cases: data => data.places.map((p, i) => ({ id: p.id, label: `Photo #${i + 1}` })),
 
   init(data, caseId) {
     const ids = data.places.map(p => p.id);

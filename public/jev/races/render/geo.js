@@ -14,15 +14,16 @@ export function board({ data, game, caseId, round = 0 }) {
   const rounds = game.init(data, caseId).rounds;
   const place = data.places.find(p => p.id === rounds[Math.min(round, rounds.length - 1)]);
   if (!place) return '';
+  const label = rounds.length > 1 ? `Photo ${Math.min(round, rounds.length - 1) + 1} of ${rounds.length}` : `Photo #${data.places.indexOf(place) + 1}`;
   return `<div class="geo-board">
     <img src="data/geo/${esc(place.file)}" alt="Where in the world is this?">
-    <div class="muted">Photo ${Math.min(round, rounds.length - 1) + 1} of ${rounds.length}. Every racer sees this photo, then picks a continent, a country and a city.</div>
+    <div class="muted">${label}. Every racer sees this photo, then picks a continent, a country and a city.</div>
   </div>`;
 }
 
 export function youView({ s }) {
   const picks = Object.values(s.path);
-  return `<div class="muted">Photo ${s.r + 1} of ${s.rounds.length} (the one above)${s.results.length ? ` · ${s.results.reduce((a, r) => a + r.points, 0).toLocaleString()} pts so far` : ''}</div>
+  return `<div class="muted">${s.rounds.length > 1 ? `Photo ${s.r + 1} of ${s.rounds.length} (the one above)` : 'The photo above'}${s.results.length ? ` · ${s.results.reduce((a, r) => a + r.points, 0).toLocaleString()} pts so far` : ''}</div>
     ${picks.length ? `<div>${picks.map(p => `<span class="chip">${esc(p)}</span>`).join(' → ')}</div>` : ''}`;
 }
 
