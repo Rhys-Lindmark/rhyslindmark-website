@@ -7,14 +7,15 @@ const esc = x => String(x ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 const GUESS = 'Guess: ';
 
 // In place of the dropdown: one box to type anything (Jev works out what kind of thing it is),
-// then every secret as a button that starts a race, by category.
+// and ten example secrets, each a button that starts a race. Every lane gets the same secret.
+const EXAMPLES = [['animals', 'owl'], ['foods', 'pizza'], ['objects', 'toaster'], ['animals', 'giraffe'], ['foods', 'honey'],
+  ['objects', 'umbrella'], ['animals', 'dolphin'], ['foods', 'sushi'], ['objects', 'candle'], ['animals', 'frog']];
 export function picker({ data }) {
-  const cats = Object.values(data.cats);
+  const ex = EXAMPLES.filter(([c, i]) => data.cats[c]?.items.includes(i));
   return `<form class="typeany"><input type="text" maxlength="40" autocomplete="off" aria-label="Type anything"
       placeholder="Type anything: a hedgehog, a stapler, lasagna…"><button>Race</button></form>
-    ${cats.map(c => `<div class="pickcat"><b>${esc(c.title)}</b>
-      <button class="chip pick rand" data-case="${esc(c.id)}:random">3 random</button>
-      ${c.items.map(i => `<button class="chip pick" data-case="${esc(c.id)}:one:${esc(i)}">${esc(i)}</button>`).join('')}</div>`).join('')}`;
+    <div class="pickcat"><b>Or try</b>
+      ${ex.map(([c, i]) => `<button class="chip pick" data-case="${esc(c)}:one:${esc(i)}">${esc(i)}</button>`).join('')}</div>`;
 }
 export const typedCase = text => `any:type:${text}`;
 
@@ -34,17 +35,15 @@ export function fullCase({ caseId, el }) {
   return caseId;
 }
 
-// Every thing the secret could be (a typed thing sorted in with the rest). Secrets are never
-// shown, except a typed one, which the room typed. After Jev answers about it, its answers.
+// Above the lanes, only for a typed thing: Jev's answers about it, which every racer hears.
+// (The picker already shows every secret, so the list isn't repeated here.)
 export function board({ data, caseId, extra, call }) {
   let { cat, kind, arg } = parseCase(caseId);
   const thing = kind === 'type' ? cleanThing(arg) : null;
   if (cat === 'any') cat = extra?.oracle?.cat ?? Object.values(data.cats).find(c => c.items.includes(thing))?.id;
   const c = data.cats[cat];
   if (!c) return '';
-  const items = thing && !c.items.includes(thing) ? [...c.items, thing].sort((a, b) => a.localeCompare(b)) : c.items;
-  let html = `<div class="muted" style="margin-bottom:4px">The secret is one of these ${items.length} ${esc(c.title.toLowerCase())}:</div>
-    <div>${items.map(a => `<span class="chip">${esc(a)}</span>`).join('')}</div>`;
+  let html = '';
   const o = extra?.oracle;
   if (o) {
     const what = o.cat ? `which kind of thing it is (${c.noun}) and every category's questions about it` : `${Object.keys(o.row).length} yes/no questions`;
