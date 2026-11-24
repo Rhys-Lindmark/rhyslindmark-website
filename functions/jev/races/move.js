@@ -9,7 +9,8 @@
 // Or { game: 'twenty', oracle: { category, thing } }: Jev's answers about a typed thing.
 import { loadKey } from '../../_lib/jev-key.js';
 import { databaseFor } from '../../_lib/jev-database.js';
-import { LANES, moveRequest, withImage, keep } from '../../../public/jev/races/lanes.mjs';
+import { LANES, moveRequest, withImage, keep, JEV_URL, JEV_MODEL } from '../../../public/jev/races/lanes.mjs';
+import { loadPlus, plusRequest } from '../../../public/jev/races/games/geo-plus.mjs';
 import geo from '../../../public/jev/races/games/geo.mjs';
 import twenty from '../../../public/jev/races/games/twenty.mjs';
 import adventure from '../../../public/jev/races/games/adventure.mjs';
@@ -40,8 +41,23 @@ export async function onRequestPost({ request, env }) {
     return call(env, request, 'jev', o.turn);
   }
 
+  // Body { game: 'geo', lane: 'jevpp', part }: one of Jev++'s requests (games/geo-plus.mjs),
+  // built here from `part`, which plusRequest checks (known photo, view, kind, countries).
+  if (game === 'geo' && input.lane === 'jevpp') {
+    let req;
+    try { req = plusRequest(await loadPlus(p => asset(env, request, p).then(r => r.json())), input.part ?? {}, JEV_MODEL); } catch { return json({ error: 'bad Jev++ request' }, 400); }
+    const key = await loadKey({ ...env, JEV_DB: databaseFor(env) }).catch(() => null);
+    if (!key) return json({ error: "Jev isn't set up on this site" }, 503);
+    req.body.assets = { photo: { type: 'image', format: 'jpg', data_base64: base64(await asset(env, request, req.image).then(r => r.arrayBuffer())) } };
+    const t0 = Date.now();
+    const r = await fetch(JEV_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}`, 'TypeSafe-Danger-Zone-Images': 'true' }, body: JSON.stringify(req.body) });
+    const ms = Date.now() - t0;
+    if (!r.ok) return json({ error: `Jev++ HTTP ${r.status}` }, 502);
+    return json(keep('jev', await r.json(), ms));
+  }
+
   const { lane, s } = input;
-  if (!Object.hasOwn(LANES, lane) || !s || typeof s !== 'object') return json({ error: 'bad move' }, 400);
+  if (!Object.hasOwn(LANES, lane) || LANES[lane].kind === 'plus' || !s || typeof s !== 'object') return json({ error: 'bad move' }, 400);
   let turn;
   try {
     const data = await load();

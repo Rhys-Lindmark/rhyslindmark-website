@@ -12,6 +12,9 @@ export const JEV_PRICE_PER_MTOK = 0.042;          // input only; output is free 
 // default": the whole point is to show Jev's time and cost next to a frontier model.
 export const LANES = {
   jev:      { label: 'Jev 1.14',             kind: 'jev',  price: '$0.042 / M in' },
+  // Jev++: the same Jev, asked more questions per pick (zoomed views, clues, region first) with
+  // the decisions in code. GeoGuesser only; see games/geo-plus.mjs.
+  jevpp:    { label: 'Jev++',                kind: 'plus', price: '$0.042 / M in · ~10 looks', games: ['geo'] },
   // params: reasoning off where the model allows it, so each move is one quick reply.
   // Sonnet 5.5 on OpenRouter requires reasoning, so it gets the lowest effort (and no
   // temperature, which thinking doesn't accept).
@@ -71,6 +74,12 @@ export const keep = (laneId, data, ms) => LANES[laneId].kind === 'jev'
   : { reply: data.choices?.[0]?.message?.content ?? '', cost: data.usage?.cost ?? 0, ms };
 
 const top = (p, n = 3) => p && Object.entries(p).sort((a, b) => b[1] - a[1]).slice(0, n).map(([k, v]) => [k, +v.toFixed(3)]);
+
+// A lane that plays this game? (A lane can be limited to some games, like Jev++.)
+export const laneFor = (laneId, gameId) => !LANES[laneId].games || LANES[laneId].games.includes(gameId);
+
+// A Jev++ pick (createPlusPlayer().move) -> the same shape as readMove's.
+export const readPlus = p => ({ move: p.move, why: p.why, probs: top(p.dist, 5), dist: p.dist, ms: p.ms, cost: p.tokens * JEV_PRICE_PER_MTOK / 1e6, replayed: !!p.replayed });
 
 // A recorded (or fresh) response -> the move.
 export function readMove(laneId, turn, out) {

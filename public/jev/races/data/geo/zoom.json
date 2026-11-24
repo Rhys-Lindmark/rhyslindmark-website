@@ -1,0 +1,202 @@
+{
+ "matsumoto-street": {
+  "sign": {
+   "box": {
+    "top": 0.23,
+    "bottom": 0.27,
+    "left": 0.74,
+    "right": 0.78
+   }
+  }
+ },
+ "curitiba-hill": {
+  "sign": {
+   "box": {
+    "top": 0.7,
+    "bottom": 0.77,
+    "left": 0.36,
+    "right": 0.41
+   }
+  }
+ },
+ "dunedin-street": {
+  "sign": {
+   "box": {
+    "top": 0.59,
+    "bottom": 0.64,
+    "left": 0.26,
+    "right": 0.29
+   }
+  }
+ },
+ "arusha-roadside": {
+  "sign": {
+   "box": {
+    "top": 0.16,
+    "bottom": 0.25,
+    "left": 0.01,
+    "right": 0.68
+   }
+  }
+ },
+ "merida-street": {
+  "sign": {
+   "box": {
+    "top": 0.45,
+    "bottom": 0.56,
+    "left": 0.58,
+    "right": 0.69
+   }
+  }
+ },
+ "olomouc-street": {
+  "sign": {
+   "box": {
+    "top": 0.7,
+    "bottom": 0.75,
+    "left": 0.34,
+    "right": 0.4
+   }
+  }
+ },
+ "krakow-street": {
+  "sign": {
+   "box": {
+    "top": 0.53,
+    "bottom": 0.65,
+    "left": 0.87,
+    "right": 0.95
+   }
+  }
+ },
+ "athens-street": {
+  "sign": {
+   "box": {
+    "top": 0.65,
+    "bottom": 0.75,
+    "left": 0.34,
+    "right": 0.41
+   }
+  }
+ },
+ "lisbon-crossroads": {
+  "sign": {
+   "box": {
+    "top": 0.42,
+    "bottom": 0.46,
+    "left": 0.54,
+    "right": 0.61
+   }
+  }
+ },
+ "hatyai-shophouses": {
+  "sign": {
+   "box": {
+    "top": 0.79,
+    "bottom": 0.95,
+    "left": 0.31,
+    "right": 0.43
+   }
+  }
+ },
+ "pune-road": {
+  "sign": {
+   "box": {
+    "top": 0.48,
+    "bottom": 0.54,
+    "left": 0.75,
+    "right": 0.8
+   }
+  }
+ },
+ "busan-street": {
+  "sign": {
+   "box": {
+    "top": 0.03,
+    "bottom": 0.52,
+    "left": 0.78,
+    "right": 0.99
+   }
+  }
+ },
+ "capetown-corner": {
+  "sign": {
+   "box": {
+    "top": 0.68,
+    "bottom": 0.76,
+    "left": 0.52,
+    "right": 0.55
+   }
+  }
+ },
+ "kumasi-road": {
+  "sign": {
+   "box": {
+    "top": 0.24,
+    "bottom": 0.28,
+    "left": 0.19,
+    "right": 0.28
+   }
+  }
+ },
+ "rosario-avenue": {
+  "sign": {
+   "box": {
+    "top": 0.43,
+    "bottom": 0.52,
+    "left": 0.82,
+    "right": 0.85
+   }
+  }
+ },
+ "pereira-street": {
+  "sign": {
+   "box": {
+    "top": 0.26,
+    "bottom": 0.35,
+    "left": 0.48,
+    "right": 0.62
+   }
+  }
+ },
+ "columbus-street": {
+  "sign": {
+   "box": {
+    "top": 0.33,
+    "bottom": 0.41,
+    "left": 0.96,
+    "right": 0.99
+   }
+  }
+ },
+ "quetzaltenango-lane": {
+  "sign": {
+   "box": {
+    "top": 0.59,
+    "bottom": 0.66,
+    "left": 0.48,
+    "right": 0.6
+   }
+  }
+ },
+ "melbourne-street": {
+  "sign": {
+   "box": {
+    "top": 0.69,
+    "bottom": 0.77,
+    "left": 0.02,
+    "right": 0.06
+   }
+  }
+ },
+ "suva-street": {
+  "sign": {
+   "box": {
+    "top": 0.38,
+    "bottom": 0.57,
+    "left": 0.03,
+    "right": 0.25
+   }
+  }
+ }
+}

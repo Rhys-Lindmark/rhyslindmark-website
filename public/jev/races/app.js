@@ -9,7 +9,8 @@
 //   case dropdown, and the case id it makes (20 Questions: pick a secret, or type anything).
 // A game module can also have resolve(data, caseId) (settle randomness once per race) and
 // oracle(data, caseId) (one Jev request before the race; its move goes to init as extra.oracle).
-import { LANES, moveRequest, readMove, recordingName } from './lanes.mjs';
+import { LANES, moveRequest, readMove, recordingName, readPlus, laneFor, JEV_MODEL } from './lanes.mjs';
+import { loadPlus, createPlusPlayer, plusRequest } from './games/geo-plus.mjs';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -33,7 +34,12 @@ const LANE_ORDER = ['you', ...Object.keys(LANES)];
 const laneInfo = id => id === 'you' ? { label: 'You', price: 'a human in the room' } : LANES[id];
 let run = 0, lanes = {};
 
-$('#lanepick').innerHTML = LANE_ORDER.map(id => `<label><input type="checkbox" value="${id}" ${id === 'you' ? '' : 'checked'}> ${esc(laneInfo(id).label)}</label>`).join('');
+// The lanes this game has (Jev++ plays GeoGuesser only), keeping what was ticked.
+function drawLanePick() {
+  const was = Object.fromEntries([...document.querySelectorAll('#lanepick input')].map(i => [i.value, i.checked]));
+  $('#lanepick').innerHTML = LANE_ORDER.filter(id => id === 'you' || laneFor(id, gameId))
+    .map(id => `<label><input type="checkbox" value="${id}" ${(was[id] ?? id !== 'you') ? 'checked' : ''}> ${esc(laneInfo(id).label)}</label>`).join('');
+}
 $('#tabs').innerHTML = meta.games.map(g => `<button data-id="${g.id}">${esc(g.title)}</button>`).join('');
 $('#tabs').onclick = e => e.target.dataset.id && selectGame(e.target.dataset.id);
 $('#go').onclick = () => start();
@@ -49,6 +55,23 @@ async function aiMove(laneId, turn, body, mode, pace = true) {
   const r = await fetch('move', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...body, mode }) });
   if (!r.ok) { const t = await r.text(); let msg; try { msg = JSON.parse(t).error; } catch {} throw new Error(msg || (r.status === 401 ? 'Log in to /jev to play live' : `Live move failed (${r.status})`)); }
   return readMove(laneId, turn, await r.json());
+}
+
+// Jev++ (GeoGuesser): several requests per pick, each a recording if there is one, else
+// the server (which builds the request from `part` itself).
+let plusData = null;
+async function plusPlayer(mode) {
+  plusData ??= await loadPlus(p => fetch('data/' + p).then(r => r.json()));
+  return createPlusPlayer(plusData, async part => {
+    if (mode !== 'live') {
+      const r = await fetch('recordings/' + await recordingName(plusRequest(plusData, part, JEV_MODEL).key));
+      if (r.ok) return { ...(await r.json()), replayed: true };
+      if (mode === 'replay') throw new Error('No recording for this move. Pick Auto or Live to play it live.');
+    }
+    const r = await fetch('move', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ game: 'geo', lane: 'jevpp', part, mode }) });
+    if (!r.ok) { const t = await r.text(); let msg; try { msg = JSON.parse(t).error; } catch {} throw new Error(msg || (r.status === 401 ? 'Log in to /jev to play live' : `Live move failed (${r.status})`)); }
+    return r.json();
+  });
 }
 
 // The case as picked, with the game's own extra control (20 Questions: which secret, or a typed thing).
@@ -80,11 +103,14 @@ async function runLane(m, caseId, laneId, mode, myRun, extra) {
   };
   let last = null; // the step just made: its probabilities and, at the end of a round, its result
   try {
+    const plus = LANES[laneId].kind === 'plus' ? await plusPlayer(mode) : null;
     while (!game.done(s) && totals.steps < 80) {
       const turn = game.turn(data, s);
       show({ s, turn, last });
       showApi(laneId, turn);
-      const p = await aiMove(laneId, turn, { game: game.id, lane: laneId, s }, mode);
+      let p;
+      if (plus) { p = readPlus(await plus.move({ s, turn })); if (p.replayed) await sleep(p.ms); }
+      else p = await aiMove(laneId, turn, { game: game.id, lane: laneId, s }, mode);
       if (myRun !== run) return;
       const out = game.apply(data, s, p.move);
       s = out.s;
@@ -112,6 +138,7 @@ async function selectGame(id) {
   gameId = id;
   history.replaceState(null, '', '?game=' + id);
   stop();
+  drawLanePick();
   const g = meta.games.find(g => g.id === id);
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.id === id));
   $('#blurb').textContent = g.blurb;
@@ -189,7 +216,7 @@ async function start(caseArg) {
   currentCase = prep;
   $('#scores').innerHTML = '';
   $('#lanes').innerHTML = picked.map(id => `
-    <div class="lane ${id === 'jev' ? 'jev' : id === 'you' ? 'you' : ''}" id="lane-${id}">
+    <div class="lane ${id === 'jev' || id === 'jevpp' ? 'jev' : id === 'you' ? 'you' : ''}" id="lane-${id}">
       <h2>${esc(laneInfo(id).label)} <small>${esc(laneInfo(id).price)}</small></h2>
       <div class="stats"><div class="stat"><b class="steps">0</b><span>${esc(meta.games.find(g => g.id === gameId).steps)}</span></div>
         <div class="stat"><b class="time">0.0s</b><span>time</span></div><div class="stat"><b class="cost">$0</b><span>cost</span></div></div>
@@ -250,7 +277,9 @@ ${read}`;
 }
 function showApi(laneId, turn) {
   const pre = document.querySelector(`#api-${laneId} pre`);
-  if (pre) pre.textContent = apiCode(laneId, turn);
+  if (!pre) return;
+  if (LANES[laneId].kind === 'plus') { pre.textContent = '// Jev++ sends several Jev requests per pick (zoomed views, clues, region first).\n// They are built in games/geo-plus.mjs (plusQuestions).'; return; }
+  pre.textContent = apiCode(laneId, turn);
 }
 
 // The race at the bottom, like WikiRace's: one track per racer, the bar is its time so far,
