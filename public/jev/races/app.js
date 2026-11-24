@@ -74,17 +74,32 @@ async function runLane(m, caseId, laneId, mode, myRun, extra) {
   const { game, data } = m;
   let s = game.init(data, caseId, extra);
   const totals = { steps: 0, ms: 0, cost: 0, replayed: 0 };
+  const show = (args) => {
+    const now = m.render.laneView?.({ data, ...args });
+    if (now != null) { const el = document.querySelector(`#lane-${laneId} .now`); if (el && el.dataset.html !== now) { el.innerHTML = now; el.dataset.html = now; } }
+  };
+  let last = null; // the step just made: its probabilities and, at the end of a round, its result
   try {
     while (!game.done(s) && totals.steps < 80) {
       const turn = game.turn(data, s);
-      const now = m.render.laneView?.({ data, s, turn });
-      if (now != null) { const el = document.querySelector(`#lane-${laneId} .now`); if (el && el.dataset.html !== now) { el.innerHTML = now; el.dataset.html = now; } }
+      show({ s, turn, last });
       const p = await aiMove(laneId, turn, { game: game.id, lane: laneId, s }, mode);
       if (myRun !== run) return;
       const out = game.apply(data, s, p.move);
       s = out.s;
       totals.steps++; totals.ms += p.ms; totals.cost += p.cost; totals.replayed += p.replayed ? 1 : 0;
+      last = { ...p, level: turn.level, round: out.round };
       onEvent({ type: 'step', lane: laneId, n: totals.steps, level: turn.level, options: turn.options.length, ...p, note: out.note, round: out.round, totals: { ...totals } }, m);
+      if (game.syncRounds && out.round) { // a photo done: show the result, wait for the others
+        show({ s, turn: null, last });
+        if (!game.done(s)) {
+          const st = document.querySelector(`#lane-${laneId} .status`); if (st) st.textContent = 'done with this photo · waiting for the others';
+          await arrive(laneId, s.r);
+          if (myRun !== run) return;
+          if (st) st.textContent = 'Thinking…';
+        }
+        last = { ...last, round: null };
+      }
     }
     onEvent({ type: 'done', lane: laneId, result: game.result(s), totals }, m);
   } catch (e) {
@@ -134,10 +149,24 @@ async function caseChanged() {
 async function drawBoard(prep) {
   const { game, render, data } = await load(gameId);
   const caseId = prep?.caseId ?? (render.picker ? currentCase?.caseId : pickedCase(render));
-  $('#board').innerHTML = caseId == null ? '' : render.board?.({ data, caseId, game, extra: prep?.extra ?? currentCase?.extra, call: prep?.call ?? currentCase?.call }) ?? '';
+  $('#board').innerHTML = caseId == null ? '' : render.board?.({ data, caseId, game, round: shownRound, extra: prep?.extra ?? currentCase?.extra, call: prep?.call ?? currentCase?.call }) ?? '';
 }
 
-function stop() { run++; Object.values(lanes).forEach(l => l.timer && clearInterval(l.timer)); lanes = {}; $('#go').disabled = false; drawTimeline(); }
+// Round gates (games with syncRounds): a racer that finishes round r waits here until every
+// racer has finished it (or stopped), then the board moves on to the next photo.
+let gates = {}, shownRound = 0;
+function gate(r) { if (!gates[r]) { let open; const p = new Promise(x => (open = x)); gates[r] = { p, open }; } return gates[r]; }
+function checkGates() {
+  const ls = Object.values(lanes);
+  for (const r of Object.keys(gates).map(Number).sort((a, b) => a - b)) {
+    if (!ls.every(l => l.done || l.error || (l.at ?? 0) >= r)) break;
+    gates[r].open();
+    if (r > shownRound) { shownRound = r; drawBoard(); }
+  }
+}
+function arrive(laneId, r) { if (lanes[laneId]) lanes[laneId].at = r; const g = gate(r); checkGates(); return g.p; }
+
+function stop() { run++; gates = {}; shownRound = 0; Object.values(lanes).forEach(l => l.timer && clearInterval(l.timer)); lanes = {}; $('#go').disabled = false; drawTimeline(); }
 
 let currentCase = null; // the race on screen: { caseId, extra, call }
 
@@ -178,7 +207,7 @@ async function start(caseArg) {
 function onEvent(e, m) {
   const lane = lanes[e.lane]; if (!lane) return;
   const el = $('#lane-' + e.lane);
-  if (e.type === 'error') { lane.done = true; lane.error = e.message; el.querySelector('.status').className = 'status err'; el.querySelector('.status').textContent = e.message; return maybeScores(); }
+  if (e.type === 'error') { lane.done = true; lane.error = e.message; checkGates(); el.querySelector('.status').className = 'status err'; el.querySelector('.status').textContent = e.message; return maybeScores(); }
   if (e.type === 'step') {
     Object.assign(lane, { steps: e.totals.steps, ms: e.totals.ms, cost: e.totals.cost, replayed: e.totals.replayed });
     lane.ticks.push({ ms: lane.ms, bad: !e.move || /no valid/.test(e.note) });
@@ -188,6 +217,7 @@ function onEvent(e, m) {
   }
   if (e.type === 'done') {
     Object.assign(lane, { done: true, result: e.result });
+    checkGates();
     const st = el.querySelector('.status'); st.className = 'status done'; st.textContent = e.result.headline;
     maybeScores();
   }
@@ -231,12 +261,14 @@ function playHuman(m, caseId, extra) {
   const { game, render, data } = m;
   const lane = lanes.you, el = $('#lane-you');
   let s = game.init(data, caseId, extra);
-  const t0 = Date.now();
-  lane.timer = setInterval(() => { lane.ms = Date.now() - t0; stats(el, lane); }, 100);
+  // Your time counts only while it's your move (not while waiting for the others between rounds).
+  let acc = 0, since = Date.now();
+  const elapsed = () => acc + (since ? Date.now() - since : 0);
+  lane.timer = setInterval(() => { lane.ms = elapsed(); stats(el, lane); }, 100);
   const draw = () => {
     if (game.done(s)) {
-      clearInterval(lane.timer); lane.ms = Date.now() - t0; stats(el, lane);
-      lane.done = true; lane.result = game.result(s);
+      clearInterval(lane.timer); lane.ms = elapsed(); stats(el, lane);
+      lane.done = true; lane.result = game.result(s); checkGates();
       el.querySelector('.play').innerHTML = '';
       const st = el.querySelector('.status'); st.className = 'status done'; st.textContent = lane.result.headline;
       return maybeScores();
@@ -250,14 +282,23 @@ function playHuman(m, caseId, extra) {
       <div class="moves">${turn.options.map((o, i) => `<button data-i="${i}">${esc(o.name)}</button>`).join('')}</div>`;
     const f = el.querySelector('.filter');
     if (f) { f.oninput = () => el.querySelectorAll('.moves button').forEach(b => b.style.display = b.textContent.toLowerCase().includes(f.value.toLowerCase()) ? '' : 'none'); f.focus(); }
-    el.querySelector('.moves').onclick = ev => {
+    el.querySelector('.moves').onclick = async ev => {
       const i = ev.target.dataset.i; if (i == null) return;
       const move = turn.options[i].name;
       const out = game.apply(data, s, move);
       s = out.s; lane.steps++;
-      lane.ticks.push({ ms: Date.now() - t0, bad: false });
+      lane.ms = elapsed();
+      lane.ticks.push({ ms: lane.ms, bad: false });
       stats(el, lane);
-      addRow(el, { n: lane.steps, move, note: out.note, round: out.round }, m);
+      addRow(el, { n: lane.steps, move, level: turn.level, note: out.note, round: out.round }, m);
+      if (game.syncRounds && out.round && !game.done(s)) {
+        acc = elapsed(); since = 0;
+        const myRun = run;
+        el.querySelector('.play').innerHTML = `<div class="muted">${esc(out.note)}. Waiting for the others…</div>`;
+        await arrive('you', s.r);
+        if (myRun !== run) return;
+        since = Date.now();
+      }
       draw();
     };
   };

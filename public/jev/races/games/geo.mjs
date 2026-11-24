@@ -20,6 +20,10 @@ export default {
   title: 'GeoGuesser',
   blurb: 'A photo from somewhere on Earth. Pick the continent, then the country, then the nearest city. Points for how close you land.',
   steps: 'picks',
+  // Racers play each photo together, like GeoGuessr rounds: a racer that finishes a photo
+  // waits for the rest, so the page can show one photo above every lane. Waiting isn't
+  // counted in anyone's time. s.r is the round.
+  syncRounds: true,
 
   async load(readJson) {
     const [places, tree] = await Promise.all([readJson('geo/places.json'), readJson('geo/cities.json')]);

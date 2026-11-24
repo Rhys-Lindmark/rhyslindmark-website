@@ -77,3 +77,29 @@ button.chip.rand { background: #20382a; color: var(--jev); }
 .crt pre { margin: 0 0 6px; font: 12px/1.15 ui-monospace, Menlo, monospace; white-space: pre; overflow: hidden; }
 .crt-room { font: 700 14px ui-monospace, Menlo, monospace; letter-spacing: 1px; }
 .crt-inv { font: 11px ui-monospace, Menlo, monospace; opacity: .8; margin-top: 2px; }
+/* GeoGuesser: the round's photo above the lanes, a zooming map per lane, Jev's probabilities as bars */
+.geo-board { text-align: center; }
+.geo-board img { max-width: 100%; max-height: 46vh; border-radius: 10px; display: block; margin: 0 auto 6px; box-shadow: 0 6px 30px #0008; }
+.gm { position: relative; margin-bottom: 6px; }
+.gm svg { width: 100%; aspect-ratio: 2 / 1; display: block; background: #0e1420; border-radius: 8px; overflow: hidden; }
+.gm-zoom { transform: var(--to); animation: gmzoom 0.9s ease-in-out both; }
+@keyframes gmzoom { from { transform: var(--from); } to { transform: var(--to); } }
+.gm-land { fill: #283041; stroke: #3b4558; stroke-width: 0.6; vector-effect: non-scaling-stroke; }
+.gm-land path { vector-effect: non-scaling-stroke; }
+.gm-focus { fill: #3a465d; stroke: #5a6a86; stroke-width: 0.8; vector-effect: non-scaling-stroke; }
+.gm-shade { fill: var(--jev); stroke: var(--jev); stroke-width: 0.8; vector-effect: non-scaling-stroke; }
+.gm-city { fill: #c9d2e3; opacity: 0.85; }
+.gm-guess { fill: var(--jev); stroke: #0b1a10; stroke-width: 0.5; vector-effect: non-scaling-stroke; }
+.gm-truth { fill: var(--bad); stroke: #2a0b0b; stroke-width: 0.5; vector-effect: non-scaling-stroke; }
+.gm-line { stroke: #ffffffb0; stroke-dasharray: 4 3; vector-effect: non-scaling-stroke; }
+.gm-label { fill: #fff; paint-order: stroke; stroke: #0e1420; stroke-width: 3px; vector-effect: non-scaling-stroke; font-weight: 700; }
+.gm-cap { font-size: 13px; margin-top: 4px; min-height: 18px; }
+.gm-cap .hmm { color: var(--you); }
+.gm-cap.thinking .hmm { animation: gmpulse 0.8s ease-in-out infinite alternate; }
+@keyframes gmpulse { from { opacity: 1; } to { opacity: 0.35; } }
+.pbars { margin: 3px 0 2px; }
+.pbar { display: grid; grid-template-columns: minmax(0, 7.5em) 1fr 3em; gap: 6px; align-items: center; font-size: 11px; line-height: 1.5; }
+.pbar-k { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+.pbar-v { height: 6px; background: #232836; border-radius: 3px; overflow: hidden; }
+.pbar-v i { display: block; height: 100%; background: var(--jev); }
+.pbar-p { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }

@@ -76,7 +76,8 @@ const top = (p, n = 3) => p && Object.entries(p).sort((a, b) => b[1] - a[1]).sli
 export function readMove(laneId, turn, out) {
   if (LANES[laneId].kind === 'jev') {
     const d = jevQuestions(turn).decide(out.answers);
-    return { move: d.move, why: d.why, probs: top(d.probs), ms: out.ms, cost: out.input_tokens * JEV_PRICE_PER_MTOK / 1e6, replayed: !!out.replayed };
+    // probs: the top 5, for the log. dist: every option's probability, for pictures (the GeoGuesser map).
+    return { move: d.move, why: d.why, probs: top(d.probs, 5), dist: d.probs, ms: out.ms, cost: out.input_tokens * JEV_PRICE_PER_MTOK / 1e6, replayed: !!out.replayed };
   }
   const n = parseInt((out.reply.match(/\d+/g) || []).pop(), 10); // the last number: a model that explains itself ends on its move
   const opt = turn.options[n - 1];
