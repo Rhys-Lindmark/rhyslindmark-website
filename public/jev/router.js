@@ -10,17 +10,10 @@ import { ROUTER_V2_TABLE, V2_JUDGMENTS, judgeV2, decideV2 } from './router-v2-po
 const PROMPTS = [
   'hi! how’s it going?',
   'What’s the capital of Australia?',
-  'Convert 72°F to Celsius',
-  'can you write a small program that does addition?',
   'Write a haiku about Monday mornings',
-  'Rewrite my text to my landlord so it’s firm but polite: the heat has been broken for 3 weeks',
   'Why does my React useEffect run twice in development?',
   'Is it safe to take ibuprofen with my blood pressure medication?',
-  'Compare a Roth IRA and a traditional 401(k) for someone earning $90k',
-  'My Postgres query got 10x slower after I added an index. Why?',
-  'Review the non-compete clause in my employment contract for red flags',
   'Write a 3,000-word short story about a lighthouse keeper',
-  'Prove that there are infinitely many primes',
   'Design the database schema and API for a multi-tenant SaaS billing system',
   'Can you rebuild this OS in Rust?'
 ];
