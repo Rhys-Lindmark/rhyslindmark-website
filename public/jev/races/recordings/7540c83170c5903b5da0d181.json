@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"search the coat","confidence":0.99,"probabilities":{"go south":0.01,"search the coat":0.99,"sit in the leather chair":0,"read the memo":0,"read the leaflet":0,"wait":0,"take bust":0}},"want_bust":{"type":"noul","noul":0.08}},"input_tokens":954,"ms":145,"recorded_at":"2026-11-24T18:39:59.810Z"}

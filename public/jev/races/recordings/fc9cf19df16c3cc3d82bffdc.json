@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"read the memo","confidence":0.42,"probabilities":{"go west":0.45,"switch on the monitors":0.02,"read the memo":0.52,"read the leaflet":0.01,"drink the coffee":0,"wait":0}}},"input_tokens":1248,"ms":123,"recorded_at":"2026-11-24T18:39:26.121Z"}

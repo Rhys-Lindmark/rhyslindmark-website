@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"dial 3-1-7 on the padlock","confidence":0.64,"probabilities":{"go north":0,"go west":0.01,"go east":0.29,"try random numbers on the padlock":0,"dial 3-1-7 on the padlock":0.7,"wait":0}}},"input_tokens":884,"ms":81,"recorded_at":"2026-11-24T18:39:22.639Z"}

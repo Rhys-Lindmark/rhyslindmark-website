@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take umbrella","confidence":0.3,"probabilities":{"go down":0.14,"unlock the basement door":0.35,"press the alarm panel":0.05,"read the leaflet":0.04,"drink the coffee":0.01,"wait":0.01,"take umbrella":0.4}},"want_umbrella":{"type":"noul","noul":0.1}},"input_tokens":1157,"ms":120,"recorded_at":"2026-11-24T18:39:24.892Z"}

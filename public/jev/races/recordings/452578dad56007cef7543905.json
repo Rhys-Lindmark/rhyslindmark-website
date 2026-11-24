@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"throw the main switch","confidence":0.99,"probabilities":{"go up":0.01,"throw the main switch":0.99,"read the memo":0,"read the leaflet":0,"wait":0}}},"input_tokens":1073,"ms":146,"recorded_at":"2026-11-24T18:40:01.645Z"}

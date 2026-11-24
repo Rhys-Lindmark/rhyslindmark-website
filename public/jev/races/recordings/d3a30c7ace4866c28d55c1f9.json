@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"read the memo","confidence":0.26,"probabilities":{"go south":0.33,"go north":0.12,"open the AGE OF THE FUSE case":0.16,"read the memo":0.37,"read the leaflet":0.01,"drink the coffee":0,"wait":0.01}}},"input_tokens":1152,"ms":162,"recorded_at":"2026-11-24T18:39:25.519Z"}

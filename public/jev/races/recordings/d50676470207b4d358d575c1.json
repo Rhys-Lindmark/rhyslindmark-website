@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"open the locker","confidence":0.4,"probabilities":{"go east":0.15,"open the locker":0.5,"turn the brake wheel":0.07,"read the note":0.01,"wait":0.01,"take flag":0.26}},"want_flag":{"type":"noul","noul":0.18}},"input_tokens":929,"ms":77,"recorded_at":"2026-11-24T18:39:22.330Z"}

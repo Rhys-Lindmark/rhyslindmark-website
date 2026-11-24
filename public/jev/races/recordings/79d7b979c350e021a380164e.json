@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go east","confidence":0.45,"probabilities":{"go east":0.54,"turn the brake wheel":0.33,"wave the green lamp out the window":0.01,"read the note":0.02,"wait":0,"take flag":0.1}},"want_flag":{"type":"noul","noul":0.16}},"input_tokens":972,"ms":91,"recorded_at":"2026-11-24T18:39:22.510Z"}

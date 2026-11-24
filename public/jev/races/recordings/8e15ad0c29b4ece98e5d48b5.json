@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go south","confidence":0.9,"probabilities":{"go south":0.92,"go back to sleep":0,"wait":0,"take pillow":0,"take timetable":0.08}},"want_pillow":{"type":"noul","noul":0.07},"want_timetable":{"type":"noul","noul":0.32}},"input_tokens":620,"ms":304,"recorded_at":"2026-11-24T18:39:21.636Z"}

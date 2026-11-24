@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"read the leaflet","confidence":0.71,"probabilities":{"go east":0.17,"go north":0.05,"go down":0,"unlock the basement door":0.01,"press the alarm panel":0.01,"read the leaflet":0.75,"wait":0,"take umbrella":0.01}},"want_umbrella":{"type":"noul","noul":0.11}},"input_tokens":763,"ms":104,"recorded_at":"2026-11-24T18:39:22.290Z"}

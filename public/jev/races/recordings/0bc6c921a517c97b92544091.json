@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"open the valve","confidence":0.89,"probabilities":{"go up":0.02,"loosen the valve with the wrench":0.06,"open the valve":0.92,"wait":0}}},"input_tokens":648,"ms":72,"recorded_at":"2026-11-24T18:39:21.940Z"}

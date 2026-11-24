@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take fuse","confidence":1,"probabilities":{"go south":0,"go north":0,"read the memo":0,"read the leaflet":0,"wait":0,"take fuse":1,"take bulb":0}},"want_fuse":{"type":"noul","noul":0.97},"want_bulb":{"type":"noul","noul":0.14}},"input_tokens":1228,"ms":134,"recorded_at":"2026-11-24T18:40:01.107Z"}

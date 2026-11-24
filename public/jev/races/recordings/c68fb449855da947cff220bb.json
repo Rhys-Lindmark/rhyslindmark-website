@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go south","confidence":0.8,"probabilities":{"go south":0.83,"go north":0.02,"read the memo":0,"read the leaflet":0,"wait":0,"take bulb":0.15}},"want_bulb":{"type":"noul","noul":0.3}},"input_tokens":1136,"ms":124,"recorded_at":"2026-11-24T18:40:01.235Z"}

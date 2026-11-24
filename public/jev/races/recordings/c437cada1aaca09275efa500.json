@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go north","confidence":0.3,"probabilities":{"go north":0.42,"go down":0.31,"press the alarm panel":0.08,"read the leaflet":0.09,"drink the coffee":0.02,"wait":0.08}}},"input_tokens":1412,"ms":130,"recorded_at":"2026-11-24T18:39:26.665Z"}

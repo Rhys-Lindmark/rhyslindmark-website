@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go east","confidence":0.59,"probabilities":{"go east":0.65,"go north":0.18,"go down":0.02,"unlock the basement door":0.01,"press the alarm panel":0.02,"wait":0,"take umbrella":0.12}},"want_umbrella":{"type":"noul","noul":0.12}},"input_tokens":796,"ms":130,"recorded_at":"2026-11-24T18:39:22.420Z"}

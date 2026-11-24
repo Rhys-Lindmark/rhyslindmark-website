@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go east","confidence":0.27,"probabilities":{"go west":0.31,"go east":0.45,"try random numbers on the padlock":0.24,"wait":0}}},"input_tokens":729,"ms":90,"recorded_at":"2026-11-24T18:39:22.275Z"}

@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go south","confidence":0.85,"probabilities":{"go south":0.9,"wait":0.02,"take seeds":0.08}},"want_seeds":{"type":"noul","noul":0.06}},"input_tokens":795,"ms":86,"recorded_at":"2026-11-24T18:39:22.185Z"}

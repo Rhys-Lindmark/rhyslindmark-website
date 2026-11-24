@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take thermos","confidence":0.35,"probabilities":{"switch on the monitors":0.22,"read the leaflet":0.12,"wait":0.15,"take thermos":0.51}},"want_thermos":{"type":"noul","noul":0.06}},"input_tokens":881,"ms":139,"recorded_at":"2026-11-24T18:39:23.318Z"}

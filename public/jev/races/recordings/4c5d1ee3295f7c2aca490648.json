@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take lamp","confidence":0.99,"probabilities":{"go east":0.01,"turn the brake wheel":0,"read the note":0,"wait":0,"take flag":0,"take lamp":0.99}},"want_flag":{"type":"noul","noul":0.16},"want_lamp":{"type":"noul","noul":0.96}},"input_tokens":1036,"ms":87,"recorded_at":"2026-11-24T18:39:22.418Z"}

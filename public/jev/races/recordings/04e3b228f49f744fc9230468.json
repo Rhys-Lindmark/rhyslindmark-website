@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go down","confidence":1,"probabilities":{"go south":0,"go down":1,"turn on the sprinklers":0,"wait":0,"take seeds":0}},"want_seeds":{"type":"noul","noul":0.06}},"input_tokens":1029,"ms":116,"recorded_at":"2026-11-24T18:39:23.132Z"}

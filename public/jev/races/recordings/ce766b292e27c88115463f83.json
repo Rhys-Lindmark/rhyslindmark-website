@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take key","confidence":0.89,"probabilities":{"go south":0.08,"sit in the leather chair":0,"read the memo":0.01,"read the leaflet":0,"wait":0,"take key":0.91,"take bust":0}},"want_key":{"type":"noul","noul":0.96},"want_bust":{"type":"noul","noul":0.09}},"input_tokens":1056,"ms":103,"recorded_at":"2026-11-24T18:39:59.917Z"}

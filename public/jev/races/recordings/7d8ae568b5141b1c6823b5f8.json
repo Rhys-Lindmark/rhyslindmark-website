@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"read the note","confidence":0.54,"probabilities":{"go east":0.15,"go west":0.21,"ring for the steward":0.01,"read the note":0.62,"wait":0,"take teapot":0.01}},"want_teapot":{"type":"noul","noul":0.06}},"input_tokens":782,"ms":88,"recorded_at":"2026-11-24T18:39:22.077Z"}

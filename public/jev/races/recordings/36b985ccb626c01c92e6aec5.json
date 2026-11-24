@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"replace the fuse","confidence":0.4,"probabilities":{"go up":0.29,"replace the fuse":0.5,"throw the main switch":0.2,"read the memo":0.01,"read the leaflet":0,"wait":0}}},"input_tokens":955,"ms":156,"recorded_at":"2026-11-24T18:40:00.597Z"}

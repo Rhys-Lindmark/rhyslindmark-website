@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take wrench","confidence":0.96,"probabilities":{"go west":0.02,"wait":0,"take wrench":0.97,"take rake":0.01}},"want_wrench":{"type":"noul","noul":0.94},"want_rake":{"type":"noul","noul":0.08}},"input_tokens":1016,"ms":90,"recorded_at":"2026-11-24T18:39:22.836Z"}

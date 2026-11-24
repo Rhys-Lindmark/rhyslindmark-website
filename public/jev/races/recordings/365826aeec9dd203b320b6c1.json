@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"wave the green lamp out the window","confidence":0.79,"probabilities":{"go east":0.11,"wave the green lamp out the window":0.83,"read the note":0,"wait":0,"take flag":0.06}},"want_flag":{"type":"noul","noul":0.18}},"input_tokens":1055,"ms":90,"recorded_at":"2026-11-24T18:39:23.040Z"}

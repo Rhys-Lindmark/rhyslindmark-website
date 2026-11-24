@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take crank","confidence":0.68,"probabilities":{"go east":0.02,"go west":0.25,"search the mail sacks":0,"read the note":0,"wait":0,"take crank":0.73}},"want_crank":{"type":"noul","noul":0.97}},"input_tokens":1004,"ms":81,"recorded_at":"2026-11-24T18:39:22.679Z"}

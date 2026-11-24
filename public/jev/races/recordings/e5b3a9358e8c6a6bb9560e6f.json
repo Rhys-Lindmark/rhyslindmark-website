@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"read the leaflet","confidence":0.14,"probabilities":{"read the leaflet":0.43,"drink the coffee":0.16,"wait":0.41}}},"input_tokens":888,"ms":107,"recorded_at":"2026-11-24T18:39:23.925Z"}

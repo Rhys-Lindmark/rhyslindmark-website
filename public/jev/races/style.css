@@ -71,3 +71,9 @@ footer { margin-top: 30px; font-size: 13px; max-width: 900px; }
 button.chip.pick { border: 1px solid transparent; color: var(--fg); cursor: pointer; font: inherit; font-size: 13px; padding: 1px 9px; }
 button.chip.pick:hover { border-color: var(--jev); }
 button.chip.rand { background: #20382a; color: var(--jev); }
+/* Text adventure: an early-80s green-phosphor terminal for each lane's room. */
+.crt { background: #031a08; border: 2px solid #0d3b18; border-radius: 10px; padding: 10px 12px; color: #39ff6a; font-family: "VT323", ui-monospace, Menlo, monospace; text-shadow: 0 0 4px #39ff6a88; position: relative; overflow: hidden; margin-bottom: 6px; }
+.crt::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(transparent 0 2px, #0006 2px 3px); pointer-events: none; }
+.crt pre { margin: 0 0 6px; font: 12px/1.15 ui-monospace, Menlo, monospace; white-space: pre; overflow: hidden; }
+.crt-room { font: 700 14px ui-monospace, Menlo, monospace; letter-spacing: 1px; }
+.crt-inv { font: 11px ui-monospace, Menlo, monospace; opacity: .8; margin-top: 2px; }

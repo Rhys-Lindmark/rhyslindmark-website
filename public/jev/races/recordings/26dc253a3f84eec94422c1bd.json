@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"open the AGE OF THE FUSE case","confidence":0.9,"probabilities":{"go south":0.01,"go north":0.06,"open the AGE OF THE FUSE case":0.92,"read the memo":0.01,"read the leaflet":0,"wait":0}}},"input_tokens":1015,"ms":100,"recorded_at":"2026-11-24T18:40:00.968Z"}

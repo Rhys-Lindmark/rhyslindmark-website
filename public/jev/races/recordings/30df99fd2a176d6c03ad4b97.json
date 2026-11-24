@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go west","confidence":0.7,"probabilities":{"go west":0.76,"switch on the monitors":0.11,"read the leaflet":0.02,"wait":0.04,"take thermos":0.07}},"want_thermos":{"type":"noul","noul":0.06}},"input_tokens":870,"ms":221,"recorded_at":"2026-11-24T18:39:59.429Z"}

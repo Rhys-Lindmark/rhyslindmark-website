@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"unlock the basement door","confidence":0.49,"probabilities":{"go north":0.25,"go down":0.12,"unlock the basement door":0.56,"press the alarm panel":0.02,"read the leaflet":0.02,"drink the coffee":0.01,"wait":0.02}}},"input_tokens":1436,"ms":127,"recorded_at":"2026-11-24T18:39:26.532Z"}

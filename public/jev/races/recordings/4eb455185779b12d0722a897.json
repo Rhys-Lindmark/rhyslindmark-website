@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go north","confidence":0.93,"probabilities":{"go east":0.02,"go north":0.94,"press the alarm panel":0,"read the memo":0.02,"read the leaflet":0,"wait":0,"take umbrella":0.02}},"want_umbrella":{"type":"noul","noul":0.08}},"input_tokens":1092,"ms":135,"recorded_at":"2026-11-24T18:40:00.866Z"}
