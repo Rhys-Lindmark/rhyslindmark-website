@@ -47,7 +47,7 @@ const add = (name, kind, pick, extra = {}) => { const s = score(pick); policies.
 
 const armName = a => { const [t, e] = a.split(':'); return `${MODEL_NAMES[t]} · ${e}`; };
 for (const a of ARMS) add(`Always ${armName(a)}`, 'fixed', () => a);
-const shipped = add('Router v1 (original table)', 'router', t => { const d = decide(judge(jev[t.id].answers)); return `${tierOK(d.tier)}:${effortFor(d.reasoning)}`; });
+const shipped = add('Judgment v1 (original table)', 'router', t => { const d = decide(judge(jev[t.id].answers)); return `${tierOK(d.tier)}:${effortFor(d.reasoning)}`; });
 for (const yes of [0.5, 0.6, 0.8, 0.9]) for (const unsure of [true, false]) {
   add(`Router · yes ≥ ${yes}, unsure = ${unsure ? 'yes' : 'no'}`, 'router-variant', t => { const d = decide(judge(jev[t.id].answers, { yes, no: 1 - yes, unsureCountsAs: unsure })); return `${tierOK(d.tier)}:${effortFor(d.reasoning)}`; });
 }
@@ -58,13 +58,13 @@ let v3info = null;
 if (EVAL_SET === 'v2' && trainTasks.length) {
   const { routerV2, features, trainRouterV3, chooseLambda } = await import('./routers-v2.mjs');
   const extra = JSON.parse(readFileSync(new URL('./results/jev-v2q.json', import.meta.url), 'utf8'));
-  add('Router v2 (new Jev judgments)', 'router-v2', t => routerV2(jev[t.id].answers, extra[t.id]));
+  add('Judgment v2 (new Jev judgments)', 'router-v2', t => routerV2(jev[t.id].answers, extra[t.id]));
   const runsOf = t => Object.fromEntries(ARMS.map(a => [a, raw.filter(r => r.task === t.id && r.arm === a).map(r => r.pass ? 1 : 0)]));
   const train = trainTasks.map(t => ({ x: features(jev[t.id].answers, extra[t.id]), runs: runsOf(t), cost: Object.fromEntries(ARMS.map(a => [a, C(t, a)])) }));
   const LAMBDAS = [0, 2, 5, 10, 20, 50, 100, 200, 500];
   const { lambda, scored } = chooseLambda(train, ARMS, LAMBDAS);
   const v3 = trainRouterV3(train, ARMS);
-  add(`Router v3 (Jev + learned odds, λ=${lambda})`, 'router-v3', t => v3.pick(features(jev[t.id].answers, extra[t.id]), lambda), { lambda });
+  add(`Judgment v3 (Jev + learned odds, λ=${lambda})`, 'router-v3', t => v3.pick(features(jev[t.id].answers, extra[t.id]), lambda), { lambda });
   v3info = { lambda, training_curve: scored, train_tasks: trainTasks.length };
 }
 

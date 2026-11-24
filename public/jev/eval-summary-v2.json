@@ -74,7 +74,7 @@
       "cost": 11.076284226190472
     },
     {
-      "name": "Router v1 (original table)",
+      "name": "Judgment v1 (original table)",
       "kind": "router",
       "pass": 0.8035714285714286,
       "cost": 2.7597941071428567,
@@ -173,7 +173,7 @@
       "beats_random": true
     },
     {
-      "name": "Router v2 (new Jev judgments)",
+      "name": "Judgment v2 (new Jev judgments)",
       "kind": "router-v2",
       "pass": 0.9107142857142857,
       "cost": 3.200650357142855,
@@ -182,7 +182,7 @@
       "beats_random": true
     },
     {
-      "name": "Router v3 (Jev + learned odds, λ=20)",
+      "name": "Judgment v3 (Jev + learned odds, λ=20)",
       "kind": "router-v3",
       "pass": 0.9345238095238095,
       "cost": 3.254220773809522,
@@ -2438,7 +2438,7 @@
       }
     },
     {
-      "name": "Router v1 (original table)",
+      "name": "Judgment v1 (original table)",
       "kind": "router",
       "easy": {
         "pass": 1,
@@ -2495,7 +2495,7 @@
       }
     },
     {
-      "name": "Router v2 (new Jev judgments)",
+      "name": "Judgment v2 (new Jev judgments)",
       "kind": "router-v2",
       "easy": {
         "pass": 1,
@@ -2514,7 +2514,7 @@
       }
     },
     {
-      "name": "Router v3 (Jev + learned odds, λ=20)",
+      "name": "Judgment v3 (Jev + learned odds, λ=20)",
       "kind": "router-v3",
       "easy": {
         "pass": 1,

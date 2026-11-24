@@ -9,10 +9,10 @@ const usd = x => x < 1 ? `$${x.toFixed(2)}` : x < 10 ? `$${x.toFixed(1)}` : `$${
 const EVALS = [
   { section: 'router-eval', title: 'Eval v0: a first pass', summary: '/jev/eval-summary.json', replay: '/jev/eval-replay.json', collapsed: true,
     intro: 'The first pass. Four open models from two families stood in for the router’s four tiers. Its lessons shaped the eval above.',
-    finding: 'Price didn’t track skill: DeepSeek V4.1 Flash, the second-cheapest model, passed everything, while pricier GLM 5.3 stumbled on letter-level tasks. So the original router mostly paid for capability it didn’t need, and did no better than random routing with the same model mix.' },
+    finding: 'Price didn’t track skill: DeepSeek V4.1 Flash, the second-cheapest model, passed everything, while pricier GLM 5.3 stumbled on letter-level tasks. So Judgment v1 mostly paid for capability it didn’t need, and did no better than random routing with the same model mix.' },
   { section: 'router-eval-2', title: 'Eval', summary: '/jev/eval-summary-v2.json', replay: '/jev/eval-replay-v2.json',
-    intro: 'This is the eval. Qwen 3.7 Flash, Plus and Max play the router’s tiers (a Fable pick falls back to Max). Router v2 and v3 were built from Eval v0’s lessons using only its 60 prompts, then tested on 168 new prompts, sorted into easy, medium and hard by how many of the six model/effort combinations failed them.',
-    finding: 'Both new routers beat the original by 11–13 points at about the same cost, and do far better on hard prompts. But neither beats simply sending everything to Qwen 3.7 Plus at high effort (93.5% for $3.32 per 1,000), so with this family there is little left for routing to win.' }
+    intro: 'This is the eval. Qwen 3.7 Flash, Plus and Max play the router’s tiers (a Fable pick falls back to Max). Judgment v2 and v3 were built from Eval v0’s lessons using only its 60 prompts, then tested on 168 new prompts, sorted into easy, medium and hard by how many of the six model/effort combinations failed them.',
+    finding: 'Judgment v2 and v3 beat v1 by 11–13 points at about the same cost, and do far better on hard prompts. But neither beats simply sending everything to Qwen 3.7 Plus at high effort (93.5% for $3.32 per 1,000), so with this family there is little left for routing to win.' }
 ];
 
 // Series: color carries identity, shape repeats it (validated palette, light surface).
@@ -105,7 +105,7 @@ function replayView(rep, cfg) {
   const stop = () => { clearInterval(timer); timer = null; play.textContent = '▶ Play'; };
   const start = () => { if (i >= events.length - 1) i = -1; play.textContent = '❚❚ Pause'; timer = setInterval(() => { if (i >= events.length - 1) return stop(); i++; draw(); }, SPEEDS[speed][1]); };
   const speedBtn = btn(SPEEDS[0][0], 'Speed', () => { speed = (speed + 1) % SPEEDS.length; speedBtn.textContent = SPEEDS[speed][0]; if (timer) { stop(); start(); } });
-  const select = h('select', 'replay-select'); select.setAttribute('aria-label', 'Router to replay');
+  const select = h('select', 'replay-select'); select.setAttribute('aria-label', 'Policy to replay');
   policies.forEach((p, k) => { const o = h('option', null, p.name); o.value = k; select.append(o); });
   select.addEventListener('change', () => { pol = +select.value; build(); i = Math.min(i, events.length - 1); draw(); });
   const counter = h('span', 'replay-counter'), stage = h('div', 'replay-stage'), tally = h('div', 'replay-tally'), strip = h('div', 'replay-strip');
@@ -185,10 +185,10 @@ function render(cfg, data, rep) {
     data.by_bucket ? h('div', 'cmp-scroll', h('table', 'tt eval-table', h('thead', null, h('tr', null, ...['Policy', 'Easy', 'Medium', 'Hard'].map(x => h('th', null, x)))),
       h('tbody', null, ...data.by_bucket.filter(p => p.kind !== 'oracle' && (p.kind !== 'fixed' || / · low$/.test(p.name))).map(p => h('tr', SHORT[p.kind] ? 'hit' : '', h('td', null, p.name),
         ...['easy', 'medium', 'hard'].map(b => h('td', null, p[b] ? `${pct(p[b].pass)} · ${usd(p[b].cost)}` : '–'))))))) : null,
-    h('h3', 'eval-h3', 'Where Router v1 sent each prompt'),
+    h('h3', 'eval-h3', 'Where Judgment v1 sent each prompt'),
     h('div', 'eval-verdicts', ...verdicts.map(([k, label]) => h('div', `v-${k.replace(/ /g, '-')}`, h('strong', null, String(c[k])), h('span', null, label)))),
     h('p', 'note', `Compared with the cheapest combination that passed each prompt at least half the time. “Too weak” failed; “more than needed” passed but cost more than necessary. Out of ${total} prompts.`),
-    misses.length ? h('details', 'eval-misses', h('summary', null, `Prompts the router under-served (${misses.length})`),
+    misses.length ? h('details', 'eval-misses', h('summary', null, `Prompts Judgment v1 under-served (${misses.length})`),
       h('ul', null, ...misses.map(t => h('li', null, h('span', null, t.prompt), h('span', 'cmp-sub', ` — sent to ${armLabel(t.router)}, cheapest passing: ${t.cheapest_passing ? armLabel(t.cheapest_passing) : 'none'}`))))) : null
   ].filter(Boolean);
   // A collapsed card is a closed disclosure whose summary is the card's title.

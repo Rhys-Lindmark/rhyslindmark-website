@@ -138,10 +138,10 @@ function renderCompare() {
   all.type = 'button'; all.disabled = busy || runningAll || run.length === PROMPTS.length;
   all.addEventListener('click', runAll);
   $('anti-compare').replaceChildren(...[
-    h('div', 'section-heading', h('h3', null, 'Router vs. Choice'), all),
+    h('div', 'section-heading', h('h3', null, 'Judgment vs. Choice'), all),
     lastError && !busy ? h('p', 'error', `Stopped: ${lastError}`) : null,
     h('p', 'cmp-summary', run.length ? `They agree on ${agree} of ${run.length} prompts run.` : 'Run prompts to compare the two approaches.'),
-    h('div', 'cmp-scroll', table(['Prompt', 'Router (truth table)', 'Choice (argmax)', ''], rows)),
+    h('div', 'cmp-scroll', table(['Prompt', 'Judgment (truth table)', 'Choice (argmax)', ''], rows)),
     h('p', 'note', 'Each prompt is one Jev call; answers are saved for this visit.')].filter(Boolean));
 }
 // ---- Model Router v2: rebuilt from the eval (bottom card) ----------------------
@@ -151,8 +151,8 @@ const EFFORT_LABEL = { low: 'Low', high: 'High' };
 function initV2() {
   const sec = $('router-v2'); if (!sec) return;
   sec.replaceChildren(
-    h('div', 'demo-heading', h('span', 'v2-tag', 'Built from the eval'), h('h2', null, h('span', null, 'Model Router v2'))),
-    h('p', 'eval-intro', 'The eval showed where models actually fail: exact, letter-level work and long step-by-step procedures, not “expertise” or “stakes”. So Router v2 asks Jev four new questions aimed at those, and uses a new truth table set from the 60 training prompts. On the eval’s 168 held-out prompts it passed 91.1% against the original router’s 80.4%, at about the same cost. A learned version on the same judgments (Router v3) did a little better, 93.5%, but v2 keeps a table you can read.'),
+    h('div', 'demo-heading', h('span', 'v2-tag', 'Built from the eval'), h('h2', null, h('span', null, 'Judgment v2'))),
+    h('p', 'eval-intro', 'The eval showed where models actually fail: exact, letter-level work and long step-by-step procedures, not “expertise” or “stakes”. So Judgment v2 asks Jev four new questions aimed at those, and uses a new truth table set from the 60 training prompts. On the eval’s 168 held-out prompts it passed 91.1% against Judgment v1’s 80.4%, at about the same cost. A learned version on the same judgments (Judgment v3) did a little better, 93.5%, but v2 keeps a table you can read.'),
     h('div', 'chips', ...PROMPTS.map(p => { const b = h('button', 'chip', p); b.type = 'button'; b.dataset.prompt = p; b.addEventListener('click', () => route(p)); return b; })),
     (() => { const e = h('p', 'error'); e.id = 'v2-error'; e.setAttribute('role', 'alert'); e.hidden = true; return e; })(),
     (() => { const o = h('div', 'route-output'); o.id = 'v2-output'; o.setAttribute('aria-live', 'polite'); return o; })(),
@@ -165,8 +165,8 @@ function renderV2() {
   if (!$('v2-output')) return;
   const a = current?.data.answers, hasV2 = a && 'exact_details' in a;
   const j = hasV2 ? judgeV2(a, a) : null, d = j ? decideV2(j) : null;
-  if (!current) $('v2-output').replaceChildren(h('p', 'route-empty', 'Pick a prompt to see where Router v2 sends it.'));
-  else if (!hasV2) $('v2-output').replaceChildren(h('p', 'route-empty', 'This answer came from before Router v2 existed. Reload the page and pick the prompt again.'));
+  if (!current) $('v2-output').replaceChildren(h('p', 'route-empty', 'Pick a prompt to see where Judgment v2 sends it.'));
+  else if (!hasV2) $('v2-output').replaceChildren(h('p', 'route-empty', 'This answer came from before Judgment v2 existed. Reload the page and pick the prompt again.'));
   else {
     const [tier, effort] = d.arm.split(':');
     $('v2-output').replaceChildren(
@@ -179,7 +179,7 @@ function renderV2() {
   $('v2-trace').replaceChildren(...(hasV2
     ? [...Object.entries(V2_JUDGMENTS).map(([k, label]) => traceRow('noul', label, [h('span', p(k) >= .5 ? 'opt on' : 'opt', `true ${pct(p(k))}`), h('span', p(k) < .5 ? 'opt on' : 'opt', `false ${pct(1 - p(k))}`)], j[k] ? 'yes' : 'no', j[k] ? 'is-yes' : 'is-no')),
        traceRow('score', 'Reasoning depth (from the original questions)', [h('span', 'opt on', DEPTH[j.depth])], DEPTH[j.depth], 'is-level')]
-    : [h('p', 'route-empty', 'Jev’s answers to Router v2’s questions, with the probabilities code reads.')]));
+    : [h('p', 'route-empty', 'Jev’s answers to Judgment v2’s questions, with the probabilities code reads.')]));
   $('v2-table').replaceChildren(
     table(['#', 'If', 'Model', 'Effort'], ROUTER_V2_TABLE.map((r, i) => {
       const state = !d ? '' : i === d.row ? 'hit' : i < d.row ? 'miss' : 'skip', [tier, effort] = r.arm.split(':');
