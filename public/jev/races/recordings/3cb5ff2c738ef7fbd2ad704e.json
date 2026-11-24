@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"dig at the shed door with the shovel","confidence":0.36,"probabilities":{"go south":0.23,"go east":0.21,"pour hot water on the shed door":0.01,"dig at the shed door with the shovel":0.49,"wait":0.06}}},"input_tokens":642,"ms":80,"recorded_at":"2026-11-24T17:53:18.277Z"}

@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go up","confidence":0.87,"probabilities":{"go up":0.9,"feel around in the dark":0.09,"light the lantern":0.01,"wait":0}}},"input_tokens":602,"ms":120,"recorded_at":"2026-11-24T17:47:36.577Z"}

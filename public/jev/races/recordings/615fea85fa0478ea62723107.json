@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go west","confidence":0.46,"probabilities":{"go south":0.25,"go west":0.57,"go north":0.08,"unlock the door with the key":0.09,"wait":0.01}}},"input_tokens":552,"ms":94,"recorded_at":"2026-11-24T17:53:13.625Z"}

@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go east","confidence":0.09,"probabilities":{"go east":0.39,"pour hot water on the shed door":0.32,"wait":0.29}}},"input_tokens":652,"ms":86,"recorded_at":"2026-11-24T17:53:18.536Z"}

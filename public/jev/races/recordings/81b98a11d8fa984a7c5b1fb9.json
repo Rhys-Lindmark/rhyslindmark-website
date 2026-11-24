@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take oil","confidence":0.71,"probabilities":{"go up":0.21,"take oil":0.78,"take pickles":0,"wait":0.01}}},"input_tokens":874,"ms":72,"recorded_at":"2026-11-24T17:48:27.722Z"}

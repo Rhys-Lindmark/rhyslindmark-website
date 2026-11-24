@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go west","confidence":0.4,"probabilities":{"go south":0.26,"go west":0.6,"wait":0.14}}},"input_tokens":853,"ms":81,"recorded_at":"2026-11-24T17:48:27.568Z"}

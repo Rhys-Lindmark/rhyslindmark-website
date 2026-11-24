@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"read the logbook","confidence":0.83,"probabilities":{"light the lamp":0.02,"read the logbook":0.87,"look through the spyglass":0.03,"wait":0.08}}},"input_tokens":1168,"ms":103,"recorded_at":"2026-11-24T17:52:28.107Z"}

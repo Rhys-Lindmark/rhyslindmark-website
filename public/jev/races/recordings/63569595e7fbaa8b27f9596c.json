@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"read the logbook","confidence":0.65,"probabilities":{"go down":0.15,"light the stove":0,"take logbook":0.14,"read the logbook":0.71,"light the lantern":0,"wait":0}}},"input_tokens":671,"ms":87,"recorded_at":"2026-11-24T17:48:26.199Z"}

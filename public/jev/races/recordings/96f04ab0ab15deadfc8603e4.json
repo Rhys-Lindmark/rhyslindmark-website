@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"wait","confidence":0.58,"probabilities":{"light the lamp":0.12,"look through the spyglass":0.16,"wait":0.72}}},"input_tokens":1198,"ms":148,"recorded_at":"2026-11-24T17:52:28.257Z"}

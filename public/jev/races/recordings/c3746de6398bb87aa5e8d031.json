@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go north","confidence":0.54,"probabilities":{"go south":0.05,"go west":0.04,"go north":0.61,"knock on the lighthouse door":0.04,"unlock the door with the key":0.04,"light the lantern":0.12,"wait":0.1}}},"input_tokens":730,"ms":73,"recorded_at":"2026-11-24T17:47:17.518Z"}

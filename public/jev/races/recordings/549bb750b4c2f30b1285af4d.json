@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take spyglass","confidence":0.11,"probabilities":{"go down":0.05,"go up":0.25,"look out the window":0.25,"read the logbook":0.12,"wait":0.07,"take spyglass":0.26}},"want_spyglass":{"type":"noul","noul":0.09}},"input_tokens":1095,"ms":97,"recorded_at":"2026-11-24T17:52:26.798Z"}

@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go east","confidence":0.23,"probabilities":{"go east":0.33,"go down":0.08,"open the drawer":0.13,"light the stove":0,"read the logbook":0.23,"light the lantern":0.2,"wait":0,"take logbook":0.03}},"want_logbook":{"type":"noul","noul":0.42}},"input_tokens":781,"ms":105,"recorded_at":"2026-11-24T17:52:24.573Z"}

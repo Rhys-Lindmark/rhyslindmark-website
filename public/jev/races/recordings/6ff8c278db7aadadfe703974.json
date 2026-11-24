@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"open the drawer","confidence":0.56,"probabilities":{"go east":0.06,"go down":0.07,"open the drawer":0.62,"light the stove":0.05,"take logbook":0.01,"read the logbook":0.18,"wait":0.01}}},"input_tokens":632,"ms":211,"recorded_at":"2026-11-24T17:48:25.860Z"}

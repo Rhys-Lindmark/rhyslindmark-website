@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"look out the window","confidence":0.35,"probabilities":{"look out the window":0.57,"read the logbook":0.31,"wait":0.12}}},"input_tokens":1094,"ms":123,"recorded_at":"2026-11-24T17:52:27.492Z"}

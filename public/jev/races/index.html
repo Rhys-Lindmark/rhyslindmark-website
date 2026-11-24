@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jev vs LLMs: races</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Jev <span class="muted">vs</span> LLMs</h1>
+  <nav id="tabs"></nav>
+</header>
+<p id="blurb" class="muted"></p>
+<section id="controls">
+  <label>Race <select id="case"></select></label>
+  <span id="lanepick"></span>
+  <label>Mode <select id="mode">
+    <option value="auto">Auto (replay recorded moves, else live)</option>
+    <option value="live">Live (fresh calls)</option>
+    <option value="replay">Replay only (offline)</option>
+  </select></label>
+  <button id="go">Start race</button>
+  
+</section>
+<section id="board"></section>
+<section id="lanes"></section>
+<section id="scores"></section>
+<footer class="muted">Each step, every racer gets the same state and the same legal moves and picks one, the way TypeSafe's WikiRace works. Time is the sum of each racer's own call latencies (wall clock for You). Cost is what the API calls cost: Jev at $0.042 per million input tokens, the LLMs at OpenRouter's billed cost.</footer>
+<script type="module" src="app.js"></script>
+</body>
+</html>

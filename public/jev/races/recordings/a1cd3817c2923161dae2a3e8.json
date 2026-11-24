@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"light the lantern","confidence":0.85,"probabilities":{"go up":0.09,"light the lantern":0.9,"wait":0.01}}},"input_tokens":693,"ms":87,"recorded_at":"2026-11-24T17:48:26.462Z"}

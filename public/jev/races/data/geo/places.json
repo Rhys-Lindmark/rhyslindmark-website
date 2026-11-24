@@ -1,0 +1,92 @@
+[
+  {
+    "id": "matsumoto-street",
+    "file": "photos/matsumoto-street.jpg",
+    "lat": 36.235297,
+    "lon": 137.972031,
+    "place": "Matsumoto, Japan",
+    "country": "JP",
+    "continent": "AS",
+    "what": "A narrow paved shopping lane with Japanese-script shop signs, a Kirin vending machine, dense overhead utility poles and a small kei car.",
+    "credit": {
+      "author": "1904.CC",
+      "license": "CC BY 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Matsumoto_street.jpg"
+    }
+  },
+  {
+    "id": "curitiba-hill",
+    "file": "photos/curitiba-hill.jpg",
+    "lat": -25.445185,
+    "lon": -49.343207,
+    "place": "Curitiba, Brazil",
+    "country": "BR",
+    "continent": "SA",
+    "what": "A patched residential hill street with tall Araucaria pines, Mercosur-style plates, a Ford Ka, razor-wire walls and concrete power poles.",
+    "credit": {
+      "author": "Fronteira",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Rua_Pedro_Artur_Zanlorenzi,_Campo_Comprido,_Curitiba,_abril_de_2025_(1).jpg"
+    }
+  },
+  {
+    "id": "dunedin-street",
+    "file": "photos/dunedin-street.jpg",
+    "lat": -45.864194,
+    "lon": 170.509096,
+    "place": "Dunedin, New Zealand",
+    "country": "NZ",
+    "continent": "OC",
+    "what": "A hilly suburban street of early-1900s villas with cabbage trees, native bush on the ridge, left-side parking and white give-way triangle markings.",
+    "credit": {
+      "author": "Krzysztof Golik",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Union_Street_in_Dunedin.jpg"
+    }
+  },
+  {
+    "id": "arusha-roadside",
+    "file": "photos/arusha-roadside.jpg",
+    "lat": -3.36729833,
+    "lon": 36.712595,
+    "place": "Arusha, Tanzania",
+    "country": "TZ",
+    "continent": "AF",
+    "what": "Boda-boda motorbikes outside a roadside strip of shops with yellow T-prefix plates, a Lipa kwa M-Pesa sign in Swahili, a DStv dish and banana plants.",
+    "credit": {
+      "author": "Zenith4237",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Streets_of_Arusha_(11).jpg"
+    }
+  },
+  {
+    "id": "merida-street",
+    "file": "photos/merida-street.jpg",
+    "lat": 20.959807,
+    "lon": -89.604331,
+    "place": "Mérida, Mexico",
+    "country": "MX",
+    "continent": "NA",
+    "what": "A flat street of weathered colonial-era facades with Spanish-language ads for building supplies, a blue auto-parts depot and wooden utility poles.",
+    "credit": {
+      "author": "Misael Lavadores",
+      "license": "CC BY-SA 3.0",
+      "source": "https://commons.wikimedia.org/wiki/File:Calle_28,_M%C3%A9rida_Yucat%C3%A1n._-_panoramio.jpg"
+    }
+  },
+  {
+    "id": "olomouc-street",
+    "file": "photos/olomouc-street.jpg",
+    "lat": 49.592659,
+    "lon": 17.281837,
+    "place": "Olomouc, Czechia",
+    "country": "CZ",
+    "continent": "EU",
+    "what": "A quiet residential street of pastel terraced houses with red tile roofs, satellite dishes and parked Škodas with EU-band plates.",
+    "credit": {
+      "author": "Pavel Hrdlička (Czech Wikipedia user Packa)",
+      "license": "CC BY-SA 4.0",
+      "source": "https://commons.wikimedia.org/wiki/File:%C5%BDelivsk%C3%A9ho_street,_middle_part,_Olomouc.jpg"
+    }
+  }
+]

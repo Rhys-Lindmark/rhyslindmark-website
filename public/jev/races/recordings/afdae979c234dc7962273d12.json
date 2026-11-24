@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"put on the snowshoes","confidence":0.98,"probabilities":{"go west":0.01,"put on the snowshoes":0.98,"wait":0,"take battery":0.01,"take axe":0}},"want_battery":{"type":"noul","noul":0.88},"want_axe":{"type":"noul","noul":0.23}},"input_tokens":1002,"ms":88,"recorded_at":"2026-11-24T17:53:19.642Z"}

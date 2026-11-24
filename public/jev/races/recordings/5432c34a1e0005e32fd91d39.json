@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"light the lamp","confidence":0.97,"probabilities":{"go down":0.01,"fill the lamp with oil":0.01,"light the lamp":0.98,"wait":0}}},"input_tokens":910,"ms":79,"recorded_at":"2026-11-24T17:48:28.413Z"}

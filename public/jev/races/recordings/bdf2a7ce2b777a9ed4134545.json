@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take shovel","confidence":0.34,"probabilities":{"go south":0.09,"go east":0.01,"go north":0.37,"pour hot water on the shed door":0.02,"wait":0,"take shovel":0.43,"take sled":0.08}},"want_shovel":{"type":"noul","noul":0.89},"want_sled":{"type":"noul","noul":0.81}},"input_tokens":720,"ms":84,"recorded_at":"2026-11-24T17:53:18.016Z"}

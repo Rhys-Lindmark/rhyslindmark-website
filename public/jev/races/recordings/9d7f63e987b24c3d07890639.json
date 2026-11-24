@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"take key","confidence":0.8,"probabilities":{"go up":0.17,"read the logbook":0,"wait":0,"take key":0.83,"take oil":0,"take pickles":0}},"want_key":{"type":"noul","noul":0.91},"want_oil":{"type":"noul","noul":0.77},"want_pickles":{"type":"noul","noul":0.05}},"input_tokens":1094,"ms":118,"recorded_at":"2026-11-24T17:52:26.053Z"}

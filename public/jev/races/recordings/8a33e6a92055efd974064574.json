@@ -1,0 +1,1 @@
+{"answers":{"move":{"type":"choice","choice":"go north","confidence":0.76,"probabilities":{"go north":0.82,"go east":0.04,"take driftwood":0.09,"wait":0.05}}},"input_tokens":781,"ms":123,"recorded_at":"2026-11-24T17:47:39.633Z"}
