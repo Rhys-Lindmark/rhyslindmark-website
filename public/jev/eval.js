@@ -63,7 +63,13 @@ function chart(data, tip) {
     g.addEventListener('mouseleave', () => tip(null)); g.addEventListener('blur', () => tip(null));
     svg.append(g);
   }
-  for (const p of pts.filter(p => p.kind === 'learned')) svg.append(s('text', { x: X(p.cost) - 7, y: Y(p.pass) - 7, 'text-anchor': 'end', class: 'pt-label lambda' }, `λ=${p.lambda}`));
+  // λ labels: points that land within a few pixels of each other share one label ("λ=0, 32").
+  const lambdaGroups = [];
+  for (const p of pts.filter(p => p.kind === 'learned').sort((a, b) => a.lambda - b.lambda)) {
+    const near = lambdaGroups.find(g => Math.hypot(X(g[0].cost) - X(p.cost), Y(g[0].pass) - Y(p.pass)) < 14);
+    near ? near.push(p) : lambdaGroups.push([p]);
+  }
+  for (const g of lambdaGroups) svg.append(s('text', { x: Math.min(...g.map(p => X(p.cost))) - 7, y: Math.min(...g.map(p => Y(p.pass))) - 7, 'text-anchor': 'end', class: 'pt-label lambda' }, `λ=${g.map(p => p.lambda).join(', ')}`));
   // Router labels sit above their point, Choice labels below, so near-neighbors don't collide.
   // Labels go right of their point; the chart's right margin leaves room for the longest one.
   for (const p of pts.filter(p => SHORT[p.kind] || p.kind === 'choice')) svg.append(s('text', { x: X(p.cost) + 9, y: Y(p.pass) + (p.kind === 'choice' ? 16 : -8), class: 'pt-label' }, p.kind === 'choice' ? `Choice · ${p.name.includes('high') ? 'high' : 'low'} effort` : SHORT[p.kind]));
