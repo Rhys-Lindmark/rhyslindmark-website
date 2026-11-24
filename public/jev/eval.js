@@ -7,8 +7,8 @@ const pct = x => `${(x * 100).toFixed(1)}%`;
 const usd = x => x < 1 ? `$${x.toFixed(2)}` : x < 10 ? `$${x.toFixed(1)}` : `$${Math.round(x)}`;
 
 const EVALS = [
-  { section: 'router-eval', title: 'Eval v0: a first pass', summary: '/jev/eval-summary.json', replay: '/jev/eval-replay.json',
-    intro: 'The first pass. Four open models from two families stood in for the router’s four tiers. Its lessons shaped the eval below.',
+  { section: 'router-eval', title: 'Eval v0: a first pass', summary: '/jev/eval-summary.json', replay: '/jev/eval-replay.json', collapsed: true,
+    intro: 'The first pass. Four open models from two families stood in for the router’s four tiers. Its lessons shaped the eval above.',
     finding: 'Price didn’t track skill: DeepSeek V4.1 Flash, the second-cheapest model, passed everything, while pricier GLM 5.3 stumbled on letter-level tasks. So the original router mostly paid for capability it didn’t need, and did no better than random routing with the same model mix.' },
   { section: 'router-eval-2', title: 'Eval', summary: '/jev/eval-summary-v2.json', replay: '/jev/eval-replay-v2.json',
     intro: 'This is the eval. Qwen 3.7 Flash, Plus and Max play the router’s tiers (a Fable pick falls back to Max). Router v2 and v3 were built from Eval v0’s lessons using only its 60 prompts, then tested on 168 new prompts, sorted into easy, medium and hard by how many of the six model/effort combinations failed them.',
@@ -155,8 +155,7 @@ function render(cfg, data, rep) {
   const verdicts = [['right', 'Right size'], ['more than needed', 'More than needed'], ['too weak', 'Too weak'], ['nothing passes', 'Nothing passes']].filter(([k]) => c[k]);
   const misses = data.router_diagnosis.tasks.filter(t => t.verdict === 'too weak');
   const kinds = new Set(data.policies.map(p => p.kind));
-  section.replaceChildren(...[
-    h('div', 'demo-heading', h('h2', null, cfg.title)),
+  const kids = [
     h('p', 'eval-intro', cfg.intro),
     cfg.finding ? h('p', 'eval-finding', h('strong', null, 'Finding: '), cfg.finding) : null,
     data.partial ? h('p', 'eval-partial', `Results so far: more runs are in progress. Updated ${new Date(data.generated).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}.`) : null,
@@ -178,7 +177,11 @@ function render(cfg, data, rep) {
     h('p', 'note', `Compared with the cheapest combination that passed each prompt at least half the time. “Too weak” failed; “more than needed” passed but cost more than necessary. Out of ${total} prompts.`),
     misses.length ? h('details', 'eval-misses', h('summary', null, `Prompts the router under-served (${misses.length})`),
       h('ul', null, ...misses.map(t => h('li', null, h('span', null, t.prompt), h('span', 'cmp-sub', ` — sent to ${armLabel(t.router)}, cheapest passing: ${t.cheapest_passing ? armLabel(t.cheapest_passing) : 'none'}`))))) : null
-  ].filter(Boolean));
+  ].filter(Boolean);
+  // A collapsed card is a closed disclosure whose summary is the card's title.
+  section.replaceChildren(...(cfg.collapsed
+    ? [h('details', 'eval-collapse', h('summary', null, h('h2', null, cfg.title)), ...kids)]
+    : [h('div', 'demo-heading', h('h2', null, cfg.title)), ...kids]));
   section.hidden = false;
 }
 

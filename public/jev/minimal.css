@@ -194,6 +194,9 @@ code, .code { font-family: var(--jev-font-mono); font-size: 12px; letter-spacing
 .eval-tiers strong { color: var(--ink); font-weight: 600; }
 .eval-partial { display: inline-block; margin: -8px 0 12px; padding: 4px 10px; border-radius: 0; background: var(--jev-silver); color: var(--jev-graphite); font-size: 12px; font-weight: 535; }
 /* Eval replay */
+.eval-collapse { margin: 0; }
+.eval-collapse > summary h2 { display: inline; font-size: 24px; line-height: 1.2; margin-left: 4px; }
+.eval-collapse[open] > summary { margin-bottom: 20px; }
 .eval-intro { margin: -8px 0 10px; font-size: 14px; color: var(--steel); max-width: 72ch; }
 .replay { border: 1px solid var(--bone); border-radius: 0; padding: 14px 16px; background: var(--jev-wash, #fcfcfc); }
 .replay-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
