@@ -7,8 +7,9 @@
 // and "does the author build with Jev?" (labeling/questions.py in the private jev repo).
 //
 // Query: use (classify | route | rank_score | eval_judge | agent_control | production),
-//   author (one X handle: every post of theirs), all=1 (every post, not one per builder),
-//   offset. ?meta=1 adds the totals, the posts per day and when the corpus was uploaded.
+//   segment (who Jev says the author is), author (one X handle: every post of theirs),
+//   all=1 (every post, not one per builder), offset. ?meta=1 adds the totals, the counts
+//   per use and per segment, and when the corpus was uploaded.
 
 const YES = 0.7;
 const PAGE = 30;
@@ -17,6 +18,7 @@ const USES = {
 	classify: 'use_classify', route: 'use_route', rank_score: 'use_rank_score',
 	eval_judge: 'use_eval_judge', agent_control: 'use_agent_control', production: 'in_production',
 };
+const SEGMENTS = ['agent_or_coding_tool_builder', 'production_pipeline_team', 'framework_or_platform_integrator', 'eval_or_research', 'maker_or_hobbyist'];
 const BASE = `source = 'x' AND about_jev >= ${YES} AND author_builds_with_jev >= ${YES} AND lower(author) NOT IN (${BOTS.map(b => `'${b}'`).join(', ')})`;
 
 function json(body, status = 200, extra = {}) {
@@ -55,6 +57,8 @@ export async function posts(db, params) {
 	const where = [BASE], binds = [];
 	const use = USES[params.get('use')] ? params.get('use') : '';
 	if (use) where.push(`${USES[use]} >= ${YES}`);
+	const segment = SEGMENTS.includes(params.get('segment')) ? params.get('segment') : '';
+	if (segment) { where.push('segment = ?'); binds.push(segment); }
 	const author = (params.get('author') || '').replace(/^@/, '');
 	if (author && /^\w{1,30}$/.test(author)) { where.push('lower(author) = lower(?)'); binds.push(author); }
 	const every = params.get('all') === '1' || !!author;
@@ -74,15 +78,15 @@ export async function posts(db, params) {
 	const wantMeta = params.get('meta') === '1';
 	if (wantMeta) {
 		queries.push(
-			db.prepare(`SELECT substr(created_at, 1, 10) AS d, count(*) AS n FROM items WHERE ${BASE} GROUP BY d ORDER BY d`),
+			db.prepare(`SELECT segment, count(*) AS n FROM items WHERE ${BASE} GROUP BY segment`),
 			db.prepare(`SELECT ${Object.entries(USES).map(([k, c]) => `sum(${c} >= ${YES}) AS ${k}`).join(', ')} FROM items WHERE ${BASE}`),
 			db.prepare('SELECT k, v FROM meta'),
-			db.prepare(`SELECT count(*) AS posts, count(DISTINCT lower(author)) AS builders FROM items WHERE ${BASE}`),
+			db.prepare(`SELECT count(*) AS posts, count(DISTINCT lower(author)) AS builders, max(created_at) AS newest FROM items WHERE ${BASE}`),
 		);
 	}
-	const [rows, count, days, uses, meta, all] = await db.batch(queries);
+	const [rows, count, segs, uses, meta, all] = await db.batch(queries);
 	const body = {
-		use, author: author || null, every, offset,
+		use, segment, author: author || null, every, offset,
 		posts: count.results[0].posts, builders: count.results[0].builders,
 		more: rows.results.length > PAGE,
 		results: rows.results.slice(0, PAGE).map(r => ({
@@ -94,8 +98,10 @@ export async function posts(db, params) {
 	if (wantMeta) {
 		const m = Object.fromEntries(meta.results.map(r => [r.k, r.v]));
 		body.meta = {
-			uploaded_at: m.uploaded_at || null, days: days.results, uses: uses.results[0],
+			uploaded_at: m.uploaded_at || null, uses: uses.results[0],
+			segments: Object.fromEntries(segs.results.filter(r => SEGMENTS.includes(r.segment)).map(r => [r.segment, r.n])),
 			posts: all.results[0].posts, builders: all.results[0].builders,
+			newest: all.results[0].newest,
 		};
 	}
 	return body;

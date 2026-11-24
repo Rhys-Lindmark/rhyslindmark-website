@@ -6,7 +6,7 @@ export const JEV_THEME_VERSION = 'jev-theme-2';
 export const JEV_THEME_TAGS = `<link rel="stylesheet" href="/jev/theme.css?v=${JEV_THEME_VERSION}"><script src="/jev/theme.js?v=${JEV_THEME_VERSION}"></script>`;
 
 // Pages with their own fixed palette, where a light/dark switch would do nothing useful.
-const SKIP = [/^\/jev\/game(\/|$)/, /^\/jev\/talks\/trust-meter\/(banking77|irony)(\.html)?$/];
+const SKIP = [/^\/jev\/game(\/|$)/, /^\/jev\/made-with-jev(\/|$)/,/^\/jev\/talks\/trust-meter\/(banking77|irony)(\.html)?$/];
 
 export function isJevThemePath(pathname) {
 	const inJev = pathname === '/jev' || pathname.startsWith('/jev/') || pathname === '/jev-private' || pathname.startsWith('/jev-private/');
