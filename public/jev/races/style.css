@@ -103,3 +103,8 @@ button.chip.rand { background: #20382a; color: var(--jev); }
 .pbar-v { height: 6px; background: #232836; border-radius: 3px; overflow: hidden; }
 .pbar-v i { display: block; height: 100%; background: var(--jev); }
 .pbar-p { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+#api:empty { display: none; }
+#api { margin-top: 18px; }
+#api details { margin: 6px 0; }
+#api summary { cursor: pointer; color: var(--muted); }
+#api pre { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font: 12px/1.45 ui-monospace, Menlo, monospace; max-height: 420px; overflow: auto; white-space: pre; }

@@ -83,6 +83,7 @@ async function runLane(m, caseId, laneId, mode, myRun, extra) {
     while (!game.done(s) && totals.steps < 80) {
       const turn = game.turn(data, s);
       show({ s, turn, last });
+      showApi(laneId, turn);
       const p = await aiMove(laneId, turn, { game: game.id, lane: laneId, s }, mode);
       if (myRun !== run) return;
       const out = game.apply(data, s, p.move);
@@ -197,6 +198,7 @@ async function start(caseArg) {
       <div class="log"></div>
     </div>`).join('');
   for (const id of picked) lanes[id] = { id, steps: 0, ms: 0, cost: 0, done: false, ticks: [] };
+  $('#api').innerHTML = picked.filter(id => id !== 'you').map(id => `<details id="api-${id}"><summary>Show the API call: ${esc(laneInfo(id).label)}</summary><pre></pre></details>`).join('');
   drawTimeline();
   drawBoard(prep);
 
@@ -221,6 +223,34 @@ function onEvent(e, m) {
     const st = el.querySelector('.status'); st.className = 'status done'; st.textContent = e.result.headline;
     maybeScores();
   }
+}
+
+// At the bottom: the exact request each AI lane just sent, as code you could run.
+function apiCode(laneId, turn) {
+  const req = moveRequest(laneId, turn);
+  const jev = LANES[laneId].kind === 'jev';
+  const body = structuredClone(req.body);
+  if (turn.image) { // the photo goes as base64; shortened here
+    if (jev) body.assets = { [turn.image.ref]: { type: 'image', format: 'jpg', data_base64: '<the photo, base64>' } };
+    else body.messages[1].content = [{ type: 'text', text: body.messages[1].content }, { type: 'image_url', image_url: { url: 'data:image/jpeg;base64,<the photo>' } }];
+  }
+  const key = jev ? 'TYPESAFE_API_KEY' : 'OPENROUTER_API_KEY';
+  const extra = jev && turn.image ? `,\n    'TypeSafe-Danger-Zone-Images': 'true'` : '';
+  const read = jev ? `// answers.${Object.keys(body.questions).join(', answers.')}: typed answers with probabilities` : `// choices[0].message.content: the move's number, as text`;
+  return `const res = await fetch('${req.url}', {
+  method: 'POST',
+  headers: {
+    Authorization: \`Bearer \${process.env.${key}}\`,
+    'Content-Type': 'application/json'${extra},
+  },
+  body: JSON.stringify(${JSON.stringify(body, null, 2).replace(/\n/g, '\n  ')}),
+});
+const data = await res.json();
+${read}`;
+}
+function showApi(laneId, turn) {
+  const pre = document.querySelector(`#api-${laneId} pre`);
+  if (pre) pre.textContent = apiCode(laneId, turn);
 }
 
 // The race at the bottom, like WikiRace's: one track per racer, the bar is its time so far,
