@@ -1,0 +1,1 @@
+{"reply":"Candidates: camera, clock, lamp, light bulb.\n\n\"Does it give off light?\" splits them: lamp and light bulb say yes, camera and clock say no. That is a 2/2 split, which is as even as it gets.\n\n\"Can you see through it?\" would be a poor split, since only the light bulb is arguably transparent.\n\n21","cost":0.003582,"ms":1655,"recorded_at":"2026-11-24T19:19:46.086Z"}

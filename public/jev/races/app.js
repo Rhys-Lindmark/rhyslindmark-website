@@ -109,10 +109,10 @@ async function runLane(m, caseId, laneId, mode, myRun, extra) {
     while (!game.done(s) && totals.steps < 80) {
       const turn = game.turn(data, s);
       show({ s, turn, last });
-      showApi(laneId, turn);
       let p;
-      if (plus) { plusCalls[laneId] = []; p = readPlus(await plus.move({ s, turn })); showPlusApi(laneId, turn); if (p.replayed) await sleep(p.ms); }
-      else p = await aiMove(laneId, turn, { game: game.id, lane: laneId, s }, mode);
+      if (turn.forced) p = { move: turn.forced, why: turn.why, ms: 0, cost: 0, replayed: false }; // code's own move (20 Questions: the last thing left), no model call
+      else if (plus) { plusCalls[laneId] = []; p = readPlus(await plus.move({ s, turn })); showPlusApi(laneId, turn); if (p.replayed) await sleep(p.ms); }
+      else { showApi(laneId, turn); p = await aiMove(laneId, turn, { game: game.id, lane: laneId, s }, mode); }
       if (myRun !== run) return;
       const out = game.apply(data, s, p.move);
       s = out.s;
@@ -350,6 +350,12 @@ function playHuman(m, caseId, extra) {
       return maybeScores();
     }
     const turn = game.turn(data, s);
+    if (turn.forced) { // code's own move, the same for every lane: play it for you
+      const out = game.apply(data, s, turn.forced);
+      s = out.s; lane.steps++; lane.ms = elapsed(); lane.ticks.push({ ms: lane.ms, bad: false }); stats(el, lane);
+      addRow(el, { n: lane.steps, move: turn.forced, why: turn.why, note: out.note, round: out.round }, m);
+      return draw();
+    }
     const view = render.youView?.({ data, s, turn }) ??
       `${turn.image ? `<img src="data/${esc(turn.image.path)}" alt="">` : ''}<pre>${esc(JSON.stringify(turn.state, null, 1))}</pre>`;
     const many = turn.options.length > 16;

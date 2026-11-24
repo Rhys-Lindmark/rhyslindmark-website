@@ -108,3 +108,5 @@ button.chip.rand { background: #20382a; color: var(--jev); }
 #api details { margin: 6px 0; }
 #api summary { cursor: pointer; color: var(--muted); }
 #api pre { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font: 12px/1.45 ui-monospace, Menlo, monospace; max-height: 420px; overflow: auto; white-space: pre; }
+.asked { font-size: 18px; margin-bottom: 10px; }
+.asked .muted { font-size: 14px; display: block; margin-top: 2px; }

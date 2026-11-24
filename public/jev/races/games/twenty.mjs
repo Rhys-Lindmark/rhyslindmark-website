@@ -1,73 +1,30 @@
-// 20 Questions. A secret thing from one category's list: Animals (35, a hand-written table),
-// Household objects or Foods (data/twenty/*.json, tables answered by Jev offline and
-// spot-checked, see data/twenty/build.mjs). Each turn a racer either asks one of the yes/no
-// questions it hasn't asked yet, or guesses a thing it hasn't guessed yet. Code answers from
-// the table, so every racer hears the same truth. Fewest turns wins.
+// 20 Questions over any noun. A secret thing from one pool of ~100 concrete nouns (animals,
+// plants, foods, household objects, tools, vehicles, buildings, materials, body parts, natural
+// things…), and one bank of general yes/no questions that work for any of them ("Is it
+// alive?", "Is it bigger than a breadbox?"). The answers are a lookup table, built once by Jev
+// offline and spot-checked (scripts/build-table.js -> data/twenty/nouns.json). Code answers
+// from the table, so every player hears the same truth. Fewest turns wins.
 //
-// Type anything: the person running the demo can type any thing ("toaster"). It joins the
-// category's list (sorted in, so it doesn't stand out), and Jev answers the category's
-// questions about it once, before the race (oracleTurn: one Noul per question, yes if >= 0.5).
-// The thing and its answers live in the game state (`s.custom`), so the server can rebuild
-// any turn from `s` alone. Every lane hears the same answers.
+// Type anything: a thing that isn't in the pool ("hedgehog") gets its row of the table from
+// Jev before the race (oracleTurn: one request, one Noul per question, yes at 0.5 or more).
+// Then it's a lookup like any other. The thing and its row live in the game state
+// (`s.custom`), so any turn can be rebuilt from `s` alone, and every player hears the same answers.
 //
-// Every racer (Jev, the LLMs, You) sees `still_possible`: the things that fit every answer
-// so far and haven't been guessed. Code already knows this from the answers, the way you'd
-// cross animals off a sheet of paper, so it goes in the state instead of making each racer
-// redo the bookkeeping. (Without it, Jev never became sure and missed a giraffe after 20
-// questions.) What's left is the real skill: picking the question that splits what's left.
+// Who decides what. Jev makes one judgment per turn; code does the rest:
+//   code   crosses off things that don't fit the answers (`still_possible`, in every player's state)
+//   code   guesses when exactly one thing is left (or, out of questions, the first still possible)
+//   Jev    (one Choice) Which question splits what's left most evenly? (askText)
+// When code decides alone, turn() returns `forced`: the move, with no model call.
 //
-// Jev doesn't get "what's your next move?". It gets two judgments in one request, and code
-// decides (the truth-table pattern):
-//   ask   (Choice) Which question splits `still_possible` closest to half and half?
-//   guess (Choice) Which thing in `still_possible` is it most likely to be?
-//   -> 3 or fewer left: guess (guessing beats asking there, on average).
-//      Otherwise: ask.  (No questions or turns left: guess.)
-//
-// Pure module: the server, the browser and the /jev/races/move Pages function all run it.
+// Pure module: no Node or browser APIs. The workshop's server, CLI and browser all run it, and
+// it has the same shape as the race page's game modules (ai.rhyslindmark.com/jev/races).
 
-const ANIMALS = ['dog', 'cat', 'horse', 'cow', 'pig', 'sheep', 'chicken', 'duck', 'eagle', 'owl', 'penguin', 'parrot',
-  'shark', 'goldfish', 'salmon', 'dolphin', 'whale', 'lion', 'tiger', 'elephant', 'giraffe', 'zebra', 'gorilla',
-  'kangaroo', 'bat', 'mouse', 'rabbit', 'frog', 'snake', 'crocodile', 'turtle', 'bee', 'butterfly', 'ant', 'spider'];
+export const MAX_TURNS = 20;
+export const MISS_TURNS = MAX_TURNS + 5;
+export const GUESS = 'Guess: ';
 
-// Each question, and the animals for which the answer is yes. Everything else is no.
-const QUESTIONS = {
-  'Is it a mammal?': 'dog cat horse cow pig sheep dolphin whale lion tiger elephant giraffe zebra gorilla kangaroo bat mouse rabbit',
-  'Is it a bird?': 'chicken duck eagle owl penguin parrot',
-  'Is it a fish?': 'shark goldfish salmon',
-  'Is it a reptile?': 'snake crocodile turtle',
-  'Is it an insect?': 'bee butterfly ant',
-  'Does it live in the ocean?': 'penguin shark salmon dolphin whale',
-  'Can it fly?': 'duck eagle owl parrot bat bee butterfly',
-  'Is an adult heavier than an adult human?': 'horse cow pig shark dolphin whale lion tiger elephant giraffe zebra gorilla crocodile',
-  'Is it a common pet?': 'dog cat goldfish parrot rabbit',
-  'Is it raised on farms?': 'horse cow pig sheep chicken duck',
-  'Does it mostly eat other animals?': 'dog cat eagle owl penguin shark salmon dolphin whale lion tiger bat frog snake crocodile spider',
-  'Does it have stripes or spots?': 'tiger zebra giraffe bee',
-  'Does it live on the African savanna?': 'lion elephant giraffe zebra',
-  'Does it walk on four legs?': 'dog cat horse cow pig sheep lion tiger elephant giraffe zebra gorilla mouse rabbit frog crocodile turtle',
-  'Does it have hooves?': 'horse cow pig sheep giraffe zebra',
-  'Is it mostly active at night?': 'owl bat mouse',
-  'Does it lay eggs?': 'chicken duck eagle owl penguin parrot goldfish salmon frog snake crocodile turtle bee butterfly ant spider',
-  'Could an adult fit in your hand?': 'goldfish mouse frog bee butterfly ant spider',
-  'Does it have more than four legs?': 'bee butterfly ant spider',
-  'Is it mostly black and white?': 'penguin zebra',
-  'Does it move by hopping?': 'kangaroo rabbit frog',
-  'Is it in the cat family?': 'cat lion tiger',
-  'Do people ride it?': 'horse elephant',
-  'Do people drink its milk?': 'cow sheep',
-  'Is an adult longer than a bus?': 'whale',
-};
-
-// A category: `key` names its list in the racers' state, `noun` is one of them.
-const ANIMAL_CAT = {
-  id: 'animals', title: 'Animals', key: 'animals', noun: 'animal', items: ANIMALS,
-  questions: Object.fromEntries(Object.entries(QUESTIONS).map(([q, list]) => [q, list.split(' ')])),
-  sets: { a: ['frog', 'giraffe', 'owl'], b: ['dolphin', 'ant', 'sheep'], c: ['kangaroo', 'eagle', 'goldfish'] },
-};
-const FILES = ['objects', 'foods']; // data/twenty/<id>.json, same shape as ANIMAL_CAT
-const MAX_TURNS = 20;
-const GUESS = 'Guess: ';
-const LEGACY = new Set(['a', 'b', 'c', 'one']); // animal case ids from before categories: 'a', 'one:frog'
+// The table as stored: { items: [...], questions: { 'Is it alive?': [things where yes] }, sets }.
+export const prep = t => ({ ...t, yes: Object.fromEntries(Object.entries(t.questions).map(([q, list]) => [q, new Set(list)])) });
 
 // A typed thing: trimmed, lower case, at most 40 characters, letters/digits/spaces and a
 // little punctuation. null if it isn't usable.
@@ -77,210 +34,183 @@ export function cleanThing(x) {
   return t.length && t.length <= 40 && /^[\p{L}\p{N}][\p{L}\p{N} '’.&-]*$/u.test(t) ? t : null;
 }
 
-// Case ids: '<cat>:<set>' (three fixed secrets), '<cat>:one:<item>', '<cat>:set:<a>|<b>|<c>'
-// (3 random secrets, picked by the page), '<cat>:type:<thing>' (a typed thing; needs its
-// answers from oracleTurn). Animals also keep their old ids: 'a', 'one:frog'.
-export function parseCase(caseId) {
-  const parts = String(caseId).split(':');
-  const cat = LEGACY.has(parts[0]) ? 'animals' : parts.shift();
-  const [kind, ...rest] = parts;
-  return { cat, kind, arg: rest.join(':') };
-}
-
-const prepCat = c => ({ ...c, yes: Object.fromEntries(Object.entries(c.questions).map(([q, list]) => [q, new Set(list)])) });
-
-// The category as this game plays it: with a typed thing sorted into the list.
-function catFor(data, s) {
-  const c = data.cats[s.cat ?? 'animals'];
-  if (!c) throw new Error('unknown category');
-  if (!s.custom) return c;
+// The table this game plays: with a typed thing sorted into the pool.
+export function tableFor(data, s) {
+  if (!s.custom || data.items.includes(s.custom.thing)) return data;
   const { thing, row } = s.custom;
-  if (cleanThing(thing) !== thing || !row || typeof row !== 'object') throw new Error('bad typed thing');
-  const qs = Object.keys(c.questions);
-  if (Object.keys(row).length !== qs.length || qs.some(q => row[q] !== 'yes' && row[q] !== 'no')) throw new Error('bad answers for the typed thing');
-  if (c.items.includes(thing)) return c;
-  return { ...c, items: [...c.items, thing].sort((a, b) => a.localeCompare(b)), row, thing };
+  const qs = Object.keys(data.questions);
+  if (cleanThing(thing) !== thing || !row || typeof row !== 'object' || qs.some(q => row[q] !== 'yes' && row[q] !== 'no')) throw new Error('Bad answers for the typed thing');
+  return { ...data, items: [...data.items, thing].sort((a, b) => a.localeCompare(b)), custom: { thing, row } };
 }
 
-const answer = (c, secret, q) => (secret === c.thing ? c.row[q] === 'yes' : c.yes[q].has(secret)) ? 'yes' : 'no';
-// The things that fit every answer so far and haven't been guessed yet.
-const stillPossible = (c, s) => c.items.filter(a => !s.guessed.includes(a) && s.answers.every(x => answer(c, a, x.question) === x.answer));
+export const answer = (t, thing, q) => (t.custom?.thing === thing ? t.custom.row[q] === 'yes' : t.yes[q].has(thing)) ? 'yes' : 'no';
 
-// Jev as the oracle for a typed thing: one request, one Noul per question of the category.
-// The offline tables (data/twenty/build.mjs) were made the same way.
-export function oracleTurn(cat, thing) {
-  const qs = Object.keys(cat.questions);
+// The things that fit every answer so far and haven't been guessed: crossing off on paper.
+export const stillPossible = (t, s) => t.items.filter(x => !s.guessed.includes(x) && s.answers.every(a => answer(t, x, a.question) === a.answer));
+
+// Two things with the same answers to every question can never be told apart.
+export function clashes(t) {
+  const qs = Object.keys(t.questions), sig = {};
+  for (const x of t.items) (sig[qs.map(q => answer(t, x, q)[0]).join('')] ??= []).push(x);
+  return Object.values(sig).filter(v => v.length > 1);
+}
+
+// Everything code knows on a turn. Players in the workshop get this as `game`.
+export function view(data, s) {
+  const t = tableFor(data, s);
+  const asked = new Set(s.answers.map(a => a.question));
+  const unasked = Object.keys(t.questions).filter(q => !asked.has(q));
+  const unguessed = t.items.filter(x => !s.guessed.includes(x));
   return {
-    jev: {
-      state: { category: cat.title.toLowerCase(), thing },
-      questions: Object.fromEntries(qs.map((q, i) => ['q' + (i + 1), { type: 'noul', instructions: `About ${thing}: ${q}`,
-        criteria: { true: `Yes, this is usually true of ${thing}.`, false: `No, this is usually not true of ${thing}.` } }])),
-      // The "move" is the thing and its answers, which init takes as extra.oracle.
-      decide: a => ({ move: { thing, row: Object.fromEntries(qs.map((q, i) => [q, a['q' + (i + 1)].noul >= 0.5 ? 'yes' : 'no'])) } }),
-    },
+    things: t.items,                    // the whole pool
+    answers: s.answers,                 // [{ question, answer: 'yes' | 'no' }] so far
+    wrongGuesses: s.guessed,
+    unasked,                            // questions not asked yet
+    unguessed,                          // things not guessed yet
+    stillPossible: stillPossible(t, s), // things that fit every answer and weren't guessed
+    turnsLeft: MAX_TURNS - s.turns,
+    secretNumber: s.r + 1,
+    secretCount: s.secrets.length,
+    moves: [...unasked, ...unguessed.map(x => GUESS + x)], // every legal move, as text
   };
 }
 
-// Jev as the oracle when nobody said which category a typed thing is in: one request with a
-// Choice (which category?) plus every category's questions about it (speculative fan-out).
-// Code keeps the answers for the category Jev picked.
-export function anyOracleTurn(cats, thing) {
-  const list = Object.values(cats);
-  const questions = { category: { type: 'choice', instructions: `Which kind of thing is ${thing}?`,
-    criteria: Object.fromEntries(list.map(c => [c.id, `${thing} is ${c.noun === 'animal' ? 'an animal' : `a ${c.noun}`}`])) } };
-  list.forEach((c, ci) => Object.keys(c.questions).forEach((q, i) => {
-    questions[`c${ci}q${i + 1}`] = { type: 'noul', instructions: `About ${thing}: ${q}`,
-      criteria: { true: `Yes, this is usually true of ${thing}.`, false: `No, this is usually not true of ${thing}.` } };
-  }));
+// The state my player gives Jev, and the LLM lanes see.
+export function stateFor(game) {
+  return {
+    game: 'I am thinking of one thing from `things`. Find it in as few turns as possible.',
+    things: game.things,
+    answers: game.answers.map(a => `${a.question} ${a.answer}`),
+    ...(game.wrongGuesses.length ? { wrong_guesses: game.wrongGuesses } : {}),
+    still_possible: game.stillPossible,
+    turns_left: game.turnsLeft,
+  };
+}
+// The one judgment, and the same turn for every racer (Jev, the LLMs, You): this question, the
+// state above, and the unasked questions as the options.
+export const askText = "Which question splits what's left most evenly?";
+
+// Code's move, when code can decide alone: one thing left, or no questions left.
+export function codeMove(game) {
+  if (game.stillPossible.length === 1 || !game.unasked.length) return GUESS + game.stillPossible[0];
+  return null;
+}
+
+// Jev as the oracle for a typed thing: one request, one Noul per question.
+// (scripts/build-table.js builds the whole table with the same request, one per noun.)
+export function oracleTurn(data, thing) {
+  const qs = Object.keys(data.questions);
   return {
     jev: {
       state: { thing },
-      questions,
-      decide: a => {
-        const ci = list.findIndex(c => c.id === a.category.choice);
-        const c = list[ci];
-        return { move: { thing, cat: c.id, row: Object.fromEntries(Object.keys(c.questions).map((q, i) => [q, a[`c${ci}q${i + 1}`].noul >= 0.5 ? 'yes' : 'no'])) },
-          probs: a.category.probabilities };
-      },
+      questions: Object.fromEntries(qs.map((q, i) => ['q' + (i + 1), { type: 'noul', instructions: `About ${thing}: ${q}`,
+        criteria: { true: `Yes, this is usually true of ${thing}.`, false: `No, this is usually not true of ${thing}.` } }])),
+      // The "move" is the thing and its row, which init takes as extra.oracle.
+      decide: a => ({ move: { thing, row: Object.fromEntries(qs.map((q, i) => [q, a['q' + (i + 1)].noul >= 0.5 ? 'yes' : 'no'])) },
+        probs: Object.fromEntries(qs.map((q, i) => [q, a['q' + (i + 1)].noul])) }),
     },
   };
 }
 
-// The category already listing a typed thing, if any.
-const listedIn = (data, t) => Object.values(data.cats).find(c => c.items.includes(t));
-
-// The oracle request for a typed thing (category 'any': Jev picks the category too), or null
-// if it needs none (it's already on a list) or isn't valid. The server calls this with what
-// the page sent.
-export function oracleFor(data, category, thing) {
+// The oracle request for a typed thing, or null if it needs none (it's in the pool) or isn't
+// valid. The race page's move endpoint calls this with { oracle: { thing } }; the category
+// argument is there for that page's older signature and is ignored.
+export function oracleFor(data, _category, thing) {
   const t = cleanThing(thing);
-  if (!t) return null;
-  if (category === 'any') return listedIn(data, t) ? null : { ask: { category, thing: t }, turn: anyOracleTurn(data.cats, t) };
-  const c = typeof category === 'string' && Object.hasOwn(data.cats, category) ? data.cats[category] : null;
-  if (!c || c.items.includes(t)) return null;
-  return { ask: { category, thing: t }, turn: oracleTurn(c, t) };
+  if (!t || data.items.includes(t)) return null;
+  return { ask: { thing: t }, turn: oracleTurn(data, t) };
 }
 
-export const _table = { cats: () => ({ animals: prepCat(ANIMAL_CAT) }), answer, stillPossible, catFor }; // for checks
+// Case ids: 'a' | 'b' | 'c' (three fixed secrets), 'random' (three random, settled by
+// resolve()), 'one:<thing>', 'set:<x>|<y>|<z>', 'type:<anything>'.
+export function parseCase(caseId) {
+  const [kind, ...rest] = String(caseId).split(':');
+  return { kind, arg: rest.join(':') };
+}
 
 export default {
   id: 'twenty',
   title: '20 Questions',
-  blurb: 'A secret animal, household object or food, or anything you type. Ask yes/no questions or guess. Fewest turns wins.',
+  blurb: 'A secret thing from 100 nouns, or anything you type. Ask yes/no questions; code crosses off what no longer fits and guesses when one is left. Fewest turns wins.',
   steps: 'turns',
 
-  async load(readJson) {
-    const cats = { animals: prepCat(ANIMAL_CAT) };
-    for (const [id, c] of await Promise.all(FILES.map(async f => [f, await readJson(`twenty/${f}.json`)]))) cats[id] = prepCat(c);
-    return { cats };
-  },
+  async load(readJson) { return prep(await readJson('twenty/nouns.json')); },
 
-  // The page shows these grouped by category. "Pick one" and "Type anything" get a second
-  // control on the page (render/twenty.js) that completes the id.
-  cases: data => Object.values(data.cats).flatMap(c => [
-    ...Object.keys(c.sets).map(k => ({ id: c.id === 'animals' ? k : `${c.id}:${k}`, label: `Three secrets (set ${k.toUpperCase()})`, group: c.title })),
-    { id: `${c.id}:random`, label: '3 random secrets', group: c.title },
-    { id: `${c.id}:one`, label: 'Pick one secret…', group: c.title },
-    { id: `${c.id}:type`, label: 'Type anything…', group: c.title },
-  ]),
+  cases: data => [
+    ...Object.keys(data.sets).map(k => ({ id: k, label: `Three secrets (set ${k.toUpperCase()})` })),
+    { id: 'random', label: '3 random secrets' },
+    { id: 'one', label: 'Pick one secret…' },
+    { id: 'type', label: 'Type anything…' },
+  ],
 
-  // A concrete case id: '<cat>:random' becomes three random secrets. The page and the CLI
-  // call this once per race, so every lane plays the same secrets.
   resolve(data, caseId) {
-    const { cat, kind } = parseCase(caseId);
-    if (kind !== 'random' || !data.cats[cat]) return caseId;
-    const pool = [...data.cats[cat].items];
-    const picks = Array.from({ length: 3 }, () => pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
-    return `${cat}:set:${picks.join('|')}`;
+    if (caseId !== 'random') return caseId;
+    const pool = [...data.items];
+    return 'set:' + Array.from({ length: 3 }, () => pool.splice(Math.floor(Math.random() * pool.length), 1)[0]).join('|');
   },
 
-  // A typed thing needs Jev's answers before the race starts: { ask, turn } or null.
   oracle(data, caseId) {
-    const { cat, kind, arg } = parseCase(caseId);
-    return kind === 'type' ? oracleFor(data, cat, arg) : null;
+    const { kind, arg } = parseCase(caseId);
+    return kind === 'type' ? oracleFor(data, null, arg) : null;
   },
-  oracleFor, // (data, category, thing): what the move endpoint calls with the page's { oracle: { category, thing } }
+  oracleFor,
 
-  // extra: { oracle: { thing, row } } for a typed thing (oracleTurn's answers).
+  // extra: { oracle: { thing, row } } for a typed thing (oracleTurn's move).
   init(data, caseId, extra) {
-    let { cat, kind, arg } = parseCase(caseId);
-    if (cat === 'any') { // a typed thing; Jev said which category (or it's already listed)
-      const t = cleanThing(arg);
-      cat = (t && listedIn(data, t)?.id) || extra?.oracle?.cat;
-      if (!cat) throw new Error(t ? `No answers yet for "${t}"` : 'Type a thing (letters and spaces, up to 40 characters)');
-    }
-    const c = data.cats[cat];
-    if (!c) throw new Error(`No category "${cat}"`);
-    const base = { cat, r: 0, answers: [], guessed: [], turns: 0, results: [] };
+    const { kind, arg } = parseCase(caseId);
+    const base = { r: 0, answers: [], guessed: [], turns: 0, results: [] };
     if (kind === 'type') {
       const thing = cleanThing(arg);
       if (!thing) throw new Error('Type a thing (letters and spaces, up to 40 characters)');
-      if (c.items.includes(thing)) return { ...base, secrets: [thing] };
+      if (data.items.includes(thing)) return { ...base, secrets: [thing] };
       if (extra?.oracle?.thing !== thing) throw new Error(`No answers yet for "${thing}"`);
       return { ...base, secrets: [thing], custom: { thing, row: extra.oracle.row } };
     }
-    const secrets = kind === 'one' ? [arg] : kind === 'set' ? arg.split('|') : c.sets[kind];
-    if (!secrets?.length || secrets.some(x => !c.items.includes(x))) throw new Error(`Unknown case "${caseId}"`);
+    const secrets = kind === 'one' ? [arg] : kind === 'set' ? arg.split('|') : data.sets[kind];
+    if (!secrets?.length || secrets.some(x => !data.items.includes(x))) throw new Error(`Unknown case "${caseId}"`);
     return { ...base, secrets };
   },
 
   done: s => s.r >= s.secrets.length,
 
+  // A turn: the state, the question and the legal options every racer gets, my Jev request
+  // (one Choice) and, when code decides alone, `forced` (play it with no model call).
   turn(data, s) {
-    const c = catFor(data, s);
-    const asked = new Set(s.answers.map(a => a.question));
-    const questions = Object.keys(c.questions).filter(q => !asked.has(q));
-    const things = c.items.filter(a => !s.guessed.includes(a));
-    const possible = stillPossible(c, s);
-    // Animals keep the exact state they had before categories, so their recordings still replay.
-    const state = {
-      game: `I am thinking of one ${c.noun} from \`${c.key}\`. Find it in as few turns as possible.`,
-      [c.key]: c.items,
-      answers: s.answers.map(a => `${a.question} ${a.answer}`),
-      ...(s.guessed.length ? { wrong_guesses: s.guessed } : {}),
-      still_possible: possible,
-      turns_left: MAX_TURNS - s.turns,
-    };
-    const options = [...questions.map(q => ({ name: q })), ...things.map(a => ({ name: GUESS + a }))];
+    const game = view(data, s);
+    const state = stateFor(game);
+    const options = game.unasked.map(q => ({ name: q }));
+    const forced = codeMove(game);
     const jev = {
       state,
-      questions: {
-        ask: { type: 'choice', instructions: `Which yes/no question splits the ${c.key} in \`still_possible\` into two groups closest to equal size?`,
-          criteria: Object.fromEntries(questions.map(q => [q, null])) },
-        guess: { type: 'choice', instructions: `Which ${c.noun} in \`still_possible\` am I most likely thinking of?`, criteria: Object.fromEntries(possible.map(a => [a, null])) },
-      },
-      decide(a) {
-        const guessNow = possible.length <= 3 || !questions.length || state.turns_left <= 1;
-        return guessNow
-          ? { move: GUESS + a.guess.choice, probs: a.guess.probabilities, why: `${possible.length} left → guess` }
-          : { move: a.ask.choice, probs: a.ask.probabilities, why: `${possible.length} left → ask` };
-      },
+      questions: { ask: { type: 'choice', instructions: askText, criteria: Object.fromEntries(game.unasked.map(q => [q, null])) } },
+      decide: a => ({ move: a.ask.choice, probs: a.ask.probabilities, why: `${game.stillPossible.length} left → ask` }),
     };
-    return { state, question: 'What is your next move?', options, jev };
+    return { state, question: askText, options, jev, ...(forced ? { forced, why: game.stillPossible.length === 1 ? '1 left → code guesses' : 'no questions left → code guesses' } : {}) };
   },
 
   apply(data, s, move) {
-    const c = catFor(data, s);
+    const t = tableFor(data, s);
     const secret = s.secrets[s.r];
     const turns = s.turns + 1;
     const next = (res, note) => ({ s: { ...s, r: s.r + 1, answers: [], guessed: [], turns: 0, results: [...s.results, res] }, note, round: res });
     let out;
-    if (move?.startsWith(GUESS)) {
+    if (typeof move === 'string' && move.startsWith(GUESS)) {
       const g = move.slice(GUESS.length);
       if (g === secret) return next({ secret, turns, solved: true }, `${g}? Yes! (${turns} turns)`);
       out = { s: { ...s, turns, guessed: [...s.guessed, g] }, note: `${g}? No.` };
-    } else if (move && Object.hasOwn(c.questions, move)) {
-      const a = answer(c, secret, move);
+    } else if (typeof move === 'string' && Object.hasOwn(t.questions, move) && !s.answers.some(a => a.question === move)) {
+      const a = answer(t, secret, move);
       out = { s: { ...s, turns, answers: [...s.answers, { question: move, answer: a }] }, note: `${move} ${a}` };
     } else {
-      out = { s: { ...s, turns }, note: 'no valid move' };
+      out = { s: { ...s, turns }, note: `not a legal move: ${String(move).slice(0, 60)}` };
     }
-    if (turns >= MAX_TURNS) return next({ secret, turns: MAX_TURNS + 5, solved: false }, `Out of turns. It was ${secret}. (+5 penalty)`);
+    if (turns >= MAX_TURNS) return next({ secret, turns: MISS_TURNS, solved: false }, `Out of turns. It was ${secret}. (counts as ${MISS_TURNS})`);
     return out;
   },
 
   result(s) {
     const turns = s.results.reduce((a, r) => a + r.turns, 0);
-    return { score: -turns, headline: `${turns} turns`, detail: s.results.map(r => `${r.secret}: ${r.solved ? r.turns : 'missed'}`).join(' · ') };
+    return { score: -turns, turns, solved: s.results.filter(r => r.solved).length, headline: `${turns} turns`,
+      detail: s.results.map(r => `${r.secret}: ${r.solved ? r.turns : 'missed'}`).join(' · ') };
   },
 };
