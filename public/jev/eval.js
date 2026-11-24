@@ -18,9 +18,9 @@ const EVALS = [
 // Series: color carries identity, shape repeats it (validated palette, light surface).
 const SERIES = {
   fixed: { label: 'One model for everything', color: '#9a9a9a', shape: 'square' },
-  router: { label: 'Router v1 (original truth table)', color: '#e0179f', shape: 'circle' },
-  'router-v2': { label: 'Router v2 (new Jev judgments)', color: '#e0179f', shape: 'triangle' },
-  'router-v3': { label: 'Router v3 (Jev + learned odds)', color: '#7a4be8', shape: 'circle' },
+  router: { label: 'Judgment v1 (original truth table)', color: '#e0179f', shape: 'circle' },
+  'router-v2': { label: 'Judgment v2 (new Jev judgments)', color: '#e0179f', shape: 'triangle' },
+  'router-v3': { label: 'Judgment v3 (Jev + learned odds)', color: '#7a4be8', shape: 'circle' },
   choice: { label: 'Choice (argmax)', color: '#e01a2b', shape: 'diamond' },
   learned: { label: 'Learned router (cost dial λ)', color: '#7a4be8', shape: 'line' }
 };
@@ -63,7 +63,7 @@ function chart(data, tip) {
     g.addEventListener('mouseleave', () => tip(null)); g.addEventListener('blur', () => tip(null));
     svg.append(g);
   }
-  for (const p of pts.filter(p => p.kind === 'learned')) svg.append(s('text', { x: X(p.cost), y: Y(p.pass) + 16, 'text-anchor': 'middle', class: 'pt-label lambda' }, `λ=${p.lambda}`));
+  for (const p of pts.filter(p => p.kind === 'learned')) svg.append(s('text', { x: X(p.cost) - 7, y: Y(p.pass) - 7, 'text-anchor': 'end', class: 'pt-label lambda' }, `λ=${p.lambda}`));
   // Router labels sit above their point, Choice labels below, so near-neighbors don't collide.
   // Labels go right of their point; the chart's right margin leaves room for the longest one.
   for (const p of pts.filter(p => SHORT[p.kind] || p.kind === 'choice')) svg.append(s('text', { x: X(p.cost) + 9, y: Y(p.pass) + (p.kind === 'choice' ? 16 : -8), class: 'pt-label' }, p.kind === 'choice' ? `Choice · ${p.name.includes('high') ? 'high' : 'low'} effort` : SHORT[p.kind]));
