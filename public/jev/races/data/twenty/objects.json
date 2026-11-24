@@ -1,0 +1,275 @@
+{
+ "id": "objects",
+ "title": "Household objects",
+ "key": "objects",
+ "noun": "household object",
+ "items": [
+  "bathtub",
+  "bed",
+  "blanket",
+  "book",
+  "broom",
+  "bucket",
+  "candle",
+  "chair",
+  "clock",
+  "doormat",
+  "fork",
+  "frying pan",
+  "hair dryer",
+  "iron",
+  "kettle",
+  "key",
+  "knife",
+  "lamp",
+  "laptop",
+  "microwave",
+  "mirror",
+  "mug",
+  "pillow",
+  "refrigerator",
+  "remote control",
+  "scissors",
+  "sofa",
+  "table",
+  "television",
+  "toaster",
+  "toothbrush",
+  "towel",
+  "trash can",
+  "umbrella",
+  "vacuum cleaner",
+  "washing machine"
+ ],
+ "questions": {
+  "Does it use electricity?": [
+   "clock",
+   "hair dryer",
+   "iron",
+   "kettle",
+   "lamp",
+   "laptop",
+   "microwave",
+   "refrigerator",
+   "remote control",
+   "television",
+   "toaster",
+   "vacuum cleaner",
+   "washing machine"
+  ],
+  "Is it usually kept in the kitchen?": [
+   "fork",
+   "frying pan",
+   "kettle",
+   "knife",
+   "microwave",
+   "mug",
+   "refrigerator",
+   "toaster",
+   "trash can"
+  ],
+  "Is it usually kept in the bathroom?": [
+   "bathtub",
+   "hair dryer",
+   "mirror",
+   "toothbrush",
+   "towel"
+  ],
+  "Is it usually kept in the bedroom?": [
+   "bed",
+   "blanket",
+   "lamp",
+   "pillow"
+  ],
+  "Is it a piece of furniture?": [
+   "bed",
+   "chair",
+   "sofa",
+   "table"
+  ],
+  "Can you sit or lie on it?": [
+   "bathtub",
+   "bed",
+   "chair",
+   "pillow",
+   "sofa"
+  ],
+  "Could you easily carry it in one hand?": [
+   "blanket",
+   "book",
+   "broom",
+   "bucket",
+   "candle",
+   "clock",
+   "doormat",
+   "fork",
+   "frying pan",
+   "hair dryer",
+   "iron",
+   "kettle",
+   "key",
+   "knife",
+   "lamp",
+   "laptop",
+   "mug",
+   "pillow",
+   "remote control",
+   "scissors",
+   "toaster",
+   "toothbrush",
+   "towel",
+   "umbrella"
+  ],
+  "Is it heavier than an adult person?": [
+   "bathtub",
+   "bed",
+   "refrigerator",
+   "sofa",
+   "washing machine"
+  ],
+  "Is it used for cooking or eating?": [
+   "fork",
+   "frying pan",
+   "knife",
+   "microwave",
+   "table",
+   "toaster"
+  ],
+  "Is it used for cleaning?": [
+   "bathtub",
+   "broom",
+   "bucket",
+   "doormat",
+   "toothbrush",
+   "towel",
+   "vacuum cleaner",
+   "washing machine"
+  ],
+  "Is it mostly made of fabric?": [
+   "blanket",
+   "pillow",
+   "sofa",
+   "towel",
+   "umbrella"
+  ],
+  "Is it mostly made of metal?": [
+   "fork",
+   "frying pan",
+   "iron",
+   "kettle",
+   "key",
+   "knife",
+   "lamp",
+   "microwave",
+   "refrigerator",
+   "scissors",
+   "toaster",
+   "washing machine"
+  ],
+  "Is its main job to heat something up?": [
+   "frying pan",
+   "hair dryer",
+   "iron",
+   "kettle",
+   "microwave",
+   "toaster"
+  ],
+  "Does it hold water or other liquids?": [
+   "bathtub",
+   "bucket",
+   "kettle",
+   "mug",
+   "refrigerator",
+   "washing machine"
+  ],
+  "Does it have a sharp edge?": [
+   "knife",
+   "mirror",
+   "scissors"
+  ],
+  "Does it have a screen?": [
+   "laptop",
+   "microwave",
+   "television",
+   "washing machine"
+  ],
+  "Does it give off light?": [
+   "candle",
+   "lamp",
+   "laptop",
+   "microwave",
+   "refrigerator",
+   "television"
+  ],
+  "Is it used for sleeping?": [
+   "bed",
+   "blanket",
+   "pillow"
+  ],
+  "Do you take it with you when you leave the house?": [
+   "key",
+   "laptop",
+   "umbrella"
+  ],
+  "Is it used for washing or grooming yourself?": [
+   "bathtub",
+   "hair dryer",
+   "mirror",
+   "toothbrush",
+   "towel"
+  ],
+  "Does it have a handle?": [
+   "broom",
+   "bucket",
+   "fork",
+   "frying pan",
+   "hair dryer",
+   "iron",
+   "kettle",
+   "knife",
+   "microwave",
+   "mug",
+   "refrigerator",
+   "scissors",
+   "toaster",
+   "toothbrush",
+   "trash can",
+   "umbrella",
+   "vacuum cleaner",
+   "washing machine"
+  ],
+  "Is it soft?": [
+   "bed",
+   "blanket",
+   "pillow",
+   "sofa",
+   "towel"
+  ],
+  "Does it have a motor?": [
+   "clock",
+   "hair dryer",
+   "microwave",
+   "refrigerator",
+   "vacuum cleaner",
+   "washing machine"
+  ],
+  "Is it used for entertainment?": [
+   "book",
+   "laptop",
+   "remote control",
+   "television"
+  ]
+ },
+ "sets": {
+  "a": [
+   "toaster",
+   "umbrella",
+   "pillow"
+  ],
+  "b": [
+   "scissors",
+   "washing machine",
+   "candle"
+  ]
+ }
+}

@@ -6,6 +6,7 @@
 // Body: { game, lane, s } (the game's state). The function rebuilds the turn with the same
 // pure game module the page runs, so the page can't send its own prompt, and returns the raw
 // response the page reads with lanes.mjs (the same shape as a recording).
+// Or { game: 'twenty', oracle: { category, thing } }: Jev's answers about a typed thing.
 import { loadKey } from '../../_lib/jev-key.js';
 import { databaseFor } from '../../_lib/jev-database.js';
 import { LANES, moveRequest, withImage, keep } from '../../../public/jev/races/lanes.mjs';
@@ -26,19 +27,34 @@ function base64(buf) {
 export async function onRequestPost({ request, env }) {
   let input;
   try { input = await request.json(); } catch { return json({ error: 'bad JSON' }, 400); }
-  const { game, lane, s } = input || {};
-  if (!GAMES[game] || !LANES[lane] || !s || typeof s !== 'object') return json({ error: 'bad move' }, 400);
+  const { game, oracle } = input || {};
+  if (!Object.hasOwn(GAMES, game)) return json({ error: 'bad move' }, 400);
+  const load = () => GAMES[game].load(p => asset(env, request, p).then(r => r.json()));
 
+  // Body { game: 'twenty', oracle: { category, thing } }: 20 Questions' "Type anything". Jev
+  // answers the category's questions about the thing (one Noul each), once per race.
+  if (oracle) {
+    let o;
+    try { o = GAMES[game].oracleFor?.(await load(), oracle.category, oracle.thing); } catch {}
+    if (!o) return json({ error: 'Type a thing: letters and spaces, up to 40 characters' }, 400);
+    return call(env, request, 'jev', o.turn);
+  }
+
+  const { lane, s } = input;
+  if (!Object.hasOwn(LANES, lane) || !s || typeof s !== 'object') return json({ error: 'bad move' }, 400);
   let turn;
   try {
-    const data = await GAMES[game].load(p => asset(env, request, p).then(r => r.json()));
+    const data = await load();
     if (GAMES[game].done(s)) return json({ error: 'game over' }, 400);
     turn = GAMES[game].turn(data, s);
   } catch { return json({ error: 'bad state' }, 400); }
+  return call(env, request, lane, turn);
+}
 
+async function call(env, request, lane, turn) {
   let key, why = '';
   try { key = LANES[lane].kind === 'jev' ? await loadKey({ ...env, JEV_DB: databaseFor(env) }) : env.OPENROUTER_API_KEY; } catch (e) { why = ` (${e.name}: ${String(e.message).slice(0, 80)})`; }
-  if (!key) return json({ error: `${LANES[lane].label} isn't set up on this site${why}`, has: { JEV_STATE: !!env.JEV_STATE, JEV_DB: !!env.JEV_DB, JEV_KEY_SECRET: !!env.JEV_KEY_SECRET, JEV_API_KEY: !!env.JEV_API_KEY } }, 503);
+  if (!key) return json({ error: `${LANES[lane].label} isn't set up on this site${why}` }, 503);
   const req = moveRequest(lane, turn);
   const b64 = turn.image ? base64(await asset(env, request, turn.image.path).then(r => r.arrayBuffer())) : undefined;
   const extra = withImage(lane, turn, req.body, b64);

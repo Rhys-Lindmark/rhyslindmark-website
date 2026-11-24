@@ -3,8 +3,12 @@
 // otherwise is POSTed to `move`, which calls Jev or OpenRouter on the server (server.mjs
 // locally, a Pages function at /jev/races/move). All URLs are relative, so the same files
 // work at localhost and at /jev/races/. Each game can add its own look in render/<game>.js:
-//   board({ data, caseId, game }), youView({ data, s, turn }), laneView({ data, s, turn }) (what an
-//   AI lane is looking at right now), stepHtml(e)  (all optional, HTML strings)
+//   board({ data, caseId, game, extra, call }), youView({ data, s, turn }), laneView({ data, s, turn }) (what an
+//   AI lane is looking at right now), stepHtml(e)  (all optional, HTML strings);
+//   caseControls({ data, caseId }) and fullCase({ caseId, el }): an extra control next to the
+//   case dropdown, and the case id it makes (20 Questions: pick a secret, or type anything).
+// A game module can also have resolve(data, caseId) (settle randomness once per race) and
+// oracle(data, caseId) (one Jev request before the race; its move goes to init as extra.oracle).
 import { LANES, moveRequest, readMove, recordingName } from './lanes.mjs';
 
 const $ = s => document.querySelector(s);
@@ -34,28 +38,48 @@ $('#tabs').innerHTML = meta.games.map(g => `<button data-id="${g.id}">${esc(g.ti
 $('#tabs').onclick = e => e.target.dataset.id && selectGame(e.target.dataset.id);
 $('#go').onclick = start;
 
-// One AI move: the recording if there is one, else the server.
-async function aiMove(laneId, game, turn, s, mode) {
+// One AI move: the recording if there is one, else the server (body: what `move` needs to
+// rebuild this request itself).
+async function aiMove(laneId, turn, body, mode, pace = true) {
   if (mode !== 'live') {
     const r = await fetch('recordings/' + await recordingName(moveRequest(laneId, turn).key));
-    if (r.ok) { const out = await r.json(); await sleep(out.ms); return readMove(laneId, turn, { ...out, replayed: true }); }
+    if (r.ok) { const out = await r.json(); if (pace) await sleep(out.ms); return readMove(laneId, turn, { ...out, replayed: true }); }
     if (mode === 'replay') throw new Error('No recording for this move. Pick Auto or Live to play it live.');
   }
-  const r = await fetch('move', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ game, lane: laneId, s, mode }) });
+  const r = await fetch('move', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...body, mode }) });
   if (!r.ok) { const t = await r.text(); let msg; try { msg = JSON.parse(t).error; } catch {} throw new Error(msg || (r.status === 401 ? 'Log in to /jev to play live' : `Live move failed (${r.status})`)); }
   return readMove(laneId, turn, await r.json());
 }
 
-async function runLane(m, caseId, laneId, mode, myRun) {
+// The case as picked, with the game's own extra control (20 Questions: which secret, or a typed thing).
+const pickedCase = render => render.fullCase?.({ caseId: $('#case').value, el: $('#casex') }) ?? $('#case').value;
+
+// Before a race, once for every lane: a concrete case (20 Questions' 3 random secrets) and,
+// for a typed thing, Jev's answers about it (the game's oracle request).
+async function prepare(m, mode) {
   const { game, data } = m;
-  let s = game.init(data, caseId);
+  const caseId = game.resolve?.(data, pickedCase(m.render)) ?? pickedCase(m.render);
+  const o = game.oracle?.(data, caseId);
+  let extra, call;
+  if (o) {
+    $('#prepnote').textContent = `Asking Jev about “${o.ask.thing}”…`;
+    call = await aiMove('jev', o.turn, { game: game.id, oracle: o.ask }, mode, false);
+    extra = { oracle: call.move };
+  }
+  game.init(data, caseId, extra); // throws on a bad case, before any lane starts
+  return { caseId, extra, call };
+}
+
+async function runLane(m, caseId, laneId, mode, myRun, extra) {
+  const { game, data } = m;
+  let s = game.init(data, caseId, extra);
   const totals = { steps: 0, ms: 0, cost: 0, replayed: 0 };
   try {
     while (!game.done(s) && totals.steps < 80) {
       const turn = game.turn(data, s);
       const now = m.render.laneView?.({ data, s, turn });
       if (now != null) { const el = document.querySelector(`#lane-${laneId} .now`); if (el && el.dataset.html !== now) { el.innerHTML = now; el.dataset.html = now; } }
-      const p = await aiMove(laneId, game.id, turn, s, mode);
+      const p = await aiMove(laneId, turn, { game: game.id, lane: laneId, s }, mode);
       if (myRun !== run) return;
       const out = game.apply(data, s, p.move);
       s = out.s;
@@ -75,15 +99,32 @@ async function selectGame(id) {
   const g = meta.games.find(g => g.id === id);
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.id === id));
   $('#blurb').textContent = g.blurb;
-  $('#case').innerHTML = g.cases.map(c => `<option value="${esc(c.id)}">${esc(c.label)}</option>`).join('');
-  $('#case').onchange = drawBoard;
+  // Cases with a `group` go under an <optgroup> (20 Questions: one per category).
+  let html = '', group;
+  for (const c of g.cases) {
+    if (c.group !== group) { html += (group ? '</optgroup>' : '') + (c.group ? `<optgroup label="${esc(c.group)}">` : ''); group = c.group; }
+    html += `<option value="${esc(c.id)}">${esc(c.label)}</option>`;
+  }
+  $('#case').innerHTML = html + (group ? '</optgroup>' : '');
+  $('#case').onchange = caseChanged;
   $('#lanes').innerHTML = $('#scores').innerHTML = '';
+  caseChanged();
+}
+
+// A game can add a control next to the case (render.caseControls); it redraws the board as it changes.
+async function caseChanged() {
+  const { game, render, data } = await load(gameId);
+  $('#casex').innerHTML = render.caseControls?.({ data, caseId: $('#case').value, game }) ?? '';
+  $('#casex').oninput = () => drawBoard();
+  $('#casex').onkeydown = e => { if (e.key === 'Enter' && !$('#go').disabled) start(); };
+  $('#prepnote').textContent = '';
   drawBoard();
 }
 
-async function drawBoard() {
+// prep: what prepare() settled for the race that's starting (its case, and a typed thing's answers).
+async function drawBoard(prep) {
   const { game, render, data } = await load(gameId);
-  $('#board').innerHTML = render.board?.({ data, caseId: $('#case').value, game }) ?? '';
+  $('#board').innerHTML = render.board?.({ data, caseId: prep?.caseId ?? pickedCase(render), game, extra: prep?.extra, call: prep?.call }) ?? '';
 }
 
 function stop() { run++; Object.values(lanes).forEach(l => l.timer && clearInterval(l.timer)); lanes = {}; $('#go').disabled = false; drawTimeline(); }
@@ -91,10 +132,18 @@ function stop() { run++; Object.values(lanes).forEach(l => l.timer && clearInter
 async function start() {
   stop();
   const m = await load(gameId);
-  const caseId = $('#case').value;
   const picked = [...document.querySelectorAll('#lanepick input:checked')].map(i => i.value);
   if (!picked.length) return;
   $('#go').disabled = true;
+  const myRun = run, mode = $('#mode').value;
+  let prep;
+  try { prep = await prepare(m, mode); } catch (e) {
+    if (myRun === run) { $('#prepnote').innerHTML = `<span class="no">${esc(e.message)}</span>`; $('#go').disabled = false; }
+    return;
+  }
+  if (myRun !== run) return;
+  $('#prepnote').textContent = '';
+  const { caseId, extra } = prep;
   $('#scores').innerHTML = '';
   $('#lanes').innerHTML = picked.map(id => `
     <div class="lane ${id === 'jev' ? 'jev' : id === 'you' ? 'you' : ''}" id="lane-${id}">
@@ -107,10 +156,10 @@ async function start() {
     </div>`).join('');
   for (const id of picked) lanes[id] = { id, steps: 0, ms: 0, cost: 0, done: false, ticks: [] };
   drawTimeline();
-  drawBoard();
+  drawBoard(prep);
 
-  for (const id of picked.filter(id => id !== 'you')) runLane(m, caseId, id, $('#mode').value, run);
-  if (picked.includes('you')) playHuman(m, caseId);
+  for (const id of picked.filter(id => id !== 'you')) runLane(m, caseId, id, mode, run, extra);
+  if (picked.includes('you')) playHuman(m, caseId, extra);
 }
 
 function onEvent(e, m) {
@@ -165,10 +214,10 @@ function addRow(el, e, m) {
 }
 
 // ---------- the human lane ----------
-function playHuman(m, caseId) {
+function playHuman(m, caseId, extra) {
   const { game, render, data } = m;
   const lane = lanes.you, el = $('#lane-you');
-  let s = game.init(data, caseId);
+  let s = game.init(data, caseId, extra);
   const t0 = Date.now();
   lane.timer = setInterval(() => { lane.ms = Date.now() - t0; stats(el, lane); }, 100);
   const draw = () => {
