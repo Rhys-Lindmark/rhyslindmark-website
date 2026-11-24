@@ -86,7 +86,7 @@ async function drawBoard() {
   $('#board').innerHTML = render.board?.({ data, caseId: $('#case').value, game }) ?? '';
 }
 
-function stop() { run++; Object.values(lanes).forEach(l => l.timer && clearInterval(l.timer)); lanes = {}; $('#go').disabled = false; }
+function stop() { run++; Object.values(lanes).forEach(l => l.timer && clearInterval(l.timer)); lanes = {}; $('#go').disabled = false; drawTimeline(); }
 
 async function start() {
   stop();
@@ -105,7 +105,8 @@ async function start() {
       ${id === 'you' ? '<div class="play"></div>' : '<div class="now"></div>'}
       <div class="log"></div>
     </div>`).join('');
-  for (const id of picked) lanes[id] = { id, steps: 0, ms: 0, cost: 0, done: false };
+  for (const id of picked) lanes[id] = { id, steps: 0, ms: 0, cost: 0, done: false, ticks: [] };
+  drawTimeline();
   drawBoard();
 
   for (const id of picked.filter(id => id !== 'you')) runLane(m, caseId, id, $('#mode').value, run);
@@ -118,6 +119,7 @@ function onEvent(e, m) {
   if (e.type === 'error') { lane.done = true; lane.error = e.message; el.querySelector('.status').className = 'status err'; el.querySelector('.status').textContent = e.message; return maybeScores(); }
   if (e.type === 'step') {
     Object.assign(lane, { steps: e.totals.steps, ms: e.totals.ms, cost: e.totals.cost, replayed: e.totals.replayed });
+    lane.ticks.push({ ms: lane.ms, bad: !e.move || /no valid/.test(e.note) });
     stats(el, lane);
     el.querySelector('.status').textContent = (e.replayed ? 'replaying recorded moves · ' : 'live · ') + `${e.options} options this step`;
     addRow(el, e, m);
@@ -129,7 +131,25 @@ function onEvent(e, m) {
   }
 }
 
+// The race at the bottom, like WikiRace's: one track per racer, the bar is its time so far,
+// each tick is a move (red: a move it fumbled), all on one time scale.
+function drawTimeline() {
+  const all = Object.values(lanes);
+  const box = $('#timeline');
+  if (!all.length) { box.innerHTML = ''; return; }
+  const max = Math.max(1000, ...all.map(l => l.ms)) * 1.04;
+  const pct = ms => (100 * ms / max).toFixed(2) + '%';
+  box.innerHTML = `<div class="tl-scale">${secs(max / 1.04)}</div>` + all.map(l => `
+    <div class="tl-row ${l.id}">
+      <div class="tl-name">${esc(laneInfo(l.id).label)}</div>
+      <div class="tl-track"><div class="tl-bar" style="width:${pct(l.ms)}"></div>
+        ${l.ticks.map(t => `<i class="${t.bad ? 'bad' : ''}" style="left:${pct(t.ms)}"></i>`).join('')}</div>
+      <div class="tl-state ${l.done ? (l.error ? 'err' : 'done') : ''}">${l.error ? 'ERROR' : l.done ? 'FINISHED' : `${l.steps} ${l.id === 'you' ? '' : '·'} ${secs(l.ms)}`}</div>
+    </div>`).join('');
+}
+
 function stats(el, lane) {
+  drawTimeline();
   el.querySelector('.steps').textContent = lane.steps;
   el.querySelector('.time').textContent = secs(lane.ms);
   el.querySelector('.cost').textContent = money(lane.cost);
@@ -173,6 +193,7 @@ function playHuman(m, caseId) {
       const move = turn.options[i].name;
       const out = game.apply(data, s, move);
       s = out.s; lane.steps++;
+      lane.ticks.push({ ms: Date.now() - t0, bad: false });
       stats(el, lane);
       addRow(el, { n: lane.steps, move, note: out.note, round: out.round }, m);
       draw();
@@ -183,6 +204,7 @@ function playHuman(m, caseId) {
 
 // ---------- the scoreboard ----------
 function maybeScores() {
+  drawTimeline();
   const all = Object.values(lanes);
   if (!all.every(l => l.done)) return;
   $('#go').disabled = false;

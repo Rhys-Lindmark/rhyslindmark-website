@@ -49,3 +49,15 @@ select, button, input { font: inherit; background: var(--panel); color: var(--fg
 footer { margin-top: 30px; font-size: 13px; max-width: 900px; }
 .now:empty { display: none; }
 .now { margin-bottom: 4px; }
+#timeline { position: sticky; bottom: 0; margin: 18px -28px 0; padding: 10px 28px 12px; background: #0b0d11ee; border-top: 1px solid var(--line); backdrop-filter: blur(4px); }
+#timeline:empty { display: none; }
+.tl-scale { text-align: right; font-size: 13px; color: var(--muted); margin-right: 110px; }
+.tl-row { display: grid; grid-template-columns: 170px 1fr 100px; align-items: center; gap: 14px; height: 30px; }
+.tl-name { font-weight: 700; text-transform: uppercase; font-size: 14px; letter-spacing: .5px; color: var(--llm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-row.jev .tl-name { color: var(--jev); } .tl-row.you .tl-name { color: var(--you); }
+.tl-track { position: relative; height: 16px; border-bottom: 1px solid var(--line); }
+.tl-bar { position: absolute; left: 0; top: 0; bottom: 0; background: #3a3f4b; border-radius: 3px; transition: width .25s linear; }
+.tl-track i { position: absolute; top: -4px; bottom: -4px; width: 2px; margin-left: -1px; background: #e8eaf0; }
+.tl-track i.bad { background: var(--bad); }
+.tl-state { font-size: 13px; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tl-state.done { color: var(--you); } .tl-state.err { color: var(--bad); }
