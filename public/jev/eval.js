@@ -24,7 +24,7 @@ const SERIES = {
   choice: { label: 'Choice (argmax)', color: '#e01a2b', shape: 'diamond' },
   learned: { label: 'Learned router (cost dial λ)', color: '#7a4be8', shape: 'line' }
 };
-const SHORT = { router: 'Judgment', 'router-v2': 'Router v2', 'router-v3': 'Router v3' };
+const SHORT = { router: 'Judgment', 'router-v2': 'Judgment v2', 'router-v3': 'Judgment v3' };
 
 function marker(shape, x, y, color, r = 5) {
   const ring = { stroke: '#fff', 'stroke-width': 2, fill: color };
