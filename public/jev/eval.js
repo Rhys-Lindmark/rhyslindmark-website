@@ -35,7 +35,7 @@ function marker(shape, x, y, color, r = 5) {
 }
 
 function chart(data, tip) {
-  const W = 640, H = 340, m = { l: 48, r: 16, t: 12, b: 40 };
+  const W = 640, H = 340, m = { l: 48, r: 40, t: 12, b: 40 };
   const pts = data.policies.filter(p => SERIES[p.kind]);
   const costs = pts.map(p => Math.max(p.cost, 0.01));
   const x0 = Math.log10(Math.min(...costs) / 1.6), x1 = Math.log10(Math.max(...costs) * 1.6);
@@ -59,12 +59,8 @@ function chart(data, tip) {
     svg.append(g);
   }
   // Router labels sit above their point, Choice labels below, so near-neighbors don't collide.
-  // Labels go right of their point, or left when they'd run past the chart edge (~7px per mono character).
-  for (const p of pts.filter(p => SHORT[p.kind] || p.kind === 'choice')) {
-    const text = p.kind === 'choice' ? `Choice · ${p.name.includes('high') ? 'high' : 'low'} effort` : SHORT[p.kind];
-    const flip = X(p.cost) + 9 + text.length * 7 > W;
-    svg.append(s('text', { x: X(p.cost) + (flip ? -9 : 9), y: Y(p.pass) + (p.kind === 'choice' ? 16 : -8), 'text-anchor': flip ? 'end' : 'start', class: 'pt-label' }, text));
-  }
+  // Labels go right of their point; the chart's right margin leaves room for the longest one.
+  for (const p of pts.filter(p => SHORT[p.kind] || p.kind === 'choice')) svg.append(s('text', { x: X(p.cost) + 9, y: Y(p.pass) + (p.kind === 'choice' ? 16 : -8), class: 'pt-label' }, p.kind === 'choice' ? `Choice · ${p.name.includes('high') ? 'high' : 'low'} effort` : SHORT[p.kind]));
   return svg;
 }
 
