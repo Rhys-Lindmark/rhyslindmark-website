@@ -35,8 +35,9 @@ export async function onRequestPost({ request, env }) {
     turn = GAMES[game].turn(data, s);
   } catch { return json({ error: 'bad state' }, 400); }
 
-  const key = LANES[lane].kind === 'jev' ? await loadKey(env).catch(() => null) : env.OPENROUTER_API_KEY;
-  if (!key) return json({ error: `${LANES[lane].label} isn't set up on this site` }, 503);
+  let key, why = '';
+  try { key = LANES[lane].kind === 'jev' ? await loadKey(env) : env.OPENROUTER_API_KEY; } catch (e) { why = ` (${e.name}: ${String(e.message).slice(0, 80)})`; }
+  if (!key) return json({ error: `${LANES[lane].label} isn't set up on this site${why}` }, 503);
   const req = moveRequest(lane, turn);
   const b64 = turn.image ? base64(await asset(env, request, turn.image.path).then(r => r.arrayBuffer())) : undefined;
   const extra = withImage(lane, turn, req.body, b64);
